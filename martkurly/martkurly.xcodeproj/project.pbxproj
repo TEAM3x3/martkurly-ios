@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -12,9 +12,17 @@
 		AF564AB624E56DEA00989F82 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF564AB524E56DEA00989F82 /* ViewController.swift */; };
 		AF564ABB24E56DED00989F82 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AF564ABA24E56DED00989F82 /* Assets.xcassets */; };
 		AF564ABE24E56DED00989F82 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AF564ABC24E56DED00989F82 /* LaunchScreen.storyboard */; };
+		AF9799A924E6A9EF0067C611 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = AF9799A824E6A9EF0067C611 /* SnapKit */; };
+		AF9799AC24E6AA260067C611 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = AF9799AB24E6AA260067C611 /* Then */; };
+		AF9799AF24E6AAB80067C611 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = AF9799AE24E6AAB80067C611 /* Kingfisher */; };
+		AF9799B524E6AC650067C611 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = AF9799B424E6AC650067C611 /* Alamofire */; };
+		E29ADD5322183B344DF43AE3 /* Pods_martkurly.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60C61A08968B012AF1CDDEC8 /* Pods_martkurly.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		33869669B85EDB88C28F68B0 /* Pods-martkurly.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-martkurly.release.xcconfig"; path = "Target Support Files/Pods-martkurly/Pods-martkurly.release.xcconfig"; sourceTree = "<group>"; };
+		60C61A08968B012AF1CDDEC8 /* Pods_martkurly.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_martkurly.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6D19B7E14B91C2CC25D34E0C /* Pods-martkurly.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-martkurly.debug.xcconfig"; path = "Target Support Files/Pods-martkurly/Pods-martkurly.debug.xcconfig"; sourceTree = "<group>"; };
 		AF564AAE24E56DEA00989F82 /* martkurly.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = martkurly.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AF564AB124E56DEA00989F82 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		AF564AB324E56DEA00989F82 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -29,6 +37,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AF9799B524E6AC650067C611 /* Alamofire in Frameworks */,
+				AF9799AF24E6AAB80067C611 /* Kingfisher in Frameworks */,
+				AF9799A924E6A9EF0067C611 /* SnapKit in Frameworks */,
+				AF9799AC24E6AA260067C611 /* Then in Frameworks */,
+				E29ADD5322183B344DF43AE3 /* Pods_martkurly.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -40,6 +53,8 @@
 			children = (
 				AF564AB024E56DEA00989F82 /* martkurly */,
 				AF564AAF24E56DEA00989F82 /* Products */,
+				FBBA4763B7DD18B11BC1EE51 /* Pods */,
+				DD8EE2CF4E72EAE15F6B33E1 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -80,6 +95,23 @@
 			path = Controller;
 			sourceTree = "<group>";
 		};
+		DD8EE2CF4E72EAE15F6B33E1 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				60C61A08968B012AF1CDDEC8 /* Pods_martkurly.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		FBBA4763B7DD18B11BC1EE51 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				6D19B7E14B91C2CC25D34E0C /* Pods-martkurly.debug.xcconfig */,
+				33869669B85EDB88C28F68B0 /* Pods-martkurly.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -87,15 +119,23 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = AF564AC224E56DED00989F82 /* Build configuration list for PBXNativeTarget "martkurly" */;
 			buildPhases = (
+				7B7D6E61D3462F4EF06FEA13 /* [CP] Check Pods Manifest.lock */,
 				AF564AAA24E56DEA00989F82 /* Sources */,
 				AF564AAB24E56DEA00989F82 /* Frameworks */,
 				AF564AAC24E56DEA00989F82 /* Resources */,
+				AF9799B924E6ADD60067C611 /* ShellScript */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			name = martkurly;
+			packageProductDependencies = (
+				AF9799A824E6A9EF0067C611 /* SnapKit */,
+				AF9799AB24E6AA260067C611 /* Then */,
+				AF9799AE24E6AAB80067C611 /* Kingfisher */,
+				AF9799B424E6AC650067C611 /* Alamofire */,
+			);
 			productName = martkurly;
 			productReference = AF564AAE24E56DEA00989F82 /* martkurly.app */;
 			productType = "com.apple.product-type.application";
@@ -124,6 +164,12 @@
 				Base,
 			);
 			mainGroup = AF564AA524E56DEA00989F82;
+			packageReferences = (
+				AF9799A724E6A9EF0067C611 /* XCRemoteSwiftPackageReference "SnapKit" */,
+				AF9799AA24E6AA260067C611 /* XCRemoteSwiftPackageReference "Then" */,
+				AF9799AD24E6AAB80067C611 /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				AF9799B324E6AC650067C611 /* XCRemoteSwiftPackageReference "Alamofire" */,
+			);
 			productRefGroup = AF564AAF24E56DEA00989F82 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -144,6 +190,48 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		7B7D6E61D3462F4EF06FEA13 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-martkurly-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		AF9799B924E6ADD60067C611 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "${PODS_ROOT}/SwiftLint/swiftlint autocorrect\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		AF564AAA24E56DEA00989F82 /* Sources */ = {
@@ -220,7 +308,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -274,7 +362,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -286,9 +374,12 @@
 		};
 		AF564AC324E56DED00989F82 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6D19B7E14B91C2CC25D34E0C /* Pods-martkurly.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = ZLCDRXJTXW;
 				INFOPLIST_FILE = martkurly/Supporting/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -297,6 +388,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.team3x3.martkurly;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -304,9 +396,12 @@
 		};
 		AF564AC424E56DED00989F82 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 33869669B85EDB88C28F68B0 /* Pods-martkurly.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = ZLCDRXJTXW;
 				INFOPLIST_FILE = martkurly/Supporting/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -315,6 +410,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.team3x3.martkurly;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -342,6 +438,64 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		AF9799A724E6A9EF0067C611 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.1;
+			};
+		};
+		AF9799AA24E6AA260067C611 /* XCRemoteSwiftPackageReference "Then" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/devxoul/Then.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.7.0;
+			};
+		};
+		AF9799AD24E6AAB80067C611 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.14.1;
+			};
+		};
+		AF9799B324E6AC650067C611 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.2.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		AF9799A824E6A9EF0067C611 /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AF9799A724E6A9EF0067C611 /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+		AF9799AB24E6AA260067C611 /* Then */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AF9799AA24E6AA260067C611 /* XCRemoteSwiftPackageReference "Then" */;
+			productName = Then;
+		};
+		AF9799AE24E6AAB80067C611 /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AF9799AD24E6AAB80067C611 /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
+		};
+		AF9799B424E6AC650067C611 /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AF9799B324E6AC650067C611 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = AF564AA624E56DEA00989F82 /* Project object */;
 }
