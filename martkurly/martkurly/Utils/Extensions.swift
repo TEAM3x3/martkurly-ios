@@ -33,3 +33,29 @@ extension UIColor {
 extension UIImage {
     static let martcurlyMainTitleWhiteImage = UIImage(named: "Martcurly_MainTitle_White")?.withRenderingMode(.alwaysOriginal)
 }
+
+extension UIViewController {
+    func setNavigationBarMainColor(titleText: String? = nil) {
+        navigationItem.title = titleText
+        navigationController?.navigationBar.barTintColor = .martkurlyMainPurpleColor
+        navigationController?.navigationBar.isTranslucent = false
+        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        navigationController?.navigationBar.shadowImage = UIImage()
+        navigationController?.navigationBar.layoutIfNeeded()
+
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: ShoppingCartSingleton.shared.shoppingCartView)
+        ShoppingCartSingleton.shared.shoppingCartView.configureWhiteMode()
+    }
+
+    func setNavigationBarWhiteColor(titleText: String? = nil) {
+        navigationItem.title = titleText
+        navigationController?.navigationBar.barTintColor = .white
+        navigationController?.navigationBar.isTranslucent = false
+        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        navigationController?.navigationBar.shadowImage = UIImage()
+        navigationController?.navigationBar.layoutIfNeeded()
+
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: ShoppingCartSingleton.shared.shoppingCartView)
+        ShoppingCartSingleton.shared.shoppingCartView.configurePurpleMode()
+    }
+}

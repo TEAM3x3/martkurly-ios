@@ -36,7 +36,7 @@ class MainTBC: UITabBarController {
             image: UIImage(systemName: "house"),
             selectedImage: UIImage(systemName: "house.fill"))
 
-        let recommendVC = UIViewController()
+        let recommendVC = RecommendationVC()
         let naviRecommendVC = UINavigationController(rootViewController: recommendVC)
         naviRecommendVC.tabBarItem = UITabBarItem(
             title: "추천",
