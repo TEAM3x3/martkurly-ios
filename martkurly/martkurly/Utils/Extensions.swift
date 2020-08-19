@@ -42,7 +42,7 @@ enum NavigationType {
 }
 
 extension UIViewController {
-    func setNavigationBarMainColor(type: NavigationType, isShowCart: Bool, titleText: String? = nil) {
+    func setNavigationBarStatus(type: NavigationType, isShowCart: Bool, titleText: String? = nil) {
         navigationItem.title = titleText
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)

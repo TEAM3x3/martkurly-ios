@@ -32,7 +32,7 @@ class HomeVC: UIViewController {
     }
 
     func configureNavigationBar() {
-        setNavigationBarMainColor(type: .purpleType, isShowCart: true, titleText: "테스트")
+        setNavigationBarStatus(type: .purpleType, isShowCart: true, titleText: "테스트")
 
         // 이미지 이상함...ㅋㅋㅋ 한번 확인 필요
         let titleImageView = UIImageView(image: .martcurlyMainTitleWhiteImage)
