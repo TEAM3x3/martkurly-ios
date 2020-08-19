@@ -38,7 +38,7 @@ class WhyKurlyView: UIView {
     }
 
     private func setPropertyAttributes() {
-
+        
     }
 
     private func setConstraints() {
