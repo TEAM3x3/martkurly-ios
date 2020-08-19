@@ -42,6 +42,8 @@ enum NavigationType {
 }
 
 extension UIViewController {
+    // 네비게이션바의 배경색이 보라색이면 .purpleType이고, 카트아이콘이 보이고 싶으면 isShowCart => true
+    // titleText는 기본값이 nil 이므로 넣어줘도 되고 안넣어줘도 됨
     func setNavigationBarStatus(type: NavigationType, isShowCart: Bool, titleText: String? = nil) {
         navigationItem.title = titleText
         navigationController?.navigationBar.isTranslucent = false
