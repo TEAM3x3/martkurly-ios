@@ -25,6 +25,7 @@ class WhyKurlySubView: UIView {
     private let contentLabel = UILabel().then {
         $0.text = "Content"
         $0.font = UIFont.systemFont(ofSize: 14)
+        $0.textColor = ColorManager.General.text.rawValue
         $0.numberOfLines = 0
     }
     private let infoLabel = UILabel().then {
@@ -114,8 +115,16 @@ class WhyKurlySubView: UIView {
     func configureView(iconImage: UIImage, title: String, content: String, info: String) {
         iconView.image = iconImage
         titleLabel.text = title
-        contentLabel.text = content
+        contentLabel.attributedText = setParagraphStyle(text: content, spacing: 3)
         infoLabel.text = info
+    }
+
+    func setParagraphStyle(text: String, spacing: CGFloat) -> NSMutableAttributedString {
+        let attributedString = NSMutableAttributedString(string: text)
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineSpacing = spacing
+        attributedString.addAttribute(NSAttributedString.Key.paragraphStyle, value: paragraphStyle, range: NSRange(location: 0, length: attributedString.length))
+        return attributedString
     }
 
 }

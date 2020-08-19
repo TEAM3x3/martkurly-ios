@@ -62,6 +62,7 @@ class WhyKurlyView: UIView {
     }
 
     private func generateSubviews() {
+        var isContainInfo = false
         for index in data.indices {
             guard
                 let imageName = data[index]["imageName"],
@@ -74,23 +75,32 @@ class WhyKurlyView: UIView {
             let subview = WhyKurlySubView()
             subview.configureView(iconImage: iconImage, title: title, content: content, info: info)
             whyKurlySubviews.append(subview)
-            setConstraintsForSubviews(index: index)
+            isContainInfo = info == "" ? false : true
+            setConstraintsForSubviews(index: index, isContainInfo: isContainInfo)
         }
     }
 
-    private func setConstraintsForSubviews(index: Int) {
+    private func setConstraintsForSubviews(index: Int, isContainInfo: Bool) {
         self.addSubview(whyKurlySubviews[index])
         if index == 0 {
             whyKurlySubviews[index].snp.makeConstraints {
                 $0.top.equalTo(whyKurlyLine.snp.bottom).offset(10)
                 $0.leading.trailing.equalToSuperview()
-                $0.height.equalTo(130)
+                if isContainInfo {
+                    $0.height.equalTo(140)
+                } else {
+                    $0.height.equalTo(125)
+                }
             }
         } else {
             whyKurlySubviews[index].snp.makeConstraints {
                 $0.top.equalTo(whyKurlySubviews[index - 1].snp.bottom).offset(10)
                 $0.leading.trailing.equalToSuperview()
-                $0.height.equalTo(130)
+                if isContainInfo {
+                    $0.height.equalTo(140)
+                } else {
+                    $0.height.equalTo(125)
+                }
             }
         }
     }

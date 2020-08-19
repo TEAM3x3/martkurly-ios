@@ -19,6 +19,7 @@ struct ColorManager {
 
         case mainPurple
         case mainGray
+        case text
         case whyKurlyText
         case separator
 
@@ -35,6 +36,8 @@ struct ColorManager {
                 return .martkurlyMainPurpleColor
             case .mainGray:
                 return .textMainGray
+            case .text:
+                return .textBlack
             case .separator:
                 return .separatorGray
             case .whyKurlyText:
