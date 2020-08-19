@@ -36,28 +36,32 @@ extension UIImage {
     static let martcurlyMainTitleWhiteImage = UIImage(named: "Martcurly_MainTitle_White")?.withRenderingMode(.alwaysOriginal)
 }
 
+enum NavigationType {
+    case purpleType
+    case whiteType
+}
+
 extension UIViewController {
-    func setNavigationBarMainColor(titleText: String? = nil) {
+    func setNavigationBarMainColor(type: NavigationType, isShowCart: Bool, titleText: String? = nil) {
         navigationItem.title = titleText
-        navigationController?.navigationBar.barTintColor = .martkurlyMainPurpleColor
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         navigationController?.navigationBar.shadowImage = UIImage()
         navigationController?.navigationBar.layoutIfNeeded()
 
-        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: ShoppingCartSingleton.shared.shoppingCartView)
-        ShoppingCartSingleton.shared.shoppingCartView.configureWhiteMode()
-    }
+        switch type {
+        case .purpleType:
+            navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
+            navigationController?.navigationBar.barTintColor = .martkurlyMainPurpleColor
+            ShoppingCartSingleton.shared.shoppingCartView.configureWhiteMode()
+        case .whiteType:
+            navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.black]
+            navigationController?.navigationBar.barTintColor = .white
+            ShoppingCartSingleton.shared.shoppingCartView.configurePurpleMode()
+        }
 
-    func setNavigationBarWhiteColor(titleText: String? = nil) {
-        navigationItem.title = titleText
-        navigationController?.navigationBar.barTintColor = .white
-        navigationController?.navigationBar.isTranslucent = false
-        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        navigationController?.navigationBar.shadowImage = UIImage()
-        navigationController?.navigationBar.layoutIfNeeded()
-
-        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: ShoppingCartSingleton.shared.shoppingCartView)
-        ShoppingCartSingleton.shared.shoppingCartView.configurePurpleMode()
+        navigationItem.rightBarButtonItem = isShowCart ?
+            UIBarButtonItem(customView: ShoppingCartSingleton.shared.shoppingCartView)
+            : nil
     }
 }

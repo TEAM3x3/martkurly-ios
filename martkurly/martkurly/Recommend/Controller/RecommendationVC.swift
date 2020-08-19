@@ -35,7 +35,7 @@ class RecommendationVC: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        setNavigationBarWhiteColor()
+        setNavigationBarMainColor(type: .purpleType, isShowCart: true, titleText: "추천")
     }
 
     // MARK: - Helpers
