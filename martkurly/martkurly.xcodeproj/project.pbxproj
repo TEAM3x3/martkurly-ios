@@ -13,6 +13,7 @@
 		42FAF01724ED21F800063981 /* WhyKurlyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42FAF01624ED21F800063981 /* WhyKurlyView.swift */; };
 		42FAF01924ED28CB00063981 /* WhyKurlySubView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42FAF01824ED28CB00063981 /* WhyKurlySubView.swift */; };
 		42FAF01B24ED296C00063981 /* TestVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42FAF01A24ED296C00063981 /* TestVC.swift */; };
+		42FAF02324ED895500063981 /* KurlyButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42FAF02224ED895500063981 /* KurlyButton.swift */; };
 		AF564AB224E56DEA00989F82 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF564AB124E56DEA00989F82 /* AppDelegate.swift */; };
 		AF564ABB24E56DED00989F82 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AF564ABA24E56DED00989F82 /* Assets.xcassets */; };
 		AF564ABE24E56DED00989F82 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AF564ABC24E56DED00989F82 /* LaunchScreen.storyboard */; };
@@ -37,6 +38,7 @@
 		42FAF01624ED21F800063981 /* WhyKurlyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhyKurlyView.swift; sourceTree = "<group>"; };
 		42FAF01824ED28CB00063981 /* WhyKurlySubView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhyKurlySubView.swift; sourceTree = "<group>"; };
 		42FAF01A24ED296C00063981 /* TestVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestVC.swift; sourceTree = "<group>"; };
+		42FAF02224ED895500063981 /* KurlyButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KurlyButton.swift; sourceTree = "<group>"; };
 		60C61A08968B012AF1CDDEC8 /* Pods_martkurly.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_martkurly.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6D19B7E14B91C2CC25D34E0C /* Pods-martkurly.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-martkurly.debug.xcconfig"; path = "Target Support Files/Pods-martkurly/Pods-martkurly.debug.xcconfig"; sourceTree = "<group>"; };
 		AF564AAE24E56DEA00989F82 /* martkurly.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = martkurly.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -81,11 +83,43 @@
 		42FAF01524ED21AB00063981 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				42FAF02224ED895500063981 /* KurlyButton.swift */,
 				42FAF01624ED21F800063981 /* WhyKurlyView.swift */,
 				42FAF01824ED28CB00063981 /* WhyKurlySubView.swift */,
 				AF9C3C7724ED317E0055E7C5 /* ShoppingCartView.swift */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		42FAF01C24ED887100063981 /* Sign */ = {
+			isa = PBXGroup;
+			children = (
+				42FAF01D24ED887A00063981 /* Model */,
+				42FAF01E24ED887D00063981 /* View */,
+				42FAF01F24ED888100063981 /* Controller */,
+			);
+			path = Sign;
+			sourceTree = "<group>";
+		};
+		42FAF01D24ED887A00063981 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		42FAF01E24ED887D00063981 /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		42FAF01F24ED888100063981 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Controller;
 			sourceTree = "<group>";
 		};
 		AF564AA524E56DEA00989F82 = {
@@ -115,6 +149,7 @@
 				AF9C3C6424ED2D840055E7C5 /* Category */,
 				AF9C3C6524ED2D980055E7C5 /* Search */,
 				AF9C3C6624ED2DA00055E7C5 /* Mycurly */,
+				42FAF01C24ED887100063981 /* Sign */,
 				AF9C3C5D24ECE1EC0055E7C5 /* Utils */,
 				AF564AC524E56E8100989F82 /* Supporting */,
 			);
@@ -465,6 +500,7 @@
 				AF9C3C7824ED317E0055E7C5 /* ShoppingCartView.swift in Sources */,
 				AF9C3C7A24ED58660055E7C5 /* ShoppingCartSingleton.swift in Sources */,
 				42FAF01224ED11A500063981 /* ImageManager.swift in Sources */,
+				42FAF02324ED895500063981 /* KurlyButton.swift in Sources */,
 				AF9C3C6124ECEE850055E7C5 /* HomeVC.swift in Sources */,
 				42FAF01724ED21F800063981 /* WhyKurlyView.swift in Sources */,
 				AF9C3C7C24ED592B0055E7C5 /* RecommendationVC.swift in Sources */,
