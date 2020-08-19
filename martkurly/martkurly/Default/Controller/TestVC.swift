@@ -11,7 +11,7 @@ import UIKit
 class TestVC: UIViewController {
 
     // MARK: - Properties
-    let sampleView = KurlyButton(title: "구매하기", style: .white)
+    let sampleView = KurlyButton(title: "구매하기", style: .purple)
 
     // MARK: - Lifecycle
     override func viewDidLoad() {
