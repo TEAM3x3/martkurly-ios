@@ -24,6 +24,9 @@
 		AF9C3C5C24ECE1270055E7C5 /* MainTBC.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF9C3C5B24ECE1270055E7C5 /* MainTBC.swift */; };
 		AF9C3C5F24ECE2050055E7C5 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF9C3C5E24ECE2050055E7C5 /* Extensions.swift */; };
 		AF9C3C6124ECEE850055E7C5 /* HomeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF9C3C6024ECEE850055E7C5 /* HomeVC.swift */; };
+		AF9C3C7824ED317E0055E7C5 /* ShoppingCartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF9C3C7724ED317E0055E7C5 /* ShoppingCartView.swift */; };
+		AF9C3C7A24ED58660055E7C5 /* ShoppingCartSingleton.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF9C3C7924ED58660055E7C5 /* ShoppingCartSingleton.swift */; };
+		AF9C3C7C24ED592B0055E7C5 /* RecommendationVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF9C3C7B24ED592B0055E7C5 /* RecommendationVC.swift */; };
 		E29ADD5322183B344DF43AE3 /* Pods_martkurly.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60C61A08968B012AF1CDDEC8 /* Pods_martkurly.framework */; };
 /* End PBXBuildFile section */
 
@@ -46,6 +49,9 @@
 		AF9C3C5B24ECE1270055E7C5 /* MainTBC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTBC.swift; sourceTree = "<group>"; };
 		AF9C3C5E24ECE2050055E7C5 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		AF9C3C6024ECEE850055E7C5 /* HomeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeVC.swift; sourceTree = "<group>"; };
+		AF9C3C7724ED317E0055E7C5 /* ShoppingCartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingCartView.swift; sourceTree = "<group>"; };
+		AF9C3C7924ED58660055E7C5 /* ShoppingCartSingleton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingCartSingleton.swift; sourceTree = "<group>"; };
+		AF9C3C7B24ED592B0055E7C5 /* RecommendationVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendationVC.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,6 +86,7 @@
 				42FAF02224ED895500063981 /* KurlyButton.swift */,
 				42FAF01624ED21F800063981 /* WhyKurlyView.swift */,
 				42FAF01824ED28CB00063981 /* WhyKurlySubView.swift */,
+				AF9C3C7724ED317E0055E7C5 /* ShoppingCartView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -173,6 +180,7 @@
 			isa = PBXGroup;
 			children = (
 				AF9C3C5E24ECE2050055E7C5 /* Extensions.swift */,
+				AF9C3C7924ED58660055E7C5 /* ShoppingCartSingleton.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -252,6 +260,7 @@
 		AF9C3C6A24ED2E2B0055E7C5 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				AF9C3C7B24ED592B0055E7C5 /* RecommendationVC.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -488,10 +497,13 @@
 			files = (
 				42FAF01024ED105E00063981 /* StringManager.swift in Sources */,
 				AF9C3C5C24ECE1270055E7C5 /* MainTBC.swift in Sources */,
+				AF9C3C7824ED317E0055E7C5 /* ShoppingCartView.swift in Sources */,
+				AF9C3C7A24ED58660055E7C5 /* ShoppingCartSingleton.swift in Sources */,
 				42FAF01224ED11A500063981 /* ImageManager.swift in Sources */,
 				42FAF02324ED895500063981 /* KurlyButton.swift in Sources */,
 				AF9C3C6124ECEE850055E7C5 /* HomeVC.swift in Sources */,
 				42FAF01724ED21F800063981 /* WhyKurlyView.swift in Sources */,
+				AF9C3C7C24ED592B0055E7C5 /* RecommendationVC.swift in Sources */,
 				AF9C3C5F24ECE2050055E7C5 /* Extensions.swift in Sources */,
 				42FAF01924ED28CB00063981 /* WhyKurlySubView.swift in Sources */,
 				AF564AB224E56DEA00989F82 /* AppDelegate.swift in Sources */,
