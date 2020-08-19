@@ -22,18 +22,20 @@ class HomeVC: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        configureNavigationBar()
+        setNavigationBarStatus(type: .purpleType,
+                               isShowCart: true,
+                               isShowBack: false)
     }
 
     // MARK: - Helpers
 
     func configureUI() {
         view.backgroundColor = .white
+
+        configureNavigationBar()
     }
 
     func configureNavigationBar() {
-        setNavigationBarStatus(type: .purpleType, isShowCart: true, titleText: "테스트")
-
         // 이미지 이상함...ㅋㅋㅋ 한번 확인 필요
         let titleImageView = UIImageView(image: .martcurlyMainTitleWhiteImage)
         titleImageView.contentMode = .scaleAspectFit
