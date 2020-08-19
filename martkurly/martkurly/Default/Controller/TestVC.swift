@@ -23,9 +23,10 @@ class TestVC: UIViewController {
     func test() {
         view.addSubview(sampleView)
         sampleView.snp.makeConstraints {
-            $0.centerX.centerY.equalToSuperview()
-            $0.leading.trailing.equalToSuperview()
-            $0.height.equalTo(300)
+            $0.top.equalTo(view.safeAreaLayoutGuide).offset(50)
+            $0.centerX.equalToSuperview()
+            $0.leading.trailing.equalToSuperview().inset(20)
+//            $0.height.equalTo(300)
         }
     }
 }

@@ -11,7 +11,7 @@ import UIKit
 class HomeVC: UIViewController {
 
     // MARK: - Properties
-    let testView = OrderCancelNoticeView()
+    let testView = CancelMoreNoticeView()
     // MARK: - LifeCycle
 
     override func viewDidLoad() {
@@ -25,6 +25,11 @@ class HomeVC: UIViewController {
         }
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        configureNavigationBar()
+    }
+
     // MARK: - Helpers
 
     func configureUI() {
@@ -32,7 +37,7 @@ class HomeVC: UIViewController {
     }
 
     func configureNavigationBar() {
-        navigationController?.navigationBar.barTintColor = .martkurlyMainPurpleColor
+        setNavigationBarStatus(type: .purpleType, isShowCart: true, titleText: "테스트")
 
         // 이미지 이상함...ㅋㅋㅋ 한번 확인 필요
         let titleImageView = UIImageView(image: .martcurlyMainTitleWhiteImage)
