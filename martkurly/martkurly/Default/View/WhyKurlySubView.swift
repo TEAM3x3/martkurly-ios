@@ -62,10 +62,8 @@ class WhyKurlySubView: UIView {
     private func setConstraints() {
         if infoLabel.text == "" || infoLabel.text == nil {
             setConstraintsForOnlyContentLayout()
-            print("No Info")
         } else {
             setConstraintsForWithSubtitleLayout()
-            print("Info")
         }
     }
 

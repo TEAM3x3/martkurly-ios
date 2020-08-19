@@ -92,7 +92,7 @@ class MainTBC: UITabBarController {
             NSAttributedString.Key.font: UIFont.systemFont(ofSize: 9)
         ]
 
-//        tabBar.isTranslucent = false
+        tabBar.isTranslucent = false
         tabBar.standardAppearance = appearance
     }
 }

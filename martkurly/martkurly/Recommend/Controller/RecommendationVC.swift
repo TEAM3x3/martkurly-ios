@@ -35,7 +35,10 @@ class RecommendationVC: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        setNavigationBarStatus(type: .purpleType, isShowCart: true, titleText: "추천")
+        setNavigationBarStatus(type: .purpleType,
+                               isShowCart: true,
+                               isShowBack: false,
+                               titleText: "추천")
     }
 
     // MARK: - Helpers
