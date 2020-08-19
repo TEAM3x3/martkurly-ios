@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		42FAF01024ED105E00063981 /* StringManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42FAF00F24ED105E00063981 /* StringManager.swift */; };
+		42FAF01224ED11A500063981 /* ImageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42FAF01124ED11A500063981 /* ImageManager.swift */; };
+		42FAF01424ED11B800063981 /* ColorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42FAF01324ED11B800063981 /* ColorManager.swift */; };
+		42FAF01724ED21F800063981 /* WhyKurlyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42FAF01624ED21F800063981 /* WhyKurlyView.swift */; };
+		42FAF01924ED28CB00063981 /* WhyKurlySubView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42FAF01824ED28CB00063981 /* WhyKurlySubView.swift */; };
+		42FAF01B24ED296C00063981 /* TestVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42FAF01A24ED296C00063981 /* TestVC.swift */; };
 		AF564AB224E56DEA00989F82 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF564AB124E56DEA00989F82 /* AppDelegate.swift */; };
 		AF564AB424E56DEA00989F82 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF564AB324E56DEA00989F82 /* SceneDelegate.swift */; };
 		AF564ABB24E56DED00989F82 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AF564ABA24E56DED00989F82 /* Assets.xcassets */; };
@@ -23,6 +29,12 @@
 
 /* Begin PBXFileReference section */
 		33869669B85EDB88C28F68B0 /* Pods-martkurly.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-martkurly.release.xcconfig"; path = "Target Support Files/Pods-martkurly/Pods-martkurly.release.xcconfig"; sourceTree = "<group>"; };
+		42FAF00F24ED105E00063981 /* StringManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringManager.swift; sourceTree = "<group>"; };
+		42FAF01124ED11A500063981 /* ImageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageManager.swift; sourceTree = "<group>"; };
+		42FAF01324ED11B800063981 /* ColorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorManager.swift; sourceTree = "<group>"; };
+		42FAF01624ED21F800063981 /* WhyKurlyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhyKurlyView.swift; sourceTree = "<group>"; };
+		42FAF01824ED28CB00063981 /* WhyKurlySubView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhyKurlySubView.swift; sourceTree = "<group>"; };
+		42FAF01A24ED296C00063981 /* TestVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestVC.swift; sourceTree = "<group>"; };
 		60C61A08968B012AF1CDDEC8 /* Pods_martkurly.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_martkurly.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6D19B7E14B91C2CC25D34E0C /* Pods-martkurly.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-martkurly.debug.xcconfig"; path = "Target Support Files/Pods-martkurly/Pods-martkurly.debug.xcconfig"; sourceTree = "<group>"; };
 		AF564AAE24E56DEA00989F82 /* martkurly.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = martkurly.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -52,6 +64,25 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		42FAF00E24ED103300063981 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				42FAF00F24ED105E00063981 /* StringManager.swift */,
+				42FAF01124ED11A500063981 /* ImageManager.swift */,
+				42FAF01324ED11B800063981 /* ColorManager.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		42FAF01524ED21AB00063981 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				42FAF01624ED21F800063981 /* WhyKurlyView.swift */,
+				42FAF01824ED28CB00063981 /* WhyKurlySubView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		AF564AA524E56DEA00989F82 = {
 			isa = PBXGroup;
 			children = (
@@ -74,6 +105,8 @@
 			isa = PBXGroup;
 			children = (
 				AF564AC624E56EF600989F82 /* Controller */,
+				42FAF01524ED21AB00063981 /* Views */,
+				42FAF00E24ED103300063981 /* Models */,
 				AF9C3C5D24ECE1EC0055E7C5 /* Utils */,
 				AF564AC524E56E8100989F82 /* Supporting */,
 			);
@@ -97,6 +130,7 @@
 			children = (
 				AF9C3C5B24ECE1270055E7C5 /* MainTBC.swift */,
 				AF9C3C6024ECEE850055E7C5 /* HomeVC.swift */,
+				42FAF01A24ED296C00063981 /* TestVC.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -252,11 +286,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				42FAF01024ED105E00063981 /* StringManager.swift in Sources */,
 				AF9C3C5C24ECE1270055E7C5 /* MainTBC.swift in Sources */,
+				42FAF01224ED11A500063981 /* ImageManager.swift in Sources */,
 				AF9C3C6124ECEE850055E7C5 /* HomeVC.swift in Sources */,
+				42FAF01724ED21F800063981 /* WhyKurlyView.swift in Sources */,
 				AF9C3C5F24ECE2050055E7C5 /* Extensions.swift in Sources */,
+				42FAF01924ED28CB00063981 /* WhyKurlySubView.swift in Sources */,
 				AF564AB224E56DEA00989F82 /* AppDelegate.swift in Sources */,
 				AF564AB424E56DEA00989F82 /* SceneDelegate.swift in Sources */,
+				42FAF01B24ED296C00063981 /* TestVC.swift in Sources */,
+				42FAF01424ED11B800063981 /* ColorManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
