@@ -62,23 +62,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		42FAF00E24ED103300063981 /* Models */ = {
+		42FAF00E24ED103300063981 /* Model */ = {
 			isa = PBXGroup;
 			children = (
 				42FAF00F24ED105E00063981 /* StringManager.swift */,
 				42FAF01124ED11A500063981 /* ImageManager.swift */,
 				42FAF01324ED11B800063981 /* ColorManager.swift */,
 			);
-			path = Models;
+			path = Model;
 			sourceTree = "<group>";
 		};
-		42FAF01524ED21AB00063981 /* Views */ = {
+		42FAF01524ED21AB00063981 /* View */ = {
 			isa = PBXGroup;
 			children = (
 				42FAF01624ED21F800063981 /* WhyKurlyView.swift */,
 				42FAF01824ED28CB00063981 /* WhyKurlySubView.swift */,
 			);
-			path = Views;
+			path = View;
 			sourceTree = "<group>";
 		};
 		AF564AA524E56DEA00989F82 = {
@@ -102,9 +102,12 @@
 		AF564AB024E56DEA00989F82 /* martkurly */ = {
 			isa = PBXGroup;
 			children = (
-				AF564AC624E56EF600989F82 /* Controller */,
-				42FAF01524ED21AB00063981 /* Views */,
-				42FAF00E24ED103300063981 /* Models */,
+				AF9C3C7624ED2E6F0055E7C5 /* Default */,
+				AF9C3C6224ED2D630055E7C5 /* Home */,
+				AF9C3C6324ED2D760055E7C5 /* Recommend */,
+				AF9C3C6424ED2D840055E7C5 /* Category */,
+				AF9C3C6524ED2D980055E7C5 /* Search */,
+				AF9C3C6624ED2DA00055E7C5 /* Mycurly */,
 				AF9C3C5D24ECE1EC0055E7C5 /* Utils */,
 				AF564AC524E56E8100989F82 /* Supporting */,
 			);
@@ -126,7 +129,6 @@
 			isa = PBXGroup;
 			children = (
 				AF9C3C5B24ECE1270055E7C5 /* MainTBC.swift */,
-				AF9C3C6024ECEE850055E7C5 /* HomeVC.swift */,
 				42FAF01A24ED296C00063981 /* TestVC.swift */,
 			);
 			path = Controller;
@@ -138,6 +140,172 @@
 				AF9C3C5E24ECE2050055E7C5 /* Extensions.swift */,
 			);
 			path = Utils;
+			sourceTree = "<group>";
+		};
+		AF9C3C6224ED2D630055E7C5 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				AF9C3C6924ED2E1A0055E7C5 /* Model */,
+				AF9C3C6824ED2E140055E7C5 /* View */,
+				AF9C3C6724ED2E080055E7C5 /* Controller */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		AF9C3C6324ED2D760055E7C5 /* Recommend */ = {
+			isa = PBXGroup;
+			children = (
+				AF9C3C6C24ED2E340055E7C5 /* Model */,
+				AF9C3C6B24ED2E300055E7C5 /* View */,
+				AF9C3C6A24ED2E2B0055E7C5 /* Controller */,
+			);
+			path = Recommend;
+			sourceTree = "<group>";
+		};
+		AF9C3C6424ED2D840055E7C5 /* Category */ = {
+			isa = PBXGroup;
+			children = (
+				AF9C3C6F24ED2E440055E7C5 /* Model */,
+				AF9C3C6E24ED2E3F0055E7C5 /* View */,
+				AF9C3C6D24ED2E3A0055E7C5 /* Controller */,
+			);
+			path = Category;
+			sourceTree = "<group>";
+		};
+		AF9C3C6524ED2D980055E7C5 /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				AF9C3C7224ED2E540055E7C5 /* Model */,
+				AF9C3C7124ED2E4F0055E7C5 /* View */,
+				AF9C3C7024ED2E4B0055E7C5 /* Controller */,
+			);
+			path = Search;
+			sourceTree = "<group>";
+		};
+		AF9C3C6624ED2DA00055E7C5 /* Mycurly */ = {
+			isa = PBXGroup;
+			children = (
+				AF9C3C7524ED2E640055E7C5 /* Model */,
+				AF9C3C7424ED2E5F0055E7C5 /* View */,
+				AF9C3C7324ED2E590055E7C5 /* Controller */,
+			);
+			path = Mycurly;
+			sourceTree = "<group>";
+		};
+		AF9C3C6724ED2E080055E7C5 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				AF9C3C6024ECEE850055E7C5 /* HomeVC.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		AF9C3C6824ED2E140055E7C5 /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		AF9C3C6924ED2E1A0055E7C5 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		AF9C3C6A24ED2E2B0055E7C5 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		AF9C3C6B24ED2E300055E7C5 /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		AF9C3C6C24ED2E340055E7C5 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		AF9C3C6D24ED2E3A0055E7C5 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		AF9C3C6E24ED2E3F0055E7C5 /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		AF9C3C6F24ED2E440055E7C5 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		AF9C3C7024ED2E4B0055E7C5 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		AF9C3C7124ED2E4F0055E7C5 /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		AF9C3C7224ED2E540055E7C5 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		AF9C3C7324ED2E590055E7C5 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		AF9C3C7424ED2E5F0055E7C5 /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		AF9C3C7524ED2E640055E7C5 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		AF9C3C7624ED2E6F0055E7C5 /* Default */ = {
+			isa = PBXGroup;
+			children = (
+				42FAF00E24ED103300063981 /* Model */,
+				42FAF01524ED21AB00063981 /* View */,
+				AF564AC624E56EF600989F82 /* Controller */,
+			);
+			path = Default;
 			sourceTree = "<group>";
 		};
 		DD8EE2CF4E72EAE15F6B33E1 /* Frameworks */ = {
@@ -291,7 +459,6 @@
 				AF9C3C5F24ECE2050055E7C5 /* Extensions.swift in Sources */,
 				42FAF01924ED28CB00063981 /* WhyKurlySubView.swift in Sources */,
 				AF564AB224E56DEA00989F82 /* AppDelegate.swift in Sources */,
-				AF564AB424E56DEA00989F82 /* SceneDelegate.swift in Sources */,
 				42FAF01B24ED296C00063981 /* TestVC.swift in Sources */,
 				42FAF01424ED11B800063981 /* ColorManager.swift in Sources */,
 			);
