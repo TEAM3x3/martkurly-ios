@@ -68,12 +68,7 @@ class OrderCancelNoticeView: UIView {
 
     lazy var moreView = CancelMoreNoticeView().then {
         $0.backgroundColor = ColorManager.General.backGray.rawValue
-        addSubview($0)
-        $0.snp.makeConstraints {
-            $0.top.equalTo(moreButton.snp.bottom)
-            $0.leading.equalToSuperview()
-            $0.width.equalTo(self.snp.width)
-        }
+
     }
 
     // MARK: - LifeCycle
@@ -92,12 +87,16 @@ class OrderCancelNoticeView: UIView {
 
         if sender.isSelected {
             chevron.image = UIImage(systemName: "chevron.up")
-            moreView.isHidden = false
-
+            self.addSubview(moreView)
+            moreView.snp.makeConstraints {
+                $0.top.equalTo(moreButton.snp.bottom)
+                $0.leading.equalToSuperview()
+                $0.width.equalTo(self.snp.width)
+                $0.height.equalToSuperview()
+            }
         } else {
             chevron.image = UIImage(systemName: "chevron.down")
-            moreView.isHidden = true
-
+            moreView.removeFromSuperview()
         }
     }
 

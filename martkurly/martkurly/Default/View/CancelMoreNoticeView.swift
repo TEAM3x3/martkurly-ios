@@ -16,6 +16,7 @@ class CancelMoreNoticeView: UIView {
         $0.text = StringManager.orderCancelMoreNotice.orderCancel.rawValue
         $0.font = UIFont.boldSystemFont(ofSize: 14)
     }
+    
 
     // MARK: - Lifecycle
     override init(frame: CGRect) {
@@ -33,6 +34,7 @@ class CancelMoreNoticeView: UIView {
     }
 
     private func setConstraints() {
+        self.backgroundColor = ColorManager.General.backGray.rawValue
         self.addSubview(ordercanceltitle)
         ordercanceltitle.snp.makeConstraints {
             $0.top.equalTo(self.snp.top).inset(20)
