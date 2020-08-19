@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		AF564AB224E56DEA00989F82 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF564AB124E56DEA00989F82 /* AppDelegate.swift */; };
-		AF564AB424E56DEA00989F82 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF564AB324E56DEA00989F82 /* SceneDelegate.swift */; };
 		AF564ABB24E56DED00989F82 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AF564ABA24E56DED00989F82 /* Assets.xcassets */; };
 		AF564ABE24E56DED00989F82 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AF564ABC24E56DED00989F82 /* LaunchScreen.storyboard */; };
 		AF9799A924E6A9EF0067C611 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = AF9799A824E6A9EF0067C611 /* SnapKit */; };
@@ -27,7 +26,6 @@
 		6D19B7E14B91C2CC25D34E0C /* Pods-martkurly.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-martkurly.debug.xcconfig"; path = "Target Support Files/Pods-martkurly/Pods-martkurly.debug.xcconfig"; sourceTree = "<group>"; };
 		AF564AAE24E56DEA00989F82 /* martkurly.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = martkurly.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AF564AB124E56DEA00989F82 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		AF564AB324E56DEA00989F82 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		AF564ABA24E56DED00989F82 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AF564ABD24E56DED00989F82 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		AF564ABF24E56DED00989F82 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -84,7 +82,6 @@
 			isa = PBXGroup;
 			children = (
 				AF564AB124E56DEA00989F82 /* AppDelegate.swift */,
-				AF564AB324E56DEA00989F82 /* SceneDelegate.swift */,
 				AF564ABA24E56DED00989F82 /* Assets.xcassets */,
 				AF564ABC24E56DED00989F82 /* LaunchScreen.storyboard */,
 				AF564ABF24E56DED00989F82 /* Info.plist */,
@@ -256,7 +253,6 @@
 				AF9C3C6124ECEE850055E7C5 /* HomeVC.swift in Sources */,
 				AF9C3C5F24ECE2050055E7C5 /* Extensions.swift in Sources */,
 				AF564AB224E56DEA00989F82 /* AppDelegate.swift in Sources */,
-				AF564AB424E56DEA00989F82 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
