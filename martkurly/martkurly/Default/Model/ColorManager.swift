@@ -17,8 +17,9 @@ struct ColorManager {
     enum General: RawRepresentable {
         typealias RawValue = UIColor
 
-        case howToUse
         case mainPurple
+        case mainGray
+        case text
         case whyKurlyText
         case separator
 
@@ -31,10 +32,12 @@ struct ColorManager {
 
         var rawValue: UIColor {
             switch self {
-            case .howToUse:
-                return .martkurlyMainPurpleColor
             case .mainPurple:
                 return .martkurlyMainPurpleColor
+            case .mainGray:
+                return .textMainGray
+            case .text:
+                return .textBlack
             case .separator:
                 return .separatorGray
             case .whyKurlyText:
