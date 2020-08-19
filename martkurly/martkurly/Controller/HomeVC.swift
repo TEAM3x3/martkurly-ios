@@ -18,6 +18,7 @@ class HomeVC: UIViewController {
         super.viewDidLoad()
         configureUI()
         configureNavigationBar()
+
     }
 
     // MARK: - Helpers
@@ -34,4 +35,5 @@ class HomeVC: UIViewController {
         titleImageView.contentMode = .scaleAspectFit
         navigationItem.titleView = titleImageView
     }
+
 }
