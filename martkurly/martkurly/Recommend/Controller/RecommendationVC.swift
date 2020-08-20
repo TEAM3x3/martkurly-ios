@@ -37,7 +37,7 @@ class RecommendationVC: UIViewController {
         super.viewWillAppear(animated)
         setNavigationBarStatus(type: .purpleType,
                                isShowCart: true,
-                               isShowBack: false,
+                               leftBarbuttonStyle: .dismiss,
                                titleText: "추천")
     }
 
