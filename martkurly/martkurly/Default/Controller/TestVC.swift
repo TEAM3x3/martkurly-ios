@@ -11,7 +11,8 @@ import UIKit
 class TestVC: UIViewController {
 
     // MARK: - Properties
-    let sampleView = KurlyButton(title: "구매하기", style: .purple)
+//    let sampleView = KurlyButton(title: "구매하기", style: .purple)
+    let sampleTextField = UserTextFieldView(placeholder: "아이디를 입력해주세요", fontSize: 15)
 
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -21,8 +22,8 @@ class TestVC: UIViewController {
 
     // MARK: - UI
     func test() {
-        view.addSubview(sampleView)
-        sampleView.snp.makeConstraints {
+        view.addSubview(sampleTextField)
+        sampleTextField.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide).offset(50)
             $0.centerX.equalToSuperview()
             $0.leading.trailing.equalToSuperview().inset(20)

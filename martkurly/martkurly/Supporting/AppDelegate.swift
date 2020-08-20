@@ -17,10 +17,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
 
         let controller = MainTBC()
-        window?.rootViewController = DetailOrderView()
-
+        window?.rootViewController = controller
         window?.makeKeyAndVisible()
-
         return true
     }
 }

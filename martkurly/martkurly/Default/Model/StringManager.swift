@@ -93,7 +93,7 @@ struct StringManager {
         case paymentRefund1 = "∙ 카드 환불은 카드사 정책에 따르며, 자세한 사항은 카드사에 문의\n   해주세요."
         case paymentRefund2 = "∙ 결제 취소 시, 사용하신 적립금과 쿠폰도 모두 복원됩니다."
     }
-    
+
     enum changeAndRefund: String {
         case changeAndRefundTitle = "교환 및 환불 안내"
     }

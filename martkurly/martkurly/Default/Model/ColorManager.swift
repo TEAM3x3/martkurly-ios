@@ -24,6 +24,7 @@ struct ColorManager {
         case separator
         case backGray
         case chevronGray
+        case placeholder
 
         init?(rawValue: UIColor) {
             switch rawValue {
@@ -48,6 +49,8 @@ struct ColorManager {
                 return .backgroundGray
             case .chevronGray:
                 return .chevronGray
+            case .placeholder:
+                return .placeholderGray
             }
         }
     }
