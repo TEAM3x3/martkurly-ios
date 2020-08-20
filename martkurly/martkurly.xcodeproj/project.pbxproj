@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0E1902CF24ED382E00B59A32 /* OrderCancelNoticeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E1902CE24ED382E00B59A32 /* OrderCancelNoticeView.swift */; };
+		0E966DF224ED7AD500869F83 /* CancelMoreNoticeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E966DF124ED7AD500869F83 /* CancelMoreNoticeView.swift */; };
+		0EB631E524EDA46A006AA976 /* DetailOrderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EB631E424EDA46A006AA976 /* DetailOrderView.swift */; };
+		0EB631E724EDAE60006AA976 /* MoreButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EB631E624EDAE60006AA976 /* MoreButton.swift */; };
 		42FAF01024ED105E00063981 /* StringManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42FAF00F24ED105E00063981 /* StringManager.swift */; };
 		42FAF01224ED11A500063981 /* ImageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42FAF01124ED11A500063981 /* ImageManager.swift */; };
 		42FAF01424ED11B800063981 /* ColorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42FAF01324ED11B800063981 /* ColorManager.swift */; };
@@ -32,6 +36,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0E1902CE24ED382E00B59A32 /* OrderCancelNoticeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderCancelNoticeView.swift; sourceTree = "<group>"; };
+		0E966DF124ED7AD500869F83 /* CancelMoreNoticeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelMoreNoticeView.swift; sourceTree = "<group>"; };
+		0EB631E424EDA46A006AA976 /* DetailOrderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailOrderView.swift; sourceTree = "<group>"; };
+		0EB631E624EDAE60006AA976 /* MoreButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreButton.swift; sourceTree = "<group>"; };
 		33869669B85EDB88C28F68B0 /* Pods-martkurly.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-martkurly.release.xcconfig"; path = "Target Support Files/Pods-martkurly/Pods-martkurly.release.xcconfig"; sourceTree = "<group>"; };
 		42FAF00F24ED105E00063981 /* StringManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringManager.swift; sourceTree = "<group>"; };
 		42FAF01124ED11A500063981 /* ImageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageManager.swift; sourceTree = "<group>"; };
@@ -89,6 +97,10 @@
 				42FAF02224ED895500063981 /* KurlyButton.swift */,
 				42FAF01624ED21F800063981 /* WhyKurlyView.swift */,
 				42FAF01824ED28CB00063981 /* WhyKurlySubView.swift */,
+				0EB631E424EDA46A006AA976 /* DetailOrderView.swift */,
+				0E1902CE24ED382E00B59A32 /* OrderCancelNoticeView.swift */,
+				0EB631E624EDAE60006AA976 /* MoreButton.swift */,
+				0E966DF124ED7AD500869F83 /* CancelMoreNoticeView.swift */,
 				AF9C3C7724ED317E0055E7C5 /* ShoppingCartView.swift */,
 			);
 			path = View;
@@ -498,6 +510,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0E1902CF24ED382E00B59A32 /* OrderCancelNoticeView.swift in Sources */,
 				42FAF01024ED105E00063981 /* StringManager.swift in Sources */,
 				AF9C3C5C24ECE1270055E7C5 /* MainTBC.swift in Sources */,
 				AF9C3C7824ED317E0055E7C5 /* ShoppingCartView.swift in Sources */,
@@ -508,11 +521,14 @@
 				42FAF01724ED21F800063981 /* WhyKurlyView.swift in Sources */,
 				AF9C3C7C24ED592B0055E7C5 /* RecommendationVC.swift in Sources */,
 				AF9C3C5F24ECE2050055E7C5 /* Extensions.swift in Sources */,
+				0EB631E524EDA46A006AA976 /* DetailOrderView.swift in Sources */,
+				0E966DF224ED7AD500869F83 /* CancelMoreNoticeView.swift in Sources */,
 				42FAF01924ED28CB00063981 /* WhyKurlySubView.swift in Sources */,
 				AF564AB224E56DEA00989F82 /* AppDelegate.swift in Sources */,
 				AF9C3C7E24ED8CCE0055E7C5 /* NavigationType.swift in Sources */,
 				42FAF01B24ED296C00063981 /* TestVC.swift in Sources */,
 				42FAF01424ED11B800063981 /* ColorManager.swift in Sources */,
+				0EB631E724EDAE60006AA976 /* MoreButton.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -651,7 +667,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = ZLCDRXJTXW;
+				DEVELOPMENT_TEAM = Q3HC733CNK;
 				INFOPLIST_FILE = martkurly/Supporting/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -673,7 +689,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = ZLCDRXJTXW;
+				DEVELOPMENT_TEAM = Q3HC733CNK;
 				INFOPLIST_FILE = martkurly/Supporting/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
