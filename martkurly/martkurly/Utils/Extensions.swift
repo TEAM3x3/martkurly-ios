@@ -30,6 +30,8 @@ extension UIColor {
     static let martkurlyMainPurpleColor = UIColor(red: 85, green: 0, blue: 114)
     static let separatorGray = UIColor(red: 244, green: 244, blue: 244)
     static let textDarkGray = UIColor(red: 82, green: 82, blue: 82) // WhyKurly 회색
+    static let backgroundGray = UIColor(red: 243, green: 244, blue: 245) // 배경회색
+    static let chevronGray = UIColor(red: 136, green: 137, blue: 138) // chevronGray
     static let textMainGray = UIColor(red: 102, green: 102, blue: 102)
     static let textBlack = UIColor(red: 50, green: 51, blue: 52)
 }

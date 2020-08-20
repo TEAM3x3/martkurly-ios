@@ -22,6 +22,8 @@ struct ColorManager {
         case text
         case whyKurlyText
         case separator
+        case backGray
+        case chevronGray
 
         init?(rawValue: UIColor) {
             switch rawValue {
@@ -42,6 +44,10 @@ struct ColorManager {
                 return .separatorGray
             case .whyKurlyText:
                 return .textDarkGray
+            case .backGray:
+                return .backgroundGray
+            case .chevronGray:
+                return .chevronGray
             }
         }
     }
