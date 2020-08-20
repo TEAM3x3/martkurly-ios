@@ -22,6 +22,7 @@
 		42C69B6524EEC8D000A18B4C /* AgreementTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42C69B6424EEC8D000A18B4C /* AgreementTableViewCell.swift */; };
 		42C69B6724EEC94400A18B4C /* AgreementCellType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42C69B6624EEC94400A18B4C /* AgreementCellType.swift */; };
 		42C69B6924EECC1800A18B4C /* AgreementCheckMarkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42C69B6824EECC1800A18B4C /* AgreementCheckMarkView.swift */; };
+		42D867EE24EEE8AC00BBD784 /* AgreementPromotionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D867ED24EEE8AC00BBD784 /* AgreementPromotionView.swift */; };
 		42FAF01024ED105E00063981 /* StringManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42FAF00F24ED105E00063981 /* StringManager.swift */; };
 		42FAF01224ED11A500063981 /* ImageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42FAF01124ED11A500063981 /* ImageManager.swift */; };
 		42FAF01424ED11B800063981 /* ColorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42FAF01324ED11B800063981 /* ColorManager.swift */; };
@@ -70,6 +71,7 @@
 		42C69B6424EEC8D000A18B4C /* AgreementTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgreementTableViewCell.swift; sourceTree = "<group>"; };
 		42C69B6624EEC94400A18B4C /* AgreementCellType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgreementCellType.swift; sourceTree = "<group>"; };
 		42C69B6824EECC1800A18B4C /* AgreementCheckMarkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgreementCheckMarkView.swift; sourceTree = "<group>"; };
+		42D867ED24EEE8AC00BBD784 /* AgreementPromotionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgreementPromotionView.swift; sourceTree = "<group>"; };
 		42FAF00F24ED105E00063981 /* StringManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringManager.swift; sourceTree = "<group>"; };
 		42FAF01124ED11A500063981 /* ImageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageManager.swift; sourceTree = "<group>"; };
 		42FAF01324ED11B800063981 /* ColorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorManager.swift; sourceTree = "<group>"; };
@@ -173,6 +175,7 @@
 			children = (
 				42C69B6824EECC1800A18B4C /* AgreementCheckMarkView.swift */,
 				42C69B6424EEC8D000A18B4C /* AgreementTableViewCell.swift */,
+				42D867ED24EEE8AC00BBD784 /* AgreementPromotionView.swift */,
 				42C69B6224EEC84400A18B4C /* AgreementView.swift */,
 				42FAF03024EE519900063981 /* CustomNavigationBarView.swift */,
 				42C69B5B24EE606700A18B4C /* IncorrectInputWarningView.swift */,
@@ -566,7 +569,6 @@
 			files = (
 				0E1902CF24ED382E00B59A32 /* OrderCancelNoticeCell.swift in Sources */,
 				AF9906B324EE3844005A8D89 /* CategoryMenuView.swift in Sources */,
-				0E1902CF24ED382E00B59A32 /* OrderCancelNoticeCell.swift in Sources */,
 				42FAF02724EE3E4B00063981 /* UserTextFieldView.swift in Sources */,
 				42FAF01024ED105E00063981 /* StringManager.swift in Sources */,
 				42C69B6924EECC1800A18B4C /* AgreementCheckMarkView.swift in Sources */,
@@ -588,6 +590,7 @@
 				AF9C3C5F24ECE2050055E7C5 /* Extensions.swift in Sources */,
 				0EB631E524EDA46A006AA976 /* DetailOrderView.swift in Sources */,
 				0E2C835B24EE466C004C5568 /* ExchangeAndReturnCell.swift in Sources */,
+				42D867EE24EEE8AC00BBD784 /* AgreementPromotionView.swift in Sources */,
 				0E2C836124EEA8C6004C5568 /* NotChangeAndReturnView.swift in Sources */,
 				42FAF02B24EE465D00063981 /* SignUpVC.swift in Sources */,
 				0E966DF224ED7AD500869F83 /* CancelMoreNoticeView.swift in Sources */,
@@ -600,7 +603,6 @@
 				42C69B5E24EE6D6800A18B4C /* SignError.swift in Sources */,
 				42FAF01B24ED296C00063981 /* TestVC.swift in Sources */,
 				42FAF01424ED11B800063981 /* ColorManager.swift in Sources */,
-				0EB631E724EDAE60006AA976 /* MoreButtonCell.swift in Sources */,
 				0EB631E724EDAE60006AA976 /* MoreButtonCell.swift in Sources */,
 				42FAF02D24EE475B00063981 /* ForgotIDVC.swift in Sources */,
 			);

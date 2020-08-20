@@ -18,6 +18,7 @@ struct ImageManager {
         typealias RawValue = UIImage
 
         case martCulryWhiteLogo
+        case goForward
 
         init?(rawValue: UIImage) {
             switch rawValue {
@@ -30,6 +31,8 @@ struct ImageManager {
             switch self {
             case .martCulryWhiteLogo:
                 return UIImage(named: "Martcurly_MainTitle_White")!
+            case .goForward:
+                return UIImage(systemName: "chevron.right")!.withTintColor(.chevronForwardGray, renderingMode: .alwaysOriginal)
             }
         }
     }
