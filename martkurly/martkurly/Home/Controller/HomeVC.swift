@@ -12,7 +12,7 @@ class HomeVC: UIViewController {
 
     // MARK: - Properties
 //    let testView = CancelMoreNoticeView()
-    private let menuCategory = CategoryMenuView()
+    private let menuCategory = CategoryMenuView(categoryType: .infinityStyle)
 
     // MARK: - LifeCycle
 
