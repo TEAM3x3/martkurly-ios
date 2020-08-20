@@ -17,10 +17,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
 
         let controller = MainTBC()
-        window?.rootViewController = DetailOrderView()
-
+        window?.rootViewController = controller
+        let naviCon = UINavigationController(rootViewController: SignInVC())
+        window?.rootViewController = naviCon
         window?.makeKeyAndVisible()
-
         return true
     }
 }
