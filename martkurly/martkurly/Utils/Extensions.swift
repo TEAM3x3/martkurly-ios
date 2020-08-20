@@ -29,11 +29,13 @@ extension UIColor {
 
     static let martkurlyMainPurpleColor = UIColor(red: 85, green: 0, blue: 114)
     static let separatorGray = UIColor(red: 244, green: 244, blue: 244)
-    static let textDarkGray = UIColor(red: 82, green: 82, blue: 82) // WhyKurly 회색
+    static let textDarkGray = UIColor(red: 82, green: 82, blue: 82) // WhyKurly 진한 회색
     static let backgroundGray = UIColor(red: 243, green: 244, blue: 245) // 배경회색
     static let chevronGray = UIColor(red: 136, green: 137, blue: 138) // chevronGray
     static let textMainGray = UIColor(red: 102, green: 102, blue: 102)
     static let textBlack = UIColor(red: 50, green: 51, blue: 52)
+    static let placeholderGray = UIColor(red: 204, green: 204, blue: 204)
+    static let warningPink = UIColor(red: 236, green: 70, blue: 100)
 }
 
 // MARK: - UIImage
@@ -47,10 +49,10 @@ extension UIImage {
 extension UIViewController {
     // 네비게이션바의 배경색이 보라색이면 .purpleType이고, 카트아이콘이 보이고 싶으면 isShowCart => true
     // titleText는 기본값이 nil 이므로 넣어줘도 되고 안넣어줘도 됨
-    // BackButton이 필요한 경우 true
+    // BackButton이 필요한 경우 isShowBack => true
     func setNavigationBarStatus(type: NavigationType,
                                 isShowCart: Bool,
-                                isShowBack: Bool,
+                                leftBarbuttonStyle: LeftBarButtonStyle,
                                 titleText: String? = nil) {
 
         navigationItem.title = titleText
@@ -63,28 +65,46 @@ extension UIViewController {
             UIBarButtonItem(customView: ShoppingCartSingleton.shared.shoppingCartView)
             : nil
 
-        let backBarButton = UIBarButtonItem(image: UIImage(systemName: "chevron.left"),
+        let backPopBarButton = UIBarButtonItem(image: UIImage(systemName: "chevron.left"),
                                             style: .plain,
                                             target: self,
-                                            action: #selector(tappedBackButton))
-        navigationItem.leftBarButtonItem = isShowBack ? backBarButton : nil
+                                            action: #selector(tappedPopButton))
+        let backDismissBarButton = UIBarButtonItem(image: UIImage(systemName: "xmark"),
+                                                   style: .plain,
+                                                   target: self,
+                                                   action: #selector(tappedDismissButton))
+
+        switch leftBarbuttonStyle {
+        case .none: navigationItem.leftBarButtonItem = nil
+        case .dismiss: navigationItem.leftBarButtonItem = backDismissBarButton
+        case .pop: navigationItem.leftBarButtonItem = backPopBarButton
+        }
 
         switch type {
         case .purpleType:
-            navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
+            navigationController?.navigationBar.titleTextAttributes =
+                [NSAttributedString.Key.foregroundColor: UIColor.white]
             navigationController?.navigationBar.barTintColor = .martkurlyMainPurpleColor
             ShoppingCartSingleton.shared.shoppingCartView.configureWhiteMode()
-            backBarButton.tintColor = .white
+            backPopBarButton.tintColor = .white
+            backDismissBarButton.tintColor = .white
         case .whiteType:
-            navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.black]
+            navigationController?.navigationBar.titleTextAttributes =
+                [NSAttributedString.Key.foregroundColor: UIColor.black]
             navigationController?.navigationBar.barTintColor = .white
             ShoppingCartSingleton.shared.shoppingCartView.configurePurpleMode()
-            backBarButton.tintColor = .purple
+            backPopBarButton.tintColor = .black
+            backDismissBarButton.tintColor = .black
         }
     }
 
     @objc
-    func tappedBackButton() {
+    func tappedPopButton() {
         self.navigationController?.popViewController(animated: true)
+    }
+
+    @objc
+    func tappedDismissButton() {
+        self.dismiss(animated: true, completion: nil)
     }
 }

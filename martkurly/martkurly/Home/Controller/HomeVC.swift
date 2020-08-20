@@ -11,32 +11,38 @@ import UIKit
 class HomeVC: UIViewController {
 
     // MARK: - Properties
-    let testView = DetailOrderView()
+//    let testView = CancelMoreNoticeView()
+    private let menuCategory = CategoryMenuView()
+    
     // MARK: - LifeCycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
         configureNavigationBar()
-        view.addSubview(testView)
-        testView.snp.makeConstraints {
-            $0.top.leading.trailing.bottom.equalToSuperview()
-        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setNavigationBarStatus(type: .purpleType,
                                isShowCart: true,
-                               isShowBack: false)
+                               leftBarbuttonStyle: .none)
     }
 
     // MARK: - Helpers
 
     func configureUI() {
         view.backgroundColor = .white
-
         configureNavigationBar()
+
+        [menuCategory].forEach {
+            view.addSubview($0)
+        }
+
+        menuCategory.snp.makeConstraints {
+            $0.top.leading.trailing.equalToSuperview()
+            $0.height.equalTo(52)
+        }
     }
 
     func configureNavigationBar() {
