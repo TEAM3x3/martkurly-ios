@@ -49,10 +49,10 @@ extension UIImage {
 extension UIViewController {
     // 네비게이션바의 배경색이 보라색이면 .purpleType이고, 카트아이콘이 보이고 싶으면 isShowCart => true
     // titleText는 기본값이 nil 이므로 넣어줘도 되고 안넣어줘도 됨
-    // BackButton이 필요한 경우 true
+    // BackButton이 필요한 경우 isShowBack => true
     func setNavigationBarStatus(type: NavigationType,
                                 isShowCart: Bool,
-                                isShowBack: Bool,
+                                leftBarbuttonStyle: LeftBarButtonStyle,
                                 titleText: String? = nil) {
 
         navigationItem.title = titleText
@@ -65,29 +65,46 @@ extension UIViewController {
             UIBarButtonItem(customView: ShoppingCartSingleton.shared.shoppingCartView)
             : nil
 
-        let image = UIImage(systemName: "chevron.left")?.withTintColor(.black, renderingMode: .alwaysOriginal)
-        let backBarButton = UIBarButtonItem(image: image,
+        let backPopBarButton = UIBarButtonItem(image: UIImage(systemName: "chevron.left"),
                                             style: .plain,
                                             target: self,
-                                            action: #selector(tappedBackButton))
-        navigationItem.leftBarButtonItem = isShowBack ? backBarButton : nil
+                                            action: #selector(tappedPopButton))
+        let backDismissBarButton = UIBarButtonItem(image: UIImage(systemName: "xmark"),
+                                                   style: .plain,
+                                                   target: self,
+                                                   action: #selector(tappedDismissButton))
+
+        switch leftBarbuttonStyle {
+        case .none: navigationItem.leftBarButtonItem = nil
+        case .dismiss: navigationItem.leftBarButtonItem = backDismissBarButton
+        case .pop: navigationItem.leftBarButtonItem = backPopBarButton
+        }
 
         switch type {
         case .purpleType:
-            navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
+            navigationController?.navigationBar.titleTextAttributes =
+                [NSAttributedString.Key.foregroundColor: UIColor.white]
             navigationController?.navigationBar.barTintColor = .martkurlyMainPurpleColor
             ShoppingCartSingleton.shared.shoppingCartView.configureWhiteMode()
-            backBarButton.tintColor = .white
+            backPopBarButton.tintColor = .white
+            backDismissBarButton.tintColor = .white
         case .whiteType:
-            navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.black]
+            navigationController?.navigationBar.titleTextAttributes =
+                [NSAttributedString.Key.foregroundColor: UIColor.black]
             navigationController?.navigationBar.barTintColor = .white
             ShoppingCartSingleton.shared.shoppingCartView.configurePurpleMode()
-            backBarButton.tintColor = .purple
+            backPopBarButton.tintColor = .black
+            backDismissBarButton.tintColor = .black
         }
     }
 
     @objc
-    func tappedBackButton() {
+    func tappedPopButton() {
         self.navigationController?.popViewController(animated: true)
+    }
+
+    @objc
+    func tappedDismissButton() {
+        self.dismiss(animated: true, completion: nil)
     }
 }

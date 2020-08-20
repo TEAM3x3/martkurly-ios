@@ -26,7 +26,10 @@ class ForgotPWVC: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.isHidden = false
-        setNavigationBarStatus(type: .whiteType, isShowCart: false, isShowBack: true, titleText: StringManager.Sign.forgotPW.rawValue)
+        setNavigationBarStatus(type: .whiteType,
+                               isShowCart: false,
+                               leftBarbuttonStyle: .pop,
+                               titleText: StringManager.Sign.forgotPW.rawValue)
     }
 
     // MARK: - UI

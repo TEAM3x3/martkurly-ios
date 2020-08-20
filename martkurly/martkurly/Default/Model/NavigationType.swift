@@ -12,3 +12,9 @@ enum NavigationType {
     case purpleType
     case whiteType
 }
+
+enum LeftBarButtonStyle {
+    case none
+    case dismiss
+    case pop
+}
