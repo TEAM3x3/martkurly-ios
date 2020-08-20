@@ -97,4 +97,46 @@ struct StringManager {
         case signUp = "회원가입"
     }
 
+    enum SignUp: String {
+        case id1 = "6자 이상의 영문 혹은 영문과 숫자를 조합"
+        case id2 = "아이디 중복확인"
+        case pw1 = "10자 이상 입력"
+        case pw2 = "영문/숫자/특수문자(공백 제외)만 허용하며, 2개 이상 조합"
+        case pw3 = "동일한 숫자가 3개 이상 연속 사용 불가"
+        case pw4 = "동일한 비밀번호를 입력해주세요"
+        case address = "배송지에 따라 상품 정보가 달라질 수 있습니다."
+    }
+
+    let agreement = [
+        [
+            "title": "전체 동의합니다.",
+            "subtitle": "",
+            "info": "선택 항목에 동의하지 않은 경우도 회원가입 및 일반적인 서비스를 이용할 수 있습니다."
+        ],
+        [
+            "title": "이용약관 동의",
+            "subtitle": "필수",
+            "info": ""
+        ],
+        [
+            "title": "개인정보처리방침 동의",
+            "subtitle": "필수",
+            "info": ""
+        ],
+        [
+            "title": "개인정보처리방침 동의",
+            "subtitle": "선택",
+            "info": ""
+        ],
+        [
+            "title": "무료배송, 할인쿠폰 등 혜택/정보 수신 동의",
+            "subtitle": "선택",
+            "info": ""
+        ],
+        [
+            "title": "본인은 만 14세 이상입니다.",
+            "subtitle": "필수",
+            "info": ""
+        ]
+    ]
 }
