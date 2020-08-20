@@ -13,19 +13,13 @@ class HomeVC: UIViewController {
     // MARK: - Properties
 //    let testView = CancelMoreNoticeView()
     private let menuCategory = CategoryMenuView()
-
+    
     // MARK: - LifeCycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
         configureNavigationBar()
-
-//        view.addSubview(testView)
-//        testView.snp.makeConstraints {
-//            $0.centerX.centerY.equalToSuperview()
-//            $0.width.height.equalTo(view.snp.width)
-//        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
