@@ -9,7 +9,7 @@
 import UIKit
 import Then
 
-class CancelMoreNoticeView: UIView {
+class CancelMoreNoticeView: UITableViewCell {
 
     // MARK: - Properties
     private let orderCancelTitle = UILabel().then {
@@ -45,8 +45,8 @@ class CancelMoreNoticeView: UIView {
     }
 
     // MARK: - Lifecycle
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
         setConfigure()
     }
 

@@ -9,13 +9,10 @@
 import UIKit
 import Then
 
-class MoreButton: UITableViewCell {
+class MoreButtonCell: UITableViewCell {
 
-    static let identifier = "MoreButton"
-
-    lazy var moreButton = UIButton().then {
-        $0.backgroundColor = .white
-        $0.addTarget(self, action: #selector(selectButton(_:)), for: .touchUpInside)
+    let moreButton = UIView().then {
+        $0.backgroundColor = .systemBackground
     }
 
     private let line = UIView().then {
@@ -23,13 +20,11 @@ class MoreButton: UITableViewCell {
     }
 
     private let buttonTitle = UILabel().then {
-        $0.text = "자세히 보기"
-        $0.font = UIFont.boldSystemFont(ofSize: 17)
+        $0.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 15)
         $0.textColor = ColorManager.General.mainPurple.rawValue
     }
 
-    private let chevron = UIImageView().then {
-        $0.image = UIImage(systemName: "chevron.down")
+    var chevron = UIImageView().then {
         $0.tintColor = ColorManager.General.chevronGray.rawValue
     }
 
@@ -37,8 +32,8 @@ class MoreButton: UITableViewCell {
         $0.backgroundColor = ColorManager.General.backGray.rawValue
     }
 
-    private let thickLine = UIView().then {
-        $0.backgroundColor = ColorManager.General.backGray.rawValue
+    let thickLine = UIView().then {
+        $0.backgroundColor = .systemBackground
     }
 
     // MARK: - Lifecycle
@@ -49,25 +44,6 @@ class MoreButton: UITableViewCell {
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-
-    // MARK: - Selector
-    @objc func selectButton(_ sender: UIButton) {
-        sender.isSelected.toggle()
-
-        if sender.isSelected {
-            chevron.image = UIImage(systemName: "chevron.up")
-            self.addSubview(moreView)
-            moreView.snp.makeConstraints {
-                $0.top.equalTo(moreButton.snp.bottom)
-                $0.leading.equalToSuperview()
-                $0.width.equalTo(self.snp.width)
-                $0.height.equalTo(350)
-            }
-        } else {
-            chevron.image = UIImage(systemName: "chevron.down")
-            moreView.removeFromSuperview()
-        }
     }
 
     // MARK: - UI
@@ -90,7 +66,8 @@ class MoreButton: UITableViewCell {
         line.snp.makeConstraints {
             $0.height.equalTo(2)
             $0.width.equalTo(self.snp.width)
-            $0.top.leading.equalTo(moreButton)
+            $0.top.equalTo(moreButton.snp.top)
+            $0.leading.equalTo(moreButton)
         }
 
         buttonTitle.snp.makeConstraints {
@@ -103,10 +80,16 @@ class MoreButton: UITableViewCell {
         }
 
         thickLine.snp.makeConstraints {
-            $0.top.equalTo(moreButton.snp.bottom)
+            $0.bottom.equalTo(moreButton.snp.bottom)
             $0.leading.equalToSuperview()
             $0.width.equalToSuperview()
             $0.height.equalTo(10)
         }
+    }
+
+    func configure(text: String, image: UIImage, color: UIColor) {
+        buttonTitle.text = text
+        chevron.image = image
+        thickLine.backgroundColor = color
     }
 }

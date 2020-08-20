@@ -9,11 +9,13 @@
 import UIKit
 import Then
 
-class OrderCancelNoticeView: UITableViewCell {
-
-    static let identifier = "OrderCancelNoticeView"
+class OrderCancelNoticeCell: UITableViewCell {
 
     // MARK: - Properties
+    private let view = UIView().then {
+        $0.backgroundColor = .systemBackground
+    }
+
     private let title = UILabel().then {
         $0.text = StringManager.orderCancelNotice.orderCancelNoticeTitle.rawValue
         $0.font = UIFont.boldSystemFont(ofSize: 24)
@@ -64,6 +66,7 @@ class OrderCancelNoticeView: UITableViewCell {
     }
 
     private func setConstraints() {
+        self.addSubview(view)
         [depositIdentify1, depositIdentify2, depositIdentify3, depositIdentifyAfter1, depositIdentifyAfter2, paymentCancelRefund1, paymentCancelRefund2].forEach {
             $0.font = UIFont.systemFont(ofSize: 14)
             $0.textColor = ColorManager.General.whyKurlyText.rawValue
@@ -78,6 +81,10 @@ class OrderCancelNoticeView: UITableViewCell {
 
         [depositIdentify1, depositIdentifyAfter1, paymentCancelRefund1].forEach {
             $0.font = UIFont.boldSystemFont(ofSize: 14)
+        }
+
+        view.snp.makeConstraints {
+            $0.top.leading.trailing.bottom.equalToSuperview()
         }
 
         title.snp.makeConstraints {
