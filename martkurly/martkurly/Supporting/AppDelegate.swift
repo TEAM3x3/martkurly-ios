@@ -18,6 +18,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         let controller = MainTBC()
         window?.rootViewController = controller
+        let naviCon = UINavigationController(rootViewController: SignInVC())
+        window?.rootViewController = naviCon
         window?.makeKeyAndVisible()
         return true
     }

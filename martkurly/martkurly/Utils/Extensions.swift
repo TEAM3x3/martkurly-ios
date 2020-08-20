@@ -35,6 +35,7 @@ extension UIColor {
     static let textMainGray = UIColor(red: 102, green: 102, blue: 102)
     static let textBlack = UIColor(red: 50, green: 51, blue: 52)
     static let placeholderGray = UIColor(red: 204, green: 204, blue: 204)
+    static let warningPink = UIColor(red: 236, green: 70, blue: 100)
 }
 
 // MARK: - UIImage
@@ -64,7 +65,8 @@ extension UIViewController {
             UIBarButtonItem(customView: ShoppingCartSingleton.shared.shoppingCartView)
             : nil
 
-        let backBarButton = UIBarButtonItem(image: UIImage(systemName: "chevron.left"),
+        let image = UIImage(systemName: "chevron.left")?.withTintColor(.black, renderingMode: .alwaysOriginal)
+        let backBarButton = UIBarButtonItem(image: image,
                                             style: .plain,
                                             target: self,
                                             action: #selector(tappedBackButton))
