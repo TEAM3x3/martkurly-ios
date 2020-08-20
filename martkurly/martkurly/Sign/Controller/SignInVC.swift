@@ -32,6 +32,8 @@ class SignInVC: UIViewController {
 
     private let signUpButton = KurlyButton(title: StringManager.Sign.signUp.rawValue, style: .white)
 
+    private let warning = IncorrectInputWarningView(title: "")
+
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -55,7 +57,7 @@ class SignInVC: UIViewController {
     }
 
     private func setPropertyAttributes() {
-        [forgotIDButton, forgotPWButton].forEach {
+        [loginButton, forgotIDButton, forgotPWButton, signUpButton].forEach {
             $0.addTarget(self, action: #selector(handleButtons(_:)), for: .touchUpInside)
         }
     }
@@ -103,18 +105,61 @@ class SignInVC: UIViewController {
             $0.leading.trailing.equalTo(idTextField)
             $0.height.equalTo(idTextField)
         }
+
+        view.addSubview(warning)
+        warning.snp.makeConstraints {
+            $0.top.equalTo(view.safeAreaLayoutGuide).offset(-130)
+            $0.centerX.equalToSuperview()
+            $0.leading.trailing.equalToSuperview().inset(10)
+            $0.height.equalTo(60)
+        }
+    }
+
+    private func checkTextFieldValidity() {
+        if idTextField.text?.isEmpty == true {
+            warning.setText(text: "아이디를 입력해주세요.")
+        } else if pwTextField.text?.isEmpty == true {
+            warning.setText(text: "비밀번호를 입력해주세요.")
+        }
+        animateWarning()
+    }
+
+    private func animateWarning() {
+        UIView.animate(
+            withDuration: 0.1,
+            delay: 0,
+            animations: {
+                self.warning.snp.updateConstraints {
+                    $0.top.equalTo(self.view.safeAreaLayoutGuide)
+                }
+                self.view.layoutIfNeeded()
+        }, completion: { _ in
+            UIView.animate(
+                withDuration: 0.4,
+                delay: 1.5,
+                animations: {
+                    self.warning.snp.updateConstraints {
+                        $0.top.equalTo(self.view.safeAreaLayoutGuide).offset(-130)
+                    }
+                    self.view.layoutIfNeeded()
+            }, completion: nil)
+        })
     }
 
     // MARK: - Selectors
     @objc
     private func handleButtons(_ sender: UIButton) {
         switch sender {
+        case loginButton:
+            checkTextFieldValidity()
         case forgotIDButton:
             let nextVC = ForgotIDVC()
             navigationController?.pushViewController(nextVC, animated: true)
         case forgotPWButton:
             let nextVC = ForgotPWVC()
             navigationController?.pushViewController(nextVC, animated: true)
+        case signUpButton:
+            break
         default:
             return
         }
