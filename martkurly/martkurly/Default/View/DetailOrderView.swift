@@ -8,41 +8,60 @@
 
 import UIKit
 
-class DetailOrderView: UIViewController {
+class DetailOrderView: UIView {
 
+    // MARK: - Properties
     private let tableV = UITableView()
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    // MARK: - ButtonOpenIdentify
+    var moreLookButton = false
+    var productErrorButton = false
+    var changeMindOrderErrorButton = false
+    var notChangeAndReturnViewButton = false
+
+    // MARK: - Lifecycle
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         setConfigure()
     }
 
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    override func setNeedsDisplay() {
+        tableV.reloadData()
+    }
+
+    override func layoutIfNeeded() {
+        tableV.reloadData()
+    }
+
+    // MARK: - UI
     private func setConfigure() {
         setConstraints()
     }
 
     private func setConstraints() {
-        [tableV].forEach { view.addSubview($0) }
+        [tableV].forEach { self.addSubview($0) }
         tableV.dataSource = self
         tableV.delegate = self
         tableV.separatorStyle = .none
-        tableV.register(OrderCancelNoticeView.self, forCellReuseIdentifier: OrderCancelNoticeView.identifier)
-        tableV.register(MoreButton.self, forCellReuseIdentifier: MoreButton.identifier)
-        tableV.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         tableV.snp.makeConstraints {
             $0.top.leading.trailing.bottom.equalToSuperview()
         }
     }
 }
 
+// MARK: - TableViewDataSource
 extension DetailOrderView: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
-        2
+        11
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
-        case 0:
+        case 1:
             return 1
         default:
             return 1
@@ -50,26 +69,132 @@ extension DetailOrderView: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let noCell = UITableViewCell()
         switch indexPath.section {
         case 0:
-            let cell = tableView.dequeueReusableCell(withIdentifier: OrderCancelNoticeView.identifier, for: indexPath) as! OrderCancelNoticeView
+            let cell = OrderCancelNoticeCell()
+            cell.selectionStyle = .none
             return cell
         case 1:
-            let cell = tableView.dequeueReusableCell(withIdentifier: MoreButton.identifier, for: indexPath) as! MoreButton
+            let cell = MoreButtonCell()
+            if moreLookButton {
+                cell.configure(
+                    text: "자세히 보기",
+                    image: UIImage(systemName: "chevron.up")!,
+                    color: ColorManager.General.backGray.rawValue
+                )
+            } else {
+                cell.configure(
+                    text: "자세히 보기",
+                    image: UIImage(systemName: "chevron.down")!,
+                    color: ColorManager.General.backGray.rawValue
+                )
+            }
+            cell.selectionStyle = .none
             return cell
         case 2:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+            if moreLookButton == false {
+                return noCell
+            } else {
+                let cell = CancelMoreNoticeView()
+                cell.selectionStyle = .none
+                return cell
+            }
+        case 3:
+            let cell = ExchangeAndReturnCell()
+            cell.selectionStyle = .none
             return cell
+        case 4:
+            let cell = MoreButtonCell()
+            if productErrorButton {
+                cell.configure(
+                    text: "01. 받으신 상품에 문제가 있는 경우",
+                    image: UIImage(systemName: "chevron.up")!,
+                    color: .systemBackground)
+            } else {
+                cell.configure(
+                    text: "01. 받으신 상품에 문제가 있는 경우",
+                    image: UIImage(systemName: "chevron.down")!,
+                    color: .systemBackground)
+            }
+            cell.selectionStyle = .none
+            return cell
+        case 5:
+            if productErrorButton {
+                let cell = ProductErrorView()
+                cell.selectionStyle = .none
+                return cell
+            } else {
+                return noCell
+            }
+        case 6:
+            let cell = MoreButtonCell()
+            if changeMindOrderErrorButton {
+                cell.configure(
+                    text: "02. 단순 변심, 주문 착오의 경우",
+                    image: UIImage(systemName: "chevron.up")!,
+                    color: .systemBackground)
+            } else {
+                cell.configure(
+                    text: "02. 단순 변심, 주문 착오의 경우",
+                    image: UIImage(systemName: "chevron.down")!,
+                    color: .systemBackground)
+            }
+            cell.selectionStyle = .none
+            return cell
+        case 7:
+            if changeMindOrderErrorButton {
+                let cell = ChangeMaindOrderErrorView()
+                cell.selectionStyle = .none
+                return cell
+            } else {
+                return noCell
+            }
+        case 8:
+            let cell = MoreButtonCell()
+            if notChangeAndReturnViewButton {
+                cell.configure(
+                    text: "03. 교환∙반품이 불가한 경우",
+                    image: UIImage(systemName: "chevron.up")!,
+                    color: .systemBackground)
+            } else {
+                cell.configure(
+                    text: "03. 교환∙반품이 불가한 경우",
+                    image: UIImage(systemName: "chevron.down")!,
+                    color: .systemBackground)
+            }
+            cell.selectionStyle = .none
+            return cell
+        case 9:
+            if notChangeAndReturnViewButton {
+                let cell = NotChangeAndReturnView()
+                cell.selectionStyle = .none
+                return cell
+            } else {
+                return noCell
+            }
         default:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-            return cell
+            return noCell
         }
+
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         switch indexPath.section {
         case 0:
             return 350
+        case 1:
+            return 70
+        case 2:
+            if moreLookButton { return 350 } else { return 0 }
+        case 3:
+            return 200
+        case 5:
+            if productErrorButton { return 400 } else { return 0 }
+        case 7:
+            if changeMindOrderErrorButton { return 350 } else { return 0 }
+        case 9:
+            if notChangeAndReturnViewButton { return 300 } else { return 0 }
         default:
             return 50
         }
@@ -77,5 +202,20 @@ extension DetailOrderView: UITableViewDataSource {
 }
 
 extension DetailOrderView: UITableViewDelegate {
-
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print(indexPath.section)
+        switch indexPath.section {
+        case 1:
+            moreLookButton.toggle()
+        case 4:
+            productErrorButton.toggle()
+        case 6:
+            changeMindOrderErrorButton.toggle()
+        case 8:
+            notChangeAndReturnViewButton.toggle()
+        default:
+            break
+        }
+        tableV.reloadData()
+    }
 }

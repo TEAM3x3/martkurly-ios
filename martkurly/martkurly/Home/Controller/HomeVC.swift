@@ -11,7 +11,7 @@ import UIKit
 class HomeVC: UIViewController {
 
     // MARK: - Properties
-    let testView = CancelMoreNoticeView()
+    let testView = DetailOrderView()
     // MARK: - LifeCycle
 
     override func viewDidLoad() {
@@ -20,8 +20,7 @@ class HomeVC: UIViewController {
         configureNavigationBar()
         view.addSubview(testView)
         testView.snp.makeConstraints {
-            $0.centerX.centerY.equalToSuperview()
-            $0.width.height.equalTo(view.snp.width)
+            $0.top.leading.trailing.bottom.equalToSuperview()
         }
     }
 
