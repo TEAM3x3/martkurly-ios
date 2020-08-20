@@ -120,7 +120,7 @@ struct StringManager {
         case line2 = "∙ 일부 예약 상품은 배송 3~4일 전에만 취소하실 수 있습니다."
         case line3 = "∙ 소비자의 주문에 따라 개별적으로 생산되는 상품이 이미 제작 진\n   행된 경우"
     }
-    
+
     enum Sign: String {
         case idTextField = "아이디를 입력해주세요"
         case pwTextField = "비밀번호를 입력해주세요"
@@ -132,7 +132,6 @@ struct StringManager {
         case forgotPW = "비밀번호 찾기"
         case signUp = "회원가입"
     }
-
 
     enum SignUp: String {
         case id1 = "6자 이상의 영문 혹은 영문과 숫자를 조합"

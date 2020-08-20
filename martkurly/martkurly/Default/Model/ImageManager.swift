@@ -65,4 +65,27 @@ struct ImageManager {
             }
         }
     }
+
+    enum Agreement: RawRepresentable {
+        typealias RawValue = UIImage
+
+        case unchecked
+        case checked
+
+        init?(rawValue: UIImage) {
+            switch rawValue {
+            default:
+                return nil
+            }
+        }
+
+        var rawValue: UIImage {
+            switch self {
+            case .unchecked:
+                return UIImage(systemName: "checkmark.circle")!.withTintColor(ColorManager.General.uncheckedmark.rawValue, renderingMode: .alwaysOriginal)
+            case .checked:
+                return UIImage(systemName: "checkmark.circle.fill")!.withTintColor(ColorManager.General.mainPurple.rawValue, renderingMode: .alwaysOriginal)
+            }
+        }
+    }
 }

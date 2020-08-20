@@ -13,7 +13,7 @@ class HomeVC: UIViewController {
     // MARK: - Properties
 //    let testView = CancelMoreNoticeView()
     private let menuCategory = CategoryMenuView()
-    
+
     // MARK: - LifeCycle
 
     override func viewDidLoad() {

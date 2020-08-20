@@ -36,6 +36,7 @@ extension UIColor {
     static let textBlack = UIColor(red: 50, green: 51, blue: 52)
     static let placeholderGray = UIColor(red: 204, green: 204, blue: 204)
     static let warningPink = UIColor(red: 236, green: 70, blue: 100)
+    static let checkmarkGray = UIColor(red: 220, green: 221, blue: 222)
 }
 
 // MARK: - UIImage
