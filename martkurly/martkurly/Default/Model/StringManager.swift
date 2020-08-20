@@ -13,29 +13,16 @@ import Foundation
 
 struct StringManager {
 
-    enum homeVC: String {
+    enum General: String {
+        case something = ""
+    }
+
+    enum HomeVC: String {
         case howToUse = "이렇게 여기에 원하는 텍스트를 여기에 입력하고 뷰컨에서 자동완성으로 사용하세요"
     }
 
     enum whyKurly: String {
         case title = "WHY KURLY"
-
-//        case category1 = "깐깐한 상품위원회"
-//        case categoryContent1 = "나와 내 가족이 먹고 쓸 상품을 고르는 마음으로 매주 상품을 직접 먹어보고, 경험해보고 성분, 맛, 안정성 등 다각도의 기준을 통과한 상품만을 판매합니다."
-//
-//        case category2 = "차별화된 Kurly Only 상품"
-//        case categoryContent2 = "전국 각지와 해외의 훌륭한 생산자가 믿고 선택하는 파트너, 마켓컬리. 2천여 개가 넘는 컬리 단독 브랜드, 스펙의 Kurly Only 상품을 믿고 만나보세요."
-//        case subTitle2 = "(온라인 기준 / 자사몰, 직구 제외)"
-//
-//        case category3 = "신선한 풀콜드체인 배송"
-//        case categoryContent3 = "온라인 업계 최초로 산지에서 문 앞까지 상온, 냉장, 냉동 상품을 분리 포장 후 최적의 온도를 유지하는 냉장 배송 시스템, 풀콜드체인으로 상품을 신선하게 전해드립니다."
-//        case subTitle3 = "(샛별배송에 한함)"
-//
-//        case category4 = "고객, 생산자를 위한 최선의 가격"
-//        case categoryContent4 = "매주 대형 마트와 주요 온라인 마트의 가격 변동 상황을 확인해 신선식품은 품질을 타협하지 않는 선에서 최선의 가격으로, 가공식품은 언제나 합리적인 가격으로 정기 조정합니다."
-//
-//        case category5 = "환경을 생각하는 지속 가능한 유통"
-//        case categoryContent5 = "친환경 포장재부터 생산자가 상품에만 집중할 수 있는 직매입 유통구조까지, 지속 가능한 유통을 고민하며 컬리를 있게 하는 모든 환경(생산자, 커뮤니티, 직원)이 더 나아질 수 있도록 노력합니다."
     }
 
     let whyKurly = [
@@ -96,6 +83,18 @@ struct StringManager {
 
     enum changeAndRefund: String {
         case changeAndRefundTitle = "교환 및 환불 안내"
+    }
+
+    enum Sign: String {
+        case idTextField = "아이디를 입력해주세요"
+        case pwTextField = "비밀번호를 입력해주세요"
+        case nameTextField = "이름을 입력해주세요"
+        case emailTextField = "이메일을 입력해주세요"
+        case login = "로그인"
+        case confirm = "확인"
+        case forgotID = "아이디 찾기"
+        case forgotPW = "비밀번호 찾기"
+        case signUp = "회원가입"
     }
 
 }
