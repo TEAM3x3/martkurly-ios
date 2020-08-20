@@ -18,6 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         let controller = MainTBC()
         window?.rootViewController = controller
+        window?.rootViewController = SignInVC()
         window?.makeKeyAndVisible()
         return true
     }

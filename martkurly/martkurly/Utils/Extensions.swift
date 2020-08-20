@@ -64,7 +64,8 @@ extension UIViewController {
             UIBarButtonItem(customView: ShoppingCartSingleton.shared.shoppingCartView)
             : nil
 
-        let backBarButton = UIBarButtonItem(image: UIImage(systemName: "chevron.left"),
+        let image = UIImage(systemName: "chevron.left")?.withTintColor(.black, renderingMode: .alwaysOriginal)
+        let backBarButton = UIBarButtonItem(image: image,
                                             style: .plain,
                                             target: self,
                                             action: #selector(tappedBackButton))

@@ -11,6 +11,7 @@ import UIKit
 class SignInVC: UIViewController {
 
     // MARK: - Properties
+    private lazy var topBar = CustomNavigationBarView(title: StringManager.Sign.login.rawValue, viewController: self)
     private let idTextField = UserTextFieldView(placeholder: StringManager.Sign.idTextField.rawValue, fontSize: 15)
     private let pwTextField = UserTextFieldView(placeholder: StringManager.Sign.pwTextField.rawValue, fontSize: 15)
     private let loginButton = KurlyButton(title: StringManager.Sign.login.rawValue, style: .purple)
@@ -34,7 +35,13 @@ class SignInVC: UIViewController {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .white
         configureUI()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setNavigationBar()
     }
 
     // MARK: - UI
@@ -43,16 +50,25 @@ class SignInVC: UIViewController {
         setConstraints()
     }
 
+    private func setNavigationBar() {
+        navigationController?.navigationBar.isHidden = true
+    }
+
     private func setPropertyAttributes() {
 
     }
 
     private func setConstraints() {
-        [idTextField, pwTextField, loginButton, verticalSeparator, forgotIDButton, forgotPWButton, signUpButton].forEach {
+        [topBar, idTextField, pwTextField, loginButton, verticalSeparator, forgotIDButton, forgotPWButton, signUpButton].forEach {
             view.addSubview($0)
         }
+        topBar.snp.makeConstraints {
+            $0.top.equalTo(view.safeAreaLayoutGuide)
+            $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(50)
+        }
         idTextField.snp.makeConstraints {
-            $0.top.equalTo(view.safeAreaLayoutGuide).offset(35)
+            $0.top.equalTo(topBar.snp.bottom).offset(35)
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.height.equalTo(52)
         }
