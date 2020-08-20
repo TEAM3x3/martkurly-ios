@@ -88,7 +88,10 @@ struct StringManager {
     enum Sign: String {
         case idTextField = "아이디를 입력해주세요"
         case pwTextField = "비밀번호를 입력해주세요"
+        case nameTextField = "이름을 입력해주세요"
+        case emailTextField = "이메일을 입력해주세요"
         case login = "로그인"
+        case confirm = "확인"
         case forgotID = "아이디 찾기"
         case forgotPW = "비밀번호 찾기"
         case signUp = "회원가입"

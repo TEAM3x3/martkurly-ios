@@ -15,7 +15,14 @@ class SignUpVC: UIViewController {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .white
         configureUI()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.navigationBar.isHidden = false
+        setNavigationBarStatus(type: .whiteType, isShowCart: false, isShowBack: true, titleText: StringManager.Sign.signUp.rawValue)
     }
 
     // MARK: - UI

@@ -26,6 +26,7 @@ class CustomNavigationBarView: UIView {
     // MARK: - Lifecycle
     init(title: String, viewController: UIViewController) {
         super.init(frame: .zero)
+        self.backgroundColor = .white
         self.title.text = title
         self.viewController = viewController
         configureUI()

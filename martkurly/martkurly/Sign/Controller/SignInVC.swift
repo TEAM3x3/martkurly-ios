@@ -44,6 +44,12 @@ class SignInVC: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setNavigationBar()
+        navigationController?.navigationBar.isHidden = true
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.navigationBar.isHidden = false
     }
 
     // MARK: - UI
@@ -69,7 +75,7 @@ class SignInVC: UIViewController {
         topBar.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide)
             $0.leading.trailing.equalToSuperview()
-            $0.height.equalTo(50)
+            $0.height.equalTo(45)
         }
         idTextField.snp.makeConstraints {
             $0.top.equalTo(topBar.snp.bottom).offset(35)
