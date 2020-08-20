@@ -7,3 +7,9 @@
 //
 
 import Foundation
+
+enum SignError: String {
+    case idFieldEmpty = "아이디를 입력해주세요."
+    case pwFieldEmpty = "비밀번호를 입력해주세요."
+    case incorrectInfo = "아이디와 비밀번호를 확인해주세요."
+}

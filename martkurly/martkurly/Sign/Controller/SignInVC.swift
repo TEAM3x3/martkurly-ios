@@ -117,9 +117,9 @@ class SignInVC: UIViewController {
 
     private func checkTextFieldValidity() {
         if idTextField.text?.isEmpty == true {
-            warning.setText(text: "아이디를 입력해주세요.")
+            warning.setText(text: SignError.idFieldEmpty.rawValue)
         } else if pwTextField.text?.isEmpty == true {
-            warning.setText(text: "비밀번호를 입력해주세요.")
+            warning.setText(text: SignError.pwFieldEmpty.rawValue)
         }
         animateWarning()
     }
