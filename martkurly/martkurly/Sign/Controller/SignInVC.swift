@@ -55,7 +55,9 @@ class SignInVC: UIViewController {
     }
 
     private func setPropertyAttributes() {
-
+        [forgotIDButton, forgotPWButton].forEach {
+            $0.addTarget(self, action: #selector(handleButtons(_:)), for: .touchUpInside)
+        }
     }
 
     private func setConstraints() {
@@ -103,4 +105,18 @@ class SignInVC: UIViewController {
         }
     }
 
+    // MARK: - Selectors
+    @objc
+    private func handleButtons(_ sender: UIButton) {
+        switch sender {
+        case forgotIDButton:
+            let nextVC = ForgotIDVC()
+            navigationController?.pushViewController(nextVC, animated: true)
+        case forgotPWButton:
+            let nextVC = ForgotPWVC()
+            navigationController?.pushViewController(nextVC, animated: true)
+        default:
+            return
+        }
+    }
 }

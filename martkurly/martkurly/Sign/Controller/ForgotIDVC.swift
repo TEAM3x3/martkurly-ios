@@ -15,6 +15,7 @@ class ForgotIDVC: UIViewController {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .red
         configureUI()
     }
 
