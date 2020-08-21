@@ -14,8 +14,8 @@ class HomeVC: UIViewController {
 //    let testView = CancelMoreNoticeView()
 //    private let menuCategory = CategoryMenuView()
 
-    private lazy var menuCategory = CategoryMenuView(categoryType: .infinityStyle).then {
-        $0.menuTitles = ["컬리추천", "신상품", "베스트", "알뜰쇼핑", "이벤트", "추가메뉴"]
+    private lazy var menuCategory = CategoryMenuView(categoryType: .fixInsetStyle).then {
+        $0.menuTitles = ["컬리추천", "신상품", "베스트", "알뜰쇼핑", "이벤트"]
         $0.categorySelected = categorySelected(item:)
     }
 //    private let mainImageCollectionView = HomeMainImageCollectionView()
