@@ -31,7 +31,6 @@ class SignInVC: UIViewController {
     }
 
     private let signUpButton = KurlyButton(title: StringManager.Sign.signUp.rawValue, style: .white)
-
     private let warning = IncorrectInputWarningView(title: "")
 
     // MARK: - Lifecycle

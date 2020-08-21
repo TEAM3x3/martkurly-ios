@@ -13,7 +13,7 @@ class ForgotIDVC: UIViewController {
     // MARK: - Properties
     private let nameTextField = UserTextFieldView(placeholder: StringManager.Sign.nameTextField.rawValue, fontSize: 15)
     private let emailTextField = UserTextFieldView(placeholder: StringManager.Sign.emailTextField.rawValue, fontSize: 15)
-    private let loginButton = KurlyButton(title: StringManager.Sign.confirm.rawValue, style: .purple)
+    private let confirmButton = KurlyButton(title: StringManager.Sign.confirm.rawValue, style: .purple)
 
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -38,11 +38,11 @@ class ForgotIDVC: UIViewController {
     }
 
     private func setPropertyAttributes() {
-
+        confirmButton.addTarget(self, action: #selector(handleConfirmButton), for: .touchUpInside)
     }
 
     private func setConstraints() {
-        [nameTextField, emailTextField, loginButton].forEach {
+        [nameTextField, emailTextField, confirmButton].forEach {
             view.addSubview($0)
         }
         nameTextField.snp.makeConstraints {
@@ -55,11 +55,17 @@ class ForgotIDVC: UIViewController {
             $0.leading.trailing.equalTo(nameTextField)
             $0.height.equalTo(nameTextField)
         }
-        loginButton.snp.makeConstraints {
+        confirmButton.snp.makeConstraints {
             $0.top.equalTo(emailTextField.snp.bottom).offset(20)
             $0.leading.trailing.equalTo(nameTextField)
             $0.height.equalTo(nameTextField)
         }
+    }
+
+    // MARK: - Selectors
+    @objc
+    private func handleConfirmButton() {
+        print(#function)
     }
 
 }
