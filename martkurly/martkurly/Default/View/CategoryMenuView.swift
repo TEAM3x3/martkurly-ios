@@ -11,12 +11,18 @@ import UIKit
 
 class CategoryMenuView: UIView {
 
-    let tempTitleArray = ["상품설명", "상품이미지", "상세정보", "후기\n(9999+)", "상품문의"]
-
     // MARK: - Properties
 
     private var isInit = true
     private var categoryType: CategoryType = .fixInsetStyle
+    var menuTitles = ["메뉴1", "메뉴2", "메뉴3", "메뉴4", "메뉴5"] {
+        didSet { categoryCollectionView.reloadData() }
+    }
+    var moveCategoryIndex = 0 {
+        didSet { moveCategoryEvent() }
+    }
+
+    var categorySelected: ((Int) -> Void)?
 
     private let flowLayout = UICollectionViewFlowLayout().then {
         $0.scrollDirection = .horizontal
@@ -70,6 +76,14 @@ class CategoryMenuView: UIView {
     }
 
     // MARK: - Helpers
+
+    func moveCategoryEvent() {
+        let indexPath = IndexPath(item: moveCategoryIndex, section: 0)
+        categoryCollectionView.selectItem(at: indexPath,
+                                          animated: true,
+                                          scrollPosition: .centeredHorizontally)
+        moveUnderLineVar(indexPath: indexPath)
+    }
 
     func moveUnderLineVar(indexPath: IndexPath) {
         DispatchQueue.main.async {
@@ -177,20 +191,21 @@ class CategoryMenuView: UIView {
 
 extension CategoryMenuView: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return tempTitleArray.count
+        return menuTitles.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: CategoryCell.identifier,
             for: indexPath) as! CategoryCell
-        cell.titleText = tempTitleArray[indexPath.item]
+        cell.titleText = menuTitles[indexPath.item]
         cell.categoryType = self.categoryType
         return cell
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         moveUnderLineVar(indexPath: indexPath)
+        categorySelected?(indexPath.item)
     }
 }
 
@@ -220,9 +235,9 @@ extension CategoryMenuView: UICollectionViewDelegateFlowLayout {
         case .fixInsetStyle: fallthrough
         case .fixNonInsetStyle:
             width = (UIScreen.main.bounds.width - (categoryType.sideInset * 2))
-                / CGFloat(tempTitleArray.count)
+                / CGFloat(menuTitles.count)
         case .infinityStyle:
-            width = (tempTitleArray[indexPath.item] as NSString)
+            width = (menuTitles[indexPath.item] as NSString)
                 .size(withAttributes: [NSAttributedString.Key.font: categoryType.nonSelectFont])
                 .width + 24
         }
@@ -230,7 +245,7 @@ extension CategoryMenuView: UICollectionViewDelegateFlowLayout {
     }
 }
 
-// MARK: - UICollectionViewCell
+// MARK: - CategoryCell
 
 class CategoryCell: UICollectionViewCell {
 
@@ -284,76 +299,6 @@ class CategoryCell: UICollectionViewCell {
         self.addSubview(categoryLabel)
         categoryLabel.snp.makeConstraints {
             $0.edges.equalToSuperview()
-        }
-    }
-}
-
-enum CategoryType {
-    case fixInsetStyle
-    case fixNonInsetStyle
-    case fixNonInsetsmallBarStyle
-    case infinityStyle
-
-    var sideInset: CGFloat {
-        switch self {
-        case .fixInsetStyle: return 12
-        case .fixNonInsetsmallBarStyle: fallthrough
-        case .fixNonInsetStyle: return 0
-        case .infinityStyle: return 8
-        }
-    }
-
-    var nonSelectFont: UIFont {
-        switch self {
-        case .fixNonInsetsmallBarStyle: fallthrough
-        case .fixInsetStyle: return UIFont.systemFont(ofSize: 18)
-        case .fixNonInsetStyle: fallthrough
-        case .infinityStyle: return UIFont.systemFont(ofSize: 16)
-        }
-    }
-
-    var selectFont: UIFont {
-        switch self {
-        case .fixNonInsetsmallBarStyle: return UIFont.systemFont(ofSize: 18)
-        case .fixInsetStyle: return UIFont.boldSystemFont(ofSize: 18)
-        case .fixNonInsetStyle: fallthrough
-        case .infinityStyle: return UIFont.boldSystemFont(ofSize: 16)
-        }
-    }
-
-    var topLineHeight: CGFloat {
-        switch self {
-        case .fixNonInsetsmallBarStyle: return 0.3
-        case .fixInsetStyle: fallthrough
-        case .fixNonInsetStyle: fallthrough
-        case .infinityStyle: return 0
-        }
-    }
-
-    var bottomLineHeight: CGFloat {
-        switch self {
-        case .fixNonInsetsmallBarStyle: return 0
-        case .fixInsetStyle: fallthrough
-        case .fixNonInsetStyle: fallthrough
-        case .infinityStyle: return 0.3
-        }
-    }
-
-    var underMoveLineHeight: CGFloat {
-        switch self {
-        case .fixNonInsetsmallBarStyle: return 3
-        case .fixInsetStyle: fallthrough
-        case .fixNonInsetStyle: fallthrough
-        case .infinityStyle: return 4
-        }
-    }
-
-    var underMoveLineWidth: CGFloat {
-        switch self {
-        case .fixNonInsetsmallBarStyle: return 20
-        case .fixInsetStyle: fallthrough
-        case .fixNonInsetStyle: fallthrough
-        case .infinityStyle: return 0
         }
     }
 }
