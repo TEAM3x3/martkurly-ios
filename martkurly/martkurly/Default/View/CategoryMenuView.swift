@@ -11,18 +11,21 @@ import UIKit
 
 class CategoryMenuView: UIView {
 
-    let tempTitleArray = ["컬리추천", "신상품", "베스트", "알뜰쇼핑", "이벤트"]
+    let tempTitleArray = ["상품설명", "상품이미지", "상세정보", "후기\n(9999+)", "상품문의"]
 
     // MARK: - Properties
 
-    private let sideInsetValue: CGFloat = 12
     private var isInit = true
+    private var categoryType: CategoryType = .fixInsetStyle
 
-    private let flowLayout = UICollectionViewFlowLayout()
+    private let flowLayout = UICollectionViewFlowLayout().then {
+        $0.scrollDirection = .horizontal
+    }
     private lazy var categoryCollectionView = UICollectionView(
         frame: .zero,
         collectionViewLayout: flowLayout).then {
             $0.backgroundColor = .white
+            $0.showsHorizontalScrollIndicator = false
             $0.dataSource = self
             $0.delegate = self
 
@@ -34,15 +37,36 @@ class CategoryMenuView: UIView {
         $0.backgroundColor = ColorManager.General.mainPurple.rawValue
     }
 
+    private let rightFadeOutView = UIView().then {
+        $0.backgroundColor = .white
+        $0.alpha = 0
+    }
+
+    private let leftFadeOutView = UIView().then {
+        $0.backgroundColor = .white
+        $0.alpha = 0
+    }
+
     // MARK: - LifeCycle
 
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    init(categoryType: CategoryType) {
+        super.init(frame: .zero)
+        self.categoryType = categoryType
         configureUI()
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+
+        if categoryType == .infinityStyle {
+            leftFadeOutViewConfigure()
+            rightFadeOutViewConfigure()
+            fadeOutConfigure(categoryCollectionView.contentOffset.x)
+        }
     }
 
     // MARK: - Helpers
@@ -53,9 +77,11 @@ class CategoryMenuView: UIView {
 
             UIView.animate(withDuration: 0.3) {
                 self.underlineView.snp.remakeConstraints {
-                    $0.centerX.width.equalTo(cell)
-                    $0.bottom.equalToSuperview().offset(-0.3)
-                    $0.height.equalTo(4)
+                    $0.centerX.equalTo(cell)
+                    $0.width.equalTo(self.categoryType == .fixNonInsetsmallBarStyle ?
+                        self.categoryType.underMoveLineWidth : cell)
+                    $0.bottom.equalToSuperview().offset(-self.categoryType.bottomLineHeight)
+                    $0.height.equalTo(self.categoryType.underMoveLineHeight)
                 }
                 if self.isInit { self.isInit.toggle(); return }
                 self.layoutIfNeeded()
@@ -63,8 +89,45 @@ class CategoryMenuView: UIView {
         }
     }
 
+    func leftFadeOutViewConfigure() {
+        let gradient = CAGradientLayer()
+        gradient.frame = leftFadeOutView.bounds
+        gradient.colors = [UIColor.white.cgColor, UIColor.clear.cgColor]
+        gradient.startPoint = CGPoint(x: 0, y: 1)
+        gradient.endPoint = CGPoint(x: 1, y: 1)
+        leftFadeOutView.layer.mask = gradient
+    }
+
+    func rightFadeOutViewConfigure() {
+        let gradient = CAGradientLayer()
+        gradient.frame = rightFadeOutView.bounds
+        gradient.colors = [UIColor.clear.cgColor, UIColor.white.cgColor]
+        gradient.startPoint = CGPoint(x: 0, y: 1)
+        gradient.endPoint = CGPoint(x: 1, y: 1)
+        rightFadeOutView.layer.mask = gradient
+    }
+
+    func fadeOutConfigure(_ presentOffsetX: CGFloat) {
+        let contentOffSetMinX: CGFloat = 5
+        let contentOffSetMaxX: CGFloat = (categoryCollectionView.contentSize.width - self.frame.width).rounded() - 5
+
+        UIView.animate(withDuration: 0.3) {
+            if presentOffsetX > contentOffSetMinX {
+                self.leftFadeOutView.alpha = 1
+            } else {
+                self.leftFadeOutView.alpha = 0
+            }
+
+            if presentOffsetX < contentOffSetMaxX {
+                self.rightFadeOutView.alpha = 1
+            } else {
+                self.rightFadeOutView.alpha = 0
+            }
+        }
+    }
+
     func configureUI() {
-        [categoryCollectionView, underlineView].forEach {
+        [categoryCollectionView, underlineView, leftFadeOutView, rightFadeOutView].forEach {
             self.addSubview($0)
         }
 
@@ -72,20 +135,40 @@ class CategoryMenuView: UIView {
             $0.edges.equalToSuperview()
         }
 
-        let bottomLine = UIView()
-        bottomLine.backgroundColor = ColorManager.General.chevronGray.rawValue
+        leftFadeOutView.snp.makeConstraints {
+            $0.top.leading.bottom.equalToSuperview()
+            $0.width.equalTo(52)
+        }
 
-        self.addSubview(bottomLine)
+        rightFadeOutView.snp.makeConstraints {
+            $0.top.trailing.bottom.equalToSuperview()
+            $0.width.equalTo(52)
+        }
+
+        let topLine = UIView()
+        let bottomLine = UIView()
+
+        [topLine, bottomLine].forEach {
+            self.addSubview($0)
+            $0.backgroundColor = ColorManager.General.chevronGray.rawValue
+        }
+
+        topLine.snp.makeConstraints {
+            $0.top.leading.trailing.equalToSuperview()
+            $0.height.equalTo(categoryType.topLineHeight)
+        }
+
         bottomLine.snp.makeConstraints {
-            $0.leading.trailing.equalToSuperview()
-            $0.bottom.equalToSuperview()
-            $0.height.equalTo(0.3)
+            $0.bottom.leading.trailing.equalToSuperview()
+            $0.height.equalTo(categoryType.bottomLineHeight)
         }
 
         let firstIndexPath = IndexPath(item: 0, section: 0)
-        categoryCollectionView.selectItem(at: firstIndexPath,
-                                          animated: false,
-                                          scrollPosition: .centeredHorizontally)
+        DispatchQueue.main.async {
+            self.categoryCollectionView.selectItem(at: firstIndexPath,
+                                                   animated: false,
+                                                   scrollPosition: .centeredHorizontally)
+        }
         moveUnderLineVar(indexPath: firstIndexPath)
     }
 }
@@ -102,6 +185,7 @@ extension CategoryMenuView: UICollectionViewDataSource {
             withReuseIdentifier: CategoryCell.identifier,
             for: indexPath) as! CategoryCell
         cell.titleText = tempTitleArray[indexPath.item]
+        cell.categoryType = self.categoryType
         return cell
     }
 
@@ -113,16 +197,35 @@ extension CategoryMenuView: UICollectionViewDataSource {
 // MARK: - UICollectionViewDelegateFlowLayout
 
 extension CategoryMenuView: UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 0, left: sideInsetValue, bottom: 0, right: sideInsetValue)
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        fadeOutConfigure(scrollView.contentOffset.x)
     }
 
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets(top: 0,
+                            left: categoryType.sideInset,
+                            bottom: 0,
+                            right: categoryType.sideInset)
+    }
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 0
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width = (UIScreen.main.bounds.width - (sideInsetValue * 2)) / CGFloat(tempTitleArray.count)
+        var width: CGFloat!
+
+        switch categoryType {
+        case .fixNonInsetsmallBarStyle: fallthrough
+        case .fixInsetStyle: fallthrough
+        case .fixNonInsetStyle:
+            width = (UIScreen.main.bounds.width - (categoryType.sideInset * 2))
+                / CGFloat(tempTitleArray.count)
+        case .infinityStyle:
+            width = (tempTitleArray[indexPath.item] as NSString)
+                .size(withAttributes: [NSAttributedString.Key.font: categoryType.nonSelectFont])
+                .width + 24
+        }
         return CGSize(width: width, height: self.frame.height)
     }
 }
@@ -139,23 +242,27 @@ class CategoryCell: UICollectionViewCell {
         didSet { categoryLabel.text = titleText }
     }
 
+    var categoryType: CategoryType = .fixInsetStyle {
+        didSet { categoryLabel.font = categoryType.nonSelectFont }
+    }
+
     override var isSelected: Bool {
         didSet {
             categoryLabel.textColor = isSelected ?
                 ColorManager.General.mainPurple.rawValue :
                 ColorManager.General.mainGray.rawValue
             categoryLabel.font = isSelected ?
-                .boldSystemFont(ofSize: 16) :
-                .systemFont(ofSize: 16)
+                categoryType.selectFont :
+                categoryType.nonSelectFont
         }
     }
 
-    private let categoryLabel = UILabel().then {
+    private lazy var categoryLabel = UILabel().then {
         $0.text = "컬리추천"
         $0.textColor = ColorManager.General.mainGray.rawValue
         $0.textAlignment = .center
-        $0.font = .systemFont(ofSize: 16)
-        $0.adjustsFontSizeToFitWidth = true
+        $0.font = categoryType.nonSelectFont
+        $0.numberOfLines = 2
     }
 
     // MARK: - LifeCycle
@@ -176,8 +283,7 @@ class CategoryCell: UICollectionViewCell {
 
         self.addSubview(categoryLabel)
         categoryLabel.snp.makeConstraints {
-            $0.leading.trailing.equalToSuperview()
-            $0.centerY.equalToSuperview()
+            $0.edges.equalToSuperview()
         }
     }
 }
@@ -185,14 +291,69 @@ class CategoryCell: UICollectionViewCell {
 enum CategoryType {
     case fixInsetStyle
     case fixNonInsetStyle
+    case fixNonInsetsmallBarStyle
     case infinityStyle
 
-//    var sideInset: CGFloat {
-//        switch self {
-//        case <#pattern#>:
-//            <#code#>
-//        default:
-//            <#code#>
-//        }
-//    }
+    var sideInset: CGFloat {
+        switch self {
+        case .fixInsetStyle: return 12
+        case .fixNonInsetsmallBarStyle: fallthrough
+        case .fixNonInsetStyle: return 0
+        case .infinityStyle: return 8
+        }
+    }
+
+    var nonSelectFont: UIFont {
+        switch self {
+        case .fixNonInsetsmallBarStyle: fallthrough
+        case .fixInsetStyle: return UIFont.systemFont(ofSize: 18)
+        case .fixNonInsetStyle: fallthrough
+        case .infinityStyle: return UIFont.systemFont(ofSize: 16)
+        }
+    }
+
+    var selectFont: UIFont {
+        switch self {
+        case .fixNonInsetsmallBarStyle: return UIFont.systemFont(ofSize: 18)
+        case .fixInsetStyle: return UIFont.boldSystemFont(ofSize: 18)
+        case .fixNonInsetStyle: fallthrough
+        case .infinityStyle: return UIFont.boldSystemFont(ofSize: 16)
+        }
+    }
+
+    var topLineHeight: CGFloat {
+        switch self {
+        case .fixNonInsetsmallBarStyle: return 0.3
+        case .fixInsetStyle: fallthrough
+        case .fixNonInsetStyle: fallthrough
+        case .infinityStyle: return 0
+        }
+    }
+
+    var bottomLineHeight: CGFloat {
+        switch self {
+        case .fixNonInsetsmallBarStyle: return 0
+        case .fixInsetStyle: fallthrough
+        case .fixNonInsetStyle: fallthrough
+        case .infinityStyle: return 0.3
+        }
+    }
+
+    var underMoveLineHeight: CGFloat {
+        switch self {
+        case .fixNonInsetsmallBarStyle: return 3
+        case .fixInsetStyle: fallthrough
+        case .fixNonInsetStyle: fallthrough
+        case .infinityStyle: return 4
+        }
+    }
+
+    var underMoveLineWidth: CGFloat {
+        switch self {
+        case .fixNonInsetsmallBarStyle: return 20
+        case .fixInsetStyle: fallthrough
+        case .fixNonInsetStyle: fallthrough
+        case .infinityStyle: return 0
+        }
+    }
 }

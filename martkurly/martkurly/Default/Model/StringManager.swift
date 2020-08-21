@@ -6,12 +6,21 @@
 //  Copyright © 2020 Team3x3. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 // 사용법: StringManager.HomeVC.howToUse.rawValue
 // 새로운 값을 추가할 때는 case 를 생성하고 = 옆에 String 을 입력
 
 struct StringManager {
+
+    // 문단 띄어쓰기 적용하기
+    func setParagraphStyle(text: String, spacing: CGFloat) -> NSMutableAttributedString {
+        let attributedString = NSMutableAttributedString(string: text)
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineSpacing = spacing
+        attributedString.addAttribute(NSAttributedString.Key.paragraphStyle, value: paragraphStyle, range: NSRange(location: 0, length: attributedString.length))
+        return attributedString
+    }
 
     enum General: String {
         case something = ""
@@ -120,7 +129,7 @@ struct StringManager {
         case line2 = "∙ 일부 예약 상품은 배송 3~4일 전에만 취소하실 수 있습니다."
         case line3 = "∙ 소비자의 주문에 따라 개별적으로 생산되는 상품이 이미 제작 진\n   행된 경우"
     }
-    
+
     enum Sign: String {
         case idTextField = "아이디를 입력해주세요"
         case pwTextField = "비밀번호를 입력해주세요"
@@ -132,7 +141,6 @@ struct StringManager {
         case forgotPW = "비밀번호 찾기"
         case signUp = "회원가입"
     }
-
 
     enum SignUp: String {
         case id1 = "6자 이상의 영문 혹은 영문과 숫자를 조합"
@@ -148,33 +156,41 @@ struct StringManager {
         [
             "title": "전체 동의합니다.",
             "subtitle": "",
-            "info": "선택 항목에 동의하지 않은 경우도 회원가입 및 일반적인 서비스를 이용할 수 있습니다."
+            "info": "선택 항목에 동의하지 않은 경우도 회원가입 및 일반적인 서비스를 이용할 수 있습니다.",
+            "type": "title"
         ],
         [
             "title": "이용약관 동의",
-            "subtitle": "필수",
-            "info": ""
+            "subtitle": "(필수)",
+            "info": "",
+            "type": "page"
         ],
         [
             "title": "개인정보처리방침 동의",
-            "subtitle": "필수",
-            "info": ""
+            "subtitle": "(필수)",
+            "info": "",
+            "type": "page"
         ],
         [
             "title": "개인정보처리방침 동의",
-            "subtitle": "선택",
-            "info": ""
+            "subtitle": "(선택)",
+            "info": "",
+            "type": "page"
         ],
         [
             "title": "무료배송, 할인쿠폰 등 혜택/정보 수신 동의",
-            "subtitle": "선택",
-            "info": ""
+            "subtitle": "(선택)",
+            "info": "",
+            "type": "choice"
         ],
         [
             "title": "본인은 만 14세 이상입니다.",
-            "subtitle": "필수",
-            "info": ""
+            "subtitle": "(필수)",
+            "info": "",
+            "type": "normal"
         ]
     ]
+
+    let agreementPromotion = ["동의 시 한 달 간 [5% 적립] + [무제한 무료배송]", "(첫 주문 후 적용)"]
 
 }
