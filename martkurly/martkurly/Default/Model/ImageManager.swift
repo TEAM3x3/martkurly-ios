@@ -18,6 +18,7 @@ struct ImageManager {
         typealias RawValue = UIImage
 
         case martCulryWhiteLogo
+        case goForward
 
         init?(rawValue: UIImage) {
             switch rawValue {
@@ -30,6 +31,8 @@ struct ImageManager {
             switch self {
             case .martCulryWhiteLogo:
                 return UIImage(named: "Martcurly_MainTitle_White")!
+            case .goForward:
+                return UIImage(systemName: "chevron.right")!.withTintColor(.chevronForwardGray, renderingMode: .alwaysOriginal)
             }
         }
     }
@@ -62,6 +65,29 @@ struct ImageManager {
                 return UIImage(named: "04_price")!
             case .content5:
                 return UIImage(named: "05_eco")!
+            }
+        }
+    }
+
+    enum Agreement: RawRepresentable {
+        typealias RawValue = UIImage
+
+        case unchecked
+        case checked
+
+        init?(rawValue: UIImage) {
+            switch rawValue {
+            default:
+                return nil
+            }
+        }
+
+        var rawValue: UIImage {
+            switch self {
+            case .unchecked:
+                return UIImage(systemName: "checkmark.circle")!.withTintColor(ColorManager.General.uncheckedmark.rawValue, renderingMode: .alwaysOriginal)
+            case .checked:
+                return UIImage(systemName: "checkmark.circle.fill")!.withTintColor(ColorManager.General.mainPurple.rawValue, renderingMode: .alwaysOriginal)
             }
         }
     }

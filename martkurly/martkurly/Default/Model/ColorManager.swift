@@ -25,6 +25,7 @@ struct ColorManager {
         case backGray
         case chevronGray
         case placeholder
+        case uncheckedmark
 
         init?(rawValue: UIColor) {
             switch rawValue {
@@ -51,6 +52,8 @@ struct ColorManager {
                 return .chevronGray
             case .placeholder:
                 return .placeholderGray
+            case .uncheckedmark:
+                return .checkmarkGray
             }
         }
     }
