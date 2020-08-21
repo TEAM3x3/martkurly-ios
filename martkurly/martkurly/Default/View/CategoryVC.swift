@@ -34,7 +34,7 @@ class CategoryVC: UIViewController {
     }
 
     private func setConstraints() {
-        view.backgroundColor = .white
+        view.backgroundColor = ColorManager.General.backGray.rawValue
         [CategoryMain].forEach {
             view.addSubview($0)
             $0.snp.makeConstraints {

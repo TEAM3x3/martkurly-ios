@@ -162,7 +162,7 @@ struct StringManager {
         case babyKid = "베이비∙키즈"
         case companionAnimal = "반려동물"
     }
-    
+
     enum SignUp: String {
         case id1 = "6자 이상의 영문 혹은 영문과 숫자를 조합"
         case id2 = "아이디 중복확인"

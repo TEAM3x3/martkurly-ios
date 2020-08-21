@@ -12,7 +12,20 @@ import Then
 class CategoryMainView: UIScrollView {
 
     // MARK: - Properties
-    private let frequentryProduct = UIButton()
+    private lazy var frequentryProduct = UIButton().then {
+        $0.backgroundColor = .white
+        $0.addTarget(self, action: #selector(nextPage(_:)), for: .touchUpInside)
+    }
+    private let title = UILabel().then {
+        $0.text = StringManager.CategoryTitle.frequentlyProduct.rawValue
+        $0.textColor = ColorManager.General.mainPurple.rawValue
+    }
+
+    private let chevron = UIImageView().then {
+        $0.image = UIImage(systemName: "chevron.right")
+        $0.tintColor = ColorManager.General.mainPurple.rawValue
+    }
+
     private let layout = UICollectionViewFlowLayout()
     private lazy var collectionV = UICollectionView(
         frame: .zero, collectionViewLayout: layout
@@ -30,6 +43,11 @@ class CategoryMainView: UIScrollView {
         fatalError("init(coder:) has not been implemented")
     }
 
+    // MARK: - ButtonAction
+    @objc func nextPage(_ sender: UIButton) {
+        print("a")
+    }
+
     // MARK: - UI
     private func setConfigure() {
         setConstraints()
@@ -38,23 +56,24 @@ class CategoryMainView: UIScrollView {
 
     private func setConstraints() {
         self.backgroundColor = ColorManager.General.backGray.rawValue
-        [frequentryProduct].forEach {
+        [frequentryProduct, title, chevron].forEach {
             self.addSubview($0)
-            $0.snp.makeConstraints {
-                $0.leading.trailing.equalToSuperview()
-            }
         }
-        
-        frequentryProduct.backgroundColor = .white
-        frequentryProduct.setTitle(StringManager.CategoryTitle.frequentlyProduct.rawValue, for: .normal)
-        frequentryProduct.setTitleColor(ColorManager.General.mainPurple.rawValue, for: .normal)
-        frequentryProduct.setImage(UIImage(systemName: "chevron.right"), for: .normal)
-        frequentryProduct.semanticContentAttribute = .forceLeftToRight
-        frequentryProduct.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -300)
 
         frequentryProduct.snp.makeConstraints {
             $0.top.equalTo(self.snp.top).offset(16)
+            $0.width.equalToSuperview()
             $0.height.equalTo(50)
+        }
+
+        title.snp.makeConstraints {
+            $0.centerY.equalTo(frequentryProduct)
+            $0.leading.equalTo(frequentryProduct).offset(16)
+        }
+
+        chevron.snp.makeConstraints {
+            $0.centerY.equalTo(frequentryProduct)
+            $0.trailing.equalTo(frequentryProduct).inset(16)
         }
     }
 
