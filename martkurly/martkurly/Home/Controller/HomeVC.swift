@@ -13,7 +13,6 @@ class HomeVC: UIViewController {
     // MARK: - Properties
 //    let testView = CancelMoreNoticeView()
     private let menuCategory = CategoryMenuView()
-    private let detail = DetailOrderView()
     // MARK: - LifeCycle
 
     override func viewDidLoad() {
@@ -35,17 +34,13 @@ class HomeVC: UIViewController {
         view.backgroundColor = .white
         configureNavigationBar()
 
-        [menuCategory, detail].forEach {
+        [menuCategory].forEach {
             view.addSubview($0)
         }
 
         menuCategory.snp.makeConstraints {
             $0.top.leading.trailing.equalToSuperview()
             $0.height.equalTo(52)
-        }
-
-        detail.snp.makeConstraints {
-            $0.top.leading.trailing.bottom.equalToSuperview()
         }
     }
 

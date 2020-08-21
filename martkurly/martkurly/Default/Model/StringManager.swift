@@ -132,4 +132,25 @@ struct StringManager {
         case forgotPW = "비밀번호 찾기"
         case signUp = "회원가입"
     }
+
+    enum CategoryTitle: String {
+        case frequentlyProduct = "자주 사는 상품"
+        case thanksGivingDayGift = "추석 선물세트"
+        case Vagetable = "채소"
+        case fruitNutRice = "과일∙견과∙쌀"
+        case seaFood = "수산∙해산∙건어물"
+        case meetEgg = "정육∙계란"
+        case soupSideDishMainCook = "국∙반찬∙메인요리"
+        case saladConvenienceFood = "샐러드∙간편식"
+        case noodleSourceOil = "면∙양념∙오일"
+        case drinkMilkTteokSnack = "음료∙우유∙떡∙간식"
+        case bakeryCheese = "베이커리∙치즈∙델리"
+        case healthFood = "건강식품"
+        case dailyNecessities = "생활용품∙리빙"
+        case beautyBodycare = "뷰티∙바디케어"
+        case kitchen = "주방용품"
+        case appliances = "가전제품"
+        case babyKid = "베이비∙키즈"
+        case companionAnimal = "반려동물"
+    }
 }
