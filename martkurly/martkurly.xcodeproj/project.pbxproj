@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		0E1902CF24ED382E00B59A32 /* OrderCancelNoticeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E1902CE24ED382E00B59A32 /* OrderCancelNoticeCell.swift */; };
+		0E2A7C6224F050D200ED1F44 /* frequentlyProductButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E2A7C6124F050D200ED1F44 /* frequentlyProductButtonCell.swift */; };
+		0E2A7C6424F057B900ED1F44 /* CategoryButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E2A7C6324F057B900ED1F44 /* CategoryButtonView.swift */; };
+		0E2A7C6624F1C84C00ED1F44 /* DetailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E2A7C6524F1C84C00ED1F44 /* DetailTableViewCell.swift */; };
+		0E2A7C6824F1C99500ED1F44 /* DetailTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E2A7C6724F1C99500ED1F44 /* DetailTableView.swift */; };
 		0E2C835B24EE466C004C5568 /* ExchangeAndReturnCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E2C835A24EE466C004C5568 /* ExchangeAndReturnCell.swift */; };
 		0E2C835D24EE8EC5004C5568 /* ProductErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E2C835C24EE8EC5004C5568 /* ProductErrorView.swift */; };
 		0E2C835F24EE9FAA004C5568 /* ChangeMindOrderErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E2C835E24EE9FAA004C5568 /* ChangeMindOrderErrorView.swift */; };
@@ -18,7 +22,7 @@
 		0EFD8E6B24EEC2CA0078652E /* AddressSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFD8E6A24EEC2CA0078652E /* AddressSearchView.swift */; };
 		0EFD8E6D24EECE680078652E /* CategoryVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFD8E6C24EECE680078652E /* CategoryVC.swift */; };
 		0EFD8E6F24EED4E20078652E /* CategoryMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFD8E6E24EED4E20078652E /* CategoryMainView.swift */; };
-		0EFD8E7124EEE9DD0078652E /* CategoryMainButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFD8E7024EEE9DD0078652E /* CategoryMainButtonView.swift */; };
+		0EFD8E7124EEE9DD0078652E /* CategoryMainButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFD8E7024EEE9DD0078652E /* CategoryMainButtonCell.swift */; };
 		42C69B5C24EE606700A18B4C /* IncorrectInputWarningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42C69B5B24EE606700A18B4C /* IncorrectInputWarningView.swift */; };
 		42C69B5E24EE6D6800A18B4C /* SignError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42C69B5D24EE6D6800A18B4C /* SignError.swift */; };
 		42C69B6024EEC52200A18B4C /* Agreement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42C69B5F24EEC52200A18B4C /* Agreement.swift */; };
@@ -65,6 +69,10 @@
 
 /* Begin PBXFileReference section */
 		0E1902CE24ED382E00B59A32 /* OrderCancelNoticeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderCancelNoticeCell.swift; sourceTree = "<group>"; };
+		0E2A7C6124F050D200ED1F44 /* frequentlyProductButtonCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = frequentlyProductButtonCell.swift; path = martkurly/Default/View/frequentlyProductButtonCell.swift; sourceTree = SOURCE_ROOT; };
+		0E2A7C6324F057B900ED1F44 /* CategoryButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CategoryButtonView.swift; path = martkurly/Default/View/CategoryButtonView.swift; sourceTree = SOURCE_ROOT; };
+		0E2A7C6524F1C84C00ED1F44 /* DetailTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DetailTableViewCell.swift; path = martkurly/Default/View/DetailTableViewCell.swift; sourceTree = SOURCE_ROOT; };
+		0E2A7C6724F1C99500ED1F44 /* DetailTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DetailTableView.swift; path = martkurly/Default/View/DetailTableView.swift; sourceTree = SOURCE_ROOT; };
 		0E2C835A24EE466C004C5568 /* ExchangeAndReturnCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExchangeAndReturnCell.swift; sourceTree = "<group>"; };
 		0E2C835C24EE8EC5004C5568 /* ProductErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductErrorView.swift; sourceTree = "<group>"; };
 		0E2C835E24EE9FAA004C5568 /* ChangeMindOrderErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeMindOrderErrorView.swift; sourceTree = "<group>"; };
@@ -75,7 +83,7 @@
 		0EFD8E6A24EEC2CA0078652E /* AddressSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressSearchView.swift; sourceTree = "<group>"; };
 		0EFD8E6C24EECE680078652E /* CategoryVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CategoryVC.swift; path = martkurly/Default/View/CategoryVC.swift; sourceTree = SOURCE_ROOT; };
 		0EFD8E6E24EED4E20078652E /* CategoryMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CategoryMainView.swift; path = martkurly/Default/View/CategoryMainView.swift; sourceTree = SOURCE_ROOT; };
-		0EFD8E7024EEE9DD0078652E /* CategoryMainButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CategoryMainButtonView.swift; path = martkurly/Default/View/CategoryMainButtonView.swift; sourceTree = SOURCE_ROOT; };
+		0EFD8E7024EEE9DD0078652E /* CategoryMainButtonCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CategoryMainButtonCell.swift; path = martkurly/Default/View/CategoryMainButtonCell.swift; sourceTree = SOURCE_ROOT; };
 		33869669B85EDB88C28F68B0 /* Pods-martkurly.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-martkurly.release.xcconfig"; path = "Target Support Files/Pods-martkurly/Pods-martkurly.release.xcconfig"; sourceTree = "<group>"; };
 		42C69B5B24EE606700A18B4C /* IncorrectInputWarningView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncorrectInputWarningView.swift; sourceTree = "<group>"; };
 		42C69B5D24EE6D6800A18B4C /* SignError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignError.swift; sourceTree = "<group>"; };
@@ -387,7 +395,11 @@
 			isa = PBXGroup;
 			children = (
 				0EFD8E6E24EED4E20078652E /* CategoryMainView.swift */,
-				0EFD8E7024EEE9DD0078652E /* CategoryMainButtonView.swift */,
+				0E2A7C6124F050D200ED1F44 /* frequentlyProductButtonCell.swift */,
+				0E2A7C6324F057B900ED1F44 /* CategoryButtonView.swift */,
+				0EFD8E7024EEE9DD0078652E /* CategoryMainButtonCell.swift */,
+				0E2A7C6724F1C99500ED1F44 /* DetailTableView.swift */,
+				0E2A7C6524F1C84C00ED1F44 /* DetailTableViewCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -595,6 +607,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				0EFD8E6B24EEC2CA0078652E /* AddressSearchView.swift in Sources */,
+				0E2A7C6424F057B900ED1F44 /* CategoryButtonView.swift in Sources */,
+				0E2A7C6624F1C84C00ED1F44 /* DetailTableViewCell.swift in Sources */,
 				0E1902CF24ED382E00B59A32 /* OrderCancelNoticeCell.swift in Sources */,
 				AF9906B324EE3844005A8D89 /* CategoryMenuView.swift in Sources */,
 				0E1902CF24ED382E00B59A32 /* OrderCancelNoticeCell.swift in Sources */,
@@ -610,6 +624,7 @@
 				AF9C3C7A24ED58660055E7C5 /* ShoppingCartSingleton.swift in Sources */,
 				AF84DFA824EFBD34001F3F45 /* CurlyRecommendCell.swift in Sources */,
 				42C69B6524EEC8D000A18B4C /* AgreementTableViewCell.swift in Sources */,
+				0E2A7C6224F050D200ED1F44 /* frequentlyProductButtonCell.swift in Sources */,
 				42FAF01224ED11A500063981 /* ImageManager.swift in Sources */,
 				42FAF03124EE519900063981 /* CustomNavigationBarView.swift in Sources */,
 				42C69B6324EEC84400A18B4C /* AgreementView.swift in Sources */,
@@ -622,13 +637,14 @@
 				AF9C3C7C24ED592B0055E7C5 /* RecommendationVC.swift in Sources */,
 				42FAF02924EE464700063981 /* SignInVC.swift in Sources */,
 				AF9C3C5F24ECE2050055E7C5 /* Extensions.swift in Sources */,
-				0EFD8E7124EEE9DD0078652E /* CategoryMainButtonView.swift in Sources */,
+				0EFD8E7124EEE9DD0078652E /* CategoryMainButtonCell.swift in Sources */,
 				0EB631E524EDA46A006AA976 /* DetailOrderView.swift in Sources */,
 				0E2C835B24EE466C004C5568 /* ExchangeAndReturnCell.swift in Sources */,
 				42D867EE24EEE8AC00BBD784 /* AgreementPromotionView.swift in Sources */,
 				0E2C836124EEA8C6004C5568 /* NotChangeAndReturnView.swift in Sources */,
 				42FAF02B24EE465D00063981 /* SignUpVC.swift in Sources */,
 				0E966DF224ED7AD500869F83 /* CancelMoreNoticeView.swift in Sources */,
+				0E2A7C6824F1C99500ED1F44 /* DetailTableView.swift in Sources */,
 				0E2C835D24EE8EC5004C5568 /* ProductErrorView.swift in Sources */,
 				42FAF01924ED28CB00063981 /* WhyKurlySubView.swift in Sources */,
 				42C69B6724EEC94400A18B4C /* AgreementCellType.swift in Sources */,

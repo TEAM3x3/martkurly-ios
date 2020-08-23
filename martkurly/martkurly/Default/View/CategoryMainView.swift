@@ -12,26 +12,18 @@ import Then
 class CategoryMainView: UIScrollView {
 
     // MARK: - Properties
-    private lazy var frequentryProduct = UIButton().then {
-        $0.backgroundColor = .white
-        $0.addTarget(self, action: #selector(nextPage(_:)), for: .touchUpInside)
-    }
-    private let title = UILabel().then {
-        $0.text = StringManager.CategoryTitle.frequentlyProduct.rawValue
-        $0.textColor = ColorManager.General.mainPurple.rawValue
+
+    private let backgroundView = UIView().then {
+        $0.backgroundColor = ColorManager.General.backGray.rawValue
     }
 
-    private let chevron = UIImageView().then {
-        $0.image = UIImage(systemName: "chevron.right")
-        $0.tintColor = ColorManager.General.mainPurple.rawValue
-    }
+    let frequentlyButton = frequentlyProductButtonCell()
+    let categoryButton = CategoryButtonView()
 
     private let layout = UICollectionViewFlowLayout()
     private lazy var collectionV = UICollectionView(
         frame: .zero, collectionViewLayout: layout
     )
-
-    let categoryImage = ["thanksGivingDayGift", "Vagetable", "fruitNutRice", "seaFood", "meetEgg", "soupSideDishMainCook", "saladConvenienceFood", "noodleSourceOil", "drinkMilkTteokSnack", "bakeryCheese", "healthFood", "dailyNecessities", "beautyBodycare", "kitchen", "appliances", "babyKid", "companionAnimal"]
 
     // MARK: - Lifecycle
     override init(frame: CGRect) {
@@ -55,26 +47,30 @@ class CategoryMainView: UIScrollView {
     }
 
     private func setConstraints() {
-        self.backgroundColor = ColorManager.General.backGray.rawValue
-        [frequentryProduct, title, chevron].forEach {
-            self.addSubview($0)
+        backgroundColor = ColorManager.General.backGray.rawValue
+        [backgroundView, frequentlyButton, categoryButton].forEach {
+            addSubview($0)
         }
 
-        frequentryProduct.snp.makeConstraints {
-            $0.top.equalTo(self.snp.top).offset(16)
+        backgroundView.snp.makeConstraints {
+            $0.top.leading.trailing.bottom.equalTo(self)
+            $0.height.equalTo(1600)
+        }
+
+        frequentlyButton.snp.makeConstraints {
+            $0.top.equalTo(backgroundView).offset(16)
+            $0.leading.equalTo(backgroundView)
             $0.width.equalToSuperview()
             $0.height.equalTo(50)
         }
 
-        title.snp.makeConstraints {
-            $0.centerY.equalTo(frequentryProduct)
-            $0.leading.equalTo(frequentryProduct).offset(16)
+        categoryButton.snp.makeConstraints {
+            $0.top.equalTo(frequentlyButton.snp.bottom).offset(16)
+            $0.leading.equalTo(backgroundView)
+            $0.width.equalToSuperview()
+            $0.height.equalTo(900)
         }
 
-        chevron.snp.makeConstraints {
-            $0.centerY.equalTo(frequentryProduct)
-            $0.trailing.equalTo(frequentryProduct).inset(16)
-        }
     }
 
     private func setCollectionLayout() {

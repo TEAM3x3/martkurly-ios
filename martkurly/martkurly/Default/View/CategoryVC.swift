@@ -34,11 +34,11 @@ class CategoryVC: UIViewController {
     }
 
     private func setConstraints() {
-        view.backgroundColor = ColorManager.General.backGray.rawValue
+        let guide = view.safeAreaLayoutGuide
         [CategoryMain].forEach {
             view.addSubview($0)
             $0.snp.makeConstraints {
-                $0.top.leading.trailing.bottom.equalToSuperview()
+                $0.top.leading.trailing.bottom.equalTo(guide)
             }
         }
     }

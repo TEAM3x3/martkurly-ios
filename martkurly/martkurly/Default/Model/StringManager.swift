@@ -142,26 +142,9 @@ struct StringManager {
         case signUp = "회원가입"
     }
 
-    enum CategoryTitle: String {
-        case frequentlyProduct = "자주 사는 상품"
-        case thanksGivingDayGift = "추석 선물세트"
-        case Vagetable = "채소"
-        case fruitNutRice = "과일∙견과∙쌀"
-        case seaFood = "수산∙해산∙건어물"
-        case meetEgg = "정육∙계란"
-        case soupSideDishMainCook = "국∙반찬∙메인요리"
-        case saladConvenienceFood = "샐러드∙간편식"
-        case noodleSourceOil = "면∙양념∙오일"
-        case drinkMilkTteokSnack = "음료∙우유∙떡∙간식"
-        case bakeryCheese = "베이커리∙치즈∙델리"
-        case healthFood = "건강식품"
-        case dailyNecessities = "생활용품∙리빙"
-        case beautyBodycare = "뷰티∙바디케어"
-        case kitchen = "주방용품"
-        case appliances = "가전제품"
-        case babyKid = "베이비∙키즈"
-        case companionAnimal = "반려동물"
-    }
+    let categoryTitle = ["추석 선물세트", "채소", "과일∙견과∙쌀", "수산∙해산∙건어물", "정육∙계란", "국∙반찬∙메인요리", "샐러드∙간편식", "면∙양념∙오일", "음료∙우유∙떡∙간식", "베이커리∙치즈∙델리", "건강식품", "생활용품∙리빙", "뷰티∙바디케어", "주방용품", "가전제품", "베이비∙키즈", "반려동물"]
+
+    let first: [String] = ["3만원 미만", "3~5만원", "5~10만원", "10~20만원", "20만원 이상"]
 
     enum SignUp: String {
         case id1 = "6자 이상의 영문 혹은 영문과 숫자를 조합"
