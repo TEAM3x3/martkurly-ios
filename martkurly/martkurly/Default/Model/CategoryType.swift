@@ -8,6 +8,23 @@
 
 import UIKit
 
+/*
+ Main Home Page에서 5개로 나눠져 있는 카테고리 목록 Enum
+ "컬리추천", "신상품", "베스트", "알뜰쇼핑", "이벤트" 순
+ */
+enum MainCategoryType: Int, CaseIterable {
+    case curlyRecommend
+    case newProduct
+    case baseProduct
+    case cheapProduct
+    case eventProduct
+}
+
+/*
+ https://www.notion.so/Default-View-API-Document-53d6f4325b9e4400a483672fb5db18cb
+ 상위 Notion 참고
+ */
+
 enum CategoryType {
     case fixInsetStyle
     case fixNonInsetStyle

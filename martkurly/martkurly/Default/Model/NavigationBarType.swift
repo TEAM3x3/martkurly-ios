@@ -8,7 +8,12 @@
 
 import Foundation
 
-enum NavigationType {
+/*
+ https://www.notion.so/Default-View-API-Document-53d6f4325b9e4400a483672fb5db18cb
+ 해당 노션 참고
+ */
+
+enum NavigationBarType {
     case purpleType
     case whiteType
 }
