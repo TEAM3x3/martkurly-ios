@@ -13,9 +13,8 @@ class CategoryButtonView: UIView {
 
     // MARK: - Properties
     let title = StringManager().categoryTitle
-    let btn = CategoryMainButtonCell()
-    lazy var btnArray: [UIButton] = []
-    lazy var tblArray: [UITableView] = []
+    var btnArray: [UIButton] = []
+    var clnArray: [UICollectionView] = []
     var tagNumber = 0
     var height = 0
 
@@ -29,83 +28,82 @@ class CategoryButtonView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func setNeedsDisplay() {
-        setConfigure()
-    }
-    \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
     // MARK: - UI
     private func setConfigure() {
         setConstraints()
     }
 
     private func setConstraints() {
-
-        for i in title {
+        for i in title.indices {
             let btn = CategoryMainButtonCell()
-            let tbl = DetailTableView()
-            tbl.configure(str: StringManager().first)
+//            let layout = UICollectionViewFlowLayout()
+//            let cln = UICollectionView(
+//                frame: .zero, collectionViewLayout: layout
+//            )
+//            layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+//            layout.minimumLineSpacing = 0
             btn.configure(
-                image: i,
-                setTitle: i)
-            tblArray.append(tbl)
-            addSubview(tbl)
+                image: title[i],
+                setTitle: title[i])
+//            clnArray.append(cln)
+//            clnArray[i].tag = i
+//            addSubview(clnArray[i])
+            btn.tag = i
             btnArray.append(btn)
-            addSubview(btn)
-            btn.addTarget(self, action: #selector(selectCategory(_:)), for: .touchUpInside)
-            for i in btnArray.indices {
-                if i == 0 {
-                    btnArray[i].tag = 0
-                    btnArray[i].snp.makeConstraints {
-                        $0.top.leading.width.equalToSuperview()
-                        $0.height.equalTo(50)
-                    }
-                    tblArray[i].snp.makeConstraints {
-                        $0.top.equalTo(btnArray[i].snp.bottom)
-                        $0.leading.width.equalToSuperview()
-                        $0.height.equalTo(200)
-                    }
-                    tblArray[i].isHidden = true
-                } else {
-                    tagNumber += 1
-                    btnArray[i].tag = tagNumber
-                    if tblArray[i-1].isHidden == true {
-                        btnArray[i].snp.makeConstraints {
-                            $0.top.equalTo(btnArray[i-1].snp.bottom)
-                            $0.leading.trailing.equalToSuperview()
-                            $0.height.equalTo(50)
-                        }
-                    } else {
-                        btnArray[i].snp.makeConstraints {
-                            $0.top.equalTo(tblArray[i-1].snp.bottom)
-                            $0.leading.trailing.equalToSuperview()
-                            $0.height.equalTo(50)
-                        }
-                    }
-                    tblArray[i].snp.makeConstraints {
-                        $0.top.equalTo(btnArray[i].snp.bottom)
-                        $0.leading.width.equalToSuperview()
-                        $0.height.equalTo(300)
-                    }
-                    tblArray[i].isHidden = true
+            addSubview(btnArray[i])
+        }
 
+        for i in btnArray.indices {
+            print(i)
+            btnArray[i].addTarget(self, action: #selector(selectCategory(_:)), for: .touchUpInside)
+            if i == 0 {
+                btnArray[i].snp.makeConstraints {
+                    $0.top.equalToSuperview()
+                    $0.leading.trailing.equalToSuperview()
+                    $0.height.equalTo(50)
                 }
+//                clnArray[i].snp.makeConstraints {
+//                    $0.top.equalTo(btnArray[i].snp.bottom)
+//                    $0.leading.trailing.equalToSuperview()
+//                }
+//                clnArray[i].isHidden = true
+            } else {
+                btnArray[i].snp.makeConstraints {
+                    $0.top.equalTo(btnArray[i-1].snp.bottom).offset(0)
+                    $0.leading.width.equalToSuperview()
+                    $0.height.equalTo(50)
+                }
+//                clnArray[i].snp.makeConstraints {
+//                    $0.top.equalTo(btnArray[i-1].snp.bottom)
+//                    $0.leading.trailing.equalToSuperview()
+//                }
+//                clnArray[i].isHidden = true
             }
         }
-        print(tblArray)
     }
 
     @objc func selectCategory(_ sender: UIButton) {
         sender.isSelected.toggle()
+        var number = Int()
         if sender.isSelected {
-            //            if sender.tag == 0 {
-            //                data.append(contentsOf: StringManager().first)
-            //            }
-            print("a")
-            tblArray[sender.tag].isHidden = false
-            DetailTableView().reloadData()
+            number = sender.tag
+            btnArray[number+1].snp.remakeConstraints {
+                $0.top.equalTo(btnArray[number].snp.bottom).offset(300)
+                $0.leading.width.equalToSuperview()
+                $0.height.equalTo(50)
+            }
         } else {
-            tblArray[sender.tag].isHidden = true
-            tblArray[sender.tag].reloadData()
+            number = sender.tag
+            btnArray[number+1].snp.remakeConstraints {
+                switch number {
+                case 0:
+                    $0.top.equalTo(btnArray[number].snp.bottom).offset(0)
+                default:
+                    $0.top.equalTo(btnArray[number].snp.bottom).offset(0)
+                }
+                $0.leading.width.equalToSuperview()
+                $0.height.equalTo(50)
+            }
         }
     }
 }

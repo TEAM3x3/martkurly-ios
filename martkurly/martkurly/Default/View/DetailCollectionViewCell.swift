@@ -9,7 +9,7 @@
 import UIKit
 import Then
 
-class DetailTableViewCell: UITableViewCell {
+class DetailCollectionViewCell: UICollectionViewCell {
 
     // MARK: - Properties
 
@@ -19,9 +19,8 @@ class DetailTableViewCell: UITableViewCell {
     }
 
     // MARK: - Lifecycle
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        setConfigure()
+    override init(frame: CGRect) {
+        super.init(frame: frame)
     }
 
     required init?(coder: NSCoder) {
@@ -37,8 +36,8 @@ class DetailTableViewCell: UITableViewCell {
         addSubview(btn)
         btn.snp.makeConstraints {
             $0.top.equalTo(contentView).offset(16)
-            $0.leading.equalTo(contentView).offset(64)
-            $0.trailing.equalTo(contentView)
+            $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(50)
         }
     }
 
