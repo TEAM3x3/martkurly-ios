@@ -95,12 +95,7 @@ class CategoryButtonView: UIView {
         } else {
             number = sender.tag
             btnArray[number+1].snp.remakeConstraints {
-                switch number {
-                case 0:
-                    $0.top.equalTo(btnArray[number].snp.bottom).offset(0)
-                default:
-                    $0.top.equalTo(btnArray[number].snp.bottom).offset(0)
-                }
+                $0.top.equalTo(btnArray[number].snp.bottom).offset(0)
                 $0.leading.width.equalToSuperview()
                 $0.height.equalTo(50)
             }
