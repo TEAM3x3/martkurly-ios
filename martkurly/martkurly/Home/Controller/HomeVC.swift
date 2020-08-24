@@ -72,14 +72,6 @@ class HomeVC: UIViewController {
         }
     }
 
-    enum MainCategoryType: Int, CaseIterable {
-        case curlyRecommend
-        case newProduct
-        case baseProduct
-        case cheapProduct
-        case eventProduct
-    }
-
     func configureCollectionView() {
         categoryMenuCollectionView.dataSource = self
         categoryMenuCollectionView.delegate = self
@@ -114,16 +106,19 @@ extension HomeVC: UICollectionViewDataSource {
             let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: ProductListCell.identifier,
                 for: indexPath) as! ProductListCell
+            cell.sortType = .fastAreaAndCondition
             return cell
         case .baseProduct:
             let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: ProductListCell.identifier,
                 for: indexPath) as! ProductListCell
+                cell.sortType = .fastAreaAndCondition
             return cell
         case .cheapProduct:
             let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: ProductListCell.identifier,
                 for: indexPath) as! ProductListCell
+                cell.sortType = .fastAreaAndBenefit
             return cell
         case .eventProduct:
             let cell = collectionView.dequeueReusableCell(
