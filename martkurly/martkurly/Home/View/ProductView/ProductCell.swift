@@ -20,12 +20,43 @@ class ProductCell: UICollectionViewCell {
         $0.clipsToBounds = true
     }
 
-    private let saleDisplayView = UIView().then {
-        $0.backgroundColor = UIColor(red: 151/255, green: 87/255, blue: 187/255, alpha: 0.8)
+    private let saleDisplayLabel = UILabel().then {
+        let boldAttributes: [NSAttributedString.Key: Any] = [
+            .font: UIFont.boldSystemFont(ofSize: 20),
+            .foregroundColor: UIColor.white
+        ]
+
+        let attributes: [NSAttributedString.Key: Any] = [
+            .font: UIFont.systemFont(ofSize: 14),
+            .foregroundColor: UIColor.white
+        ]
+
+        var stringValue = NSMutableAttributedString(string: "SAVE\n", attributes: attributes)
+        stringValue.append(NSAttributedString(string: "40", attributes: boldAttributes))
+        stringValue.append(NSAttributedString(string: "%", attributes: attributes))
+
+        $0.attributedText = stringValue
+        $0.textAlignment = .center
+        $0.numberOfLines = 2
+    }
+
+    private lazy var saleDisplayView = UIView().then {
+        $0.backgroundColor = UIColor(red: 151/255,
+                                     green: 87/255,
+                                     blue: 187/255,
+                                     alpha: 1)
+
+        $0.addSubview(saleDisplayLabel)
+        saleDisplayLabel.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
     }
 
     private lazy var cartButton = UIButton(type: .system).then {
-        $0.backgroundColor = UIColor(red: 110/255, green: 85/255, blue: 116/255, alpha: 0.8)
+        $0.backgroundColor = UIColor(red: 110/255,
+                                     green: 85/255,
+                                     blue: 116/255,
+                                     alpha: 0.8)
 
         let configuration = UIImage.SymbolConfiguration(
             pointSize: 20,
@@ -60,7 +91,8 @@ class ProductCell: UICollectionViewCell {
         $0.textColor = mainColor
         $0.font = UIFont.boldSystemFont(ofSize: 14)
         $0.layer.borderColor = mainColor.cgColor
-        $0.layer.borderWidth = 2
+        $0.layer.borderWidth = 1
+        $0.layoutMargins = UIEdgeInsets(top: 1, left: 10, bottom: 1, right: 2)
     }
 
     private lazy var infoView = UIView().then {
@@ -117,7 +149,8 @@ class ProductCell: UICollectionViewCell {
 
         saleDisplayView.snp.makeConstraints {
             $0.top.leading.equalToSuperview()
-            $0.width.height.equalTo(60)
+            $0.height.equalTo(52)
+            $0.width.equalTo(64)
         }
 
         cartButton.snp.makeConstraints {
