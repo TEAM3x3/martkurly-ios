@@ -14,8 +14,7 @@ class SignUpVC: UIViewController {
     private var textFields = [UserTextFieldView]() // 아이디, 비밀번호, 비밀번호 확인, 이름, 이메일 순서로 들어있음
     private let idCheckButton = KurlyButton(title: StringManager.SignUp.checkDuplicate.rawValue, style: .white)
     private let phoneNumberCheckButton = KurlyButton(title: StringManager.SignUp.checkPhoneNumber.rawValue, style: .white)
-    private let addressTitleView = SignUpTextFieldTitleView(title: StringManager.SignUp.address.rawValue, mendatory: true)
-    private let addressTextField = UITextField()
+    private let addressView = SignUpAddressView()
     private let birthdayTextField = UITextField()
 
     // MARK: - Lifecycle
