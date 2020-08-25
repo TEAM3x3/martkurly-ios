@@ -15,9 +15,9 @@ class SignUpAddressInputView: UIView {
         $0.text = "서울 중랑구 양원역로 1"
     }
     private let deliveryLabel = UILabel().then {
-        $0.text = StringManager.SignUp.addtionalAddressInfo.rawValue
+        $0.text = "샛별배송"
         $0.textColor = ColorManager.General.mainPurple.rawValue
-        $0.font = UIFont.systemFont(ofSize: 12)
+        $0.font = UIFont.boldSystemFont(ofSize: 12)
     }
     private let searchImageView = UIImageView(image: ImageManager.SignUp.search.rawValue)
     private var quickDeleveryAvailable = false
@@ -49,16 +49,16 @@ class SignUpAddressInputView: UIView {
             self.addSubview($0)
         }
         addressLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(4)
-            $0.leading.equalToSuperview().offset(4)
+            $0.top.equalToSuperview().offset(14)
+            $0.leading.equalToSuperview().offset(12)
         }
         deliveryLabel.snp.makeConstraints {
-            $0.bottom.equalToSuperview().offset(-4)
+            $0.bottom.equalToSuperview().offset(-14)
             $0.leading.equalTo(addressLabel)
         }
         searchImageView.snp.makeConstraints {
-            $0.trailing.equalToSuperview().inset(4)
-            $0.width.height.equalTo(30)
+            $0.trailing.equalToSuperview().inset(14)
+            $0.width.height.equalTo(25)
             $0.centerY.equalToSuperview()
         }
     }

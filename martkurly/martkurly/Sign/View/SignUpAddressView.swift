@@ -17,6 +17,7 @@ class SignUpAddressView: UIView {
     private let infoLabel = UILabel().then {
         $0.text = StringManager.SignUp.addtionalAddressInfo.rawValue
         $0.textColor = ColorManager.General.placeholder.rawValue
+        $0.font = UIFont.systemFont(ofSize: 12)
     }
     private var quickDeliveryAvailable = true
 
@@ -43,17 +44,17 @@ class SignUpAddressView: UIView {
             $0.top.leading.equalToSuperview()
         }
         addressLabel.snp.makeConstraints {
-            $0.top.equalTo(textFieldTitle.snp.bottom).offset(4)
+            $0.top.equalTo(textFieldTitle.snp.bottom).offset(20)
             $0.leading.trailing.equalToSuperview()
-            $0.height.equalTo(52)
+            $0.height.equalTo(72)
         }
         specificAddress.snp.makeConstraints {
-            $0.top.equalTo(addressLabel.snp.bottom).offset(4)
+            $0.top.equalTo(addressLabel.snp.bottom).offset(12)
             $0.leading.trailing.equalToSuperview()
-            $0.height.equalTo(52)
+            $0.height.equalTo(48)
         }
         infoLabel.snp.makeConstraints {
-            $0.top.equalTo(specificAddress.snp.bottom).offset(4)
+            $0.top.equalTo(specificAddress.snp.bottom).offset(8)
             $0.leading.equalToSuperview()
         }
     }

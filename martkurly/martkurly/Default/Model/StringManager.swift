@@ -178,7 +178,7 @@ struct StringManager {
         case checkPhoneNumber = "인증번호 받기"
         case address = "주소"
         case addtionalAddress = "나머지 주소를 입력해주세요"
-        case addtionalAddressInfo = "배송지에 따라 상품 저옵가 달라질 수 있습니다."
+        case addtionalAddressInfo = "배송지에 따라 상품 정보가 달라질 수 있습니다."
         case birthday = "생년월일"
         case gender = "성별"
         case male = "남자"
