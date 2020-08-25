@@ -71,10 +71,6 @@ class SignUpVC: UIViewController {
             $0.height.equalTo(48)
             $0.width.equalTo(120)
         }
-
-        [addressView].forEach {
-            contentView.addSubview($0)
-        }
         addressView.snp.makeConstraints {
             $0.top.equalTo(phoneNumberTextField.snp.bottom).offset(20)
             $0.leading.trailing.equalTo(view).inset(20)
@@ -96,12 +92,12 @@ class SignUpVC: UIViewController {
             $0.height.equalTo(view.frame.height * 2)
             $0.width.equalTo(view)
         }
+        [idCheckButton, phoneNumberCheckButton, addressView].forEach {
+            contentView.addSubview($0)
+        }
     }
 
     private func generateTextFields() {
-        [idCheckButton, phoneNumberCheckButton].forEach {
-            contentView.addSubview($0)
-        }
         for info in StringManager().signUpTextFieldsInfo {
             guard let title = info.keys.first,
                 let placeHolder = info[title]
