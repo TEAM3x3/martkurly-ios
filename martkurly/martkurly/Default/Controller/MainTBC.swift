@@ -66,15 +66,15 @@ class MainTBC: UITabBarController {
 
         self.viewControllers = [naviHomeVC, naviRecommendVC, naviCategoryVC, naviSearchVC, naviMykurlyVC]
 
-//        // 이하 테스트용
-//        let testVC = SignInVC()
-//        let naviTestVC = UINavigationController(rootViewController: testVC)
-//        naviTestVC.tabBarItem = UITabBarItem(
-//            title: "홈",
-//            image: UIImage(systemName: "house"),
-//            selectedImage: UIImage(systemName: "house.fill"))
-//
-//        self.viewControllers = [naviTestVC, naviRecommendVC, naviCategoryVC, naviSearchVC, naviMykurlyVC]
+        // 이하 테스트용
+        let testVC = SignUpVC()
+        let naviTestVC = UINavigationController(rootViewController: testVC)
+        naviTestVC.tabBarItem = UITabBarItem(
+            title: "홈",
+            image: UIImage(systemName: "house"),
+            selectedImage: UIImage(systemName: "house.fill"))
+
+        self.viewControllers = [naviTestVC, naviRecommendVC, naviCategoryVC, naviSearchVC, naviMykurlyVC]
     }
 
     func configureTabbarAppearance() {
