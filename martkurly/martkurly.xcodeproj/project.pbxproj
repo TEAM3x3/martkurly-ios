@@ -18,6 +18,7 @@
 		4246D13E24F4BD780001F9E8 /* SignUpTextFieldTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4246D13D24F4BD780001F9E8 /* SignUpTextFieldTitleView.swift */; };
 		4246D14024F4DDEA0001F9E8 /* SignUpAddressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4246D13F24F4DDEA0001F9E8 /* SignUpAddressView.swift */; };
 		4246D14424F50D9F0001F9E8 /* SignUpAddressInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4246D14324F50D9F0001F9E8 /* SignUpAddressInputView.swift */; };
+		4263A2BD24F52239004CB90A /* SingUpBirthdayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4263A2BC24F52239004CB90A /* SingUpBirthdayView.swift */; };
 		42C69B5C24EE606700A18B4C /* IncorrectInputWarningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42C69B5B24EE606700A18B4C /* IncorrectInputWarningView.swift */; };
 		42C69B5E24EE6D6800A18B4C /* SignError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42C69B5D24EE6D6800A18B4C /* SignError.swift */; };
 		42C69B6024EEC52200A18B4C /* Agreement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42C69B5F24EEC52200A18B4C /* Agreement.swift */; };
@@ -78,6 +79,7 @@
 		4246D13D24F4BD780001F9E8 /* SignUpTextFieldTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpTextFieldTitleView.swift; sourceTree = "<group>"; };
 		4246D13F24F4DDEA0001F9E8 /* SignUpAddressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpAddressView.swift; sourceTree = "<group>"; };
 		4246D14324F50D9F0001F9E8 /* SignUpAddressInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpAddressInputView.swift; sourceTree = "<group>"; };
+		4263A2BC24F52239004CB90A /* SingUpBirthdayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingUpBirthdayView.swift; sourceTree = "<group>"; };
 		42C69B5B24EE606700A18B4C /* IncorrectInputWarningView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncorrectInputWarningView.swift; sourceTree = "<group>"; };
 		42C69B5D24EE6D6800A18B4C /* SignError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignError.swift; sourceTree = "<group>"; };
 		42C69B5F24EEC52200A18B4C /* Agreement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Agreement.swift; sourceTree = "<group>"; };
@@ -206,6 +208,7 @@
 				4246D13F24F4DDEA0001F9E8 /* SignUpAddressView.swift */,
 				4246D14324F50D9F0001F9E8 /* SignUpAddressInputView.swift */,
 				4246D13D24F4BD780001F9E8 /* SignUpTextFieldTitleView.swift */,
+				4263A2BC24F52239004CB90A /* SingUpBirthdayView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -645,6 +648,7 @@
 				4246D14024F4DDEA0001F9E8 /* SignUpAddressView.swift in Sources */,
 				42C69B5E24EE6D6800A18B4C /* SignError.swift in Sources */,
 				42FAF01B24ED296C00063981 /* TestVC.swift in Sources */,
+				4263A2BD24F52239004CB90A /* SingUpBirthdayView.swift in Sources */,
 				42FAF01424ED11B800063981 /* ColorManager.swift in Sources */,
 				AF8D2F0124F3A41D00AE177D /* ProductCell.swift in Sources */,
 				0EB631E724EDAE60006AA976 /* MoreButtonCell.swift in Sources */,

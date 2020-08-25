@@ -11,10 +11,13 @@ import UIKit
 class SignUpVC: UIViewController {
 
     // MARK: - Properties
-    private let scrollView = UIScrollView().then {
-        $0.backgroundColor = .white
+    private let separtor = UIView().then {
+        $0.backgroundColor = .separatorGray
     }
-    private let contentView = UIView().then {
+    private let scrollView = UIScrollView().then {
+        $0.backgroundColor = .gray
+    }
+    let contentView = UIView().then {
         $0.backgroundColor = .white
     }
     private var textFields = [UserTextFieldView]() // 아이디, 비밀번호, 비밀번호 확인, 이름, 이메일 순서로 들어있음
@@ -41,17 +44,14 @@ class SignUpVC: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        scrollView.contentSize = CGSize(width: view.frame.width, height: view.frame.height * 2)
+//        scrollView.contentSize = CGSize(width: view.frame.width, height: view.frame.height * 2)
     }
 
     // MARK: - UI
     private func configureUI() {
-        setPropertyAttributes()
+        setScrollView()
         generateTextFields()
         setConstraints()
-    }
-
-    private func setPropertyAttributes() {
     }
 
     private func setConstraints() {
@@ -73,7 +73,7 @@ class SignUpVC: UIViewController {
         }
 
         [addressView].forEach {
-            scrollView.addSubview($0)
+            contentView.addSubview($0)
         }
         addressView.snp.makeConstraints {
             $0.top.equalTo(phoneNumberTextField.snp.bottom).offset(20)
@@ -82,7 +82,7 @@ class SignUpVC: UIViewController {
         }
     }
 
-    private func generateTextFields() {
+    private func setScrollView() {
         view.addSubview(scrollView)
         scrollView.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide)
@@ -90,8 +90,17 @@ class SignUpVC: UIViewController {
             $0.bottom.equalToSuperview()
             $0.width.equalTo(view.frame.width)
         }
+        scrollView.addSubview(contentView)
+        contentView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+            $0.height.equalTo(view.frame.height * 2)
+            $0.width.equalTo(view)
+        }
+    }
+
+    private func generateTextFields() {
         [idCheckButton, phoneNumberCheckButton].forEach {
-            scrollView.addSubview($0)
+            contentView.addSubview($0)
         }
         for info in StringManager().signUpTextFieldsInfo {
             guard let title = info.keys.first,
@@ -101,12 +110,12 @@ class SignUpVC: UIViewController {
             let textField = UserTextFieldView(placeholder: placeHolder, fontSize: 14)
 
             [titleLabel, textField].forEach {
-                scrollView.addSubview($0)
+                contentView.addSubview($0)
             }
 
             if textFields.isEmpty == true {
                 titleLabel.snp.makeConstraints {
-                    $0.top.equalToSuperview()
+                    $0.top.equalToSuperview().offset(4)
                     $0.leading.trailing.equalTo(view).inset(20)
                     $0.height.equalTo(30)
                 }
