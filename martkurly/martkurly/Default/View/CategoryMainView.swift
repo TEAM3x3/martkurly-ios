@@ -54,7 +54,7 @@ class CategoryMainView: UIScrollView {
 
         backgroundView.snp.makeConstraints {
             $0.top.leading.trailing.bottom.equalTo(self)
-            $0.height.equalTo(1600)
+            $0.height.equalTo(4000)
         }
 
         frequentlyButton.snp.makeConstraints {

@@ -9,7 +9,7 @@
 import UIKit
 import Then
 
-class CategoryMainButtonCell: UIButton {
+class CategoryMainButton: UIButton {
 
     // MARK: - Properties
     private let titleImage = UIImageView().then {

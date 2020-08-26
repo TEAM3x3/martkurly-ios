@@ -15,6 +15,12 @@ class CategoryButtonView: UIView {
     let title = StringManager().categoryTitle
     var btnArray: [UIButton] = []
     var clnArray: [UICollectionView] = []
+    var btnSwitch = false
+    var btnHeight = 0 {
+        didSet {
+
+        }
+    }
     var tagNumber = 0
     var height = 0
 
@@ -35,19 +41,10 @@ class CategoryButtonView: UIView {
 
     private func setConstraints() {
         for i in title.indices {
-            let btn = CategoryMainButtonCell()
-//            let layout = UICollectionViewFlowLayout()
-//            let cln = UICollectionView(
-//                frame: .zero, collectionViewLayout: layout
-//            )
-//            layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-//            layout.minimumLineSpacing = 0
+            let btn = CategoryMainButton()
             btn.configure(
                 image: title[i],
                 setTitle: title[i])
-//            clnArray.append(cln)
-//            clnArray[i].tag = i
-//            addSubview(clnArray[i])
             btn.tag = i
             btnArray.append(btn)
             addSubview(btnArray[i])
@@ -73,6 +70,7 @@ class CategoryButtonView: UIView {
                     $0.leading.width.equalToSuperview()
                     $0.height.equalTo(50)
                 }
+
 //                clnArray[i].snp.makeConstraints {
 //                    $0.top.equalTo(btnArray[i-1].snp.bottom)
 //                    $0.leading.trailing.equalToSuperview()
@@ -83,21 +81,36 @@ class CategoryButtonView: UIView {
     }
 
     @objc func selectCategory(_ sender: UIButton) {
-        sender.isSelected.toggle()
-        var number = Int()
-        if sender.isSelected {
-            number = sender.tag
-            btnArray[number+1].snp.remakeConstraints {
-                $0.top.equalTo(btnArray[number].snp.bottom).offset(300)
-                $0.leading.width.equalToSuperview()
-                $0.height.equalTo(50)
+        let i = sender.tag
+        let select = btnArray[i]
+        select.isSelected.toggle()
+        if select.isSelected {
+            if i != 16 {
+                btnArray[i + 1].snp.remakeConstraints {
+                    $0.top.equalTo(btnArray[i].snp.bottom).offset(300)
+                    $0.leading.width.equalToSuperview()
+                    $0.height.equalTo(50)
+                }
+            } else {
+                btnArray[16].snp.remakeConstraints {
+                    $0.top.equalTo(btnArray[15].snp.bottom).offset(0)
+                    $0.leading.width.equalToSuperview()
+                    $0.height.equalTo(50)
+                }
             }
         } else {
-            number = sender.tag
-            btnArray[number+1].snp.remakeConstraints {
-                $0.top.equalTo(btnArray[number].snp.bottom).offset(0)
-                $0.leading.width.equalToSuperview()
-                $0.height.equalTo(50)
+            if i != 16 {
+                btnArray[i + 1].snp.remakeConstraints {
+                    $0.top.equalTo(btnArray[i].snp.bottom).offset(0)
+                    $0.leading.width.equalToSuperview()
+                    $0.height.equalTo(50)
+                }
+            } else {
+                btnArray[16].snp.remakeConstraints {
+                    $0.top.equalTo(btnArray[15].snp.bottom).offset(0)
+                    $0.leading.width.equalToSuperview()
+                    $0.height.equalTo(50)
+                }
             }
         }
     }
