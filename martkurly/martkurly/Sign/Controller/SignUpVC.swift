@@ -29,6 +29,8 @@ final class SignUpVC: UIViewController {
     private let genderChoice = SignUpGenderView()
     private lazy var genderTableView = genderChoice.tableView // 성별 선택
     private var genderSelected: Gender = .unknwon // 유저가 선택한 성별
+    private let additionalInfoView = AdditionalInfoView()
+    private lazy var additionalInfoTableView = additionalInfoView.tableView // 추천인 및 참여 이벤트명 선택
 
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -62,6 +64,9 @@ final class SignUpVC: UIViewController {
     private func setAttributes() {
         genderTableView.delegate = self
         genderTableView.dataSource = self
+
+        additionalInfoTableView.delegate = self
+        additionalInfoTableView.dataSource = self
     }
 
     private func setConstraints() {
@@ -98,7 +103,12 @@ final class SignUpVC: UIViewController {
         genderChoice.snp.makeConstraints {
             $0.top.equalTo(birthdayTextFields.snp.bottom).offset(25)
             $0.leading.trailing.equalTo(view).inset(20)
-            $0.height.equalTo(200)
+            $0.height.equalTo(170)
+        }
+        additionalInfoView.snp.makeConstraints {
+            $0.top.equalTo(genderChoice.snp.bottom).offset(20)
+            $0.leading.trailing.equalTo(view).inset(20)
+            $0.height.equalTo(150)
         }
     }
 
@@ -116,7 +126,7 @@ final class SignUpVC: UIViewController {
             $0.height.equalTo(view.frame.height * 2)
             $0.width.equalTo(view)
         }
-        [idCheckButton, phoneNumberCheckButton, addressView, birthdayTitleView, birthdayTextFields, genderChoice].forEach {
+        [idCheckButton, phoneNumberCheckButton, addressView, birthdayTitleView, birthdayTextFields, genderChoice, additionalInfoView].forEach {
             contentView.addSubview($0)
         }
     }
@@ -180,27 +190,9 @@ final class SignUpVC: UIViewController {
             textFields.append(textField)
         }
     }
-}
 
-// MARK: - UITableViewDataSource
-extension SignUpVC: UITableViewDataSource {
-
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let number = StringManager().signUpGenderList.count
-        return number
-    }
-
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: SignUpGenderTableViewCell.identifier, for: indexPath) as? SignUpGenderTableViewCell else { fatalError() }
-        let title = StringManager().signUpGenderList[indexPath.row]
-        cell.configureCell(title: title)
-        return cell
-    }
-}
-
-// MARK: - UITableViewDelegate
-extension SignUpVC: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    // MARK: - Helpers
+    private func handleGenderTableView(tableView: UITableView, indexPath: IndexPath) {
         guard let cell = tableView.cellForRow(at: indexPath) as? SignUpGenderTableViewCell else { return }
         switch indexPath.row {
         case 0:
@@ -214,8 +206,79 @@ extension SignUpVC: UITableViewDelegate {
         }
         cell.isActive = true
     }
+
+    private func handleAdditionalInfoTableView(tableView: UITableView, indexPath: IndexPath) {
+        guard let cell = tableView.cellForRow(at: indexPath) as? AdditionalInfoTableViewCell else { return }
+        switch indexPath.row {
+        case 0:
+            print(0)
+        case 1:
+            print(1)
+        default:
+            print(#function)
+        }
+        cell.isActive = true
+    }
+}
+
+// MARK: - UITableViewDataSource
+extension SignUpVC: UITableViewDataSource {
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        switch tableView {
+        case genderTableView:
+            let number = StringManager().signUpGenderList.count
+            return number
+        case additionalInfoTableView:
+            let number = StringManager().additionalInfoList.count
+            return number
+        default:
+            return 0
+        }
+
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        switch tableView {
+        case genderTableView:
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: SignUpGenderTableViewCell.identifier, for: indexPath) as? SignUpGenderTableViewCell else { fatalError() }
+            let title = StringManager().signUpGenderList[indexPath.row]
+            cell.configureCell(title: title)
+            return cell
+        case additionalInfoTableView:
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: AdditionalInfoTableViewCell.identifier, for: indexPath) as? AdditionalInfoTableViewCell else { fatalError() }
+            let title = StringManager().additionalInfoList[indexPath.row]
+            cell.configureCell(title: title)
+            return cell
+        default:
+            fatalError()
+        }
+
+    }
+}
+
+// MARK: - UITableViewDelegate
+extension SignUpVC: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        switch tableView {
+        case genderTableView:
+            handleGenderTableView(tableView: tableView, indexPath: indexPath)
+        case additionalInfoTableView:
+            handleAdditionalInfoTableView(tableView: tableView, indexPath: indexPath)
+        default:
+            break
+        }
+    }
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        guard let cell = tableView.cellForRow(at: indexPath) as? SignUpGenderTableViewCell else { return }
-        cell.isActive = false
+        switch tableView {
+        case genderTableView:
+            guard let cell = tableView.cellForRow(at: indexPath) as? SignUpGenderTableViewCell else { return }
+            cell.isActive = false
+        case additionalInfoTableView:
+            guard let cell = tableView.cellForRow(at: indexPath) as? AdditionalInfoTableViewCell else { return }
+            cell.isActive = false
+        default:
+            break
+        }
     }
 }

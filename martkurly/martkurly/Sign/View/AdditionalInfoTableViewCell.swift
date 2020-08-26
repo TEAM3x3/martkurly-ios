@@ -1,5 +1,5 @@
 //
-//  SignUpTableViewCell.swift
+//  AdditionalInfoTableViewCell.swift
 //  martkurly
 //
 //  Created by Kas Song on 8/26/20.
@@ -8,10 +8,10 @@
 
 import UIKit
 
-class SignUpGenderTableViewCell: UITableViewCell {
+class AdditionalInfoTableViewCell: UITableViewCell {
 
     // MARK: - Properties
-    static let identifier = "SignUpGenderTableViewCell"
+    static let identifier = "AdditionalInfoTableViewCell"
 
     private let emptyCircle = UIView().then {
         $0.layer.cornerRadius = 25 / 2
@@ -24,6 +24,7 @@ class SignUpGenderTableViewCell: UITableViewCell {
         $0.backgroundColor = .white
     }
     private let label = UILabel().then {
+        $0.text = "남자"
         $0.font = UIFont.systemFont(ofSize: 18)
     }
     var isActive = false {

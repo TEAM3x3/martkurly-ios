@@ -191,6 +191,7 @@ struct StringManager {
     }
 
     let signUpGenderList = ["남자", "여자", "선택안함"]
+    let additionalInfoList = ["추천인 아이디", "참여 이벤트명"]
 
     let agreement = [
         [
