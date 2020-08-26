@@ -17,14 +17,15 @@ class SignUpVC: UIViewController {
     private let scrollView = UIScrollView().then {
         $0.backgroundColor = .gray
     }
-    let contentView = UIView().then {
+    private let contentView = UIView().then {
         $0.backgroundColor = .white
     }
     private var textFields = [UserTextFieldView]() // 아이디, 비밀번호, 비밀번호 확인, 이름, 이메일 순서로 들어있음
     private let idCheckButton = KurlyButton(title: StringManager.SignUp.checkDuplicate.rawValue, style: .white)
     private let phoneNumberCheckButton = KurlyButton(title: StringManager.SignUp.checkPhoneNumber.rawValue, style: .white)
     private let addressView = SignUpAddressView()
-    private let birthdayTextField = UITextField()
+    private let birthdayTitleView = SignUpTextFieldTitleView(title: StringManager.SignUp.birthday.rawValue, mendatory: false)
+    private let birthdayTextFields = SingUpBirthdayView() // YYYY, MM, DD 3개의 TextFields 로 구성되어 있다.
 
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -76,6 +77,15 @@ class SignUpVC: UIViewController {
             $0.leading.trailing.equalTo(view).inset(20)
             $0.height.equalTo(150)
         }
+        birthdayTitleView.snp.makeConstraints {
+            $0.top.equalTo(addressView.snp.bottom).offset(45)
+            $0.leading.trailing.equalTo(view).inset(20)
+        }
+        birthdayTextFields.snp.makeConstraints {
+            $0.top.equalTo(birthdayTitleView).offset(20)
+            $0.leading.trailing.equalTo(view).inset(20)
+            $0.height.equalTo(48)
+        }
     }
 
     private func setScrollView() {
@@ -92,7 +102,7 @@ class SignUpVC: UIViewController {
             $0.height.equalTo(view.frame.height * 2)
             $0.width.equalTo(view)
         }
-        [idCheckButton, phoneNumberCheckButton, addressView].forEach {
+        [idCheckButton, phoneNumberCheckButton, addressView, birthdayTitleView, birthdayTextFields].forEach {
             contentView.addSubview($0)
         }
     }

@@ -11,16 +11,28 @@ import UIKit
 class SingUpBirthdayView: UIView {
 
     // MARK: - Properties
-    private let title = SignUpTextFieldTitleView(title: StringManager.SignUp.birthday.rawValue, mendatory: false)
-    private let yearTextField = UITextField()
-    private let monthTextField = UITextField()
-    private let dayTextField = UITextField()
-    private let separator1 = UILabel()
-    private let separator2 = UILabel()
+    private lazy var stackView = UIStackView(arrangedSubviews: [yearTextField, separator1, monthTextField, separator2, dayTextField]).then {
+        $0.alignment = .fill
+        $0.axis = .horizontal
+        $0.distribution = .fillProportionally
+        $0.spacing = 10
+    }
+    private let yearTextField = SignUpBirthdayTextFieldView(placeholder: "YYYY")
+    private let monthTextField = SignUpBirthdayTextFieldView(placeholder: "MM")
+    private let dayTextField = SignUpBirthdayTextFieldView(placeholder: "DD")
+    private let separator1 = UILabel().then {
+        $0.text = "/"
+        $0.textColor = ColorManager.General.placeholder.rawValue
+    }
+    private let separator2 = UILabel().then {
+        $0.text = "/"
+        $0.textColor = ColorManager.General.placeholder.rawValue
+    }
 
     // MARK: - Lifecycle
     override init(frame: CGRect) {
         super.init(frame: frame)
+        configureUI()
     }
 
     required init?(coder: NSCoder) {
@@ -40,6 +52,25 @@ class SingUpBirthdayView: UIView {
     }
 
     private func setContraints() {
-
+//        [yearTextField, monthTextField, dayTextField, separator1, separator2].forEach {
+//            self.addSubview($0)
+        //        }
+        self.addSubview(stackView)
+        stackView.snp.makeConstraints {
+            $0.top.bottom.equalToSuperview()
+            $0.leading.trailing.equalToSuperview().inset(30)
+        }
+        yearTextField.snp.makeConstraints {
+            $0.width.equalTo(85)
+            $0.height.equalTo(50)
+        }
+        monthTextField.snp.makeConstraints {
+            $0.width.equalTo(yearTextField)
+            $0.height.equalTo(yearTextField)
+        }
+        dayTextField.snp.makeConstraints {
+            $0.width.equalTo(yearTextField)
+            $0.height.equalTo(yearTextField)
+        }
     }
 }
