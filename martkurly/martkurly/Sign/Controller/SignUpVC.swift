@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SignUpVC: UIViewController {
+final class SignUpVC: UIViewController {
 
     // MARK: - Properties
     private let separtor = UIView().then {
@@ -26,6 +26,9 @@ class SignUpVC: UIViewController {
     private let addressView = SignUpAddressView()
     private let birthdayTitleView = SignUpTextFieldTitleView(title: StringManager.SignUp.birthday.rawValue, mendatory: false)
     private let birthdayTextFields = SingUpBirthdayView() // YYYY, MM, DD 3개의 TextFields 로 구성되어 있다.
+    private let genderChoice = SignUpGenderView()
+    private lazy var genderTableView = genderChoice.tableView // 성별 선택
+    private var genderSelected: Gender = .unknwon // 유저가 선택한 성별
 
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -52,7 +55,13 @@ class SignUpVC: UIViewController {
     private func configureUI() {
         setScrollView()
         generateTextFields()
+        setAttributes()
         setConstraints()
+    }
+
+    private func setAttributes() {
+        genderTableView.delegate = self
+        genderTableView.dataSource = self
     }
 
     private func setConstraints() {
@@ -86,6 +95,11 @@ class SignUpVC: UIViewController {
             $0.leading.trailing.equalTo(view).inset(20)
             $0.height.equalTo(48)
         }
+        genderChoice.snp.makeConstraints {
+            $0.top.equalTo(birthdayTextFields.snp.bottom).offset(25)
+            $0.leading.trailing.equalTo(view).inset(20)
+            $0.height.equalTo(200)
+        }
     }
 
     private func setScrollView() {
@@ -102,7 +116,7 @@ class SignUpVC: UIViewController {
             $0.height.equalTo(view.frame.height * 2)
             $0.width.equalTo(view)
         }
-        [idCheckButton, phoneNumberCheckButton, addressView, birthdayTitleView, birthdayTextFields].forEach {
+        [idCheckButton, phoneNumberCheckButton, addressView, birthdayTitleView, birthdayTextFields, genderChoice].forEach {
             contentView.addSubview($0)
         }
     }
@@ -165,5 +179,43 @@ class SignUpVC: UIViewController {
             }
             textFields.append(textField)
         }
+    }
+}
+
+// MARK: - UITableViewDataSource
+extension SignUpVC: UITableViewDataSource {
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        let number = StringManager().signUpGenderList.count
+        return number
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: SignUpGenderTableViewCell.identifier, for: indexPath) as? SignUpGenderTableViewCell else { fatalError() }
+        let title = StringManager().signUpGenderList[indexPath.row]
+        cell.configureCell(title: title)
+        return cell
+    }
+}
+
+// MARK: - UITableViewDelegate
+extension SignUpVC: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let cell = tableView.cellForRow(at: indexPath) as? SignUpGenderTableViewCell else { return }
+        switch indexPath.row {
+        case 0:
+            genderSelected = .male
+        case 1:
+            genderSelected = .female
+        case 2:
+            genderSelected = .unknwon
+        default:
+            genderSelected = .unknwon
+        }
+        cell.isActive = true
+    }
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        guard let cell = tableView.cellForRow(at: indexPath) as? SignUpGenderTableViewCell else { return }
+        cell.isActive = false
     }
 }

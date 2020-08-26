@@ -18,7 +18,8 @@
 		4246D13E24F4BD780001F9E8 /* SignUpTextFieldTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4246D13D24F4BD780001F9E8 /* SignUpTextFieldTitleView.swift */; };
 		4246D14024F4DDEA0001F9E8 /* SignUpAddressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4246D13F24F4DDEA0001F9E8 /* SignUpAddressView.swift */; };
 		4246D14424F50D9F0001F9E8 /* SignUpAddressInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4246D14324F50D9F0001F9E8 /* SignUpAddressInputView.swift */; };
-		424EA5EF24F63D9C003CC478 /* SignUpTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 424EA5EE24F63D9C003CC478 /* SignUpTableViewCell.swift */; };
+		424EA5EF24F63D9C003CC478 /* SignUpGenderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 424EA5EE24F63D9C003CC478 /* SignUpGenderTableViewCell.swift */; };
+		425C5BD524F69B6D002C57D2 /* Gender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425C5BD424F69B6D002C57D2 /* Gender.swift */; };
 		4263A2BD24F52239004CB90A /* SingUpBirthdayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4263A2BC24F52239004CB90A /* SingUpBirthdayView.swift */; };
 		4266595724F61D600058A880 /* EventCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4266595624F61D600058A880 /* EventCell.swift */; };
 		42B4FD7324F63AC30087F6B1 /* SignUpGenderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42B4FD7224F63AC30087F6B1 /* SignUpGenderView.swift */; };
@@ -91,7 +92,8 @@
 		4246D13D24F4BD780001F9E8 /* SignUpTextFieldTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpTextFieldTitleView.swift; sourceTree = "<group>"; };
 		4246D13F24F4DDEA0001F9E8 /* SignUpAddressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpAddressView.swift; sourceTree = "<group>"; };
 		4246D14324F50D9F0001F9E8 /* SignUpAddressInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpAddressInputView.swift; sourceTree = "<group>"; };
-		424EA5EE24F63D9C003CC478 /* SignUpTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpTableViewCell.swift; sourceTree = "<group>"; };
+		424EA5EE24F63D9C003CC478 /* SignUpGenderTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpGenderTableViewCell.swift; sourceTree = "<group>"; };
+		425C5BD424F69B6D002C57D2 /* Gender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gender.swift; sourceTree = "<group>"; };
 		4263A2BC24F52239004CB90A /* SingUpBirthdayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingUpBirthdayView.swift; sourceTree = "<group>"; };
 		4266595624F61D600058A880 /* EventCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventCell.swift; sourceTree = "<group>"; };
 		42B4FD7224F63AC30087F6B1 /* SignUpGenderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpGenderView.swift; sourceTree = "<group>"; };
@@ -216,6 +218,7 @@
 				42C69B5D24EE6D6800A18B4C /* SignError.swift */,
 				42C69B5F24EEC52200A18B4C /* Agreement.swift */,
 				42C69B6624EEC94400A18B4C /* AgreementCellType.swift */,
+				425C5BD424F69B6D002C57D2 /* Gender.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -235,7 +238,7 @@
 				42CD086524F623F7006A8087 /* SignUpBirthdayTextFieldView.swift */,
 				4263A2BC24F52239004CB90A /* SingUpBirthdayView.swift */,
 				42B4FD7224F63AC30087F6B1 /* SignUpGenderView.swift */,
-				424EA5EE24F63D9C003CC478 /* SignUpTableViewCell.swift */,
+				424EA5EE24F63D9C003CC478 /* SignUpGenderTableViewCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -651,8 +654,9 @@
 				AF72A5B724F6265E00D96920 /* SearchTableViewHeaderView.swift in Sources */,
 				AF9906B324EE3844005A8D89 /* CategoryMenuView.swift in Sources */,
 				AF8D2F0724F418FA00AE177D /* ProductListView.swift in Sources */,
-				424EA5EF24F63D9C003CC478 /* SignUpTableViewCell.swift in Sources */,
+				424EA5EF24F63D9C003CC478 /* SignUpGenderTableViewCell.swift in Sources */,
 				42FAF02724EE3E4B00063981 /* UserTextFieldView.swift in Sources */,
+				425C5BD524F69B6D002C57D2 /* Gender.swift in Sources */,
 				42FAF01024ED105E00063981 /* StringManager.swift in Sources */,
 				42C69B6924EECC1800A18B4C /* AgreementCheckMarkView.swift in Sources */,
 				AF4759D324F2792600FE617A /* Product.swift in Sources */,

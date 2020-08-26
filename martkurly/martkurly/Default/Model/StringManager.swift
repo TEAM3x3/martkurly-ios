@@ -190,6 +190,8 @@ struct StringManager {
         case eventName = "참여 이벤트 명"
     }
 
+    let signUpGenderList = ["남자", "여자", "선택안함"]
+
     let agreement = [
         [
             "title": "전체 동의합니다.",

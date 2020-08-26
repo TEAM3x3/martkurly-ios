@@ -52,9 +52,6 @@ class SingUpBirthdayView: UIView {
     }
 
     private func setContraints() {
-//        [yearTextField, monthTextField, dayTextField, separator1, separator2].forEach {
-//            self.addSubview($0)
-        //        }
         self.addSubview(stackView)
         stackView.snp.makeConstraints {
             $0.top.bottom.equalToSuperview()
@@ -62,15 +59,12 @@ class SingUpBirthdayView: UIView {
         }
         yearTextField.snp.makeConstraints {
             $0.width.equalTo(85)
-            $0.height.equalTo(50)
         }
         monthTextField.snp.makeConstraints {
             $0.width.equalTo(yearTextField)
-            $0.height.equalTo(yearTextField)
         }
         dayTextField.snp.makeConstraints {
             $0.width.equalTo(yearTextField)
-            $0.height.equalTo(yearTextField)
         }
     }
 }

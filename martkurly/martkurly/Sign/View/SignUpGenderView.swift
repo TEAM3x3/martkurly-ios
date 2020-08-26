@@ -12,21 +12,32 @@ class SignUpGenderView: UIView {
 
     // MARK: - Properties
     private let title = SignUpTextFieldTitleView(title: StringManager.SignUp.gender.rawValue, mendatory: false)
-    private let tableView = UITableView()
+    let tableView = UITableView()
 
     // MARK: - Lifecycle
     override init(frame: CGRect) {
         super.init(frame: frame)
-        configureUI()
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        configureUI()
+    }
+
     // MARK: - UI
     private func configureUI() {
+        setAttributes()
         setContraints()
+    }
+
+    private func setAttributes() {
+        tableView.register(SignUpGenderTableViewCell.self, forCellReuseIdentifier: SignUpGenderTableViewCell.identifier)
+        tableView.rowHeight = 50
+        tableView.separatorStyle = .none
     }
 
     private func setContraints() {
@@ -37,7 +48,7 @@ class SignUpGenderView: UIView {
             $0.top.leading.equalToSuperview()
         }
         tableView.snp.makeConstraints {
-            $0.top.equalTo(title.snp.bottom).offset(20)
+            $0.top.equalTo(title.snp.bottom).offset(10)
             $0.leading.trailing.bottom.equalToSuperview()
         }
     }
