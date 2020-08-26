@@ -91,4 +91,24 @@ struct ImageManager {
             }
         }
     }
+
+    enum SignUp: RawRepresentable {
+        typealias RawValue = UIImage
+
+        case search
+
+        init?(rawValue: UIImage) {
+            switch rawValue {
+            default:
+                return nil
+            }
+        }
+
+        var rawValue: UIImage {
+            switch self {
+            case .search:
+                return UIImage(systemName: "magnifyingglass")!.withTintColor(.black, renderingMode: .alwaysOriginal)
+            }
+        }
+    }
 }

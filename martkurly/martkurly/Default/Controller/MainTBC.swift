@@ -66,8 +66,8 @@ class MainTBC: UITabBarController {
 
         self.viewControllers = [naviHomeVC, naviRecommendVC, naviCategoryVC, naviSearchVC, naviMykurlyVC]
 
-//        // 이하 테스트용
-//        let testVC = SignInVC()
+        // 이하 테스트용
+//        let testVC = SignUpVC()
 //        let naviTestVC = UINavigationController(rootViewController: testVC)
 //        naviTestVC.tabBarItem = UITabBarItem(
 //            title: "홈",

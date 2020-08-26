@@ -162,7 +162,8 @@ struct StringManager {
     let category16 = ["전체보기", "분유∙간편 이유식", "이유식 재료", "유아∙어린이 음식", "간식∙음료∙건강식품", "유아용품∙젖병∙식기류", "기저귀∙물티슈", "목욕∙세제∙위생용품", "유아스킨∙구강케어"]
     let category17 = ["전체보기", "강아지 간식", "강아지 주식", "고양이 간식", "고양이 주식", "반려동물 용품"]
 
-    enum SignUp: String {
+    enum SignUp: String {}
+    enum SignUpError: String {
         case id1 = "6자 이상의 영문 혹은 영문과 숫자를 조합"
         case id2 = "아이디 중복확인"
         case pw1 = "10자 이상 입력"
@@ -170,6 +171,44 @@ struct StringManager {
         case pw3 = "동일한 숫자가 3개 이상 연속 사용 불가"
         case pw4 = "동일한 비밀번호를 입력해주세요"
         case address = "배송지에 따라 상품 정보가 달라질 수 있습니다."
+    }
+
+    let signUpTextFieldsInfo = [
+        [
+            "아이디": "예: martkurly12"
+        ],
+        [
+            "비밀번호": "비밀번호를 입력해주세요"
+        ],
+        [
+            "비밀번호 확인": "비밀번호를 한번 더 입력해주세요"
+        ],
+        [
+            "이름": "이름을 입력해주세요"
+        ],
+        [
+            "이메일": "예: martkurly@kurly.com"
+        ],
+        [
+            "휴대폰": "숫자만 입력해주세요"
+        ]
+    ]
+
+    enum SignUp: String {
+        case checkDuplicate = "중복확인"
+        case checkPhoneNumber = "인증번호 받기"
+        case address = "주소"
+        case addtionalAddress = "나머지 주소를 입력해주세요"
+        case addtionalAddressInfo = "배송지에 따라 상품 정보가 달라질 수 있습니다."
+        case birthday = "생년월일"
+        case gender = "성별"
+        case male = "남자"
+        case female = "여자"
+        case unknown = "선택안함"
+        case additionalInfo  = "추가입력 사항"
+        case additionalInfoSubtitle = "추천인 아이디와 참여 이벤트명 중 하나만 선택 가능합니다"
+        case recommender = "추천인"
+        case eventName = "참여 이벤트 명"
     }
 
     let agreement = [

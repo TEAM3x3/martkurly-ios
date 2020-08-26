@@ -14,6 +14,8 @@ class EventListCell: UICollectionViewCell {
 
     static let identifier = "EventListCell"
 
+    var tappedEventItem: ((Int) -> Void)?
+
     private lazy var eventTableView = UITableView().then {
         $0.rowHeight = 160
         $0.backgroundColor = .white
@@ -69,45 +71,15 @@ extension EventListCell: UITableViewDataSource {
     }
 }
 
+// MARK: - UITableViewDelegate
+
 extension EventListCell: UITableViewDelegate {
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         return UIView()
     }
-}
 
-// MARK: - EventCell
-
-class EventCell: UITableViewCell {
-
-    // MARK: - Properties
-
-    static let identifier = "EventCell"
-
-    private let eventImageView = UIImageView().then {
-        $0.backgroundColor = .white
-        $0.contentMode = .scaleAspectFill
-        $0.clipsToBounds = true
-
-        $0.image = UIImage(named: "TestImage")
-    }
-
-    // MARK: - LifeCycle
-
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        configureUI()
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    // MARK: - Helpers
-
-    func configureUI() {
-        self.addSubview(eventImageView)
-        eventImageView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
-        }
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//        let cell = tableView.cellForRow(at: indexPath) as! EventCell
+        tappedEventItem?(indexPath.section)
     }
 }

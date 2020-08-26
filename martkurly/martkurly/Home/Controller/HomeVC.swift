@@ -41,6 +41,14 @@ class HomeVC: UIViewController {
                                leftBarbuttonStyle: .none)
     }
 
+    // MARK: - Actions
+
+    func tappedEventItem(section: Int) {
+        let controller = EventProductDetailListVC()
+        controller.hidesBottomBarWhenPushed = true
+        self.navigationController?.pushViewController(controller, animated: true)
+    }
+
     // MARK: - Helpers
 
     func configureNavigationBar() {
@@ -108,24 +116,25 @@ extension HomeVC: UICollectionViewDataSource {
             let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: ProductListCell.identifier,
                 for: indexPath) as! ProductListCell
-            cell.sortType = .fastAreaAndCondition
+            cell.headerType = .fastAreaAndCondition
             return cell
         case .baseProduct:
             let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: ProductListCell.identifier,
                 for: indexPath) as! ProductListCell
-                cell.sortType = .fastAreaAndCondition
+                cell.headerType = .fastAreaAndCondition
             return cell
         case .cheapProduct:
             let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: ProductListCell.identifier,
                 for: indexPath) as! ProductListCell
-                cell.sortType = .fastAreaAndBenefit
+                cell.headerType = .fastAreaAndBenefit
             return cell
         case .eventProduct:
             let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: EventListCell.identifier,
                 for: indexPath) as! EventListCell
+            cell.tappedEventItem = tappedEventItem(section:)
             return cell
         }
     }
