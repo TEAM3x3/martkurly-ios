@@ -14,8 +14,14 @@ class SearchResultCell: UITableViewCell {
 
     static let identifier = "SearchResultCell"
 
-    private let resultLabel = UILabel().then {
+    var isEmptyRecentArray: Bool = false
+    var searchType: SearchType = .popular {
+        didSet { configure() }
+    }
+
+    let resultLabel = UILabel().then {
         $0.text = "테스트"
+        $0.textColor = ColorManager.General.mainPurple.rawValue
         $0.font = .systemFont(ofSize: 18)
     }
 
@@ -48,6 +54,17 @@ class SearchResultCell: UITableViewCell {
         underLine.snp.makeConstraints {
             $0.leading.bottom.trailing.equalToSuperview()
             $0.height.equalTo(0.5)
+        }
+    }
+
+    func configure() {
+        switch searchType {
+        case .popular:
+            resultLabel.textColor = ColorManager.General.mainPurple.rawValue
+        case .recent:
+            resultLabel.textColor = isEmptyRecentArray ? .lightGray : .black
+        case .fileShort:
+            resultLabel.textColor = .black
         }
     }
 }

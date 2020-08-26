@@ -15,7 +15,10 @@ class SearchVC: UIViewController {
     private let defaultInset: CGFloat = 16
 
     private let searchBar = SearchBarView()
+    private var searchType: SearchType = .fileShort
     private let resultTableView = UITableView()
+
+    private var recentArray: [String] = []
 
     // MARK: - LifeCycle
 
@@ -63,8 +66,10 @@ class SearchVC: UIViewController {
         resultTableView.backgroundColor = .white
         resultTableView.separatorStyle = .none
         resultTableView.rowHeight = 52
+        resultTableView.isScrollEnabled = false
 
         resultTableView.dataSource = self
+        resultTableView.delegate = self
 
         resultTableView.register(SearchResultCell.self,
                                  forCellReuseIdentifier: SearchResultCell.identifier)
@@ -75,14 +80,41 @@ class SearchVC: UIViewController {
 
 extension SearchVC: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5
+        switch searchType {
+        case .popular:
+            return 5
+        case .recent:
+            return recentArray.isEmpty ? 1 : recentArray.count
+        case .fileShort:
+            return 3
+        }
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(
             withIdentifier: SearchResultCell.identifier,
             for: indexPath) as! SearchResultCell
+
+        switch searchType {
+        case .popular: break
+        case .recent:
+            cell.isEmptyRecentArray = recentArray.isEmpty ? true : false
+            cell.resultLabel.text = recentArray.isEmpty ?
+                searchType.emptySentence : recentArray[indexPath.row]
+        case .fileShort: break
+        }
+
+        cell.searchType = searchType
         return cell
+    }
+
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerView = SearchTableViewHeaderView(searchType: searchType)
+        return headerView
+    }
+
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 20
     }
 }
 
