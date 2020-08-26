@@ -50,7 +50,7 @@ class MainTBC: UITabBarController {
             image: UIImage(systemName: "list.dash"),
             selectedImage: nil)
 
-        let searchVC = UIViewController()
+        let searchVC = SearchVC()
         let naviSearchVC = UINavigationController(rootViewController: searchVC)
         naviSearchVC.tabBarItem = UITabBarItem(
             title: "검색",
