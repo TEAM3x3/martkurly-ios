@@ -85,6 +85,7 @@ extension UIViewController {
 
         switch type {
         case .purpleType:
+            navigationController?.navigationBar.barStyle = .black
             navigationController?.navigationBar.titleTextAttributes =
                 [NSAttributedString.Key.foregroundColor: UIColor.white]
             navigationController?.navigationBar.barTintColor = .martkurlyMainPurpleColor
@@ -92,6 +93,7 @@ extension UIViewController {
             backPopBarButton.tintColor = .white
             backDismissBarButton.tintColor = .white
         case .whiteType:
+        navigationController?.navigationBar.barStyle = .default
             navigationController?.navigationBar.titleTextAttributes =
                 [NSAttributedString.Key.foregroundColor: UIColor.black]
             navigationController?.navigationBar.barTintColor = .white
