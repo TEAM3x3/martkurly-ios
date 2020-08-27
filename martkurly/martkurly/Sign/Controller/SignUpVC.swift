@@ -15,7 +15,7 @@ final class SignUpVC: UIViewController {
         $0.backgroundColor = .separatorGray
     }
     private let scrollView = UIScrollView().then {
-        $0.backgroundColor = .gray
+        $0.backgroundColor = .backgroundGray
     }
     private let contentView = UIView().then {
         $0.backgroundColor = .white
@@ -31,6 +31,14 @@ final class SignUpVC: UIViewController {
     private var genderSelected: Gender = .unknwon // 유저가 선택한 성별
     private let additionalInfoView = AdditionalInfoView()
     private lazy var additionalInfoTableView = additionalInfoView.tableView // 추천인 및 참여 이벤트명 선택
+    private let contentView2 = UIView().then {
+        $0.backgroundColor = .white
+    }
+    private let data = StringManager().agreement
+    private let agreementTitleView = SignUpTextFieldTitleView(title: StringManager.SignUp.agreement.rawValue, mendatory: true)
+    private let agreementView = AgreementView()
+    private lazy var agreementTableView = agreementView.tableView
+    private let signUpButton = KurlyButton(title: StringManager.SignUp.signUp.rawValue, style: .purple)
 
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -48,9 +56,14 @@ final class SignUpVC: UIViewController {
                                titleText: StringManager.Sign.signUp.rawValue)
     }
 
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-//        scrollView.contentSize = CGSize(width: view.frame.width, height: view.frame.height * 2)
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        contentView.snp.updateConstraints {
+            $0.height.equalTo(additionalInfoView.frame.maxY + 12)
+        }
+        contentView2.snp.updateConstraints {
+            $0.height.equalTo(signUpButton.frame.maxY + 20)
+        }
     }
 
     // MARK: - UI
@@ -67,6 +80,9 @@ final class SignUpVC: UIViewController {
 
         additionalInfoTableView.delegate = self
         additionalInfoTableView.dataSource = self
+
+        agreementTableView.delegate = self
+        agreementTableView.dataSource = self
     }
 
     private func setConstraints() {
@@ -113,21 +129,52 @@ final class SignUpVC: UIViewController {
     }
 
     private func setScrollView() {
-        view.addSubview(scrollView)
-        scrollView.snp.makeConstraints {
+        [separtor, scrollView].forEach {
+            view.addSubview($0)
+        }
+        separtor.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide)
+            $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(1)
+        }
+        scrollView.snp.makeConstraints {
+            $0.top.equalTo(separtor.snp.bottom)
             $0.leading.trailing.equalToSuperview()
             $0.bottom.equalToSuperview()
             $0.width.equalTo(view.frame.width)
         }
         scrollView.addSubview(contentView)
         contentView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
-            $0.height.equalTo(view.frame.height * 2)
+            $0.top.leading.trailing.equalToSuperview()
+            $0.height.equalTo(view.frame.height * 1.5)
             $0.width.equalTo(view)
         }
         [idCheckButton, phoneNumberCheckButton, addressView, birthdayTitleView, birthdayTextFields, genderChoice, additionalInfoView].forEach {
             contentView.addSubview($0)
+        }
+        scrollView.addSubview(contentView2)
+        contentView2.snp.makeConstraints {
+            $0.top.equalTo(contentView.snp.bottom).offset(12)
+            $0.leading.trailing.bottom.equalToSuperview()
+            $0.height.equalTo(500)
+            $0.width.equalToSuperview()
+        }
+        [agreementTitleView, agreementView, signUpButton].forEach {
+            contentView2.addSubview($0)
+        }
+        agreementTitleView.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(24)
+            $0.leading.trailing.equalToSuperview().inset(20)
+        }
+        agreementView.snp.makeConstraints {
+            $0.top.equalTo(agreementTitleView).offset(20)
+            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.height.equalTo(500)
+        }
+        signUpButton.snp.makeConstraints {
+            $0.top.equalTo(agreementView.snp.bottom).offset(8)
+            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.height.equalTo(48)
         }
     }
 
@@ -145,7 +192,7 @@ final class SignUpVC: UIViewController {
 
             if textFields.isEmpty == true {
                 titleLabel.snp.makeConstraints {
-                    $0.top.equalToSuperview().offset(4)
+                    $0.top.equalToSuperview().offset(12)
                     $0.leading.trailing.equalTo(view).inset(20)
                     $0.height.equalTo(30)
                 }
@@ -211,13 +258,44 @@ final class SignUpVC: UIViewController {
         guard let cell = tableView.cellForRow(at: indexPath) as? AdditionalInfoTableViewCell else { return }
         switch indexPath.row {
         case 0:
-            print(0)
+            print(#function, 0)
         case 1:
-            print(1)
+            print(#function, 1)
         default:
             print(#function)
         }
         cell.isActive = true
+    }
+
+    private func handleAgreementTableView(tableView: UITableView, indexPath: IndexPath) {
+        guard let cell = tableView.cellForRow(at: indexPath) as? AgreementTableViewCell else { return }
+        switch indexPath.row {
+        case 0:
+            cell.checkmark.isActive = true
+        case 1:
+            cell.checkmark.isActive = true
+        case 2:
+            cell.checkmark.isActive = true
+        case 3:
+            cell.checkmark.isActive = true
+        default:
+            cell.checkmark.isActive = true
+        }
+    }
+
+    private func configureCellType(type: String) -> AgreementCellType {
+        switch type {
+        case "title":
+            return .title
+        case "page":
+            return .page
+        case "choice":
+            return .choice
+        case "normal":
+            return .normal
+        default:
+            fatalError()
+        }
     }
 }
 
@@ -232,6 +310,8 @@ extension SignUpVC: UITableViewDataSource {
         case additionalInfoTableView:
             let number = StringManager().additionalInfoList.count
             return number
+        case agreementTableView:
+            return data.count
         default:
             return 0
         }
@@ -250,6 +330,17 @@ extension SignUpVC: UITableViewDataSource {
             let title = StringManager().additionalInfoList[indexPath.row]
             cell.configureCell(title: title)
             return cell
+        case agreementTableView:
+            let cell = AgreementTableViewCell()
+            guard
+                let title = data[indexPath.row]["title"],
+                let subtitle = data[indexPath.row]["subtitle"],
+                let info = data[indexPath.row]["info"],
+                let type = data[indexPath.row]["type"]
+                else { fatalError() }
+            let cellType = configureCellType(type: type)
+            cell.configureCell(title: title, info: info, subtitle: subtitle, cellType: cellType)
+            return cell
         default:
             fatalError()
         }
@@ -265,6 +356,8 @@ extension SignUpVC: UITableViewDelegate {
             handleGenderTableView(tableView: tableView, indexPath: indexPath)
         case additionalInfoTableView:
             handleAdditionalInfoTableView(tableView: tableView, indexPath: indexPath)
+        case agreementTableView:
+            handleAgreementTableView(tableView: tableView, indexPath: indexPath)
         default:
             break
         }
@@ -277,8 +370,39 @@ extension SignUpVC: UITableViewDelegate {
         case additionalInfoTableView:
             guard let cell = tableView.cellForRow(at: indexPath) as? AdditionalInfoTableViewCell else { return }
             cell.isActive = false
+        case agreementTableView:
+            guard let cell = tableView.cellForRow(at: indexPath) as? AgreementTableViewCell else { return }
+            cell.checkmark.isActive = false
         default:
             break
+        }
+    }
+
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        switch tableView {
+        case genderTableView:
+            return 50
+        case additionalInfoTableView:
+            return 50
+        case agreementTableView:
+            switch indexPath.row {
+            case 0:
+                return 100
+            case 1:
+                return 50
+            case 2:
+                return 50
+            case 3:
+                return 50
+            case 4:
+                return 180
+            case 5:
+                return 50
+            default:
+                fatalError()
+            }
+        default:
+            return 0
         }
     }
 }

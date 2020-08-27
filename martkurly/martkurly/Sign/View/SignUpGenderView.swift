@@ -36,7 +36,6 @@ class SignUpGenderView: UIView {
 
     private func setAttributes() {
         tableView.register(SignUpGenderTableViewCell.self, forCellReuseIdentifier: SignUpGenderTableViewCell.identifier)
-        tableView.rowHeight = 50
         tableView.separatorStyle = .none
     }
 

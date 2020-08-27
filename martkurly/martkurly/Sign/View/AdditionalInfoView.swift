@@ -42,7 +42,6 @@ class AdditionalInfoView: UIView {
     private func setAttributes() {
         tableView.register(AdditionalInfoTableViewCell.self, forCellReuseIdentifier: AdditionalInfoTableViewCell.identifier)
         tableView.separatorStyle = .none
-        tableView.rowHeight = 50
     }
 
     private func setContraints() {

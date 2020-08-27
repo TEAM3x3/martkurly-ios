@@ -188,6 +188,8 @@ struct StringManager {
         case additionalInfoSubtitle = "추천인 아이디와 참여 이벤트명 중 하나만 선택 가능합니다"
         case recommender = "추천인"
         case eventName = "참여 이벤트 명"
+        case agreement = "이용약관동의"
+        case signUp = "가입하기"
     }
 
     let signUpGenderList = ["남자", "여자", "선택안함"]

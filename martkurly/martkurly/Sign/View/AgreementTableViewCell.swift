@@ -13,12 +13,13 @@ class AgreementTableViewCell: UITableViewCell {
     // MARK: - Properties
     private var cellType: AgreementCellType = .title
 
-    private let checkmark = AgreementCheckMarkView()
+    let checkmark = AgreementCheckMarkView()
     private let title = UILabel().then {
         $0.font = UIFont.systemFont(ofSize: 15, weight: .light)
     }
     private let info = UILabel().then {
         $0.numberOfLines = 0
+        $0.font = UIFont.systemFont(ofSize: 14, weight: .light)
     }
     private let subtitle = UILabel().then {
         $0.font = UIFont.systemFont(ofSize: 15, weight: .light)
@@ -171,7 +172,7 @@ class AgreementTableViewCell: UITableViewCell {
             $0.top.equalTo(smsCheckmark.snp.bottom).offset(12)
             $0.leading.equalTo(smsCheckmark)
             $0.width.equalTo(230)
-            $0.height.equalTo(80)
+            $0.height.equalTo(70)
         }
     }
 
