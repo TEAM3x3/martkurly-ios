@@ -38,6 +38,13 @@ final class SignUpVC: UIViewController {
     private let agreementTitleView = SignUpTextFieldTitleView(title: StringManager.SignUp.agreement.rawValue, mendatory: true)
     private let agreementView = AgreementView()
     private lazy var agreementTableView = agreementView.tableView
+    private var agreementCells = [AgreementTableViewCell]()
+    private var agreementSelectedCells: Set<Int> = [] // 유저가 선택한 이용약관동의에 대한 정보
+    private var selectedPromotion: Set<Int> = [] {
+        willSet {
+            print(newValue)
+        }
+    }// 유저가 선택한 혜택정보 수신에 대한 정보
     private let signUpButton = KurlyButton(title: StringManager.SignUp.signUp.rawValue, style: .purple)
 
     // MARK: - Lifecycle
@@ -238,6 +245,26 @@ final class SignUpVC: UIViewController {
         }
     }
 
+    // MARK: - Selectors
+    @objc
+    private func handleSMSTapGesture(_ sender: UITapGestureRecognizer) {
+        agreementCells[5].smsCheckmark.isActive
+            ? { agreementCells[5].smsCheckmark.isActive = false
+                selectedPromotion.remove(0) }()
+            : { agreementCells[5].smsCheckmark.isActive = true
+                selectedPromotion.insert(0) }()
+        checkPromotionStatus()
+    }
+    @objc
+    private func handleEmailTapGesture(_ sender: UITapGestureRecognizer) {
+        agreementCells[5].emailCheckmark.isActive
+            ? { agreementCells[5].emailCheckmark.isActive = false
+                selectedPromotion.remove(1) }()
+            : { agreementCells[5].emailCheckmark.isActive = true
+                selectedPromotion.insert(1) }()
+        checkPromotionStatus()
+    }
+
     // MARK: - Helpers
     private func handleGenderTableView(tableView: UITableView, indexPath: IndexPath) {
         guard let cell = tableView.cellForRow(at: indexPath) as? SignUpGenderTableViewCell else { return }
@@ -271,15 +298,16 @@ final class SignUpVC: UIViewController {
         guard let cell = tableView.cellForRow(at: indexPath) as? AgreementTableViewCell else { return }
         switch indexPath.row {
         case 0:
-            cell.checkmark.isActive = true
-        case 1:
-            cell.checkmark.isActive = true
-        case 2:
-            cell.checkmark.isActive = true
-        case 3:
-            cell.checkmark.isActive = true
+            agreementSelectedCells.contains(0) ? deactivateAllCells() : activateAllCells()
+        case 5:
+            break
+        case 4:
+            agreementSelectedCells.contains(indexPath.row) ? deselectsAllPromotion() : selectsAllPromotion()
+            fallthrough
         default:
-            cell.checkmark.isActive = true
+            agreementSelectedCells.contains(indexPath.row) ? deleteCellInfo(indexPath: indexPath) : insertCellInfo(indexPath: indexPath)
+            cell.checkmark.isActive.toggle()
+            agreementSelectedCells.contains(0) ? deactivateSelectsAll() : activateSelectsAll()
         }
     }
 
@@ -295,6 +323,91 @@ final class SignUpVC: UIViewController {
             return .normal
         default:
             fatalError()
+        }
+    }
+
+    private func addTapGestures(cell: AgreementTableViewCell, indexPath: IndexPath) {
+        guard indexPath.row == 5 else { return }
+        let smsCheckmarkGesture = UITapGestureRecognizer(target: self, action: #selector(handleSMSTapGesture(_:)))
+//        let smsLabelGesture = UITapGestureRecognizer(target: self, action: #selector(handleSMSTapGesture(_:)))
+        let emailCheckmarkGesture = UITapGestureRecognizer(target: self, action: #selector(handleEmailTapGesture(_:)))
+//        let emailLabelGesture = UITapGestureRecognizer(target: self, action: #selector(handleEmailTapGesture(_:)))
+        cell.smsCheckmark.addGestureRecognizer(smsCheckmarkGesture)
+//        cell.smsLabel.addGestureRecognizer(smsLabelGesture)
+        cell.emailCheckmark.addGestureRecognizer(emailCheckmarkGesture)
+//        cell.emailLabel.addGestureRecognizer(emailLabelGesture)
+    }
+
+    private func activateAllCells() {
+        var counter = 0
+        for cell in agreementCells {
+            cell.checkmark.isActive = true
+            cell.smsCheckmark.isActive = true
+            cell.emailCheckmark.isActive = true
+            agreementSelectedCells.insert(counter)
+            counter += 1
+        }
+        guard selectedPromotion.count != 2 else { return }
+        selectedPromotion.insert(0)
+        selectedPromotion.insert(1)
+    }
+
+    private func deactivateAllCells() {
+        for cell in agreementCells {
+            cell.checkmark.isActive = false
+            cell.smsCheckmark.isActive = false
+            cell.emailCheckmark.isActive = false
+            agreementSelectedCells.removeAll()
+            selectedPromotion.removeAll()
+        }
+    }
+
+    private func activateSelectsAll() {
+        if agreementSelectedCells.contains(1),
+            agreementSelectedCells.contains(2),
+            agreementSelectedCells.contains(3),
+            agreementSelectedCells.contains(4),
+            agreementSelectedCells.contains(6) {
+            activateAllCells()
+        }
+    }
+
+    private func deactivateSelectsAll() {
+        guard let cell = agreementCells.first else { return }
+        cell.checkmark.isActive = false
+        agreementSelectedCells.remove(0)
+    }
+
+    private func insertCellInfo(indexPath: IndexPath) {
+        agreementSelectedCells.insert(indexPath.row)
+    }
+
+    private func deleteCellInfo(indexPath: IndexPath) {
+        agreementSelectedCells.remove(indexPath.row)
+    }
+
+    private func selectsAllPromotion() {
+        agreementCells[5].smsCheckmark.isActive = true
+        agreementCells[5].emailCheckmark.isActive = true
+        selectedPromotion.insert(0)
+        selectedPromotion.insert(1)
+    }
+
+    private func deselectsAllPromotion() {
+        agreementCells[5].smsCheckmark.isActive = false
+        agreementCells[5].emailCheckmark.isActive = false
+        selectedPromotion.removeAll()
+    }
+
+    private func checkPromotionStatus() {
+        if selectedPromotion.contains(0),
+            selectedPromotion.contains(1) {
+            agreementCells[4].checkmark.isActive = true
+            agreementSelectedCells.insert(4)
+            activateSelectsAll()
+        } else {
+            agreementCells[4].checkmark.isActive = false
+            deactivateSelectsAll()
         }
     }
 }
@@ -315,7 +428,6 @@ extension SignUpVC: UITableViewDataSource {
         default:
             return 0
         }
-
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -340,11 +452,12 @@ extension SignUpVC: UITableViewDataSource {
                 else { fatalError() }
             let cellType = configureCellType(type: type)
             cell.configureCell(title: title, info: info, subtitle: subtitle, cellType: cellType)
+            addTapGestures(cell: cell, indexPath: indexPath)
+            agreementCells.append(cell)
             return cell
         default:
             fatalError()
         }
-
     }
 }
 
@@ -371,8 +484,7 @@ extension SignUpVC: UITableViewDelegate {
             guard let cell = tableView.cellForRow(at: indexPath) as? AdditionalInfoTableViewCell else { return }
             cell.isActive = false
         case agreementTableView:
-            guard let cell = tableView.cellForRow(at: indexPath) as? AgreementTableViewCell else { return }
-            cell.checkmark.isActive = false
+            break
         default:
             break
         }
@@ -395,8 +507,10 @@ extension SignUpVC: UITableViewDelegate {
             case 3:
                 return 50
             case 4:
-                return 180
+                return 50 // 130
             case 5:
+                return 130
+            case 6:
                 return 50
             default:
                 fatalError()

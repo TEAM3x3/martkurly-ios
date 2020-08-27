@@ -32,7 +32,7 @@ class AgreementView: UIView {
     private func setPropertyAttributes() {
         tableView.isScrollEnabled = false
         tableView.separatorStyle = .none
-        tableView.allowsMultipleSelection = true
+//        tableView.allowsMultipleSelection = true
     }
 
     private func setConstraints() {

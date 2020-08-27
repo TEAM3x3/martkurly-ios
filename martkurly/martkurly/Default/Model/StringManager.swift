@@ -224,6 +224,12 @@ struct StringManager {
             "title": "무료배송, 할인쿠폰 등 혜택/정보 수신 동의",
             "subtitle": "(선택)",
             "info": "",
+            "type": "normal"
+        ],
+        [
+            "title": "",
+            "subtitle": "",
+            "info": "",
             "type": "choice"
         ],
         [

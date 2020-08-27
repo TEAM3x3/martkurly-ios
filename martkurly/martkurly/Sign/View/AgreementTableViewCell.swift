@@ -29,14 +29,14 @@ class AgreementTableViewCell: UITableViewCell {
     private let pushButton = UIButton().then {
         $0.setImage(ImageManager.General.goForward.rawValue, for: .normal)
     }
-    private let smsCheckmark = AgreementCheckMarkView()
-    private let smsLabel = UILabel().then {
+    let smsCheckmark = AgreementCheckMarkView()
+    let smsLabel = UILabel().then {
         $0.text = "SMS"
         $0.font = UIFont.systemFont(ofSize: 15, weight: .light)
     }
     private let agreementPromotionView = AgreementPromotionView()
-    private let emailCheckmark = AgreementCheckMarkView()
-    private let emailLabel = UILabel().then {
+    let emailCheckmark = AgreementCheckMarkView()
+    let emailLabel = UILabel().then {
         $0.text = "이메일"
         $0.font = UIFont.systemFont(ofSize: 15, weight: .light)
     }
@@ -134,25 +134,12 @@ class AgreementTableViewCell: UITableViewCell {
     }
 
     private func setPropertiesForChoiceType() {
-        [checkmark, title, subtitle, smsCheckmark, smsLabel, emailCheckmark, emailLabel, agreementPromotionView].forEach {
+        [smsCheckmark, smsLabel, emailCheckmark, emailLabel, agreementPromotionView].forEach {
             self.addSubview($0)
         }
-        checkmark.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(10)
-            $0.leading.equalToSuperview()
-            $0.height.width.equalTo(30)
-        }
-        title.snp.makeConstraints {
-            $0.leading.equalTo(checkmark.snp.trailing).offset(12)
-            $0.bottom.equalTo(checkmark).offset(-3)
-        }
-        subtitle.snp.makeConstraints {
-            $0.bottom.equalTo(title)
-            $0.leading.equalTo(title.snp.trailing).offset(8)
-        }
         smsCheckmark.snp.makeConstraints {
-            $0.leading.equalTo(title)
-            $0.top.equalTo(title.snp.bottom).offset(20)
+            $0.top.equalToSuperview().offset(4)
+            $0.leading.equalToSuperview().offset(40)
             $0.height.width.equalTo(30)
         }
         smsLabel.snp.makeConstraints {
@@ -160,8 +147,8 @@ class AgreementTableViewCell: UITableViewCell {
             $0.bottom.equalTo(smsCheckmark).offset(-3)
         }
         emailCheckmark.snp.makeConstraints {
+            $0.top.equalTo(smsCheckmark)
             $0.leading.equalTo(smsLabel.snp.trailing).offset(112)
-            $0.top.equalTo(title.snp.bottom).offset(20)
             $0.height.width.equalTo(30)
         }
         emailLabel.snp.makeConstraints {
