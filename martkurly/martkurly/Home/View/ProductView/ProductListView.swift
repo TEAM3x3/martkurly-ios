@@ -36,6 +36,8 @@ class ProductListView: UIView {
     private let sortListTableView = UITableView()
     private let containerView = UIView()
 
+    var tappedProduct: (() -> Void)?
+
     // MARK: - LifeCycle
 
     init(headerType: SortHeaderType) {
@@ -115,7 +117,6 @@ extension ProductListView: UICollectionViewDataSource {
         let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: ProductCell.identifier,
             for: indexPath) as! ProductCell
-
         return cell
     }
 
@@ -136,6 +137,10 @@ extension ProductListView: UICollectionViewDataSource {
 // MARK: - UICollectionViewDelegateFlowLayout
 
 extension ProductListView: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        tappedProduct?()
+    }
+
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = (UIScreen.main.bounds.width - (sideInset * 3)) / 2
         return CGSize(width: width, height: width * 2)

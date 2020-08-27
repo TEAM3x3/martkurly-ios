@@ -21,8 +21,44 @@ enum MainCategoryType: Int, CaseIterable {
 }
 
 /*
+ Product Detail Page에서 5개로 나눠져 있는 카테고리 목록 Enum
+ "상품설명", "상품이미지", "상세정보", "후기", "상품문의"
+ */
+
+enum ProductCategoryType: Int, CaseIterable {
+    case productExplain
+    case productImage
+    case productDetailInfo
+    case productReviews
+    case productInquiry
+
+    var description: String {
+        switch self {
+        case .productExplain: return "상품설명"
+        case .productImage: return "상품이미지"
+        case .productDetailInfo: return "상세정보"
+        case .productReviews: return "후기"
+        case .productInquiry: return "상품문의"
+        }
+    }
+
+    static func getAllCases(reviewsCount: Int) -> [String] {
+        var array = [String]()
+        ProductCategoryType.allCases.forEach {
+            if $0 == .productReviews {
+                array.append("\($0.description)\n(\(reviewsCount)+)")
+                return
+            }
+            array.append($0.description)
+        }
+        return array
+    }
+}
+
+/*
  https://www.notion.so/Default-View-API-Document-53d6f4325b9e4400a483672fb5db18cb
  상위 Notion 참고
+ Category Menu Bar Style Type
  */
 
 enum CategoryType {
