@@ -18,9 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         let controller = MainTBC()
         window?.rootViewController = controller
-
         window?.makeKeyAndVisible()
-
         return true
     }
 }
