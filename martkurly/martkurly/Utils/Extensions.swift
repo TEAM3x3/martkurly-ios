@@ -85,6 +85,7 @@ extension UIViewController {
 
         switch type {
         case .purpleType:
+            navigationController?.navigationBar.barStyle = .black
             navigationController?.navigationBar.titleTextAttributes =
                 [NSAttributedString.Key.foregroundColor: UIColor.white]
             navigationController?.navigationBar.barTintColor = .martkurlyMainPurpleColor
@@ -92,6 +93,7 @@ extension UIViewController {
             backPopBarButton.tintColor = .white
             backDismissBarButton.tintColor = .white
         case .whiteType:
+        navigationController?.navigationBar.barStyle = .default
             navigationController?.navigationBar.titleTextAttributes =
                 [NSAttributedString.Key.foregroundColor: UIColor.black]
             navigationController?.navigationBar.barTintColor = .white
@@ -109,5 +111,15 @@ extension UIViewController {
     @objc
     func tappedDismissButton() {
         self.dismiss(animated: true, completion: nil)
+    }
+
+    func hideKeyboardWhenTappedAround() {
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIViewController.dismissKeyboard))
+        tap.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
+    }
+
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
     }
 }
