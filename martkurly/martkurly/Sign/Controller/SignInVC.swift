@@ -130,6 +130,7 @@ class SignInVC: UIViewController {
     }
 
     private func animateWarning() {
+        warning.isHidden = false
         UIView.animate(
             withDuration: 0.1,
             delay: 0,
@@ -147,7 +148,7 @@ class SignInVC: UIViewController {
                         $0.top.equalTo(self.view.safeAreaLayoutGuide).offset(-130)
                     }
                     self.view.layoutIfNeeded()
-            }, completion: nil)
+            }, completion: { _ in return self.warning.isHidden = true })
         })
     }
 
@@ -164,7 +165,8 @@ class SignInVC: UIViewController {
             let nextVC = ForgotPWVC()
             navigationController?.pushViewController(nextVC, animated: true)
         case signUpButton:
-            break
+            let nextVC = SignUpVC()
+            navigationController?.pushViewController(nextVC, animated: true)
         default:
             return
         }

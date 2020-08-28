@@ -246,5 +246,15 @@ struct StringManager {
         case welcome = "회원 가입하고 \n다양한 혜택을 받아보세요!"
         case promotion = "가입 혜택 보기 >"
         case sign = "로그인/회원가입"
+        case noSignInOrders = "비회원 주문 조회"
+        case deliveryInfo = "배송 안내"
+        case notice = "공지사항"
+        case faq = "자주하는 질문"
+        case customerService = "고객센터"
+        case aboutKurly = "컬리소개"
+        case notificationSetting = "알림 설정"
+        case checkOrderStatus = "주문 확인"
+        case nameOfOrderer = "주문자명"
+        case orderNumber = "주문번호"
     }
 }

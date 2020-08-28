@@ -34,17 +34,9 @@ class MyKurlyVC: UIViewController {
         setNavigationBarStatus(type: .purpleType, isShowCart: true, leftBarbuttonStyle: .none, titleText: StringManager.MyKurly.title.rawValue)
     }
     override func viewDidAppear(_ animated: Bool) {
-
         contentView.snp.makeConstraints {
             $0.height.equalTo(bottomBarView.frame.maxY)
         }
-
-//        contentView.snp.makeConstraints {
-//            $0.height.equalTo(tableView.frame.maxY)
-//        }
-//
-//        print(tableView.frame.maxY)
-//        scrollView.contentSize = CGSize(width: view.frame.width, height: tableView.frame.maxY + 50)
     }
 
     // MARK: - UI
@@ -100,7 +92,9 @@ class MyKurlyVC: UIViewController {
     // MARK: - Selectors
     @objc
     private func handleSignButton(_ sender: UIButton) {
-        print(#function)
+        let nextVC = SignInVC()
+        nextVC.modalPresentationStyle = .fullScreen
+        present(nextVC, animated: true)
     }
 }
 
@@ -117,11 +111,12 @@ extension MyKurlyVC: UITableViewDataSource {
         let text = MyKurlyCategory.instance.data[indexPath.section][indexPath.row]
         cell.textLabel?.text = text
         cell.accessoryType = .disclosureIndicator
+        cell.selectionStyle = .none
         return cell
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-            return 58
+        return 58
     }
 }
 
@@ -141,5 +136,36 @@ extension MyKurlyVC: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 12
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        switch indexPath {
+        case [0, 0]:
+            let nextVC = MyKurlyNoSignInOrderVC()
+            navigationController?.pushViewController(nextVC, animated: true)
+        case [1, 0]:
+            let nextVC = MyKurlyNoticeVC()
+            navigationController?.pushViewController(nextVC, animated: true)
+        case [1, 1]:
+            let nextVC = MyKurlyDeliveryInfoVC()
+            navigationController?.pushViewController(nextVC, animated: true)
+        case [1, 2]:
+            let nextVC = MyKurlyFAQVC()
+            navigationController?.pushViewController(nextVC, animated: true)
+        case [1, 3]:
+            let nextVC = MyKurlyCustomerServiceVC()
+            navigationController?.pushViewController(nextVC, animated: true)
+        case [1, 4]:
+            let nextVC = MyKurlyInstructionVC()
+            navigationController?.pushViewController(nextVC, animated: true)
+        case [1, 5]:
+            let nextVC = MyKurlyAboutVC()
+            navigationController?.pushViewController(nextVC, animated: true)
+        case [2, 0]:
+            let nextVC = MyKurlyNotificationVC()
+            navigationController?.pushViewController(nextVC, animated: true)
+        default:
+            break
+        }
     }
 }
