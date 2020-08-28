@@ -44,17 +44,23 @@ class ProductExplainCell: UICollectionViewCell {
     }
 
     func configureTableView() {
-        explainTableView.backgroundColor = .white
+        explainTableView.backgroundColor = ColorManager.General.backGray.rawValue
         explainTableView.allowsSelection = false
         explainTableView.separatorStyle = .none
 
         explainTableView.dataSource = self
         explainTableView.delegate = self
 
-        explainTableView.register(ProductExplainCellInBasicCell.self,
-                                  forCellReuseIdentifier: ProductExplainCellInBasicCell.identifier)
-        explainTableView.register(ProductExplainInInfoCell.self,
-                                  forCellReuseIdentifier: ProductExplainInInfoCell.identifier)
+        explainTableView.register(ProductExplainBasicCell.self,
+                                  forCellReuseIdentifier: ProductExplainBasicCell.identifier)
+        explainTableView.register(ProductExplainInfoCell.self,
+                                  forCellReuseIdentifier: ProductExplainInfoCell.identifier)
+        explainTableView.register(ProductExplainDeliveryInfoCell.self,
+                                  forCellReuseIdentifier: ProductExplainDeliveryInfoCell.identifier)
+        explainTableView.register(ProductExplainWhyCurlyCell.self,
+                                  forCellReuseIdentifier: ProductExplainWhyCurlyCell.identifier)
+        explainTableView.register(ProductExplainBuyButtonCell.self,
+                                  forCellReuseIdentifier: ProductExplainBuyButtonCell.identifier)
     }
 }
 
@@ -62,8 +68,11 @@ class ProductExplainCell: UICollectionViewCell {
 
 extension ProductExplainCell: UITableViewDataSource {
     enum ExplainTableViewCase: Int, CaseIterable {
-        case productTitleImage
+        case productBasic
         case productInfo
+        case productDelivery
+        case productWhyKurly
+        case productBuyButton
     }
 
     enum ExplainTableInfoCase: Int, CaseIterable {
@@ -110,21 +119,35 @@ extension ProductExplainCell: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch ExplainTableViewCase(rawValue: indexPath.section)! {
-        case .productTitleImage:
+        case .productBasic:
             let cell = tableView.dequeueReusableCell(
-                withIdentifier: ProductExplainCellInBasicCell.identifier,
-                for: indexPath) as! ProductExplainCellInBasicCell
+                withIdentifier: ProductExplainBasicCell.identifier,
+                for: indexPath) as! ProductExplainBasicCell
             return cell
         case .productInfo:
             let cell = tableView.dequeueReusableCell(
-                withIdentifier: ProductExplainInInfoCell.identifier,
-                for: indexPath) as! ProductExplainInInfoCell
+                withIdentifier: ProductExplainInfoCell.identifier,
+                for: indexPath) as! ProductExplainInfoCell
             cell.configure(
                 titleText: ExplainTableInfoCase(rawValue: indexPath.row)!.description,
                 subContent: ExplainTableInfoCase(rawValue: indexPath.row)?.subContent)
             return cell
+        case .productDelivery:
+            let cell = tableView.dequeueReusableCell(
+                withIdentifier: ProductExplainDeliveryInfoCell.identifier,
+                for: indexPath) as! ProductExplainDeliveryInfoCell
+            return cell
+        case .productWhyKurly:
+            let cell = tableView.dequeueReusableCell(
+                withIdentifier: ProductExplainWhyCurlyCell.identifier,
+                for: indexPath) as! ProductExplainWhyCurlyCell
+            return cell
+        case .productBuyButton:
+            let cell = tableView.dequeueReusableCell(
+                withIdentifier: ProductExplainBuyButtonCell.identifier,
+                for: indexPath) as! ProductExplainBuyButtonCell
+            return cell
         }
-
     }
 }
 
@@ -137,96 +160,5 @@ extension ProductExplainCell: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         return 200
-    }
-}
-
-import UIKit
-
-class ProductExplainInInfoCell: UITableViewCell {
-
-    // MARK: - Properties
-
-    static let identifier = "ProductExplainInInfoCell"
-
-    private let sideInsetValue: CGFloat = 20
-    private let lineSpacingValue: CGFloat = 8
-    private let widthValue: CGFloat = 88
-
-    private let infoTitleLabel = UILabel().then {
-        $0.text = "알레르기정보"
-        $0.textColor = ColorManager.General.mainGray.rawValue
-        $0.font = .systemFont(ofSize: 16)
-    }
-
-    private let infoContent = UILabel().then {
-        $0.text = "Content Text"
-        $0.textColor = .black
-        $0.font = .systemFont(ofSize: 16)
-        $0.numberOfLines = 0
-    }
-
-    private let infoSubContent = UILabel().then {
-        $0.text = "Sub Content Text"
-        $0.textColor = ColorManager.General.mainGray.rawValue
-        $0.font = .systemFont(ofSize: 14)
-        $0.numberOfLines = 0
-    }
-
-    // MARK: - LifeCycle
-
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        configureUI()
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    // MARK: - Helpers
-
-    func configureUI() {
-        self.backgroundColor = .white
-        configureLayout()
-    }
-
-    func configureLayout() {
-        [infoTitleLabel].forEach {
-            self.addSubview($0)
-        }
-
-        infoTitleLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(lineSpacingValue)
-            $0.leading.equalToSuperview().offset(sideInsetValue)
-            $0.width.equalTo(widthValue)
-        }
-    }
-
-    func configure(titleText: String, subContent: String? = nil) {
-        infoTitleLabel.text = titleText
-
-        guard let subContentText = subContent else {
-            viewAddAndSetupLayout(view: infoContent)
-            infoSubContent.text = subContent
-            return
-        }
-
-        infoSubContent.text = subContentText
-
-        let stack = UIStackView(arrangedSubviews: [infoContent, infoSubContent])
-        stack.axis = .vertical
-        stack.spacing = 4
-
-        viewAddAndSetupLayout(view: stack)
-    }
-
-    func viewAddAndSetupLayout(view: UIView) {
-        self.addSubview(view)
-        view.snp.makeConstraints {
-            $0.top.equalTo(infoTitleLabel)
-            $0.leading.equalTo(infoTitleLabel.snp.trailing).offset(12)
-            $0.trailing.equalToSuperview().offset(-sideInsetValue)
-            $0.bottom.equalToSuperview().offset(-lineSpacingValue)
-        }
     }
 }
