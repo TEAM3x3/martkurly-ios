@@ -13,6 +13,7 @@ class SignUpBirthdayTextFieldView: UIView {
     // MARK: - Properties
     private let textFeild = UITextField().then {
         $0.textAlignment = .center
+        $0.keyboardType = .numberPad
     }
     private let placeholder = UILabel().then {
         $0.textColor = ColorManager.General.placeholder.rawValue
