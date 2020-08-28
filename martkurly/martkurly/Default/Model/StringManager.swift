@@ -241,4 +241,10 @@ struct StringManager {
 
     let agreementPromotion = ["동의 시 한 달 간 [5% 적립] + [무제한 무료배송]", "(첫 주문 후 적용)"]
 
+    enum MyKurly: String {
+        case title = "마이컬리"
+        case welcome = "회원 가입하고 \n다양한 혜택을 받아보세요!"
+        case promotion = "가입 혜택 보기 >"
+        case sign = "로그인/회원가입"
+    }
 }
