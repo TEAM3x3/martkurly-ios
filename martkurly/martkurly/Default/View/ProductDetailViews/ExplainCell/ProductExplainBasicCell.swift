@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ProductExplainCellInBasicCell: UITableViewCell {
+class ProductExplainBasicCell: UITableViewCell {
 
     // MARK: - Properties
 
