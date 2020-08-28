@@ -142,34 +142,33 @@ struct StringManager {
         case signUp = "회원가입"
     }
 
-    enum SignUpError: String {
-        case id1 = "6자 이상의 영문 혹은 영문과 숫자를 조합"
-        case id2 = "아이디 중복확인"
-        case pw1 = "10자 이상 입력"
-        case pw2 = "영문/숫자/특수문자(공백 제외)만 허용하며, 2개 이상 조합"
-        case pw3 = "동일한 숫자가 3개 이상 연속 사용 불가"
-        case pw4 = "동일한 비밀번호를 입력해주세요"
-        case address = "배송지에 따라 상품 정보가 달라질 수 있습니다."
-    }
-
     let signUpTextFieldsInfo = [
         [
-            "아이디": "예: martkurly12"
+            "title": "아이디",
+            "placeholder": "예: martkurly12",
+            "subtitles": ["· 6자 이상의 영문 혹은 영문과 숫자를 조합", "· 아이디 중복확인"]
         ],
         [
-            "비밀번호": "비밀번호를 입력해주세요"
+            "title": "비밀번호",
+            "placeholder": "비밀번호를 입력해주세요",
+            "subtitles": ["· 10자 이상 입력", "· 영문/숫자/특수문자(공백 제외)만 허용하며, 2개 이상 조합", "· 동일한 숫자가 3개 이상 연속 사용 불가"]
         ],
         [
-            "비밀번호 확인": "비밀번호를 한번 더 입력해주세요"
+            "title": "비밀번호 확인",
+            "placeholder": "비밀번호를 한번 더 입력해주세요",
+            "subtitles": ["· 동일한 비밀번호를 입력해주세요"]
         ],
         [
-            "이름": "이름을 입력해주세요"
+            "title": "이름",
+            "placeholder": "이름을 입력해주세요"
         ],
         [
-            "이메일": "예: martkurly@kurly.com"
+            "title": "이메일",
+            "placeholder": "예: martkurly@kurly.com"
         ],
         [
-            "휴대폰": "숫자만 입력해주세요"
+            "title": "휴대폰",
+            "placeholder": "숫자만 입력해주세요"
         ]
     ]
 
@@ -188,7 +187,12 @@ struct StringManager {
         case additionalInfoSubtitle = "추천인 아이디와 참여 이벤트명 중 하나만 선택 가능합니다"
         case recommender = "추천인"
         case eventName = "참여 이벤트 명"
+        case agreement = "이용약관동의"
+        case signUp = "가입하기"
     }
+
+    let signUpGenderList = ["남자", "여자", "선택안함"]
+    let additionalInfoList = ["추천인 아이디", "참여 이벤트명"]
 
     let agreement = [
         [
@@ -218,6 +222,12 @@ struct StringManager {
         [
             "title": "무료배송, 할인쿠폰 등 혜택/정보 수신 동의",
             "subtitle": "(선택)",
+            "info": "",
+            "type": "normal"
+        ],
+        [
+            "title": "",
+            "subtitle": "",
             "info": "",
             "type": "choice"
         ],

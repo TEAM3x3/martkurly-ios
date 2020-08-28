@@ -2,9 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:/Users/jiwooni/Documents/dev/martkurly-ios/martkurly/martkurly/Home/View/EventCell.swift">
-   </FileRef>
-   <FileRef
       location = "group:martkurly.xcodeproj">
    </FileRef>
    <FileRef

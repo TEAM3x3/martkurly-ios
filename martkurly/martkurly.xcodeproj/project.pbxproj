@@ -18,7 +18,13 @@
 		4246D13E24F4BD780001F9E8 /* SignUpTextFieldTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4246D13D24F4BD780001F9E8 /* SignUpTextFieldTitleView.swift */; };
 		4246D14024F4DDEA0001F9E8 /* SignUpAddressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4246D13F24F4DDEA0001F9E8 /* SignUpAddressView.swift */; };
 		4246D14424F50D9F0001F9E8 /* SignUpAddressInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4246D14324F50D9F0001F9E8 /* SignUpAddressInputView.swift */; };
+		424EA5EF24F63D9C003CC478 /* SignUpGenderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 424EA5EE24F63D9C003CC478 /* SignUpGenderTableViewCell.swift */; };
+		425C5BD524F69B6D002C57D2 /* Gender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425C5BD424F69B6D002C57D2 /* Gender.swift */; };
+		425C5BD724F69E45002C57D2 /* AdditionalInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425C5BD624F69E45002C57D2 /* AdditionalInfoView.swift */; };
+		425C5BD924F6A01E002C57D2 /* AdditionalInfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425C5BD824F6A01E002C57D2 /* AdditionalInfoTableViewCell.swift */; };
 		4263A2BD24F52239004CB90A /* SingUpBirthdayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4263A2BC24F52239004CB90A /* SingUpBirthdayView.swift */; };
+		4266595724F61D600058A880 /* EventCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4266595624F61D600058A880 /* EventCell.swift */; };
+		42B4FD7324F63AC30087F6B1 /* SignUpGenderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42B4FD7224F63AC30087F6B1 /* SignUpGenderView.swift */; };
 		42C69B5C24EE606700A18B4C /* IncorrectInputWarningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42C69B5B24EE606700A18B4C /* IncorrectInputWarningView.swift */; };
 		42C69B5E24EE6D6800A18B4C /* SignError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42C69B5D24EE6D6800A18B4C /* SignError.swift */; };
 		42C69B6024EEC52200A18B4C /* Agreement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42C69B5F24EEC52200A18B4C /* Agreement.swift */; };
@@ -26,6 +32,7 @@
 		42C69B6524EEC8D000A18B4C /* AgreementTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42C69B6424EEC8D000A18B4C /* AgreementTableViewCell.swift */; };
 		42C69B6724EEC94400A18B4C /* AgreementCellType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42C69B6624EEC94400A18B4C /* AgreementCellType.swift */; };
 		42C69B6924EECC1800A18B4C /* AgreementCheckMarkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42C69B6824EECC1800A18B4C /* AgreementCheckMarkView.swift */; };
+		42CD086624F623F7006A8087 /* SignUpBirthdayTextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42CD086524F623F7006A8087 /* SignUpBirthdayTextFieldView.swift */; };
 		42D867EE24EEE8AC00BBD784 /* AgreementPromotionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D867ED24EEE8AC00BBD784 /* AgreementPromotionView.swift */; };
 		42FAF01024ED105E00063981 /* StringManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42FAF00F24ED105E00063981 /* StringManager.swift */; };
 		42FAF01224ED11A500063981 /* ImageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42FAF01124ED11A500063981 /* ImageManager.swift */; };
@@ -55,7 +62,6 @@
 		AF84DFAA24EFBD81001F3F45 /* ProductListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF84DFA924EFBD81001F3F45 /* ProductListCell.swift */; };
 		AF84DFAC24EFBDE0001F3F45 /* EventListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF84DFAB24EFBDE0001F3F45 /* EventListCell.swift */; };
 		AF8D2F0124F3A41D00AE177D /* ProductCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF8D2F0024F3A41D00AE177D /* ProductCell.swift */; };
-		AF8D2F0324F4151000AE177D /* EventCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF8D2F0224F4151000AE177D /* EventCell.swift */; };
 		AF8D2F0524F415D600AE177D /* EventProductDetailListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF8D2F0424F415D600AE177D /* EventProductDetailListVC.swift */; };
 		AF8D2F0724F418FA00AE177D /* ProductListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF8D2F0624F418FA00AE177D /* ProductListView.swift */; };
 		AF8D2F0924F427D900AE177D /* ProductListHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF8D2F0824F427D900AE177D /* ProductListHeaderView.swift */; };
@@ -99,7 +105,13 @@
 		4246D13D24F4BD780001F9E8 /* SignUpTextFieldTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpTextFieldTitleView.swift; sourceTree = "<group>"; };
 		4246D13F24F4DDEA0001F9E8 /* SignUpAddressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpAddressView.swift; sourceTree = "<group>"; };
 		4246D14324F50D9F0001F9E8 /* SignUpAddressInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpAddressInputView.swift; sourceTree = "<group>"; };
+		424EA5EE24F63D9C003CC478 /* SignUpGenderTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpGenderTableViewCell.swift; sourceTree = "<group>"; };
+		425C5BD424F69B6D002C57D2 /* Gender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gender.swift; sourceTree = "<group>"; };
+		425C5BD624F69E45002C57D2 /* AdditionalInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdditionalInfoView.swift; sourceTree = "<group>"; };
+		425C5BD824F6A01E002C57D2 /* AdditionalInfoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdditionalInfoTableViewCell.swift; sourceTree = "<group>"; };
 		4263A2BC24F52239004CB90A /* SingUpBirthdayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingUpBirthdayView.swift; sourceTree = "<group>"; };
+		4266595624F61D600058A880 /* EventCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventCell.swift; sourceTree = "<group>"; };
+		42B4FD7224F63AC30087F6B1 /* SignUpGenderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpGenderView.swift; sourceTree = "<group>"; };
 		42C69B5B24EE606700A18B4C /* IncorrectInputWarningView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncorrectInputWarningView.swift; sourceTree = "<group>"; };
 		42C69B5D24EE6D6800A18B4C /* SignError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignError.swift; sourceTree = "<group>"; };
 		42C69B5F24EEC52200A18B4C /* Agreement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Agreement.swift; sourceTree = "<group>"; };
@@ -107,6 +119,7 @@
 		42C69B6424EEC8D000A18B4C /* AgreementTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgreementTableViewCell.swift; sourceTree = "<group>"; };
 		42C69B6624EEC94400A18B4C /* AgreementCellType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgreementCellType.swift; sourceTree = "<group>"; };
 		42C69B6824EECC1800A18B4C /* AgreementCheckMarkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgreementCheckMarkView.swift; sourceTree = "<group>"; };
+		42CD086524F623F7006A8087 /* SignUpBirthdayTextFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpBirthdayTextFieldView.swift; sourceTree = "<group>"; };
 		42D867ED24EEE8AC00BBD784 /* AgreementPromotionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgreementPromotionView.swift; sourceTree = "<group>"; };
 		42FAF00F24ED105E00063981 /* StringManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringManager.swift; sourceTree = "<group>"; };
 		42FAF01124ED11A500063981 /* ImageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageManager.swift; sourceTree = "<group>"; };
@@ -140,7 +153,6 @@
 		AF84DFA924EFBD81001F3F45 /* ProductListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListCell.swift; sourceTree = "<group>"; };
 		AF84DFAB24EFBDE0001F3F45 /* EventListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventListCell.swift; sourceTree = "<group>"; };
 		AF8D2F0024F3A41D00AE177D /* ProductCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductCell.swift; sourceTree = "<group>"; };
-		AF8D2F0224F4151000AE177D /* EventCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = EventCell.swift; path = "/Users/jiwooni/Documents/dev/martkurly-ios/martkurly/martkurly/Home/View/EventCell.swift"; sourceTree = "<absolute>"; };
 		AF8D2F0424F415D600AE177D /* EventProductDetailListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventProductDetailListVC.swift; sourceTree = "<group>"; };
 		AF8D2F0624F418FA00AE177D /* ProductListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListView.swift; sourceTree = "<group>"; };
 		AF8D2F0824F427D900AE177D /* ProductListHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListHeaderView.swift; sourceTree = "<group>"; };
@@ -233,6 +245,7 @@
 				42C69B5D24EE6D6800A18B4C /* SignError.swift */,
 				42C69B5F24EEC52200A18B4C /* Agreement.swift */,
 				42C69B6624EEC94400A18B4C /* AgreementCellType.swift */,
+				425C5BD424F69B6D002C57D2 /* Gender.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -240,6 +253,8 @@
 		42FAF01E24ED887D00063981 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				425C5BD624F69E45002C57D2 /* AdditionalInfoView.swift */,
+				425C5BD824F6A01E002C57D2 /* AdditionalInfoTableViewCell.swift */,
 				42C69B6824EECC1800A18B4C /* AgreementCheckMarkView.swift */,
 				42C69B6424EEC8D000A18B4C /* AgreementTableViewCell.swift */,
 				42D867ED24EEE8AC00BBD784 /* AgreementPromotionView.swift */,
@@ -249,7 +264,10 @@
 				4246D13F24F4DDEA0001F9E8 /* SignUpAddressView.swift */,
 				4246D14324F50D9F0001F9E8 /* SignUpAddressInputView.swift */,
 				4246D13D24F4BD780001F9E8 /* SignUpTextFieldTitleView.swift */,
+				42CD086524F623F7006A8087 /* SignUpBirthdayTextFieldView.swift */,
 				4263A2BC24F52239004CB90A /* SingUpBirthdayView.swift */,
+				42B4FD7224F63AC30087F6B1 /* SignUpGenderView.swift */,
+				424EA5EE24F63D9C003CC478 /* SignUpGenderTableViewCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -431,7 +449,7 @@
 				AF84DFA724EFBD34001F3F45 /* CurlyRecommendCell.swift */,
 				AF84DFA924EFBD81001F3F45 /* ProductListCell.swift */,
 				AF84DFAB24EFBDE0001F3F45 /* EventListCell.swift */,
-				AF8D2F0224F4151000AE177D /* EventCell.swift */,
+				4266595624F61D600058A880 /* EventCell.swift */,
 				AF91A09F24F55EF500717239 /* ProductView */,
 			);
 			path = View;
@@ -692,7 +710,9 @@
 				AF72A5B724F6265E00D96920 /* SearchTableViewHeaderView.swift in Sources */,
 				AF9906B324EE3844005A8D89 /* CategoryMenuView.swift in Sources */,
 				AF8D2F0724F418FA00AE177D /* ProductListView.swift in Sources */,
+				424EA5EF24F63D9C003CC478 /* SignUpGenderTableViewCell.swift in Sources */,
 				42FAF02724EE3E4B00063981 /* UserTextFieldView.swift in Sources */,
+				425C5BD524F69B6D002C57D2 /* Gender.swift in Sources */,
 				42FAF01024ED105E00063981 /* StringManager.swift in Sources */,
 				42C69B6924EECC1800A18B4C /* AgreementCheckMarkView.swift in Sources */,
 				AF4759D324F2792600FE617A /* Product.swift in Sources */,
@@ -708,8 +728,10 @@
 				AF983A6E24F768A800C5F8F3 /* ProductImageCell.swift in Sources */,
 				42C69B5C24EE606700A18B4C /* IncorrectInputWarningView.swift in Sources */,
 				AF91A0A324F568B800717239 /* SearchVC.swift in Sources */,
+				425C5BD724F69E45002C57D2 /* AdditionalInfoView.swift in Sources */,
 				AF9C3C7A24ED58660055E7C5 /* ShoppingCartSingleton.swift in Sources */,
 				AF84DFA824EFBD34001F3F45 /* CurlyRecommendCell.swift in Sources */,
+				4266595724F61D600058A880 /* EventCell.swift in Sources */,
 				4246D14424F50D9F0001F9E8 /* SignUpAddressInputView.swift in Sources */,
 				AF983A6C24F7686200C5F8F3 /* ProductExplainCell.swift in Sources */,
 				AF74E05B24F8DCC800C2E3C6 /* ProductExplainDeliveryInfoCell.swift in Sources */,
@@ -720,6 +742,7 @@
 				42C69B6324EEC84400A18B4C /* AgreementView.swift in Sources */,
 				AF983A7424F7692F00C5F8F3 /* ProductInquiryCell.swift in Sources */,
 				42FAF02324ED895500063981 /* KurlyButton.swift in Sources */,
+				42B4FD7324F63AC30087F6B1 /* SignUpGenderView.swift in Sources */,
 				AF84DFAC24EFBDE0001F3F45 /* EventListCell.swift in Sources */,
 				AF91A0A124F5646000717239 /* SortListCell.swift in Sources */,
 				AFBA2C0B24EEF1170065DD29 /* CategoryType.swift in Sources */,
@@ -733,6 +756,7 @@
 				AF8D2F0924F427D900AE177D /* ProductListHeaderView.swift in Sources */,
 				0EB631E524EDA46A006AA976 /* DetailOrderView.swift in Sources */,
 				0E2C835B24EE466C004C5568 /* ExchangeAndReturnCell.swift in Sources */,
+				425C5BD924F6A01E002C57D2 /* AdditionalInfoTableViewCell.swift in Sources */,
 				42D867EE24EEE8AC00BBD784 /* AgreementPromotionView.swift in Sources */,
 				0E2C836124EEA8C6004C5568 /* NotChangeAndReturnView.swift in Sources */,
 				42FAF02B24EE465D00063981 /* SignUpVC.swift in Sources */,
@@ -752,6 +776,7 @@
 				4263A2BD24F52239004CB90A /* SingUpBirthdayView.swift in Sources */,
 				AF983A7224F7690600C5F8F3 /* ProductReviewsCell.swift in Sources */,
 				42FAF01424ED11B800063981 /* ColorManager.swift in Sources */,
+				42CD086624F623F7006A8087 /* SignUpBirthdayTextFieldView.swift in Sources */,
 				AF91A0A724F5862200717239 /* SearchResultCell.swift in Sources */,
 				AF91A0A524F570FD00717239 /* SearchBarView.swift in Sources */,
 				AF8D2F0124F3A41D00AE177D /* ProductCell.swift in Sources */,
