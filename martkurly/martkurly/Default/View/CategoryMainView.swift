@@ -66,7 +66,6 @@ class CategoryMainView: UIScrollView {
         categoryButton.snp.makeConstraints {
             $0.top.equalTo(frequentlyButton.snp.bottom).offset(16)
             $0.width.leading.equalTo(backgroundView)
-            $0.bottom.equalToSuperview().offset(-16)
         }
 
         coverView.snp.makeConstraints {
@@ -84,8 +83,8 @@ class CategoryMainView: UIScrollView {
 //        }
 
         collectionButton.snp.makeConstraints {
-//          $0.top.equalTo(guide.snp.bottom)
             $0.top.leading.width.height.equalToSuperview()
+            $0.bottom.equalTo(self.snp.bottom).offset(-16)
         }
     }
 }
@@ -95,15 +94,20 @@ extension CategoryMainView: UIScrollViewDelegate {
 
 //        let guide = self.safeAreaLayoutGuide
         print(950 - scrollView.contentOffset.y)
-        print(collectionButton.height)
 //        print(collectionButton.frame.size.height - collectionButton.height)
         if 950 - scrollView.contentOffset.y < 0 {
             coverView.snp.remakeConstraints {
-                $0.top.leading.trailing.bottom.width.height.equalToSuperview()
+                $0.top.equalTo(self.safeAreaLayoutGuide.snp.bottom)
+                $0.leading.trailing.bottom.width.height.equalTo(self.safeAreaLayoutGuide)
+            }
+        } else if 950 - scrollView.contentOffset.y <= 950 {
+            coverView.snp.remakeConstraints {
+                $0.top.equalTo(categoryButton.snp.bottom).offset(16)
+                $0.height.equalTo((UIScreen.main.bounds.width / 2 * 8) + 16)
+                $0.leading.trailing.width.equalToSuperview()
+                $0.bottom.equalTo(self.snp.bottom).offset(-16)
             }
         }
-
-        print(collectionButton.collection.contentOffset.y)
 //        else {
 //            coverView.snp.remakeConstraints {
 //                $0.top.equalTo(categoryButton.snp.bottom).offset(16)
