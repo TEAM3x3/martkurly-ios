@@ -17,15 +17,12 @@ class CategoryMainButton: UIButton {
         $0.tintColor = .black
     }
 
-    let title = UILabel().then {
+    var title = UILabel().then {
         $0.backgroundColor = .white
-        $0.textColor = .darkGray
     }
 
-    let chevron = UIImageView().then {
+    var chevron = UIImageView().then {
         $0.backgroundColor = .white
-        $0.image = UIImage(systemName: "chevron.down")
-        $0.tintColor = ColorManager.General.whyKurlyText.rawValue
     }
 
     private let line = UIView().then {
@@ -49,6 +46,10 @@ class CategoryMainButton: UIButton {
     }
 
     private func setConstraints() {
+        self.snp.makeConstraints {
+            $0.height.equalTo(50)
+            $0.width.equalTo(UIScreen.main.bounds.width)
+        }
         backgroundColor = .white
         [titleImage, title, chevron].forEach {
             self.addSubview($0)
@@ -57,6 +58,7 @@ class CategoryMainButton: UIButton {
             }
         }
         addSubview(line)
+
         titleImage.snp.makeConstraints {
             $0.leading.equalTo(self.snp.leading).offset(16)
         }

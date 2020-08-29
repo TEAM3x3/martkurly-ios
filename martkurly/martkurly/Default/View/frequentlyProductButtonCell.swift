@@ -38,7 +38,12 @@ class frequentlyProductButtonCell: UIButton {
     }
 
     private func setConstraints() {
+        self.snp.makeConstraints {
+            $0.height.equalTo(50)
+            $0.width.equalTo(UIScreen.main.bounds.width)
+        }
         self.backgroundColor = .white
+
         [title, chevron].forEach {
             self.addSubview($0)
         }
