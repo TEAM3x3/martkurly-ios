@@ -30,11 +30,19 @@ class EventProductDetailListVC: UIViewController {
                                     titleText: "테스트")
     }
 
+    // MARK: - Actions
+
+    func tappedProduct() {
+        let controller = ProductDetailVC()
+        self.navigationController?.pushViewController(controller, animated: true)
+    }
+
     // MARK: - Helpers
 
     func configureUI() {
         view.backgroundColor = .white
         configureLayout()
+        configureAttributes()
     }
 
     func configureLayout() {
@@ -45,5 +53,9 @@ class EventProductDetailListVC: UIViewController {
         productListView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
+    }
+
+    func configureAttributes() {
+        productListView.tappedProduct = tappedProduct
     }
 }
