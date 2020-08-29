@@ -61,6 +61,8 @@ class ProductExplainCell: UICollectionViewCell {
                                   forCellReuseIdentifier: ProductExplainWhyCurlyCell.identifier)
         explainTableView.register(ProductExplainBuyButtonCell.self,
                                   forCellReuseIdentifier: ProductExplainBuyButtonCell.identifier)
+        explainTableView.register(ProductExplainImageCell.self,
+                                  forCellReuseIdentifier: ProductExplainImageCell.identifier)
     }
 }
 
@@ -71,6 +73,7 @@ extension ProductExplainCell: UITableViewDataSource {
         case productBasic
         case productInfo
         case productDelivery
+        case productImage
         case productWhyKurly
         case productBuyButton
     }
@@ -136,6 +139,11 @@ extension ProductExplainCell: UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(
                 withIdentifier: ProductExplainDeliveryInfoCell.identifier,
                 for: indexPath) as! ProductExplainDeliveryInfoCell
+            return cell
+        case .productImage:
+            let cell = tableView.dequeueReusableCell(
+                withIdentifier: ProductExplainImageCell.identifier,
+                for: indexPath) as! ProductExplainImageCell
             return cell
         case .productWhyKurly:
             let cell = tableView.dequeueReusableCell(
