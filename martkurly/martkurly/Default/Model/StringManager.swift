@@ -241,4 +241,31 @@ struct StringManager {
 
     let agreementPromotion = ["동의 시 한 달 간 [5% 적립] + [무제한 무료배송]", "(첫 주문 후 적용)"]
 
+    struct HappinessCenterText {
+        static let title = "고객행복센터"
+        static let titleUsage = """
+        궁금하신 점이나 서비스 이용에 불편한 점이 있으신가요?
+        문제가 되는 부분을 사진으로 찍어
+        아래 중 편하신 방법으로 접수해 주시면
+        빠르게 도와드리겠습니다.
+        """
+        static let inquiryCallTitle = "전화 문의 1644-1107"
+        static let inquiryCallTime = "오전 7시~오후 7시 (연중무휴)"
+
+        static let inquiryKakaotalkTitle = "카카오톡 문의"
+        static let inquiryKakaotalkTime = "오전 7시~오후 7시 (연중무휴)"
+        static let inquiryKakaotalkButton = "카카오톡 상담 받기"
+        static let inquiryKakaotalkUsage = """
+        ※카카오톡에서 '마켓컬리'를 검색 후
+        대화창에 문의 및 불편사항을 남겨주세요.
+        """
+
+        static let inquiryHomepageTitle = "홈페이지 문의"
+        static let inquiryHomepageTime = """
+        24시간 접수 가능
+        로그인 > 마이컬리 > 1:1 문의
+        """
+        static let inquiryHomepageButton = "문의 작성하기"
+        static let inquiryHomepageUsage = "※고객센터 운영 시간에 순차적으로 답변해드리겠습니다."
+    }
 }
