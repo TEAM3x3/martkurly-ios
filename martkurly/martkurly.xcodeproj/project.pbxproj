@@ -263,6 +263,7 @@
 		42FAF01524ED21AB00063981 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				0EFD8E6A24EEC2CA0078652E /* AddressSearchView.swift */,
 				0EB631E424EDA46A006AA976 /* DetailOrderView.swift */,
 				0E966DF124ED7AD500869F83 /* CancelMoreNoticeView.swift */,
 				0E2C835A24EE466C004C5568 /* ExchangeAndReturnCell.swift */,
@@ -277,7 +278,6 @@
 				42FAF02624EE3E4B00063981 /* UserTextFieldView.swift */,
 				42FAF01824ED28CB00063981 /* WhyKurlySubView.swift */,
 				42FAF01624ED21F800063981 /* WhyKurlyView.swift */,
-				0EFD8E6A24EEC2CA0078652E /* AddressSearchView.swift */,
 				AF983A6A24F7678500C5F8F3 /* ProductDetailViews */,
 			);
 			path = View;

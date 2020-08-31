@@ -33,6 +33,7 @@ class MyKurlyVC: UIViewController {
         super.viewWillAppear(animated)
         setNavigationBarStatus(type: .purpleType, isShowCart: true, leftBarbuttonStyle: .none, titleText: StringManager.MyKurly.title.rawValue)
     }
+
     override func viewDidAppear(_ animated: Bool) {
         contentView.snp.makeConstraints {
             $0.height.equalTo(bottomBarView.frame.maxY)
@@ -144,10 +145,10 @@ extension MyKurlyVC: UITableViewDelegate {
             let nextVC = MyKurlyNoSignInOrderVC()
             navigationController?.pushViewController(nextVC, animated: true)
         case [1, 0]:
-            let nextVC = MyKurlyNoticeVC()
+            let nextVC = MyKurlyDeliveryInfoVC()
             navigationController?.pushViewController(nextVC, animated: true)
         case [1, 1]:
-            let nextVC = MyKurlyDeliveryInfoVC()
+            let nextVC = MyKurlyNoticeVC()
             navigationController?.pushViewController(nextVC, animated: true)
         case [1, 2]:
             let nextVC = MyKurlyFAQVC()
