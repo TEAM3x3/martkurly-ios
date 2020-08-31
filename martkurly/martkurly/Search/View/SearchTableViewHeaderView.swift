@@ -36,6 +36,7 @@ class SearchTableViewHeaderView: UIView {
     // MARK: - Helpers
 
     func configureUI() {
+        self.backgroundColor = .white
         configureLayout()
         configure()
     }

@@ -57,8 +57,6 @@ class CategoryKurlyRecommendView: UIView {
     }
 
     private func setLayout() {
-        //        print(UIScreen.main.bounds.width)
-        print(UIScreen.main.bounds.width / 2)
         let width = UIScreen.main.bounds.width / 2 - 16
 
         layout.itemSize = CGSize(width: width, height: width)
