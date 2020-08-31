@@ -67,7 +67,7 @@ extension UIViewController {
         navigationItem.rightBarButtonItem = isShowCart ?
             UIBarButtonItem(customView: ShoppingCartSingleton.shared.shoppingCartView)
             : nil
-        
+
         let backPopBarButton = UIBarButtonItem(image: UIImage(systemName: "chevron.left"),
                                             style: .plain,
                                             target: self,
@@ -92,7 +92,7 @@ extension UIViewController {
             ShoppingCartSingleton.shared.shoppingCartView.configureWhiteMode()
             backPopBarButton.tintColor = .white
             backDismissBarButton.tintColor = .white
-            
+
         case .whiteType:
         navigationController?.navigationBar.barStyle = .default
             navigationController?.navigationBar.titleTextAttributes =

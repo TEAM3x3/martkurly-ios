@@ -9,15 +9,15 @@
 import UIKit
 
 class CartVC: UIViewController {
-    
+
     // MARK: - Properties
-    
+
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setConfigure()
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setNavigationBarStatus(
@@ -26,13 +26,13 @@ class CartVC: UIViewController {
             leftBarbuttonStyle: .dismiss,
             titleText: "장바구니")
     }
-    
+
     // MARK: - UI
     private func setConfigure() {
         setConstraints()
     }
-    
+
     private func setConstraints() {
-        
+
     }
 }
