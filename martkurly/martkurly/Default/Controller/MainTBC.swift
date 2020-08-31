@@ -43,7 +43,7 @@ class MainTBC: UITabBarController {
             image: UIImage(systemName: "star"),
             selectedImage: UIImage(systemName: "star.fill"))
 
-        let categoryVC = UIViewController()
+        let categoryVC = CategoryVC()
         let naviCategoryVC = UINavigationController(rootViewController: categoryVC)
         naviCategoryVC.tabBarItem = UITabBarItem(
             title: "카테고리",
@@ -57,8 +57,8 @@ class MainTBC: UITabBarController {
             image: UIImage(systemName: "magnifyingglass"),
             selectedImage: nil)
 
-        let mykurlyVC = UIViewController()
-        let naviMykurlyVC = UINavigationController(rootViewController: mykurlyVC)
+        let myCurlyVC = MyKurlyVC()
+        let naviMykurlyVC = UINavigationController(rootViewController: myCurlyVC)
         naviMykurlyVC.tabBarItem = UITabBarItem(
             title: "마이컬리",
             image: UIImage(systemName: "person"),
