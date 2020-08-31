@@ -40,6 +40,7 @@ class NotChangeAndReturnView: UITableViewCell {
 
     // MARK: - UI
     private func setConfigure() {
+        contentView.backgroundColor = ColorManager.General.backGray.rawValue
         setConstraints()
     }
 

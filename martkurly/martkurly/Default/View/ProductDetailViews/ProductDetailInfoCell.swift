@@ -28,6 +28,13 @@ class ProductDetailInfoCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
+    // MARK: - Actions
+
+    func tableViewLayoutChanged() {
+        detailTableView.beginUpdates()
+        detailTableView.endUpdates()
+    }
+
     // MARK: - Helpers
 
     func configureUI() {
@@ -52,7 +59,9 @@ class ProductDetailInfoCell: UICollectionViewCell {
         detailTableView.register(ProductDetailHappinessCenterCell.self,
                                  forCellReuseIdentifier: ProductDetailHappinessCenterCell.identifier)
         detailTableView.register(ProductExplainBuyButtonCell.self,
-                                  forCellReuseIdentifier: ProductExplainBuyButtonCell.identifier)
+                                 forCellReuseIdentifier: ProductExplainBuyButtonCell.identifier)
+        detailTableView.register(ProductDetailOrderGuideCell.self,
+                                 forCellReuseIdentifier: ProductDetailOrderGuideCell.identifier)
     }
 }
 
@@ -104,18 +113,22 @@ extension ProductDetailInfoCell: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch ProductDetailType(rawValue: indexPath.section)! {
         case .detailExplain:
-            let cell = tableView.dequeueReusableCell(withIdentifier: ProductDetailContentCell.identifier,
-                                                     for: indexPath) as! ProductDetailContentCell
+            let cell = tableView.dequeueReusableCell(
+                withIdentifier: ProductDetailContentCell.identifier,
+                for: indexPath) as! ProductDetailContentCell
             cell.configure(titleText: DetailExplainType(rawValue: indexPath.row)!.description,
                            contentsText: "CONTENTS TEXT")
             return cell
         case .detailHappinessCenter:
-            let cell = tableView.dequeueReusableCell(withIdentifier: ProductDetailHappinessCenterCell.identifier,
-                                                     for: indexPath) as! ProductDetailHappinessCenterCell
+            let cell = tableView.dequeueReusableCell(
+                withIdentifier: ProductDetailHappinessCenterCell.identifier,
+                for: indexPath) as! ProductDetailHappinessCenterCell
             return cell
         case .detailOrderGuide:
-            let cell = tableView.dequeueReusableCell(withIdentifier: ProductDetailHappinessCenterCell.identifier,
-                                                     for: indexPath) as! ProductDetailHappinessCenterCell
+            let cell = tableView.dequeueReusableCell(
+                withIdentifier: ProductDetailOrderGuideCell.identifier,
+                for: indexPath) as! ProductDetailOrderGuideCell
+            cell.layoutChangedMethod = tableViewLayoutChanged
             return cell
         case .detailBuyButton:
             let cell = tableView.dequeueReusableCell(
@@ -136,17 +149,19 @@ extension ProductDetailInfoCell: UITableViewDataSource, UITableViewDelegate {
 
 import UIKit
 
-class ProductDetailHappinessCenterCell: UITableViewCell {
+class ProductDetailOrderGuideCell: UITableViewCell {
 
     // MARK: - Properties
 
-    static let identifier = "ProductDetailHappinessCenterCell"
+    static let identifier = "ProductDetailOrderGuideCell"
+
+    var layoutChangedMethod: (() -> Void)?
 
     private let topLine = UIView().then {
         $0.backgroundColor = ColorManager.General.backGray.rawValue
     }
 
-    private let happinessCenterView = HappinessCenterView()
+    private let detailOrderView = DetailOrderView()
 
     // MARK: - LifeCycle
 
@@ -159,15 +174,25 @@ class ProductDetailHappinessCenterCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
+    // MARK: - Actions
+
+    func changedDetailOrderViewHeight(height: CGFloat) {
+        detailOrderView.snp.updateConstraints {
+            $0.height.equalTo(height)
+        }
+        layoutChangedMethod?()
+    }
+
     // MARK: - Helpers
 
     func configureUI() {
         self.backgroundColor = .white
         configureLayout()
+        configureAttributes()
     }
 
     func configureLayout() {
-        [topLine, happinessCenterView].forEach {
+        [topLine, detailOrderView].forEach {
             self.addSubview($0)
         }
 
@@ -176,10 +201,14 @@ class ProductDetailHappinessCenterCell: UITableViewCell {
             $0.height.equalTo(12)
         }
 
-        happinessCenterView.snp.makeConstraints {
-            $0.top.equalTo(topLine.snp.bottom).offset(44)
+        detailOrderView.snp.makeConstraints {
+            $0.top.equalTo(topLine.snp.bottom)
             $0.leading.trailing.bottom.equalToSuperview()
-            $0.height.equalTo(728)
+            $0.height.equalTo(840)
         }
+    }
+
+    func configureAttributes() {
+        detailOrderView.changedTableViewHeight = changedDetailOrderViewHeight(height:)
     }
 }
