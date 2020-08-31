@@ -13,15 +13,19 @@ class MyKurlyDeliveryInfoVC: UIViewController {
     private let separator = UIView().then {
         $0.backgroundColor = .separatorGray
     }
-    private let scrollView = UIScrollView()
+    private let scrollView = UIScrollView().then {
+        $0.backgroundColor = .backgroundGray
+    }
     private let contentView = UIView()
     private var imageViews = [UIImageView]() // 생성된 이미지들이 저장
     private lazy var deliveryAddressSearchView = imageViews[3]
+    private lazy var deliveryTypeSelectionView = imageViews[4]
+    private lazy var deliveryInfoView = imageViews[5]
     private let leftSelection = UIView()
     private let rightSelection = UIView()
     private var isDefault: Bool = true {
         willSet {
-
+            changeImages(newValue: newValue)
         }
     }
 
@@ -161,6 +165,17 @@ class MyKurlyDeliveryInfoVC: UIViewController {
         view.bringSubviewToFront(rightSelection)
     }
 
+    private func changeImages(newValue: Bool) {
+        switch newValue {
+        case true:
+            deliveryTypeSelectionView.image = UIImage(named: "delivery4-1")
+            deliveryInfoView.image = UIImage(named: "delivery5-1")
+        case false:
+            deliveryTypeSelectionView.image = UIImage(named: "delivery4-2")
+            deliveryInfoView.image = UIImage(named: "delivery5-2")
+        }
+    }
+
     // MARK: - Selectors
     @objc
     private func handleDeliveryLocationInteraction() {
@@ -169,11 +184,11 @@ class MyKurlyDeliveryInfoVC: UIViewController {
 
     @objc
     private func handleLeftSelectionGesture() {
-        print(#function)
+        isDefault = true
     }
 
     @objc
     private func handleRightSelectionGesture() {
-        print(#function)
+        isDefault = false
     }
 }
