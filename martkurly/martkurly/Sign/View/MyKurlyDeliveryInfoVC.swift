@@ -16,6 +16,14 @@ class MyKurlyDeliveryInfoVC: UIViewController {
     private let scrollView = UIScrollView()
     private let contentView = UIView()
     private var imageViews = [UIImageView]() // 생성된 이미지들이 저장
+    private lazy var deliveryAddressSearchView = imageViews[3]
+    private let leftSelection = UIView()
+    private let rightSelection = UIView()
+    private var isDefault: Bool = true {
+        willSet {
+
+        }
+    }
 
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -41,7 +49,9 @@ class MyKurlyDeliveryInfoVC: UIViewController {
     private func configureUI() {
         setContraints()
         generateFixedImageViews()
-        generateInteractionImageView()
+        generateInteractionImageViews()
+        generateDeliveryTypeInterationViews()
+        addUserInteractions()
     }
 
     private func setContraints() {
@@ -96,7 +106,7 @@ class MyKurlyDeliveryInfoVC: UIViewController {
         }
     }
 
-    private func generateInteractionImageView() {
+    private func generateInteractionImageViews() {
         for i in 4...5 {
             let imageView = UIImageView()
             let imageName = "delivery" + String(i) + "-1"
@@ -116,5 +126,54 @@ class MyKurlyDeliveryInfoVC: UIViewController {
             }
             imageViews.append(imageView)
         }
+    }
+
+    private func generateDeliveryTypeInterationViews() {
+        [leftSelection, rightSelection].forEach {
+            imageViews[4].addSubview($0)
+        }
+        leftSelection.snp.makeConstraints {
+            $0.top.leading.bottom.equalToSuperview()
+            $0.width.equalToSuperview().dividedBy(2)
+        }
+        rightSelection.snp.makeConstraints {
+            $0.top.trailing.bottom.equalToSuperview()
+            $0.width.equalToSuperview().dividedBy(2)
+        }
+    }
+
+    // MARK: - Helpers
+    private func addUserInteractions() {
+        let deliveryAddressGesture = UITapGestureRecognizer(target: self, action: #selector(handleDeliveryLocationInteraction))
+        deliveryAddressSearchView.addGestureRecognizer(deliveryAddressGesture)
+        deliveryAddressSearchView.isUserInteractionEnabled = true
+
+        let leftSelectionGesture = UITapGestureRecognizer(target: self, action: #selector(handleLeftSelectionGesture))
+        leftSelection.addGestureRecognizer(leftSelectionGesture)
+        leftSelection.isUserInteractionEnabled = true
+
+        let rightSelectionGesture = UITapGestureRecognizer(target: self, action: #selector(handleRightSelectionGesture))
+        rightSelection.addGestureRecognizer(rightSelectionGesture)
+        rightSelection.isUserInteractionEnabled = true
+        imageViews[4].isUserInteractionEnabled = true
+
+        view.bringSubviewToFront(leftSelection)
+        view.bringSubviewToFront(rightSelection)
+    }
+
+    // MARK: - Selectors
+    @objc
+    private func handleDeliveryLocationInteraction() {
+        print(#function)
+    }
+
+    @objc
+    private func handleLeftSelectionGesture() {
+        print(#function)
+    }
+
+    @objc
+    private func handleRightSelectionGesture() {
+        print(#function)
     }
 }
