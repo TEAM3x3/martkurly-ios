@@ -20,6 +20,7 @@ class IncorrectInputWarningView: UIView {
     init(title: String) {
         super.init(frame: .zero)
         self.title.text = title
+        self.isHidden = true
         configureUI()
     }
 
