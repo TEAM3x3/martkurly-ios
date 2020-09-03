@@ -147,5 +147,6 @@ extension ProductDetailVC: UICollectionViewDelegateFlowLayout {
         categoryMenuCollectionView.selectItem(at: indexPath,
                                               animated: true,
                                               scrollPosition: .centeredHorizontally)
+        categoryMenuCollectionView.selectItem(at: nil, animated: false, scrollPosition: .centeredHorizontally)
     }
 }
