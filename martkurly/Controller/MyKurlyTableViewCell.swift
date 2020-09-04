@@ -11,12 +11,20 @@ import UIKit
 class MyKurlyTableViewCell: UITableViewCell {
 
     // MARK: - Properties
+    static let identifier = "MyKurlyTableViewCell"
+
     private let cellTitle = UILabel()
-    private let rightAccessoryImageView = UIImageView()
+    private let rightAccessoryImageView = UIImageView().then {
+        let image = UIImage(systemName: "chevron.right")?.withTintColor(.lightGray, renderingMode: .alwaysOriginal)
+        $0.image = image
+    }
     private let cellSubtitle = UILabel().then {
-        $0.text = "143 원"
+        $0.text = ""
         $0.textColor = .martkurlyMainPurpleColor
         $0.font = UIFont.boldSystemFont(ofSize: 15)
+    }
+    private var separator = UIView().then {
+        $0.backgroundColor = .separatorGray
     }
     private var cellType: MyKurlyCellType = .normal
 
@@ -36,6 +44,7 @@ class MyKurlyTableViewCell: UITableViewCell {
 
     // MARK: - UI
     private func configureUI() {
+        self.selectionStyle = .none
         setContraints()
     }
 
@@ -51,20 +60,33 @@ class MyKurlyTableViewCell: UITableViewCell {
         case .normal:
             setConstrainsForNormalType()
         case .subtitle:
+            setConstrainsForNormalType()
             setConstrainsForSubtitleType()
         }
     }
 
     private func setConstrainsForNormalType() {
-
+        self.addSubview(rightAccessoryImageView)
+        rightAccessoryImageView.snp.makeConstraints {
+            $0.trailing.equalToSuperview().inset(20)
+            $0.centerY.equalToSuperview()
+            $0.width.equalTo(10)
+            $0.height.equalTo(20)
+        }
     }
 
     private func setConstrainsForSubtitleType() {
-
+        self.addSubview(cellSubtitle)
+        cellSubtitle.snp.makeConstraints {
+            $0.trailing.equalTo(rightAccessoryImageView.snp.leading).offset(-13)
+            $0.centerY.equalToSuperview()
+        }
     }
 
     // MARK: - Helpers
-    func configureCell() {
-
+    func configureCell(title: String, subtitle: String, cellType: MyKurlyCellType) {
+        self.cellTitle.text = title
+        self.cellSubtitle.text = subtitle
+        self.cellType = cellType
     }
 }
