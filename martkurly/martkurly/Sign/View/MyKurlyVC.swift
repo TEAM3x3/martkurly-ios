@@ -17,11 +17,13 @@ class MyKurlyVC: UIViewController {
     private let contentView = UIView().then {
         $0.backgroundColor = .white
     }
+    private let infoView = MyKurlyInfoView()
     private let signView = MyKurlySignView()
     private let tableView = UITableView(frame: .zero, style: .plain)
     private let bottomBarView = UIView().then {
         $0.backgroundColor = .backgroundGray
     }
+    private var isSignedIn = true
 
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -42,7 +44,7 @@ class MyKurlyVC: UIViewController {
 
     // MARK: - UI
     private func configureUI() {
-        setContraints()
+        setContstraints()
         setAttributes()
     }
 
@@ -56,7 +58,7 @@ class MyKurlyVC: UIViewController {
         tableView.separatorStyle = .none
     }
 
-    private func setContraints() {
+    private func setContstraints() {
         view.addSubview(scrollView)
         scrollView.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide)
@@ -70,19 +72,44 @@ class MyKurlyVC: UIViewController {
             $0.bottom.equalToSuperview()
             $0.width.equalTo(view)
         }
-        contentView.addSubview(signView)
+        isSignedIn ? setContraintsForSignedInStatus() : setContraintsForSignedOutStatus()
+    }
+
+    private func setContraintsForSignedInStatus() {
+        [infoView, tableView, bottomBarView].forEach {
+            contentView.addSubview($0)
+        }
+        infoView.snp.makeConstraints {
+            $0.top.equalTo(view.safeAreaLayoutGuide)
+            $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(215)
+        }
+        tableView.snp.makeConstraints {
+            $0.top.equalTo(infoView.snp.bottom).offset(12)
+            $0.leading.trailing.equalTo(view)
+            $0.height.equalTo(500)
+        }
+        bottomBarView.snp.makeConstraints {
+            $0.top.equalTo(tableView.snp.bottom)
+            $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(10)
+        }
+    }
+
+    private func setContraintsForSignedOutStatus() {
+        [signView, tableView, bottomBarView].forEach {
+            contentView.addSubview($0)
+        }
         signView.snp.makeConstraints {
             $0.top.equalToSuperview()
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.height.equalTo(230)
         }
-        contentView.addSubview(tableView)
         tableView.snp.makeConstraints {
             $0.top.equalTo(signView.snp.bottom).offset(12)
             $0.leading.trailing.equalTo(view)
             $0.height.equalTo(500)
         }
-        contentView.addSubview(bottomBarView)
         bottomBarView.snp.makeConstraints {
             $0.top.equalTo(tableView.snp.bottom)
             $0.leading.trailing.equalToSuperview()
@@ -97,19 +124,28 @@ class MyKurlyVC: UIViewController {
         nextVC.modalPresentationStyle = .fullScreen
         present(nextVC, animated: true)
     }
+    
+    // MARK: - Helpers
+    private func configureSignedOutTableViewInfo() {
+        
+    }
+    
+    private func configureSignedInTableViewInfo() {
+        
+    }
 }
 
 // MARK: - UITableViewDataSource
 extension MyKurlyVC: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let number = MyKurlyCategory.instance.data[section].count
+        let number = MyKurlyCategory.instance.signedOutData[section].count
         return number
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell()
-        let text = MyKurlyCategory.instance.data[indexPath.section][indexPath.row]
+        let text = MyKurlyCategory.instance.signedOutData[indexPath.section][indexPath.row]
         cell.textLabel?.text = text
         cell.accessoryType = .disclosureIndicator
         cell.selectionStyle = .none
@@ -125,7 +161,7 @@ extension MyKurlyVC: UITableViewDataSource {
 extension MyKurlyVC: UITableViewDelegate {
 
     func numberOfSections(in tableView: UITableView) -> Int {
-        return MyKurlyCategory.instance.data.count
+        return MyKurlyCategory.instance.signedOutData.count
     }
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -140,33 +176,27 @@ extension MyKurlyVC: UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        var nextVC = UIViewController()
         switch indexPath {
         case [0, 0]:
-            let nextVC = MyKurlyNoSignInOrderVC()
-            navigationController?.pushViewController(nextVC, animated: true)
+            nextVC = MyKurlyNoSignInOrderVC()
         case [1, 0]:
-            let nextVC = MyKurlyDeliveryInfoVC()
-            navigationController?.pushViewController(nextVC, animated: true)
+            nextVC = MyKurlyDeliveryInfoVC()
         case [1, 1]:
-            let nextVC = MyKurlyNoticeVC()
-            navigationController?.pushViewController(nextVC, animated: true)
+            nextVC = MyKurlyNoticeVC()
         case [1, 2]:
-            let nextVC = MyKurlyFAQVC()
-            navigationController?.pushViewController(nextVC, animated: true)
+            nextVC = MyKurlyFAQVC()
         case [1, 3]:
-            let nextVC = MyKurlyCustomerServiceVC()
-            navigationController?.pushViewController(nextVC, animated: true)
+            nextVC = MyKurlyCustomerServiceVC()
         case [1, 4]:
-            let nextVC = MyKurlyInstructionVC()
-            navigationController?.pushViewController(nextVC, animated: true)
+            nextVC = MyKurlyInstructionVC()
         case [1, 5]:
-            let nextVC = MyKurlyAboutVC()
-            navigationController?.pushViewController(nextVC, animated: true)
+            nextVC = MyKurlyAboutVC()
         case [2, 0]:
-            let nextVC = MyKurlyNotificationVC()
-            navigationController?.pushViewController(nextVC, animated: true)
+            nextVC = MyKurlyNotificationVC()
         default:
             break
         }
+        navigationController?.pushViewController(nextVC, animated: true)
     }
 }
