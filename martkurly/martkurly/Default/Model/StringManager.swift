@@ -290,6 +290,17 @@ struct StringManager {
         case orderNumber = "주문번호"
     }
 
+    enum MyKurlyOrderHistory: String {
+        case title = "주문 내역"
+        case menu2 = "자주 사는 상품"
+        case orderNumber = "주문번호"
+        case productName = "상품명"
+        case paymentDate = "결제일시"
+        case paymentMethod = "결제 방법"
+        case paymentAmound = "결제 금액"
+        case orderStatus = "주문 상테"
+    }
+
     struct HappinessCenterText {
         static let title = "고객행복센터"
         static let titleUsage = """
@@ -317,4 +328,5 @@ struct StringManager {
         static let inquiryHomepageButton = "문의 작성하기"
         static let inquiryHomepageUsage = "※고객센터 운영 시간에 순차적으로 답변해드리겠습니다."
     }
+
 }
