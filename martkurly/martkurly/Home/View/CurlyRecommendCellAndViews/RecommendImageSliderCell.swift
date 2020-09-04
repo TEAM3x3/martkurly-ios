@@ -1,16 +1,18 @@
 //
-//  HomeMainImageCollectionView.swift
+//  RecommendImageSliderCell.swift
 //  martkurly
 //
-//  Created by 천지운 on 2020/08/21.
+//  Created by 천지운 on 2020/09/04.
 //  Copyright © 2020 Team3x3. All rights reserved.
 //
 
 import UIKit
 
-class HomeMainImageCollectionView: UIView {
+class RecommendImageSliderCell: UITableViewCell {
 
     // MARK: - Properties
+
+    static let identifier = "RecommendImageSideCell"
 
     var imageArray = ["TestImage", "TestImage", "TestImage", "TestImage"] {
         didSet {
@@ -36,8 +38,8 @@ class HomeMainImageCollectionView: UIView {
 
     // MARK: - LifeCycle
 
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
         configureUI()
     }
 
@@ -58,6 +60,7 @@ class HomeMainImageCollectionView: UIView {
         imageCollectionView.backgroundColor = .white
         imageCollectionView.isPagingEnabled = true
         imageCollectionView.showsHorizontalScrollIndicator = false
+
         imageCollectionView.dataSource = self
         imageCollectionView.delegate = self
 
@@ -86,7 +89,7 @@ class HomeMainImageCollectionView: UIView {
 
 // MARK: - UICollectionViewDataSource
 
-extension HomeMainImageCollectionView: UICollectionViewDataSource {
+extension RecommendImageSliderCell: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return imageArray.count
     }
@@ -102,9 +105,9 @@ extension HomeMainImageCollectionView: UICollectionViewDataSource {
 
 // MARK: - UICollectionViewDelegateFlowLayout
 
-extension HomeMainImageCollectionView: UICollectionViewDelegateFlowLayout {
+extension RecommendImageSliderCell: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: self.frame.width, height: self.frame.width)
+        return CGSize(width: self.frame.width, height: self.frame.height)
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
@@ -119,5 +122,40 @@ extension HomeMainImageCollectionView: UICollectionViewDelegateFlowLayout {
         let width = scrollView.frame.width
         let currentPage = Int(scrollView.contentOffset.x / width) + 1
         imageCountLabel.text = "\(currentPage) / \(imageArray.count)"
+    }
+}
+
+// MARK: - MainImageCell
+
+class MainImageCell: UICollectionViewCell {
+
+    // MARK: - Properties
+
+    static let identifier = "MainImageCell"
+
+    let imageView = UIImageView().then {
+        $0.image = UIImage(named: "TestImage")
+        $0.contentMode = .scaleAspectFill
+        $0.clipsToBounds = true
+    }
+
+    // MARK: - LifeCycle
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        configureUI()
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    // MARK: - Helpers
+
+    func configureUI() {
+        self.addSubview(imageView)
+        imageView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
     }
 }
