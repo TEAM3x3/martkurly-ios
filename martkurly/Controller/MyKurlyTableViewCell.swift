@@ -13,7 +13,9 @@ class MyKurlyTableViewCell: UITableViewCell {
     // MARK: - Properties
     static let identifier = "MyKurlyTableViewCell"
 
-    private let cellTitle = UILabel()
+    private let cellTitle = UILabel().then {
+        $0.font = UIFont.systemFont(ofSize: 17.5, weight: .light)
+    }
     private let rightAccessoryImageView = UIImageView().then {
         let image = UIImage(systemName: "chevron.right")?.withTintColor(.lightGray, renderingMode: .alwaysOriginal)
         $0.image = image
@@ -21,7 +23,7 @@ class MyKurlyTableViewCell: UITableViewCell {
     private let cellSubtitle = UILabel().then {
         $0.text = ""
         $0.textColor = .martkurlyMainPurpleColor
-        $0.font = UIFont.boldSystemFont(ofSize: 15)
+        $0.font = UIFont.systemFont(ofSize: 15, weight: .semibold)
     }
     private var separator = UIView().then {
         $0.backgroundColor = .separatorGray
@@ -49,7 +51,9 @@ class MyKurlyTableViewCell: UITableViewCell {
     }
 
     private func setContraints() {
-        self.addSubview(cellTitle)
+        [cellTitle, separator].forEach {
+            self.addSubview($0)
+        }
         cellTitle.snp.makeConstraints {
             $0.leading.equalToSuperview().offset(20)
             $0.centerY.equalToSuperview()
@@ -62,6 +66,10 @@ class MyKurlyTableViewCell: UITableViewCell {
         case .subtitle:
             setConstrainsForNormalType()
             setConstrainsForSubtitleType()
+        }
+        separator.snp.makeConstraints {
+            $0.leading.trailing.bottom.equalToSuperview()
+            $0.height.equalTo(0.5)
         }
     }
 
