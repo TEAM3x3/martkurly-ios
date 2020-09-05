@@ -222,6 +222,13 @@ class MainMDRecommendCell: UITableViewCell {
         $0.font = .systemFont(ofSize: 20)
     }
 
+    private let categoryMenuBar = CategoryMenuView(categoryType: .infinityTBLineStyle).then {
+        $0.menuTitles = ["추석 선물세트", "채소", "과일・견과・쌀", "수산・해산・건어물",
+                         "정육・계란", "국・반찬・메인요리", "샐러드・간편식", "면・양념・오일",
+                         "음료・우유・떡・간식", "베이커리・치즈・델리", "건강식품", "생활용품・리빙",
+                         "뷰티・바디케어", "주방용품", "가전제품", "베이비・키즈", "반려동물"]
+    }
+
     // MARK: - LifeCycle
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -241,7 +248,7 @@ class MainMDRecommendCell: UITableViewCell {
     }
 
     func configureLayout() {
-        [productTitleLabel].forEach {
+        [productTitleLabel, categoryMenuBar].forEach {
             self.addSubview($0)
         }
 
@@ -249,7 +256,13 @@ class MainMDRecommendCell: UITableViewCell {
             $0.top.equalToSuperview().offset(52)
             $0.leading.equalToSuperview().offset(sidePaddingValue)
             $0.trailing.equalToSuperview().offset(-sidePaddingValue)
-            $0.bottom.equalToSuperview()
+        }
+
+        categoryMenuBar.snp.makeConstraints {
+            $0.top.equalTo(productTitleLabel.snp.bottom).offset(24)
+            $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(44)
+            $0.bottom.equalToSuperview().offset(-8)
         }
     }
 }
