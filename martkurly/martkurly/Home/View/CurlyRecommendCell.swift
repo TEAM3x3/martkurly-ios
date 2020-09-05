@@ -14,6 +14,8 @@ class CurlyRecommendCell: UICollectionViewCell {
 
     static let identifier = "CurlyRecommendCell"
 
+    private let bannerHeightValue: CGFloat = 80
+
     private let recommendTableView = UITableView()
 
     // MARK: - LifeCycle
@@ -54,6 +56,8 @@ class CurlyRecommendCell: UICollectionViewCell {
                                     forCellReuseIdentifier: RecommendImageSliderCell.identifier)
         recommendTableView.register(MainProductListCell.self,
                                     forCellReuseIdentifier: MainProductListCell.identifier)
+        recommendTableView.register(MainBannerViewCell.self,
+                                    forCellReuseIdentifier: MainBannerViewCell.identifier)
     }
 }
 
@@ -63,6 +67,15 @@ extension CurlyRecommendCell: UITableViewDataSource {
     enum RecommendCellType: Int, CaseIterable {
         case imageSlideCell
         case productRecommendCell
+        case eventNewsCell
+        case frugalCell
+        case firstBannerCell
+        case secondBannerCell
+        case todayNewerCell
+        case hotProductsCell
+        case deadlineSaleCell
+        case immunityProductsCell
+        case deliveryInfoCell
     }
 
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -70,10 +83,7 @@ extension CurlyRecommendCell: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch RecommendCellType(rawValue: section)! {
-        case .imageSlideCell: return 1
-        default: return 1
-        }
+        return 1
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -87,7 +97,83 @@ extension CurlyRecommendCell: UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(
                 withIdentifier: MainProductListCell.identifier,
                 for: indexPath) as! MainProductListCell
-            cell.cellType = .rightAllowAndSubTitle
+            cell.configure(directionType: .horizontal,
+                           titleType: .none,
+                           backgroundColor: .white,
+                           titleText: "이 상품 어때요?")
+            return cell
+        case .eventNewsCell:
+            let cell = tableView.dequeueReusableCell(
+                withIdentifier: MainProductListCell.identifier,
+                for: indexPath) as! MainProductListCell
+            cell.configure(directionType: .vertical,
+                           titleType: .rightAllow,
+                           backgroundColor: ColorManager.General.backGray.rawValue,
+                           titleText: "이벤트 소식")
+            return cell
+        case .frugalCell:
+            let cell = tableView.dequeueReusableCell(
+                withIdentifier: MainProductListCell.identifier,
+                for: indexPath) as! MainProductListCell
+            cell.configure(directionType: .horizontal,
+                           titleType: .rightAllow,
+                           backgroundColor: .white,
+                           titleText: "알뜰 상품")
+            return cell
+        case .firstBannerCell:
+            let cell = tableView.dequeueReusableCell(
+                withIdentifier: MainBannerViewCell.identifier,
+                for: indexPath) as! MainBannerViewCell
+            cell.backgroundColor = .systemRed
+            return cell
+        case .secondBannerCell:
+            let cell = tableView.dequeueReusableCell(
+                withIdentifier: MainBannerViewCell.identifier,
+                for: indexPath) as! MainBannerViewCell
+            cell.backgroundColor = .systemBlue
+            return cell
+        case .todayNewerCell:
+            let cell = tableView.dequeueReusableCell(
+                withIdentifier: MainProductListCell.identifier,
+                for: indexPath) as! MainProductListCell
+            cell.configure(directionType: .horizontal,
+                           titleType: .rightAllowAndSubTitle,
+                           backgroundColor: .white,
+                           titleText: "오늘의 신상품",
+                           subTitleText: "매일 정오, 컬리의 새로운 상품을 만나보세요")
+            return cell
+        case .hotProductsCell:
+            let cell = tableView.dequeueReusableCell(
+                withIdentifier: MainProductListCell.identifier,
+                for: indexPath) as! MainProductListCell
+            cell.configure(directionType: .horizontal,
+                           titleType: .rightAllow,
+                           backgroundColor: ColorManager.General.backGray.rawValue,
+                           titleText: "지금 가장 핫한 상품")
+            return cell
+        case .deadlineSaleCell:
+            let cell = tableView.dequeueReusableCell(
+                withIdentifier: MainProductListCell.identifier,
+                for: indexPath) as! MainProductListCell
+            cell.configure(directionType: .horizontal,
+                           titleType: .rightAllow,
+                           backgroundColor: .white,
+                           titleText: "마감세일")
+            return cell
+        case .immunityProductsCell:
+            let cell = tableView.dequeueReusableCell(
+                withIdentifier: MainProductListCell.identifier,
+                for: indexPath) as! MainProductListCell
+            cell.configure(directionType: .horizontal,
+                           titleType: .rightAllow,
+                           backgroundColor: .white,
+                           titleText: "면역력 증진")
+            return cell
+        case .deliveryInfoCell:
+            let cell = tableView.dequeueReusableCell(
+                withIdentifier: MainBannerViewCell.identifier,
+                for: indexPath) as! MainBannerViewCell
+            cell.backgroundColor = .systemPurple
             return cell
         }
     }
@@ -97,15 +183,43 @@ extension CurlyRecommendCell: UITableViewDataSource {
 
 extension CurlyRecommendCell: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let screenWidth = UIScreen.main.bounds.width
-
         switch RecommendCellType(rawValue: indexPath.section)! {
-        case .imageSlideCell: return screenWidth * 0.92
+        case .imageSlideCell:
+            let screenWidth = UIScreen.main.bounds.width
+            return screenWidth * 0.92
+        case .firstBannerCell, .secondBannerCell, .deliveryInfoCell:
+            return bannerHeightValue
         default: return UITableView.automaticDimension
         }
     }
 
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 200
+        return 800
+    }
+}
+
+import UIKit
+
+class MainBannerViewCell: UITableViewCell {
+
+    // MARK: - Properties
+
+    static let identifier = "MainBannerViewCell"
+
+    // MARK: - LifeCycle
+
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        configureUI()
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    // MARK: - Helpers
+
+    func configureUI() {
+        self.backgroundColor = .white
     }
 }

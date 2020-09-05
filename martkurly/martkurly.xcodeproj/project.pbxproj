@@ -72,6 +72,8 @@
 		AF564AB224E56DEA00989F82 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF564AB124E56DEA00989F82 /* AppDelegate.swift */; };
 		AF564ABB24E56DED00989F82 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AF564ABA24E56DED00989F82 /* Assets.xcassets */; };
 		AF564ABE24E56DED00989F82 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AF564ABC24E56DED00989F82 /* LaunchScreen.storyboard */; };
+		AF6506222502755100A42788 /* MainEachHProductCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF6506212502755100A42788 /* MainEachHProductCell.swift */; };
+		AF6506242502757800A42788 /* MainEachVProductCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF6506232502757800A42788 /* MainEachVProductCell.swift */; };
 		AF72A5B524F6152000D96920 /* Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF72A5B424F6152000D96920 /* Search.swift */; };
 		AF72A5B724F6265E00D96920 /* SearchTableViewHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF72A5B624F6265E00D96920 /* SearchTableViewHeaderView.swift */; };
 		AF72A5B924F6650700D96920 /* ProductDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF72A5B824F6650700D96920 /* ProductDetailVC.swift */; };
@@ -192,6 +194,8 @@
 		AF564ABA24E56DED00989F82 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AF564ABD24E56DED00989F82 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		AF564ABF24E56DED00989F82 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		AF6506212502755100A42788 /* MainEachHProductCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainEachHProductCell.swift; sourceTree = "<group>"; };
+		AF6506232502757800A42788 /* MainEachVProductCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainEachVProductCell.swift; sourceTree = "<group>"; };
 		AF72A5B424F6152000D96920 /* Search.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Search.swift; sourceTree = "<group>"; };
 		AF72A5B624F6265E00D96920 /* SearchTableViewHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTableViewHeaderView.swift; sourceTree = "<group>"; };
 		AF72A5B824F6650700D96920 /* ProductDetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailVC.swift; sourceTree = "<group>"; };
@@ -661,6 +665,8 @@
 			children = (
 				AFFCBF2E25014F95007A6957 /* RecommendImageSliderCell.swift */,
 				AFFCBF302501622C007A6957 /* MainProductListCell.swift */,
+				AF6506212502755100A42788 /* MainEachHProductCell.swift */,
+				AF6506232502757800A42788 /* MainEachVProductCell.swift */,
 			);
 			path = CurlyRecommendCellAndViews;
 			sourceTree = "<group>";
@@ -836,6 +842,7 @@
 				42C69B6024EEC52200A18B4C /* Agreement.swift in Sources */,
 				AF74E06324F948F700C2E3C6 /* BelowTouchExpandButton.swift in Sources */,
 				AF983A7724F8014300C5F8F3 /* ProductExplainBasicCell.swift in Sources */,
+				AF6506222502755100A42788 /* MainEachHProductCell.swift in Sources */,
 				AF8D2F0524F415D600AE177D /* EventProductDetailListVC.swift in Sources */,
 				AF983A6E24F768A800C5F8F3 /* ProductImageCell.swift in Sources */,
 				42C69B5C24EE606700A18B4C /* IncorrectInputWarningView.swift in Sources */,
@@ -866,6 +873,7 @@
 				0E26964124F7F86A00B1E9D0 /* CategoryKurlyRecommendView.swift in Sources */,
 				AF9C3C6124ECEE850055E7C5 /* HomeVC.swift in Sources */,
 				AF74E06124F948AE00C2E3C6 /* ProductExplainImageCell.swift in Sources */,
+				AF6506242502757800A42788 /* MainEachVProductCell.swift in Sources */,
 				AF84DFA424EF9D90001F3F45 /* HomeMainImageCollectionView.swift in Sources */,
 				AF983A7024F768E500C5F8F3 /* ProductDetailInfoCell.swift in Sources */,
 				42FAF01724ED21F800063981 /* WhyKurlyView.swift in Sources */,
@@ -1051,7 +1059,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = Q3HC733CNK;
+				DEVELOPMENT_TEAM = ZLCDRXJTXW;
 				INFOPLIST_FILE = martkurly/Supporting/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1073,7 +1081,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = Q3HC733CNK;
+				DEVELOPMENT_TEAM = ZLCDRXJTXW;
 				INFOPLIST_FILE = martkurly/Supporting/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (

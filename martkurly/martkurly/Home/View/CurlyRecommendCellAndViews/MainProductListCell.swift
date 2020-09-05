@@ -14,19 +14,29 @@ class MainProductListCell: UITableViewCell {
 
     static let identifier = "MainProductListCell"
 
-    private let sidePaddingValue: CGFloat = 20
-    private let collectionViewWidth: CGFloat = 150
-    private let collectionViewHeight: CGFloat = 360
-
-    enum ProductListCellType {
+    enum ProductListTitleType {
         case none
         case rightAllow
         case rightAllowAndSubTitle
     }
 
-    var cellType: ProductListCellType = .none {
-        didSet { configure() }
+    enum ProductDirectionType {
+        case horizontal
+        case vertical
     }
+
+    private var directionType: ProductDirectionType = .horizontal {
+        didSet {
+            productCollectionView.isScrollEnabled = directionType == .horizontal ? true : false
+            productCollectionView.reloadData()
+        }
+    }
+
+    private let sidePaddingValue: CGFloat = 20
+    private let collectionHCellWidth: CGFloat = 150
+    private let collectionHCellHeight: CGFloat = 360
+    private let collectionVCellHeight: CGFloat = 120
+    private let bottomInsetValue: CGFloat = 60
 
     private let productTitleLabel = UILabel().then {
         $0.text = "오늘의 신상품"
@@ -40,7 +50,6 @@ class MainProductListCell: UITableViewCell {
         $0.isHidden = true
         $0.snp.makeConstraints {
             $0.width.equalTo(12)
-            $0.height.equalTo(20)
         }
     }
 
@@ -76,16 +85,29 @@ class MainProductListCell: UITableViewCell {
     }
 
     func configureCollectionView() {
-        productCollectionView.backgroundColor = .white
+        productCollectionView.backgroundColor = .clear
+        productCollectionView.showsHorizontalScrollIndicator = false
+        productCollectionView.showsVerticalScrollIndicator = false
 
         productCollectionView.dataSource = self
         productCollectionView.delegate = self
 
-        productCollectionView.register(MainEachProductCell.self,
-                                       forCellWithReuseIdentifier: MainEachProductCell.identifier)
+        productCollectionView.register(MainEachHProductCell.self,
+                                       forCellWithReuseIdentifier: MainEachHProductCell.identifier)
+        productCollectionView.register(MainEachVProductCell.self,
+                                       forCellWithReuseIdentifier: MainEachVProductCell.identifier)
     }
 
-    func configure() {
+    func configure(directionType: ProductDirectionType,
+                   titleType: ProductListTitleType,
+                   backgroundColor: UIColor,
+                   titleText: String,
+                   subTitleText: String? = nil) {
+        productTitleLabel.text = titleText
+        productSubTitleLabel.text = subTitleText
+        self.directionType = directionType
+        self.backgroundColor = backgroundColor
+
         let titleStackView = UIStackView(arrangedSubviews:
             [productTitleLabel, rightAllowImageView]).then {
                 $0.axis = .horizontal
@@ -98,7 +120,7 @@ class MainProductListCell: UITableViewCell {
         amountStackView.spacing = 8
         amountStackView.alignment = .leading
 
-        switch cellType {
+        switch titleType {
         case .none: break
         case .rightAllowAndSubTitle:
             amountStackView.addArrangedSubview(productSubTitleLabel)
@@ -111,16 +133,32 @@ class MainProductListCell: UITableViewCell {
             self.addSubview($0)
         }
 
-        amountStackView.snp.makeConstraints {
+        /*
+         1000JI
+         레이아웃 관련 문제 해결
+         https://rhino-developer.tistory.com/entry/iOS-%EC%98%A4%ED%86%A0%EB%A0%88%EC%9D%B4%EC%95%84%EC%9B%83-%EA%B0%80%EC%9D%B4%EB%93%9C-Debugging-Auto-Layout-Debugging-Tricks-and-Tips
+         제약 조건과 충돌 하는 경우 해결 방법은 여러가지가 있겠지만 굳이 삭제하지 않고 priority를 999로 낮춰도 충돌 나지 않는다.
+         아래에서 높이를 지정해주는데 높이는 Auto로 잡고 있는 부분이랑 충돌이 나는 듯 하다.
+         따라서 아래와 같이 낮춰줬더니 워닝이 발생하지 않음 :) 그래도 한번 다시 체크는 해봐야 할 듯 하다.
+         */
+        amountStackView.snp.remakeConstraints {
             $0.top.equalToSuperview().offset(52)
             $0.leading.equalToSuperview().offset(sidePaddingValue)
             $0.trailing.equalToSuperview().offset(-sidePaddingValue)
         }
 
-        productCollectionView.snp.makeConstraints {
+        productCollectionView.snp.remakeConstraints {
             $0.top.equalTo(amountStackView.snp.bottom).offset(16)
             $0.leading.trailing.bottom.equalToSuperview()
-            $0.height.equalTo(collectionViewHeight)
+
+            switch directionType {
+            case .horizontal:
+                $0.height.equalTo(collectionHCellHeight).priority(999)
+            case .vertical:
+                $0.height.equalTo((collectionVCellHeight * 3)
+                    + (sidePaddingValue * 2)
+                    + bottomInsetValue).priority(999)
+            }
         }
     }
 }
@@ -129,26 +167,58 @@ class MainProductListCell: UITableViewCell {
 
 extension MainProductListCell: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 5
+        switch directionType {
+        case .horizontal: return 5
+        case .vertical: return 3
+        }
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: MainEachProductCell.identifier,
-            for: indexPath) as! MainEachProductCell
-        return cell
+        switch directionType {
+        case .horizontal:
+            let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: MainEachHProductCell.identifier,
+                for: indexPath) as! MainEachHProductCell
+            return cell
+        case .vertical:
+            let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: MainEachVProductCell.identifier,
+                for: indexPath) as! MainEachVProductCell
+            return cell
+        }
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: collectionViewWidth, height: collectionViewHeight)
+        switch directionType {
+        case .horizontal:
+            return CGSize(width: collectionHCellWidth, height: collectionHCellHeight)
+        case .vertical:
+            let collectionVViewWidth: CGFloat = UIScreen.main.bounds.width - (sidePaddingValue * 2)
+            return CGSize(width: collectionVViewWidth, height: collectionVCellHeight)
+        }
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 0, left: sidePaddingValue, bottom: 0, right: sidePaddingValue)
+        switch directionType {
+        case .horizontal:
+            return UIEdgeInsets(top: 0,
+                                left: sidePaddingValue,
+                                bottom: 0,
+                                right: sidePaddingValue)
+        case .vertical:
+            return UIEdgeInsets(top: 0,
+                                left: sidePaddingValue,
+                                bottom: bottomInsetValue,
+                                right: sidePaddingValue)
+        }
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 12
+    }
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return sidePaddingValue
     }
 }
 
@@ -156,126 +226,4 @@ extension MainProductListCell: UICollectionViewDataSource {
 
 extension MainProductListCell: UICollectionViewDelegateFlowLayout {
 
-}
-
-import UIKit
-
-// 메인화면에서 보여주는 상품 셀
-class MainEachProductCell: UICollectionViewCell {
-
-    // MARK: - Properties
-
-    static let identifier = "MainEachProductCell"
-
-    private let productImageView = UIImageView().then {
-        $0.image = UIImage(named: "TestImage")
-        $0.contentMode = .scaleAspectFill
-        $0.clipsToBounds = true
-    }
-
-    private let saleDisplayLabel = UILabel().then {
-        let boldAttributes: [NSAttributedString.Key: Any] = [
-            .font: UIFont.boldSystemFont(ofSize: 14),
-            .foregroundColor: UIColor.white
-        ]
-
-        let attributes: [NSAttributedString.Key: Any] = [
-            .font: UIFont.systemFont(ofSize: 10),
-            .foregroundColor: UIColor.white
-        ]
-
-        var stringValue = NSMutableAttributedString(string: "SAVE\n", attributes: attributes)
-        stringValue.append(NSAttributedString(string: "40", attributes: boldAttributes))
-        stringValue.append(NSAttributedString(string: "%", attributes: attributes))
-
-        $0.attributedText = stringValue
-        $0.textAlignment = .center
-        $0.numberOfLines = 2
-    }
-
-    private lazy var saleDisplayView = UIView().then {
-        $0.backgroundColor = UIColor(red: 151/255,
-                                     green: 87/255,
-                                     blue: 187/255,
-                                     alpha: 1)
-
-        $0.addSubview(saleDisplayLabel)
-        saleDisplayLabel.snp.makeConstraints {
-            $0.edges.equalToSuperview()
-        }
-    }
-
-    private let productTitleLabel = UILabel().then {
-        $0.text = "[그린팬] 그린쉐프 토콰즈 프라이팬 6종"
-        $0.textColor = .black
-        $0.font = .systemFont(ofSize: 14)
-        $0.numberOfLines = 0
-    }
-
-    private let productSalePriceLabel = UILabel().then {
-        $0.text = "29,520원"
-        $0.textColor = .black
-        $0.font = .boldSystemFont(ofSize: 14)
-    }
-
-    private let productBasicPriceLabel = UILabel().then {
-        $0.text = "36,900원"
-        $0.textColor = .black
-        $0.font = .systemFont(ofSize: 12)
-
-        $0.attributedText = NSAttributedString(
-            string: "36,900원",
-            attributes: [NSAttributedString.Key.strikethroughStyle: NSUnderlineStyle.single.rawValue,
-                         NSAttributedString.Key.strikethroughColor: ColorManager.General.mainGray.rawValue,
-                         NSAttributedString.Key.foregroundColor: ColorManager.General.mainGray.rawValue])
-    }
-
-    // MARK: - LifeCycle
-
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        configureUI()
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    // MARK: - Helpers
-
-    func configureUI() {
-        self.backgroundColor = .clear
-        configureLayout()
-    }
-
-    func configureLayout() {
-        [productImageView, saleDisplayView].forEach {
-            self.addSubview($0)
-        }
-
-        productImageView.snp.makeConstraints {
-            $0.top.leading.trailing.equalToSuperview()
-            $0.height.equalTo(self.frame.height * 0.62)
-        }
-
-        saleDisplayView.snp.makeConstraints {
-            $0.top.leading.equalToSuperview()
-            $0.height.equalTo(38)
-            $0.width.equalTo(44)
-        }
-
-        let infoStack = UIStackView(arrangedSubviews: [productTitleLabel,
-                                                       productSalePriceLabel,
-                                                       productBasicPriceLabel])
-        infoStack.axis = .vertical
-        infoStack.spacing = 4
-        infoStack.alignment = .leading
-
-        self.addSubview(infoStack)
-        infoStack.snp.makeConstraints {
-            $0.top.equalTo(productImageView.snp.bottom).offset(12)
-            $0.leading.equalToSuperview().offset(4)
-            $0.trailing.equalToSuperview().offset(-4)
-        }
-    }
 }
