@@ -15,7 +15,9 @@ class MyKurlyOrderHistoryVC: UIViewController {
         $0.menuTitles = [StringManager.MyKurlyOrderHistory.title.rawValue, StringManager.MyKurlyOrderHistory.menu2.rawValue]
     }
     private let orderHistoryTableView = UITableView(frame: .zero, style: .grouped)
-    private let frequentlyBuyingProductsTableView = UITableView()
+    private let frequentlyBuyingProductsTableView = UITableView(frame: .zero, style: .grouped).then {
+        $0.isHidden = true
+    }
 
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -44,10 +46,21 @@ class MyKurlyOrderHistoryVC: UIViewController {
         orderHistoryTableView.backgroundColor = .backgroundGray
         orderHistoryTableView.tableFooterView = UIView(frame: .zero)
         orderHistoryTableView.sectionFooterHeight = 0
+
+        frequentlyBuyingProductsTableView.register(MyKurlyFrequentlyBuyingProductsTableViewCell.self, forCellReuseIdentifier: MyKurlyFrequentlyBuyingProductsTableViewCell.identifier)
+        frequentlyBuyingProductsTableView.dataSource = self
+        frequentlyBuyingProductsTableView.delegate = self
+        frequentlyBuyingProductsTableView.rowHeight = 170
+        frequentlyBuyingProductsTableView.separatorStyle = .none
+        frequentlyBuyingProductsTableView.backgroundColor = .backgroundGray
+        frequentlyBuyingProductsTableView.tableFooterView = UIView(frame: .zero)
+        frequentlyBuyingProductsTableView.sectionFooterHeight = 0
+
+        categoryMenuView.categorySelected = handleCategoryMenuSelection(index:)
     }
 
     private func setContraints() {
-        [categoryMenuView, orderHistoryTableView].forEach {
+        [categoryMenuView, orderHistoryTableView, frequentlyBuyingProductsTableView].forEach {
             view.addSubview($0)
         }
         categoryMenuView.snp.makeConstraints {
@@ -58,6 +71,25 @@ class MyKurlyOrderHistoryVC: UIViewController {
             $0.top.equalTo(categoryMenuView.snp.bottom)
             $0.leading.trailing.equalToSuperview()
             $0.bottom.equalToSuperview()
+        }
+        frequentlyBuyingProductsTableView.snp.makeConstraints {
+            $0.top.equalTo(categoryMenuView.snp.bottom)
+            $0.leading.trailing.equalToSuperview()
+            $0.bottom.equalToSuperview()
+        }
+    }
+
+    // MARK: - Helpers
+    private func handleCategoryMenuSelection(index: Int) {
+        switch index {
+        case 0:
+            orderHistoryTableView.isHidden = false
+            frequentlyBuyingProductsTableView.isHidden = true
+        case 1:
+            orderHistoryTableView.isHidden = true
+            frequentlyBuyingProductsTableView.isHidden = false
+        default:
+            break
         }
     }
 }
@@ -70,7 +102,7 @@ extension MyKurlyOrderHistoryVC: UITableViewDataSource {
         case orderHistoryTableView:
             return 5
         case frequentlyBuyingProductsTableView:
-            return 0
+            return 5
         default:
             fatalError()
         }
@@ -81,7 +113,7 @@ extension MyKurlyOrderHistoryVC: UITableViewDataSource {
         case orderHistoryTableView:
             return 1
         case frequentlyBuyingProductsTableView:
-            return 0
+            return 1
         default:
             fatalError()
         }
@@ -93,7 +125,8 @@ extension MyKurlyOrderHistoryVC: UITableViewDataSource {
             guard let cell = orderHistoryTableView.dequeueReusableCell(withIdentifier: MyKurlyOrderHistoryTableViewCell.identifier, for: indexPath) as? MyKurlyOrderHistoryTableViewCell else { fatalError() }
             return cell
         case frequentlyBuyingProductsTableView:
-            return UITableViewCell()
+            guard let cell = frequentlyBuyingProductsTableView.dequeueReusableCell(withIdentifier: MyKurlyFrequentlyBuyingProductsTableViewCell.identifier, for: indexPath) as? MyKurlyFrequentlyBuyingProductsTableViewCell else { fatalError() }
+            return cell
         default:
             fatalError()
         }
@@ -108,7 +141,7 @@ extension MyKurlyOrderHistoryVC: UITableViewDelegate {
         case orderHistoryTableView:
             return 13
         case frequentlyBuyingProductsTableView:
-            return 0
+            return 13
         default:
             fatalError()
         }
@@ -122,7 +155,10 @@ extension MyKurlyOrderHistoryVC: UITableViewDelegate {
             }
             return view
         case frequentlyBuyingProductsTableView:
-            fatalError()
+            let view = UIView().then {
+                $0.backgroundColor = .backgroundGray
+            }
+            return view
         default:
             fatalError()
         }
