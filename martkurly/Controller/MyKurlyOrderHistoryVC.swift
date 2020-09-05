@@ -163,4 +163,17 @@ extension MyKurlyOrderHistoryVC: UITableViewDelegate {
             fatalError()
         }
     }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        var nextVC = UIViewController()
+        switch tableView {
+        case orderHistoryTableView:
+            nextVC = MyKurlyOrderHistoryDetailVC()
+        case frequentlyBuyingProductsTableView:
+            print(2)
+        default:
+            fatalError()
+        }
+        navigationController?.pushViewController(nextVC, animated: true)
+    }
 }

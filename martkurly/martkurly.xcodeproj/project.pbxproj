@@ -48,6 +48,7 @@
 		4263A2BD24F52239004CB90A /* SingUpBirthdayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4263A2BC24F52239004CB90A /* SingUpBirthdayView.swift */; };
 		428D8745250352B600191E9F /* MyKurlyOrderHistoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428D8744250352B600191E9F /* MyKurlyOrderHistoryTableViewCell.swift */; };
 		428D8747250376AA00191E9F /* MyKurlyFrequentlyBuyingProductsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428D8746250376AA00191E9F /* MyKurlyFrequentlyBuyingProductsTableViewCell.swift */; };
+		428D874925037EFB00191E9F /* MyKurlyOrderHistoryDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428D874825037EFB00191E9F /* MyKurlyOrderHistoryDetailVC.swift */; };
 		42AF3DF524F8B41100F7E1DA /* MyKurlyVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42AF3DF424F8B41100F7E1DA /* MyKurlyVC.swift */; };
 		42B4FD7324F63AC30087F6B1 /* SignUpGenderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42B4FD7224F63AC30087F6B1 /* SignUpGenderView.swift */; };
 		42C69B5C24EE606700A18B4C /* IncorrectInputWarningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42C69B5B24EE606700A18B4C /* IncorrectInputWarningView.swift */; };
@@ -179,6 +180,7 @@
 		4263A2BC24F52239004CB90A /* SingUpBirthdayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingUpBirthdayView.swift; sourceTree = "<group>"; };
 		428D8744250352B600191E9F /* MyKurlyOrderHistoryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MyKurlyOrderHistoryTableViewCell.swift; path = Controller/MyKurlyOrderHistoryTableViewCell.swift; sourceTree = SOURCE_ROOT; };
 		428D8746250376AA00191E9F /* MyKurlyFrequentlyBuyingProductsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MyKurlyFrequentlyBuyingProductsTableViewCell.swift; path = Controller/MyKurlyFrequentlyBuyingProductsTableViewCell.swift; sourceTree = SOURCE_ROOT; };
+		428D874825037EFB00191E9F /* MyKurlyOrderHistoryDetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MyKurlyOrderHistoryDetailVC.swift; path = Controller/MyKurlyOrderHistoryDetailVC.swift; sourceTree = SOURCE_ROOT; };
 		42AF3DF424F8B41100F7E1DA /* MyKurlyVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MyKurlyVC.swift; path = martkurly/Sign/View/MyKurlyVC.swift; sourceTree = SOURCE_ROOT; };
 		42B4FD7224F63AC30087F6B1 /* SignUpGenderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpGenderView.swift; sourceTree = "<group>"; };
 		42C69B5B24EE606700A18B4C /* IncorrectInputWarningView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncorrectInputWarningView.swift; sourceTree = "<group>"; };
@@ -641,6 +643,7 @@
 				422C6F4525021E8000E3F2A1 /* MyKurlyCouponVC.swift */,
 				422C6F4725021E9E00E3F2A1 /* MyKurlyInvitationVC.swift */,
 				422C6F4925021ED200E3F2A1 /* MyKurlyOrderHistoryVC.swift */,
+				428D874825037EFB00191E9F /* MyKurlyOrderHistoryDetailVC.swift */,
 				422C6F4B25021EE800E3F2A1 /* MyKurlyProductReviewVC.swift */,
 				422C6F4D25021FCB00E3F2A1 /* MyKurlyProductQuestionVC.swift */,
 				422C6F4F2502200300E3F2A1 /* MyKurlyAssistantVC.swift */,
@@ -870,6 +873,7 @@
 				422C6F422500E42300E3F2A1 /* MyKurlyInfoView.swift in Sources */,
 				425C5BD524F69B6D002C57D2 /* Gender.swift in Sources */,
 				42F44E7624F913D3001B9294 /* MyKurlyInstructionVC.swift in Sources */,
+				428D874925037EFB00191E9F /* MyKurlyOrderHistoryDetailVC.swift in Sources */,
 				42FAF01024ED105E00063981 /* StringManager.swift in Sources */,
 				AFAD082924FB94E500A8DC5D /* ProductDetailContentCell.swift in Sources */,
 				422C6F4C25021EE800E3F2A1 /* MyKurlyProductReviewVC.swift in Sources */,

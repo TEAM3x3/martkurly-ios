@@ -292,6 +292,7 @@ struct StringManager {
 
     enum MyKurlyOrderHistory: String {
         case title = "주문 내역"
+        case title2 = "주문 내역 상세"
         case menu2 = "자주 사는 상품"
         case orderNumber = "주문번호"
         case productName = "상품명"

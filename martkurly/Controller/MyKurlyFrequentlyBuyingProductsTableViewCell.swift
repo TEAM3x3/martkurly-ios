@@ -60,6 +60,7 @@ class MyKurlyFrequentlyBuyingProductsTableViewCell: UITableViewCell {
 
     // MARK: - UI
     private func configureUI() {
+        self.selectionStyle = .none
         setContraints()
     }
 
