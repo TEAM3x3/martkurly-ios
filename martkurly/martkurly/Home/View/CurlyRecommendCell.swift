@@ -58,6 +58,8 @@ class CurlyRecommendCell: UICollectionViewCell {
                                     forCellReuseIdentifier: MainProductListCell.identifier)
         recommendTableView.register(MainBannerViewCell.self,
                                     forCellReuseIdentifier: MainBannerViewCell.identifier)
+        recommendTableView.register(MainMDRecommendCell.self,
+                                    forCellReuseIdentifier: MainMDRecommendCell.identifier)
     }
 }
 
@@ -70,6 +72,7 @@ extension CurlyRecommendCell: UITableViewDataSource {
         case eventNewsCell
         case frugalCell
         case firstBannerCell
+        case mdRecommendCell
         case secondBannerCell
         case todayNewerCell
         case hotProductsCell
@@ -125,6 +128,11 @@ extension CurlyRecommendCell: UITableViewDataSource {
                 withIdentifier: MainBannerViewCell.identifier,
                 for: indexPath) as! MainBannerViewCell
             cell.backgroundColor = .systemRed
+            return cell
+        case .mdRecommendCell:
+            let cell = tableView.dequeueReusableCell(
+                withIdentifier: MainMDRecommendCell.identifier,
+                for: indexPath) as! MainMDRecommendCell
             return cell
         case .secondBannerCell:
             let cell = tableView.dequeueReusableCell(
@@ -195,6 +203,54 @@ extension CurlyRecommendCell: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         return 800
+    }
+}
+
+import UIKit
+
+class MainMDRecommendCell: UITableViewCell {
+
+    // MARK: - Properties
+
+    static let identifier = "MainMDRecommendCell"
+
+    private let sidePaddingValue: CGFloat = 20
+
+    private let productTitleLabel = UILabel().then {
+        $0.text = "MD의 추천"
+        $0.textColor = .black
+        $0.font = .systemFont(ofSize: 20)
+    }
+
+    // MARK: - LifeCycle
+
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        configureUI()
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    // MARK: - Helpers
+
+    func configureUI() {
+        self.backgroundColor = .white
+        configureLayout()
+    }
+
+    func configureLayout() {
+        [productTitleLabel].forEach {
+            self.addSubview($0)
+        }
+
+        productTitleLabel.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(52)
+            $0.leading.equalToSuperview().offset(sidePaddingValue)
+            $0.trailing.equalToSuperview().offset(-sidePaddingValue)
+            $0.bottom.equalToSuperview()
+        }
     }
 }
 
