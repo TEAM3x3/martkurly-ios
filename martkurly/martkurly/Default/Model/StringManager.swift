@@ -297,7 +297,7 @@ struct StringManager {
         case productName = "상품명"
         case paymentDate = "결제일시"
         case paymentMethod = "결제 방법"
-        case paymentAmound = "결제 금액"
+        case paymentAmount = "결제 금액"
         case orderStatus = "주문 상테"
     }
 
