@@ -42,8 +42,16 @@ class MyKurlyOrderHistoryDetailVC: UIViewController {
         let string1 = "직접 주문취소는 "
         let string2 = "\"입금확인\" "
         let string3 = "상태일 경우에만 가능합니다."
-        let attributes = [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13, weight: .regular)]
-        let boldAttributes = [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13, weight: .bold)]
+        let attributes: [NSAttributedString.Key: Any] =
+            [
+                NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13, weight: .regular),
+                NSAttributedString.Key.foregroundColor: UIColor.darkGray
+        ]
+        let boldAttributes: [NSAttributedString.Key: Any] =
+            [
+                NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13, weight: .bold),
+                NSAttributedString.Key.foregroundColor: UIColor.darkGray
+        ]
         let attributedText = NSMutableAttributedString(string: string1, attributes: attributes)
         let attributedText2 = NSMutableAttributedString(string: string2, attributes: boldAttributes)
         let attributedText3 = NSMutableAttributedString(string: string3, attributes: attributes)
@@ -87,6 +95,10 @@ class MyKurlyOrderHistoryDetailVC: UIViewController {
         tableView.rowHeight = tableViewRowHeight
         tableView.tableFooterView = UIView()
         tableView.sectionFooterHeight = 0
+
+        customerServiceButton.addTarget(self, action: #selector(handleCustomerServiceButton), for: .touchUpInside)
+        cancelOrderButton.addTarget(self, action: #selector(handleCancelOrderButton), for: .touchUpInside)
+        cancelOrderButton.isActive = false
     }
 
     private func setContraints() {
@@ -126,9 +138,20 @@ class MyKurlyOrderHistoryDetailVC: UIViewController {
             $0.centerX.equalToSuperview()
         }
     }
+
+    // MARK: - Selectors
+    @objc
+    private func handleCustomerServiceButton() {
+        print(#function)
+    }
+
+    @objc
+    private func handleCancelOrderButton() {
+        print(#function)
+    }
 }
 
-// MARK: -
+// MARK: - UITableViewDataSource
 extension MyKurlyOrderHistoryDetailVC: UITableViewDataSource {
 
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -148,7 +171,7 @@ extension MyKurlyOrderHistoryDetailVC: UITableViewDataSource {
     }
 }
 
-// MARK: -
+// MARK: - UITableViewDelegate
 extension MyKurlyOrderHistoryDetailVC: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -160,9 +183,5 @@ extension MyKurlyOrderHistoryDetailVC: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return tableViewHeightForHeader
-    }
-
-    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableView.automaticDimension
     }
 }
