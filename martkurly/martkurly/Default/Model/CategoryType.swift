@@ -83,8 +83,8 @@ enum CategoryType {
         case .fixNonInsetsmallBarStyle: fallthrough
         case .fixInsetStyle: return UIFont.systemFont(ofSize: 18)
         case .fixNonInsetStyle: fallthrough
-        case .infinityStyle: fallthrough
-        case .infinityTBLineStyle: return UIFont.systemFont(ofSize: 16)
+        case .infinityStyle: return UIFont.systemFont(ofSize: 16)
+        case .infinityTBLineStyle: return UIFont.systemFont(ofSize: 14)
         }
     }
 
@@ -93,8 +93,8 @@ enum CategoryType {
         case .fixNonInsetsmallBarStyle: return UIFont.systemFont(ofSize: 18)
         case .fixInsetStyle: return UIFont.boldSystemFont(ofSize: 18)
         case .fixNonInsetStyle: fallthrough
-        case .infinityTBLineStyle: fallthrough
         case .infinityStyle: return UIFont.boldSystemFont(ofSize: 16)
+        case .infinityTBLineStyle: return UIFont.boldSystemFont(ofSize: 14)
         }
     }
 

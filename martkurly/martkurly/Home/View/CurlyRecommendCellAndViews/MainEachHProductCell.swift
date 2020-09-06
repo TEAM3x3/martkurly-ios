@@ -57,7 +57,7 @@ class MainEachHProductCell: UICollectionViewCell {
         $0.text = "[그린팬] 그린쉐프 토콰즈 프라이팬 6종"
         $0.textColor = .black
         $0.font = .systemFont(ofSize: 14)
-        $0.numberOfLines = 0
+        $0.numberOfLines = 2
     }
 
     private let productSalePriceLabel = UILabel().then {
