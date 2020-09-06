@@ -16,7 +16,6 @@ class CategoryVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setConfigure()
-
     }
 
     override func viewWillAppear(_ animated: Bool) {
