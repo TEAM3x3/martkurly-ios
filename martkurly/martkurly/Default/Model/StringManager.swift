@@ -302,6 +302,51 @@ struct StringManager {
         case orderStatus = "주문 상테"
     }
 
+    let myKurlyOrderHistoryDetailCellData = [
+        [
+            "주문번호"
+        ],
+        [
+            "1. 결제 정보",
+            "상품금액",
+            "배송비",
+            "상품할인금액",
+            "쿠폰할인",
+            "적립금사용",
+            "결제금액",
+            "적립금액"
+        ],
+        [
+            "2. 주문 정보",
+            "주문번호",
+            "주문자명",
+            "보내는 분",
+            "결제일시"
+        ],
+        [
+            "3. 배송지 정보",
+            "받는 분",
+            "받는 분 핸드폰",
+            "배송방법",
+            "우편번호",
+            "주소"
+        ],
+        [
+            "4. 받으실 장소",
+            "받으실 장소",
+            "공동현관 출입 방법"
+        ],
+        [
+            "5. 추가 정보",
+            "메세지 전송시점",
+            "미출시 조치방법"
+        ]
+    ]
+
+    enum MyKurlyOrderHistoryDetail {
+
+    }
+
     struct HappinessCenterText {
         static let title = "고객행복센터"
         static let titleUsage = """
