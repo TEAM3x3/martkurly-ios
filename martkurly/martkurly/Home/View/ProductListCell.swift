@@ -14,12 +14,6 @@ class ProductListCell: UICollectionViewCell {
 
     static let identifier = "ProductListCell"
 
-    var headerType: SortHeaderType = .notSort {
-        didSet {
-            productListView = ProductListView(headerType: headerType)
-            configureLayout()
-        }
-    }
     private var productListView: ProductListView!
 
     // MARK: - LifeCycle
@@ -47,5 +41,11 @@ class ProductListCell: UICollectionViewCell {
         productListView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
+    }
+
+    func configure(headerType: SortHeaderType, products: [Product]) {
+        productListView = ProductListView(headerType: headerType)
+        productListView.products = products
+        configureLayout()
     }
 }

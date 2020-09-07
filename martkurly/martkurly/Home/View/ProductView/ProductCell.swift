@@ -7,12 +7,17 @@
 //
 
 import UIKit
+import Kingfisher
 
 class ProductCell: UICollectionViewCell {
 
     // MARK: - Properties
 
     static let identifier = "ProductCell"
+
+    var product: Product? {
+        didSet { configure() }
+    }
 
     private let productImageView = UIImageView().then {
         $0.image = UIImage(named: "TestImage")
@@ -164,5 +169,14 @@ class ProductCell: UICollectionViewCell {
             $0.bottom.trailing.equalToSuperview().offset(-16)
             $0.height.equalTo(88)
         }
+    }
+
+    func configure() {
+        guard let product = product else { return }
+        let viewModel = ProductViewModel(product: product)
+
+        productTitleLabel.text = product.title
+        productImageView.kf.setImage(with: viewModel.imageURL)
+        productPriceLabel.text = viewModel.salePrice
     }
 }

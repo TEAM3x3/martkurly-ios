@@ -8,6 +8,20 @@
 
 import Foundation
 
+struct Product: Decodable {
+    let id: Int
+    let title: String
+    let short_desc: String
+    let price: Int
+    let img: String
+    let sales: Sales
+
+    struct Sales: Decodable {
+        let discount_rate: Int
+        let contents: String?
+    }
+}
+
 /*
  SaleType
  

@@ -340,9 +340,9 @@ class MainCurlyInfomationCell: UITableViewCell {
     }
 
     func editSNSButton(button: UIButton, imageName: String) {
-        button.setImage(
-            UIImage(named: imageName)?.withRenderingMode(.alwaysOriginal),
-            for: .normal)
+        let image: UIImage? = imageName.isEmpty ?
+            nil : UIImage(named: imageName)?.withRenderingMode(.alwaysOriginal)
+        button.setImage(image, for: .normal)
         button.imageView?.contentMode = .scaleAspectFill
         button.clipsToBounds = true
         button.layer.cornerRadius = 24 / 2
@@ -364,6 +364,10 @@ class MainCurlyInfomationCell: UITableViewCell {
                                 text: "",
                                 textColor: .white,
                                 textFont: .boldSystemFont(ofSize: 12))
+        }
+        snsStackView.arrangedSubviews.forEach {
+            self.editSNSButton(button: $0 as! UIButton,
+                               imageName: "")
         }
     }
 }

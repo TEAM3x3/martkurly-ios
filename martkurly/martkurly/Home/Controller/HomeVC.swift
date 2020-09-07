@@ -12,6 +12,10 @@ class HomeVC: UIViewController {
 
     // MARK: - Properties
 
+    private var cheapProducts = [Product]() {
+        didSet { categoryMenuCollectionView.reloadData() }
+    }
+
     private lazy var menuCategory = CategoryMenuView(categoryType: .fixInsetStyle).then {
         $0.menuTitles = ["컬리추천", "신상품", "베스트", "알뜰쇼핑", "이벤트"]
         $0.categorySelected = categorySelected(item:)
@@ -29,6 +33,7 @@ class HomeVC: UIViewController {
         super.viewDidLoad()
         configureUI()
         configureNavigationBar()
+        fetchCheapProducts()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -36,6 +41,14 @@ class HomeVC: UIViewController {
         setNavigationBarStatus(type: .purpleType,
                                isShowCart: true,
                                leftBarbuttonStyle: .none)
+    }
+
+    // MARK: - API
+
+    func fetchCheapProducts() {
+        CurlyService.shared.fetchCheapProducts { products in
+            self.cheapProducts = products
+        }
     }
 
     // MARK: - Actions
@@ -113,19 +126,19 @@ extension HomeVC: UICollectionViewDataSource {
             let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: ProductListCell.identifier,
                 for: indexPath) as! ProductListCell
-            cell.headerType = .fastAreaAndCondition
+            cell.configure(headerType: .fastAreaAndCondition, products: [])
             return cell
         case .baseProduct:
             let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: ProductListCell.identifier,
                 for: indexPath) as! ProductListCell
-                cell.headerType = .fastAreaAndCondition
+                cell.configure(headerType: .fastAreaAndCondition, products: [])
             return cell
         case .cheapProduct:
             let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: ProductListCell.identifier,
                 for: indexPath) as! ProductListCell
-                cell.headerType = .fastAreaAndBenefit
+                cell.configure(headerType: .fastAreaAndBenefit, products: cheapProducts)
             return cell
         case .eventProduct:
             let cell = collectionView.dequeueReusableCell(
