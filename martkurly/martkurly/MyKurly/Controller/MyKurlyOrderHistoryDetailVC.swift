@@ -18,7 +18,9 @@ class MyKurlyOrderHistoryDetailVC: UIViewController {
     private let contentView = UIView()
     private let tableView = UITableView(frame: .zero, style: .grouped)
     private let tableViewHeightForHeader: CGFloat = 8
-    private let tableViewRowHeight: CGFloat = 60
+    private let tableViewDefualtRowHeight: CGFloat = 60
+    private let tableViewSubtitleHeight: CGFloat = 30
+    private var numberOfSubtitles = 0
     private let data = StringManager().myKurlyOrderHistoryDetailCellData
     private let customerServiceButton = UIButton().then {
         let image = UIImage(systemName: "chevron.right")?.withTintColor(.martkurlyMainPurpleColor, renderingMode: .alwaysOriginal)
@@ -74,6 +76,8 @@ class MyKurlyOrderHistoryDetailVC: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         contentView.snp.makeConstraints {
+            print("tableView maxY", tableView.frame.maxY)
+            print("orderInfoBtn maxY", cancelOrderInfoLabel.frame.maxY)
             $0.height.equalTo(cancelOrderInfoLabel.frame.maxY + 30)
         }
     }
@@ -83,16 +87,15 @@ class MyKurlyOrderHistoryDetailVC: UIViewController {
         view.backgroundColor = .white
         scrollView.backgroundColor = .backgroundGray
         contentView.backgroundColor = .backgroundGray
+        getNumberOfSubtitles()
         setAttributes()
         setContraints()
     }
 
     private func setAttributes() {
-        tableView.register(MyKurlyOrderHistoryDetailTableViewCell.self, forCellReuseIdentifier: MyKurlyOrderHistoryDetailTableViewCell.identifier)
         tableView.dataSource = self
         tableView.delegate = self
         tableView.isScrollEnabled = false
-        tableView.rowHeight = tableViewRowHeight
         tableView.tableFooterView = UIView()
         tableView.sectionFooterHeight = 0
 
@@ -122,7 +125,11 @@ class MyKurlyOrderHistoryDetailVC: UIViewController {
         }
         tableView.snp.makeConstraints {
             $0.top.leading.trailing.equalToSuperview()
-            $0.height.equalTo(tableViewRowHeight * CGFloat(data.count) + tableViewHeightForHeader * CGFloat(data.count))
+            $0.height.equalTo(
+                tableViewDefualtRowHeight * CGFloat(data.count)
+                    + tableViewHeightForHeader * CGFloat(data.count)
+//                    + tableViewSubtitleHeight * CGFloat(numberOfSubtitles)
+            )
         }
         customerServiceButton.snp.makeConstraints {
             $0.top.equalTo(tableView.snp.bottom).offset(10)
@@ -136,6 +143,16 @@ class MyKurlyOrderHistoryDetailVC: UIViewController {
         cancelOrderInfoLabel.snp.makeConstraints {
             $0.top.equalTo(cancelOrderButton.snp.bottom).offset(20)
             $0.centerX.equalToSuperview()
+        }
+    }
+
+    // MARK: - Helpers
+    private func getNumberOfSubtitles() {
+        for category in data {
+            for index in category.indices {
+                if index == 0 { continue }
+                numberOfSubtitles += 1
+            }
         }
     }
 
@@ -163,10 +180,11 @@ extension MyKurlyOrderHistoryDetailVC: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: MyKurlyOrderHistoryDetailTableViewCell.identifier, for: indexPath) as? MyKurlyOrderHistoryDetailTableViewCell else { fatalError() }
+        let cell = MyKurlyOrderHistoryDetailTableViewCell()
         let cellData = data[indexPath.section]
         let cellType: MyKurlyDetailCellType = indexPath.section == 0 ? .orderNumber : .info
         cell.configureCell(cellData: cellData, cellType: cellType)
+        cell.reloadInputViews()
         return cell
     }
 }
@@ -183,5 +201,27 @@ extension MyKurlyOrderHistoryDetailVC: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return tableViewHeightForHeader
+    }
+
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return tableViewDefualtRowHeight
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let cell = tableView.cellForRow(at: indexPath) as? MyKurlyOrderHistoryDetailTableViewCell else { return }
+        cell.isFoled.toggle()
+        switch cell.isFoled {
+        case true:
+            tableView.rowHeight -= tableViewSubtitleHeight
+            tableView.snp.updateConstraints {
+                $0.height.equalTo(
+                    tableViewDefualtRowHeight * CGFloat(data.count)
+                        + tableViewHeightForHeader * CGFloat(data.count)
+                        + tableViewSubtitleHeight
+                )
+            }
+        case false:
+            tableView.rowHeight += tableViewSubtitleHeight
+        }
     }
 }
