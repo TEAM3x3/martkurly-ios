@@ -61,6 +61,7 @@ class MyKurlyOrderHistoryDetailVC: UIViewController {
         attributedText.append(attributedText3)
         $0.attributedText = attributedText
     }
+    private var selectedCell: IndexPath = []
 
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -73,11 +74,19 @@ class MyKurlyOrderHistoryDetailVC: UIViewController {
         setNavigationBarStatus(type: .whiteType, isShowCart: false, leftBarbuttonStyle: .pop, titleText: StringManager.MyKurlyOrderHistory.title2.rawValue)
     }
 
+    override func viewDidLayoutSubviews() {
+        contentView.snp.removeConstraints()
+        contentView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+            $0.width.equalTo(view)
+            $0.height.equalTo(cancelOrderInfoLabel.frame.maxY + 30)
+        }
+
+    }
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         contentView.snp.makeConstraints {
-            print("tableView maxY", tableView.frame.maxY)
-            print("orderInfoBtn maxY", cancelOrderInfoLabel.frame.maxY)
             $0.height.equalTo(cancelOrderInfoLabel.frame.maxY + 30)
         }
     }
@@ -96,6 +105,7 @@ class MyKurlyOrderHistoryDetailVC: UIViewController {
         tableView.dataSource = self
         tableView.delegate = self
         tableView.isScrollEnabled = false
+        tableView.estimatedRowHeight = 100
         tableView.tableFooterView = UIView()
         tableView.sectionFooterHeight = 0
 
@@ -125,7 +135,7 @@ class MyKurlyOrderHistoryDetailVC: UIViewController {
         }
         tableView.snp.makeConstraints {
             $0.top.leading.trailing.equalToSuperview()
-            $0.height.equalTo(
+            $0.height.greaterThanOrEqualTo(
                 tableViewDefualtRowHeight * CGFloat(data.count)
                     + tableViewHeightForHeader * CGFloat(data.count)
 //                    + tableViewSubtitleHeight * CGFloat(numberOfSubtitles)
@@ -184,7 +194,15 @@ extension MyKurlyOrderHistoryDetailVC: UITableViewDataSource {
         let cellData = data[indexPath.section]
         let cellType: MyKurlyDetailCellType = indexPath.section == 0 ? .orderNumber : .info
         cell.configureCell(cellData: cellData, cellType: cellType)
-        cell.reloadInputViews()
+        if selectedCell == indexPath {
+            cell.isFoled.toggle()
+        }
+
+        func updateTableView() {
+            tableView.beginUpdates()
+            tableView.endUpdates()
+        }
+        cell.updateTableView = updateTableView
         return cell
     }
 }
@@ -203,25 +221,22 @@ extension MyKurlyOrderHistoryDetailVC: UITableViewDelegate {
         return tableViewHeightForHeader
     }
 
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return tableViewDefualtRowHeight
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        selectedCell = indexPath
+        tableView.reloadData()
     }
 
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let cell = tableView.cellForRow(at: indexPath) as? MyKurlyOrderHistoryDetailTableViewCell else { return }
-        cell.isFoled.toggle()
-        switch cell.isFoled {
-        case true:
-            tableView.rowHeight -= tableViewSubtitleHeight
-            tableView.snp.updateConstraints {
-                $0.height.equalTo(
-                    tableViewDefualtRowHeight * CGFloat(data.count)
-                        + tableViewHeightForHeader * CGFloat(data.count)
-                        + tableViewSubtitleHeight
-                )
-            }
-        case false:
-            tableView.rowHeight += tableViewSubtitleHeight
+//    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+//        tableView.snp.updateConstraints {
+//            $0.height.greaterThanOrEqualTo(tableView.contentSize.height)
+//            print(tableView.contentSize.height)
+//        }
+//    }
+
+    func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        tableView.snp.updateConstraints {
+            $0.height.greaterThanOrEqualTo(tableView.contentSize.height)
+            print(tableView.contentSize.height)
         }
     }
 }

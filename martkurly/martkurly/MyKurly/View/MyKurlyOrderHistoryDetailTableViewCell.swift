@@ -22,14 +22,17 @@ class MyKurlyOrderHistoryDetailTableViewCell: UITableViewCell {
     private var cellTitle = UILabel().then {
         $0.font = UIFont.systemFont(ofSize: 18, weight: .regular)
         $0.numberOfLines = 0
+//        $0.sizeToFit()
+//        $0.clipsToBounds = true
     }
     private let separator = UIView().then {
         $0.backgroundColor = .separatorGray
     }
+    // 상세정보가 들어있는 뷰
     private var detailContentView = UIView().then {
         $0.backgroundColor = .yellow
-        $0.isHidden = true
-    } // 상세정보가 들어있는 뷰
+//        $0.isHidden = true
+    }
     private var subtitleLabels = [UILabel]()
     private var infoLabels = [UILabel]() // 구매 물품에 따라 다른 정보가 표시
     private var isInitialized = false
@@ -39,6 +42,7 @@ class MyKurlyOrderHistoryDetailTableViewCell: UITableViewCell {
             configureFoldingStatus(newValue: newValue)
         }
     }
+    var updateTableView: () -> Void = { return }
 
     // MARK: - Lifecycle
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -52,14 +56,7 @@ class MyKurlyOrderHistoryDetailTableViewCell: UITableViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         configureUI()
-        // detail view 의 높이를 각 셀에 맞게 업데이트
-        detailContentView.snp.updateConstraints {
-            if let lastCell = subtitleLabels.last {
-                $0.height.equalTo(lastCell.frame.maxY + 20)
-            } else {
-                $0.height.equalTo(0)
-            }
-        }
+        updateTableView()
     }
 
     // MARK: - UI
@@ -80,12 +77,11 @@ class MyKurlyOrderHistoryDetailTableViewCell: UITableViewCell {
             self.addSubview($0)
         }
         cellTitle.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(20)
-            $0.leading.equalToSuperview().inset(20)
-//            $0.height.equalTo(40)
+            $0.top.equalToSuperview().offset(20)
+            $0.leading.equalToSuperview().offset(20)
         }
         rightAccessoryImageView.snp.makeConstraints {
-            $0.trailing.equalToSuperview().inset(20)
+            $0.trailing.equalToSuperview().offset(-20)
             $0.centerY.equalTo(cellTitle)
         }
         separator.snp.makeConstraints {
@@ -94,9 +90,10 @@ class MyKurlyOrderHistoryDetailTableViewCell: UITableViewCell {
             $0.height.equalTo(1)
         }
         detailContentView.snp.makeConstraints {
-            $0.top.equalTo(separator)
+            $0.top.equalTo(separator.snp.bottom).offset(1)
             $0.leading.trailing.equalToSuperview()
-            $0.height.equalTo(0)
+            $0.bottom.equalToSuperview()
+//            $0.height.greaterThanOrEqualTo(200)
         }
 
         switch cellType {
@@ -133,6 +130,11 @@ class MyKurlyOrderHistoryDetailTableViewCell: UITableViewCell {
             infoLabel.snp.makeConstraints {
                 $0.leading.equalTo(cellTitle.snp.leading).offset(135)
                 $0.centerY.equalTo(subtitleLabel)
+            }
+            if index == (subtitleLabels.count - 1) {
+                subtitleLabel.snp.makeConstraints {
+                    $0.bottom.equalToSuperview().inset(20)
+                }
             }
         }
     }
