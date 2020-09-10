@@ -10,4 +10,5 @@ import Foundation
 
 let CURLY_REF = "http://13.209.33.72/api"
 
+let REF_GOODS = CURLY_REF + "/goods/"
 let REF_CHEAP = CURLY_REF + "/goods/sale"

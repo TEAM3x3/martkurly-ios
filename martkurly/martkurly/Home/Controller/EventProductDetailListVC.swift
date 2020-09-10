@@ -32,7 +32,7 @@ class EventProductDetailListVC: UIViewController {
 
     // MARK: - Actions
 
-    func tappedProduct() {
+    func tappedProduct(productID: Int) {
         let controller = ProductDetailVC()
         self.navigationController?.pushViewController(controller, animated: true)
     }
@@ -56,6 +56,6 @@ class EventProductDetailListVC: UIViewController {
     }
 
     func configureAttributes() {
-        productListView.tappedProduct = tappedProduct
+        productListView.tappedProduct = tappedProduct(productID:)
     }
 }
