@@ -13,8 +13,18 @@ class ProductExplainCell: UICollectionViewCell {
     // MARK: - Properties
 
     static let identifier = "ProductExplainCell"
+    private let sideInsetValue: CGFloat = 12
+    private var infoViewModel = ExplainInfoViewModel()
 
     private let explainTableView = UITableView()
+    private let productBuyButton = KurlyButton(title: "구매하기", style: .purple)
+
+    var productDetailData: ProductDetail? {
+        didSet {
+            infoViewModel.productDetailData = productDetailData
+            explainTableView.reloadData()
+        }
+    }
 
     // MARK: - LifeCycle
 
@@ -36,9 +46,20 @@ class ProductExplainCell: UICollectionViewCell {
     }
 
     func configureLayout() {
-        self.addSubview(explainTableView)
+        [explainTableView, productBuyButton].forEach {
+            self.addSubview($0)
+        }
+
         explainTableView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+            $0.top.leading.trailing.equalToSuperview()
+        }
+
+        productBuyButton.snp.makeConstraints {
+            $0.top.equalTo(explainTableView.snp.bottom)
+            $0.leading.equalToSuperview().offset(sideInsetValue)
+            $0.trailing.equalToSuperview().offset(-sideInsetValue)
+            $0.bottom.equalTo(self.safeAreaLayoutGuide).offset(-24)
+            $0.height.equalTo(52)
         }
     }
 
@@ -58,8 +79,6 @@ class ProductExplainCell: UICollectionViewCell {
                                   forCellReuseIdentifier: ProductExplainDeliveryInfoCell.identifier)
         explainTableView.register(ProductExplainWhyCurlyCell.self,
                                   forCellReuseIdentifier: ProductExplainWhyCurlyCell.identifier)
-        explainTableView.register(ProductExplainBuyButtonCell.self,
-                                  forCellReuseIdentifier: ProductExplainBuyButtonCell.identifier)
         explainTableView.register(ProductExplainImageCell.self,
                                   forCellReuseIdentifier: ProductExplainImageCell.identifier)
     }
@@ -68,44 +87,6 @@ class ProductExplainCell: UICollectionViewCell {
 // MARK: - UITableViewDataSource
 
 extension ProductExplainCell: UITableViewDataSource {
-    enum ExplainTableViewCase: Int, CaseIterable {
-        case productBasic
-        case productInfo
-        case productDelivery
-        case productImage
-        case productWhyKurly
-        case productBuyButton
-    }
-
-    enum ExplainTableInfoCase: Int, CaseIterable {
-        case unit
-        case weight
-        case delivery
-        case countryOfOrigin
-        case packing
-        case allergy
-        case expiration
-
-        var description: String {
-            switch self {
-            case .unit: return "판매단위"
-            case .weight: return "중량/용량"
-            case .delivery: return "배송구분"
-            case .countryOfOrigin: return "원산지"
-            case .packing: return "포장타입"
-            case .allergy: return "알레르기정보"
-            case .expiration: return "유통기한"
-            }
-        }
-
-        var subContent: String? {
-            switch self {
-            case .packing: return "택배배송은 에코포장이 스티로폼으로 대체됩니다."
-            default: return nil
-            }
-        }
-    }
-
     func numberOfSections(in tableView: UITableView) -> Int {
         return ExplainTableViewCase.allCases.count
     }
@@ -113,7 +94,7 @@ extension ProductExplainCell: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch ExplainTableViewCase(rawValue: section)! {
         case .productInfo:
-            return ExplainTableInfoCase.allCases.count
+            return infoViewModel.infomations.count
         default:
             return 1
         }
@@ -125,14 +106,18 @@ extension ProductExplainCell: UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(
                 withIdentifier: ProductExplainBasicCell.identifier,
                 for: indexPath) as! ProductExplainBasicCell
+            cell.productDetailData = productDetailData
             return cell
         case .productInfo:
             let cell = tableView.dequeueReusableCell(
                 withIdentifier: ProductExplainInfoCell.identifier,
                 for: indexPath) as! ProductExplainInfoCell
-            cell.configure(
-                titleText: ExplainTableInfoCase(rawValue: indexPath.row)!.description,
-                subContent: ExplainTableInfoCase(rawValue: indexPath.row)?.subContent)
+
+            let infomationType = infoViewModel.infomations[indexPath.row]
+            cell.configure(infoTitleText: infomationType.description,
+                           infoContentText: infoViewModel.requestInfoContent(type: infomationType),
+                           infoSubContentText: infoViewModel.requestInfoSubContent(type: infomationType))
+
             return cell
         case .productDelivery:
             let cell = tableView.dequeueReusableCell(
@@ -149,11 +134,6 @@ extension ProductExplainCell: UITableViewDataSource {
                 withIdentifier: ProductExplainWhyCurlyCell.identifier,
                 for: indexPath) as! ProductExplainWhyCurlyCell
             return cell
-        case .productBuyButton:
-            let cell = tableView.dequeueReusableCell(
-                withIdentifier: ProductExplainBuyButtonCell.identifier,
-                for: indexPath) as! ProductExplainBuyButtonCell
-            return cell
         }
     }
 }
@@ -167,5 +147,21 @@ extension ProductExplainCell: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         return 200
+    }
+
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        if ExplainTableViewCase.allCases.count - 1 == section {
+            return 80
+        }
+        return .zero
+    }
+
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        if ExplainTableViewCase.allCases.count - 1 == section {
+            let view = UIView()
+            view.backgroundColor = .clear
+            return view
+        }
+        return nil
     }
 }

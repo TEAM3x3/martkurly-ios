@@ -18,9 +18,10 @@ class ProductExplainImageCell: UITableViewCell {
     private let defaultBottomPaddingValue: CGFloat = 80
 
     private let belowTouchExpandButton = BelowTouchExpandButton()
-    private let productImageView = UIImageView().then {
+    let productImageView = UIImageView().then {
         $0.image = UIImage(named: "TestImage")
         $0.contentMode = .scaleAspectFill
+        $0.clipsToBounds = true
     }
 
     // MARK: - LifeCycle

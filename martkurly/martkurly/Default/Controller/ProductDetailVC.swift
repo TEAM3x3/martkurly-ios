@@ -23,6 +23,10 @@ class ProductDetailVC: UIViewController {
     private lazy var categoryMenuCollectionView = UICollectionView(frame: .zero,
                                                               collectionViewLayout: flowLayout)
 
+    var productDetailData: ProductDetail? {
+        didSet { categoryMenuCollectionView.reloadData() }
+    }
+
     // MARK: - LifeCycle
 
     override func viewDidLoad() {
@@ -35,7 +39,7 @@ class ProductDetailVC: UIViewController {
         self.setNavigationBarStatus(type: .whiteType,
                                     isShowCart: true,
                                     leftBarbuttonStyle: .pop,
-                                    titleText: "[남향푸드또띠아] 간편 간식 브리또 8종")
+                                    titleText: productDetailData?.title)
     }
 
     // MARK: - Helpers
@@ -95,16 +99,19 @@ extension ProductDetailVC: UICollectionViewDataSource {
             let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: ProductExplainCell.identifier,
                 for: indexPath) as! ProductExplainCell
+            cell.productDetailData = productDetailData
             return cell
         case .productImage:
             let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: ProductImageCell.identifier,
                 for: indexPath) as! ProductImageCell
+            cell.productDetailData = productDetailData
             return cell
         case .productDetailInfo:
             let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: ProductDetailInfoCell.identifier,
                 for: indexPath) as! ProductDetailInfoCell
+            cell.productDetailData = productDetailData
             return cell
         case .productReviews:
             let cell = collectionView.dequeueReusableCell(
