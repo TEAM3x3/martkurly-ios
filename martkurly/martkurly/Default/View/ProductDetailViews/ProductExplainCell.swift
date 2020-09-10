@@ -77,6 +77,8 @@ class ProductExplainCell: UICollectionViewCell {
                                   forCellReuseIdentifier: ProductExplainInfoCell.identifier)
         explainTableView.register(ProductExplainDeliveryInfoCell.self,
                                   forCellReuseIdentifier: ProductExplainDeliveryInfoCell.identifier)
+        explainTableView.register(ProductDetailCell.self,
+                                  forCellReuseIdentifier: ProductDetailCell.identifier)
         explainTableView.register(ProductExplainWhyCurlyCell.self,
                                   forCellReuseIdentifier: ProductExplainWhyCurlyCell.identifier)
         explainTableView.register(ProductExplainImageCell.self,
@@ -124,10 +126,18 @@ extension ProductExplainCell: UITableViewDataSource {
                 withIdentifier: ProductExplainDeliveryInfoCell.identifier,
                 for: indexPath) as! ProductExplainDeliveryInfoCell
             return cell
+        case .productDetail:
+            let cell = tableView.dequeueReusableCell(
+                withIdentifier: ProductDetailCell.identifier,
+                for: indexPath) as! ProductDetailCell
+            cell.productDetailData = productDetailData
+            return cell
         case .productImage:
             let cell = tableView.dequeueReusableCell(
                 withIdentifier: ProductExplainImageCell.identifier,
                 for: indexPath) as! ProductExplainImageCell
+            let imageURL = URL(string: productDetailData?.info_img ?? "")
+            cell.productImageView.kf.setImage(with: imageURL)
             return cell
         case .productWhyKurly:
             let cell = tableView.dequeueReusableCell(

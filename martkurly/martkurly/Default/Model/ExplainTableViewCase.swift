@@ -12,6 +12,7 @@ enum ExplainTableViewCase: Int, CaseIterable {
     case productBasic
     case productInfo
     case productDelivery
+    case productDetail
     case productImage
     case productWhyKurly
 }
