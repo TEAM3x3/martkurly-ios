@@ -1,17 +1,17 @@
 //
-//  MyKurlyOrderHistoryDetailTableViewCell.swift
+//  MyKurlyOrderHistoryDetailTableViewOrderNumberCell.swift
 //  martkurly
 //
-//  Created by Kas Song on 9/6/20.
+//  Created by Kas Song on 9/10/20.
 //  Copyright © 2020 Team3x3. All rights reserved.
 //
 
 import UIKit
 
-class MyKurlyOrderHistoryDetailTableViewCell: UITableViewCell {
+class MyKurlyOrderHistoryDetailTableViewOrderNumberCell: UITableViewCell {
 
     // MARK: - Properties
-    static let identifier = "MyKurlyOrderHistoryDetailTableViewCell"
+    static let identifier = "MyKurlyOrderHistoryDetailTableViewOrderNumberCell"
     private var cellType: MyKurlyDetailCellType = .orderNumber
     private var cellData = [String]()
 
@@ -22,8 +22,6 @@ class MyKurlyOrderHistoryDetailTableViewCell: UITableViewCell {
     private var cellTitle = UILabel().then {
         $0.font = UIFont.systemFont(ofSize: 18, weight: .regular)
         $0.numberOfLines = 0
-//        $0.sizeToFit()
-//        $0.clipsToBounds = true
     }
     private let separator = UIView().then {
         $0.backgroundColor = .separatorGray
@@ -31,11 +29,11 @@ class MyKurlyOrderHistoryDetailTableViewCell: UITableViewCell {
     // 상세정보가 들어있는 뷰
     private var detailContentView = UIView().then {
         $0.backgroundColor = .yellow
-//        $0.isHidden = true
+        $0.isHidden = false
     }
     private var subtitleLabels = [UILabel]()
     private var infoLabels = [UILabel]() // 구매 물품에 따라 다른 정보가 표시
-    private var isInitialized = false
+    //    private var isInitialized = false
     // 상세정보뷰의 상태
     var isFoled = true {
         willSet {
@@ -56,16 +54,13 @@ class MyKurlyOrderHistoryDetailTableViewCell: UITableViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         configureUI()
-        updateTableView()
     }
 
     // MARK: - UI
-    private func configureUI() {
-        guard isInitialized == false else { return } // layoutSubview 에서 여러번 실행되는 것을 방지
+    func configureUI() {
         self.selectionStyle = .none
         setAttributes()
         setContraints()
-        isInitialized = true
     }
 
     private func setAttributes() {
@@ -74,7 +69,7 @@ class MyKurlyOrderHistoryDetailTableViewCell: UITableViewCell {
 
     private func setContraints() {
         [cellTitle, rightAccessoryImageView, separator, detailContentView].forEach {
-            self.addSubview($0)
+            self.contentView.addSubview($0)
         }
         cellTitle.snp.makeConstraints {
             $0.top.equalToSuperview().offset(20)
@@ -88,55 +83,18 @@ class MyKurlyOrderHistoryDetailTableViewCell: UITableViewCell {
             $0.top.equalTo(cellTitle.snp.bottom).offset(20)
             $0.leading.trailing.equalToSuperview()
             $0.height.equalTo(1)
-        }
-        detailContentView.snp.makeConstraints {
-            $0.top.equalTo(separator.snp.bottom).offset(1)
-            $0.leading.trailing.equalToSuperview()
             $0.bottom.equalToSuperview()
-//            $0.height.greaterThanOrEqualTo(200)
         }
-
-        switch cellType {
-        case .orderNumber:
-            setConstraintsForOrderNumber()
-        case .info:
-            generateSubtitles()
-            setConstraintsForInfo()
-        }
+//        detailContentView.snp.makeConstraints {
+//            $0.top.equalTo(separator.snp.bottom).offset(1)
+//            $0.leading.trailing.equalToSuperview()
+//            $0.bottom.equalToSuperview()
+//        }
+//        setConstraintsForOrderNumber()
     }
 
     private func setConstraintsForOrderNumber() {
 
-    }
-
-    private func setConstraintsForInfo() {
-        for index in subtitleLabels.indices {
-            let subtitleLabel = subtitleLabels[index]
-            let infoLabel = infoLabels[index]
-            [subtitleLabel, infoLabel].forEach {
-                detailContentView.addSubview($0)
-            }
-            if index == 0 {
-                subtitleLabel.snp.makeConstraints {
-                    $0.top.equalTo(separator.snp.bottom).offset(20)
-                    $0.leading.equalTo(cellTitle)
-                }
-            } else {
-                subtitleLabel.snp.makeConstraints {
-                    $0.top.equalTo(subtitleLabels[index - 1].snp.bottom).offset(15)
-                    $0.leading.equalTo(cellTitle)
-                }
-            }
-            infoLabel.snp.makeConstraints {
-                $0.leading.equalTo(cellTitle.snp.leading).offset(135)
-                $0.centerY.equalTo(subtitleLabel)
-            }
-            if index == (subtitleLabels.count - 1) {
-                subtitleLabel.snp.makeConstraints {
-                    $0.bottom.equalToSuperview().inset(20)
-                }
-            }
-        }
     }
 
     private func generateSubtitles() {
@@ -157,9 +115,8 @@ class MyKurlyOrderHistoryDetailTableViewCell: UITableViewCell {
     }
 
     // MARK: - Helpers
-    func configureCell(cellData: [String], cellType: MyKurlyDetailCellType) {
+    func configureCell(cellData: [String]) {
         self.cellData = cellData
-        self.cellType = cellType
     }
 
     private func configureFoldingStatus(newValue: Bool) {
@@ -171,4 +128,5 @@ class MyKurlyOrderHistoryDetailTableViewCell: UITableViewCell {
             detailContentView.isHidden = false
         }
     }
+
 }

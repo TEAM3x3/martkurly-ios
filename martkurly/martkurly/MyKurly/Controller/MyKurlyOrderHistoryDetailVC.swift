@@ -79,9 +79,8 @@ class MyKurlyOrderHistoryDetailVC: UIViewController {
         contentView.snp.makeConstraints {
             $0.edges.equalToSuperview()
             $0.width.equalTo(view)
-            $0.height.equalTo(cancelOrderInfoLabel.frame.maxY + 30)
+//            $0.height.equalTo(cancelOrderInfoLabel.frame.maxY + 30)
         }
-
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -190,20 +189,43 @@ extension MyKurlyOrderHistoryDetailVC: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = MyKurlyOrderHistoryDetailTableViewCell()
         let cellData = data[indexPath.section]
-        let cellType: MyKurlyDetailCellType = indexPath.section == 0 ? .orderNumber : .info
-        cell.configureCell(cellData: cellData, cellType: cellType)
-        if selectedCell == indexPath {
-            cell.isFoled.toggle()
+        switch indexPath.section {
+        case 0:
+            let orderNumberCell = MyKurlyOrderHistoryDetailTableViewOrderNumberCell()
+            orderNumberCell.configureCell(cellData: cellData)
+            if selectedCell == indexPath {
+                orderNumberCell.isFoled.toggle()
+            }
+            orderNumberCell.layoutIfNeeded()
+            return orderNumberCell
+        default:
+            let infoCell = MyKurlyOrderHistoryDetailTableViewInfoCell()
+            infoCell.configureCell(cellData: cellData)
+            if selectedCell == indexPath {
+                infoCell.isFoled.toggle()
+            }
+//            infoCell.setNeedsLayout()
+//            infoCell.setNeedsUpdateConstraints()
+            infoCell.layoutIfNeeded()
+            return infoCell
         }
 
-        func updateTableView() {
-            tableView.beginUpdates()
-            tableView.endUpdates()
-        }
-        cell.updateTableView = updateTableView
-        return cell
+//        tableView.beginUpdates()
+//                 tableView.endUpdates()
+
+//        func updateTableView() {
+//            tableView.beginUpdates()
+//            tableView.endUpdates()
+//        }
+//        cell.updateTableView = updateTableView
+//        infoCell.contentView.setNeedsLayout()
+//        cell.contentView.layoutIfNeeded()
+//        cell.layoutSubviews()
+//        infoCell.setNeedsUpdateConstraints()
+//        infoCell.updateConstraintsIfNeeded()
+//        infoCell.setNeedsLayout()
+//        infoCell.layoutIfNeeded()
     }
 }
 
@@ -226,17 +248,15 @@ extension MyKurlyOrderHistoryDetailVC: UITableViewDelegate {
         tableView.reloadData()
     }
 
-//    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-//        tableView.snp.updateConstraints {
-//            $0.height.greaterThanOrEqualTo(tableView.contentSize.height)
-//            print(tableView.contentSize.height)
-//        }
-//    }
-
-    func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         tableView.snp.updateConstraints {
             $0.height.greaterThanOrEqualTo(tableView.contentSize.height)
-            print(tableView.contentSize.height)
         }
+    }
+
+    func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+//        tableView.snp.updateConstraints {
+//            $0.height.greaterThanOrEqualTo(tableView.contentSize.height)
+//        }
     }
 }
