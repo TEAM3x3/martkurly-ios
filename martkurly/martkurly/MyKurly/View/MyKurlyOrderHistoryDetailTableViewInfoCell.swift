@@ -34,12 +34,8 @@ class MyKurlyOrderHistoryDetailTableViewInfoCell: UITableViewCell {
     private var subtitleLabels = [UILabel]()
     private var infoLabels = [UILabel]() // 구매 물품에 따라 다른 정보가 표시
     // 상세정보뷰의 상태
-    var isFoled = true {
-        willSet {
-            configureFoldingStatus(newValue: newValue)
-        }
-    }
-    var updateTableView: () -> Void = { return }
+    var isFolded = true
+    var isInitialized = false
 
     // MARK: - Lifecycle
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -53,13 +49,16 @@ class MyKurlyOrderHistoryDetailTableViewInfoCell: UITableViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         configureUI()
+        configureFoldingStatus(newValue: isFolded)
     }
 
     // MARK: - UI
     func configureUI() {
+        guard isInitialized == false else { return }
         self.selectionStyle = .none
         setAttributes()
         setContraints()
+        isInitialized = true
     }
 
     private func setAttributes() {
@@ -82,15 +81,15 @@ class MyKurlyOrderHistoryDetailTableViewInfoCell: UITableViewCell {
             $0.top.equalTo(cellTitle.snp.bottom).offset(20)
             $0.leading.trailing.equalToSuperview()
             $0.height.equalTo(1)
+            $0.bottom.equalToSuperview().priority(.low)
+        }
+        detailContentView.snp.makeConstraints {
+            $0.top.equalTo(separator.snp.bottom).offset(1)
+            $0.leading.trailing.equalToSuperview()
             $0.bottom.equalToSuperview()
         }
-//        detailContentView.snp.makeConstraints {
-//            $0.top.equalTo(separator.snp.bottom).offset(1)
-//            $0.leading.trailing.equalToSuperview()
-//            $0.bottom.equalToSuperview()
-//        }
-//        generateSubtitles()
-//        setConstraintsForInfo()
+        generateSubtitles()
+        setConstraintsForInfo()
     }
 
     private func setConstraintsForInfo() {
@@ -146,12 +145,31 @@ class MyKurlyOrderHistoryDetailTableViewInfoCell: UITableViewCell {
     }
 
     private func configureFoldingStatus(newValue: Bool) {
-        print(#function)
+        var image = UIImage()
         switch newValue {
         case true:
             detailContentView.isHidden = true
+            detailContentView.snp.removeConstraints()
+            separator.snp.removeConstraints()
+            separator.snp.makeConstraints {
+                $0.top.equalTo(cellTitle.snp.bottom).offset(20)
+                $0.leading.trailing.equalToSuperview()
+                $0.height.equalTo(1)
+                $0.bottom.equalToSuperview().priority(.high)
+            }
+            image = UIImage(systemName: "chevron.down")!.withTintColor(.lightGray, renderingMode: .alwaysOriginal)
         case false:
             detailContentView.isHidden = false
+            detailContentView.snp.makeConstraints {
+                $0.top.equalTo(separator.snp.bottom).offset(1)
+                $0.leading.trailing.equalToSuperview()
+                $0.bottom.equalToSuperview()
+            }
+            separator.snp.updateConstraints {
+                $0.bottom.equalToSuperview().priority(.low)
+            }
+            image = UIImage(systemName: "chevron.up")!.withTintColor(.lightGray, renderingMode: .alwaysOriginal)
         }
+        rightAccessoryImageView.image = image
     }
 }

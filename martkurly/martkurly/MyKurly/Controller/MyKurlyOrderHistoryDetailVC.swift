@@ -61,7 +61,7 @@ class MyKurlyOrderHistoryDetailVC: UIViewController {
         attributedText.append(attributedText3)
         $0.attributedText = attributedText
     }
-    private var selectedCell: IndexPath = []
+    private var selectedCell: Set<IndexPath> = [[0, 0]]
 
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -75,12 +75,14 @@ class MyKurlyOrderHistoryDetailVC: UIViewController {
     }
 
     override func viewDidLayoutSubviews() {
-        contentView.snp.removeConstraints()
-        contentView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
-            $0.width.equalTo(view)
-//            $0.height.equalTo(cancelOrderInfoLabel.frame.maxY + 30)
-        }
+        super.viewDidLayoutSubviews()
+        print(#function, cancelOrderInfoLabel.frame.maxY, "Debug")
+//        contentView.snp.removeConstraints()
+//        contentView.snp.makeConstraints {
+//            $0.edges.equalToSuperview()
+//            $0.width.equalTo(view)
+//            $0.height.equalTo(cancelOrderInfoLabel.frame.maxY + 10)
+//        }
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -107,6 +109,7 @@ class MyKurlyOrderHistoryDetailVC: UIViewController {
         tableView.estimatedRowHeight = 100
         tableView.tableFooterView = UIView()
         tableView.sectionFooterHeight = 0
+        tableView.allowsMultipleSelection = true
 
         customerServiceButton.addTarget(self, action: #selector(handleCustomerServiceButton), for: .touchUpInside)
         cancelOrderButton.addTarget(self, action: #selector(handleCancelOrderButton), for: .touchUpInside)
@@ -194,38 +197,24 @@ extension MyKurlyOrderHistoryDetailVC: UITableViewDataSource {
         case 0:
             let orderNumberCell = MyKurlyOrderHistoryDetailTableViewOrderNumberCell()
             orderNumberCell.configureCell(cellData: cellData)
-            if selectedCell == indexPath {
-                orderNumberCell.isFoled.toggle()
+            if selectedCell.contains(indexPath) {
+                orderNumberCell.isFolded = false
+                print("configure", orderNumberCell.isFolded)
+            } else {
+                orderNumberCell.isFolded = true
+                print("configure", orderNumberCell.isFolded)
             }
             orderNumberCell.layoutIfNeeded()
             return orderNumberCell
         default:
             let infoCell = MyKurlyOrderHistoryDetailTableViewInfoCell()
             infoCell.configureCell(cellData: cellData)
-            if selectedCell == indexPath {
-                infoCell.isFoled.toggle()
+            if selectedCell.contains(indexPath) {
+                infoCell.isFolded = false
             }
-//            infoCell.setNeedsLayout()
-//            infoCell.setNeedsUpdateConstraints()
             infoCell.layoutIfNeeded()
             return infoCell
         }
-
-//        tableView.beginUpdates()
-//                 tableView.endUpdates()
-
-//        func updateTableView() {
-//            tableView.beginUpdates()
-//            tableView.endUpdates()
-//        }
-//        cell.updateTableView = updateTableView
-//        infoCell.contentView.setNeedsLayout()
-//        cell.contentView.layoutIfNeeded()
-//        cell.layoutSubviews()
-//        infoCell.setNeedsUpdateConstraints()
-//        infoCell.updateConstraintsIfNeeded()
-//        infoCell.setNeedsLayout()
-//        infoCell.layoutIfNeeded()
     }
 }
 
@@ -244,8 +233,21 @@ extension MyKurlyOrderHistoryDetailVC: UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        selectedCell = indexPath
+        switch selectedCell.contains(indexPath) {
+        case true:
+            selectedCell.remove(indexPath)
+        case false:
+            selectedCell.insert(indexPath)
+            print(#function, "Debug")
+        }
         tableView.reloadData()
+        contentView.snp.removeConstraints()
+        contentView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+            $0.width.equalTo(view)
+            $0.height.equalTo(cancelOrderInfoLabel.frame.maxY + 30)
+        }
+        print(cancelOrderInfoLabel.frame.maxY, "Debugging")
     }
 
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
@@ -255,8 +257,9 @@ extension MyKurlyOrderHistoryDetailVC: UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-//        tableView.snp.updateConstraints {
-//            $0.height.greaterThanOrEqualTo(tableView.contentSize.height)
-//        }
+        print("ContentSize", tableView.contentSize.height)
+        tableView.snp.updateConstraints {
+            $0.height.greaterThanOrEqualTo(tableView.contentSize.height)
+        }
     }
 }
