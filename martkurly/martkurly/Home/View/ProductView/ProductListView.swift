@@ -36,7 +36,10 @@ class ProductListView: UIView {
     private let sortListTableView = UITableView()
     private let containerView = UIView()
 
-    var tappedProduct: (() -> Void)?
+    var tappedProduct: ((Int) -> Void)?
+    var products = [Product]() {
+        didSet { productListCollectionView.reloadData() }
+    }
 
     // MARK: - LifeCycle
 
@@ -110,13 +113,14 @@ class ProductListView: UIView {
 
 extension ProductListView: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 5
+        return products.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: ProductCell.identifier,
             for: indexPath) as! ProductCell
+        cell.product = products[indexPath.item]
         return cell
     }
 
@@ -138,7 +142,8 @@ extension ProductListView: UICollectionViewDataSource {
 
 extension ProductListView: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        tappedProduct?()
+        let productID = products[indexPath.item].id
+        tappedProduct?(productID)
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

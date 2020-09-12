@@ -390,6 +390,86 @@ struct StringManager {
         case orderStatus = "주문 상테"
     }
 
+    let myKurlyOrderHistoryDetailCellData = [
+        [
+            "주문번호"
+        ],
+        [
+            "1. 결제 정보",
+            "상품금액",
+            "배송비",
+            "상품할인금액",
+            "쿠폰할인",
+            "적립금사용",
+            "결제금액",
+            "적립금액"
+        ],
+        [
+            "2. 주문 정보",
+            "주문번호",
+            "주문자명",
+            "보내는 분",
+            "결제일시"
+        ],
+        [
+            "3. 배송지 정보",
+            "받는 분",
+            "받는 분 핸드폰",
+            "배송방법",
+            "우편번호",
+            "주소"
+        ],
+        [
+            "4. 받으실 장소",
+            "받으실 장소",
+            "공동현관 출입 방법"
+        ],
+        [
+            "5. 추가 정보",
+            "메세지 전송시점",
+            "미출시 조치방법"
+        ]
+    ]
+
+    let myKurlyOrderHistoryDetailProductData = [
+        [
+            "image": "TestImage",
+            "category": "",
+            "title": "[인텔리젠시아] 블랫캣 클래식 콜드브루",
+            "price": "12,750",
+            "detail": "/ 1개 구매",
+            "deliveryStatus": "배송완료"
+        ],
+        [
+            "image": "TestImage",
+            "category": "",
+            "title": "[샐러딩] 트러플 머쉬룸 믹스 샐러드 217g",
+            "price": "6,900",
+            "detail": "/ 1개 구매",
+            "deliveryStatus": "배송완료"
+        ],
+        [
+            "image": "TestImage",
+            "category": "[어게인리프레쉬]샐러드 5종",
+            "title": "[어게인리프레쉬] 새우 샐러드",
+            "price": "5,900",
+            "detail": "/ 1개 구매",
+            "deliveryStatus": "배송완료"
+        ],
+        [
+            "image": "TestImage",
+            "category": "[샐러드판다] 병 샐러드 9 종",
+            "title": "[샐러드판다]판다는 불고기랑 연애중(소불고기&메추리알)",
+            "price": "6,900",
+            "detail": "/ 1개 구매",
+            "deliveryStatus": "배송완료"
+        ]
+    ]
+
+    enum MyKurlyOrderHistoryDetail {
+
+    }
+
     struct HappinessCenterText {
         static let title = "고객행복센터"
         static let titleUsage = """

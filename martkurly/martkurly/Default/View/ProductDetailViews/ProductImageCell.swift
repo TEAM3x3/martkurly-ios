@@ -13,7 +13,13 @@ class ProductImageCell: UICollectionViewCell {
     // MARK: - Properties
 
     static let identifier = "ProductImageCell"
+    private let sideInsetValue: CGFloat = 12
+
     private let imageTableView = UITableView()
+
+    var productDetailData: ProductDetail? {
+        didSet { imageTableView.reloadData() }
+    }
 
     // MARK: - LifeCycle
 
@@ -48,37 +54,33 @@ class ProductImageCell: UICollectionViewCell {
 
         imageTableView.register(ProductExplainImageCell.self,
                                   forCellReuseIdentifier: ProductExplainImageCell.identifier)
-        imageTableView.register(ProductExplainBuyButtonCell.self,
-                                forCellReuseIdentifier: ProductExplainBuyButtonCell.identifier)
     }
 }
 
 extension ProductImageCell: UITableViewDataSource, UITableViewDelegate {
-    enum ExplainTableViewCase: Int, CaseIterable {
-        case productImage
-        case productBuyButton
-    }
-
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return ExplainTableViewCase.allCases.count
-    }
-
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        switch ExplainTableViewCase(rawValue: indexPath.section)! {
-        case .productImage:
-            let cell = tableView.dequeueReusableCell(
-                withIdentifier: ProductExplainImageCell.identifier,
-                for: indexPath) as! ProductExplainImageCell
-            return cell
-        case .productBuyButton:
-            let cell = tableView.dequeueReusableCell(
-                withIdentifier: ProductExplainBuyButtonCell.identifier,
-                for: indexPath) as! ProductExplainBuyButtonCell
-            return cell
-        }
+        let cell = tableView.dequeueReusableCell(
+            withIdentifier: ProductExplainImageCell.identifier,
+            for: indexPath) as! ProductExplainImageCell
+
+        guard let productDetailData = productDetailData,
+            let imageURL = URL(string: productDetailData.info_img) else { return cell }
+        cell.productImageView.kf.setImage(with: imageURL)
+
+        return cell
+    }
+
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 12
+    }
+
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        let view = UIView()
+        view.backgroundColor = .clear
+        return view
     }
 }

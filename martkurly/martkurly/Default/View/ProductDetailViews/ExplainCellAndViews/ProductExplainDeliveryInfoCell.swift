@@ -53,7 +53,7 @@ class ProductExplainDeliveryInfoCell: UITableViewCell {
     private let titleLabel = UILabel().then {
         $0.text = DeliveryString.titleString
         $0.textColor = .black
-        $0.font = .boldSystemFont(ofSize: 20)
+        $0.font = .systemFont(ofSize: 18)
     }
 
     private lazy var starsStackView = makeStackView(type: .basic,
@@ -69,16 +69,16 @@ class ProductExplainDeliveryInfoCell: UITableViewCell {
     private lazy var deliveryDetailButton = UIButton(type: .system).then {
         $0.setTitle("자세히 보기", for: .normal)
         $0.setTitleColor(.black, for: .normal)
-        $0.titleLabel?.font = .boldSystemFont(ofSize: 18)
+        $0.titleLabel?.font = .systemFont(ofSize: 14)
         $0.addTarget(self, action: #selector(clickedButton), for: .touchUpInside)
 
         $0.layer.borderWidth = 1
         $0.layer.borderColor = ColorManager.General.chevronGray.rawValue.cgColor
-        $0.layer.cornerRadius = 48 / 2
+        $0.layer.cornerRadius = 36 / 2
 
         $0.snp.makeConstraints {
-            $0.width.equalTo(200)
-            $0.height.equalTo(48)
+            $0.width.equalTo(172)
+            $0.height.equalTo(36)
         }
     }
 
@@ -138,7 +138,7 @@ class ProductExplainDeliveryInfoCell: UITableViewCell {
 
         self.addSubview(stackList)
         stackList.snp.makeConstraints {
-            $0.top.equalTo(titleLabel.snp.bottom).offset(defaultPaddingValue)
+            $0.top.equalTo(titleLabel.snp.bottom).offset(16)
             $0.leading.equalTo(borderView).offset(defaultInsetValue)
             $0.trailing.equalTo(borderView).offset(-defaultInsetValue)
         }
@@ -157,7 +157,7 @@ class ProductExplainDeliveryInfoCell: UITableViewCell {
         titleLabel.text = titleText
         titleLabel.textColor = type == .basic ? ColorManager.General.mainPurple.rawValue :
             ColorManager.General.mainGray.rawValue
-        titleLabel.font = .systemFont(ofSize: 14)
+        titleLabel.font = .systemFont(ofSize: 12)
         titleLabel.snp.makeConstraints {
             $0.width.equalTo(52)
         }
@@ -165,12 +165,12 @@ class ProductExplainDeliveryInfoCell: UITableViewCell {
         let conductLabel = UILabel()
         conductLabel.text = conductText
         conductLabel.textColor = type == .basic ? .black : ColorManager.General.mainGray.rawValue
-        conductLabel.font = .systemFont(ofSize: 14)
+        conductLabel.font = .systemFont(ofSize: 12)
         conductLabel.numberOfLines = 0
 
         let stack = UIStackView(arrangedSubviews: [titleLabel, conductLabel])
         stack.axis = .horizontal
-        stack.spacing = 4
+        stack.spacing = 8
         stack.alignment = .top
 
         return stack

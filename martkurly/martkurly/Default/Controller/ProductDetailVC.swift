@@ -12,6 +12,8 @@ class ProductDetailVC: UIViewController {
 
     // MARK: - Properties
 
+    private let sideInsetValue: CGFloat = 12
+
     private lazy var catogoryMenuBar = CategoryMenuView(categoryType: .fixNonInsetStyle).then {
         $0.menuTitles = ProductCategoryType.getAllCases(reviewsCount: 50)
         $0.categorySelected = categorySelected(item:)
@@ -22,6 +24,12 @@ class ProductDetailVC: UIViewController {
     }
     private lazy var categoryMenuCollectionView = UICollectionView(frame: .zero,
                                                               collectionViewLayout: flowLayout)
+
+    private let productBuyButton = KurlyButton(title: "구매하기", style: .purple)
+
+    var productDetailData: ProductDetail? {
+        didSet { categoryMenuCollectionView.reloadData() }
+    }
 
     // MARK: - LifeCycle
 
@@ -35,7 +43,7 @@ class ProductDetailVC: UIViewController {
         self.setNavigationBarStatus(type: .whiteType,
                                     isShowCart: true,
                                     leftBarbuttonStyle: .pop,
-                                    titleText: "[남향푸드또띠아] 간편 간식 브리또 8종")
+                                    titleText: productDetailData?.title)
     }
 
     // MARK: - Helpers
@@ -47,7 +55,7 @@ class ProductDetailVC: UIViewController {
     }
 
     func configureLayout() {
-        [catogoryMenuBar, categoryMenuCollectionView].forEach {
+        [catogoryMenuBar, categoryMenuCollectionView, productBuyButton].forEach {
             view.addSubview($0)
         }
 
@@ -58,7 +66,15 @@ class ProductDetailVC: UIViewController {
 
         categoryMenuCollectionView.snp.makeConstraints {
             $0.top.equalTo(catogoryMenuBar.snp.bottom)
-            $0.leading.bottom.trailing.equalToSuperview()
+            $0.leading.trailing.equalToSuperview()
+        }
+
+        productBuyButton.snp.makeConstraints {
+            $0.top.equalTo(categoryMenuCollectionView.snp.bottom)
+            $0.leading.equalToSuperview().offset(sideInsetValue)
+            $0.trailing.equalToSuperview().offset(-sideInsetValue)
+            $0.bottom.equalTo(view.safeAreaLayoutGuide).offset(-sideInsetValue)
+            $0.height.equalTo(52)
         }
     }
 
@@ -95,16 +111,19 @@ extension ProductDetailVC: UICollectionViewDataSource {
             let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: ProductExplainCell.identifier,
                 for: indexPath) as! ProductExplainCell
+            cell.productDetailData = productDetailData
             return cell
         case .productImage:
             let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: ProductImageCell.identifier,
                 for: indexPath) as! ProductImageCell
+            cell.productDetailData = productDetailData
             return cell
         case .productDetailInfo:
             let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: ProductDetailInfoCell.identifier,
                 for: indexPath) as! ProductDetailInfoCell
+            cell.productDetailData = productDetailData
             return cell
         case .productReviews:
             let cell = collectionView.dequeueReusableCell(

@@ -1,10 +1,10 @@
-////
-////  CategoryMainView.swift
-////  martkurly
-////
-////  Created by ㅇ오ㅇ on 2020/08/21.
-////  Copyright © 2020 Team3x3. All rights reserved.
-////
+//
+//  CategoryMainView.swift
+//  martkurly
+//
+//  Created by ㅇ오ㅇ on 2020/08/21.
+//  Copyright © 2020 Team3x3. All rights reserved.
+//
 
 import UIKit
 import Then

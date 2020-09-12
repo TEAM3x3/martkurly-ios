@@ -10,11 +10,11 @@ import UIKit
 import Then
 
 class FrequentlyProductFullView: UIView {
-    
+
     // MARK: - Properties
-    
+
     // MARK: - Lifecycle
-    
+
     // MARK: - UI
-    
+
 }

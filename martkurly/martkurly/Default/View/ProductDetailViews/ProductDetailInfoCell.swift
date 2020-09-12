@@ -14,7 +14,13 @@ class ProductDetailInfoCell: UICollectionViewCell {
 
     static let identifier = "ProductDetailInfoCell"
 
+    private let sideInsetValue: CGFloat = 12
+
     private let detailTableView = UITableView()
+
+    var productDetailData: ProductDetail? {
+        didSet { detailTableView.reloadData() }
+    }
 
     // MARK: - LifeCycle
 
@@ -58,8 +64,6 @@ class ProductDetailInfoCell: UICollectionViewCell {
                                  forCellReuseIdentifier: ProductDetailContentCell.identifier)
         detailTableView.register(ProductDetailHappinessCenterCell.self,
                                  forCellReuseIdentifier: ProductDetailHappinessCenterCell.identifier)
-        detailTableView.register(ProductExplainBuyButtonCell.self,
-                                 forCellReuseIdentifier: ProductExplainBuyButtonCell.identifier)
         detailTableView.register(ProductDetailOrderGuideCell.self,
                                  forCellReuseIdentifier: ProductDetailOrderGuideCell.identifier)
     }
@@ -72,31 +76,6 @@ extension ProductDetailInfoCell: UITableViewDataSource, UITableViewDelegate {
         case detailExplain
         case detailHappinessCenter
         case detailOrderGuide
-        case detailBuyButton
-    }
-
-    enum DetailExplainType: Int, CaseIterable {
-        case packingSize
-        case relationLaw
-        case producer
-        case productCompose
-        case countryOfOrigin
-        case storageMethod
-        case dateOfProduction
-        case consumerCounseling
-
-        var description: String {
-            switch self {
-            case .packingSize: return "포장단위별 용량(중량), 수량, 크기"
-            case .relationLaw: return "관련법상 표시사항"
-            case .producer: return "생산자, 수입품의 경우 수입자를 함께 표기"
-            case .productCompose: return "상품구성"
-            case .countryOfOrigin: return "농수산물의 원산지 표시에 관한 법률에 따른 원산지"
-            case .storageMethod: return "보관방법 또는 취급방법"
-            case .dateOfProduction: return "제조연월일(포장일 또는 생산연도), 유통기한 또는 품질유지기한"
-            case .consumerCounseling: return "소비자상담 관련 전화번호"
-            }
-        }
     }
 
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -105,7 +84,9 @@ extension ProductDetailInfoCell: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch ProductDetailType(rawValue: section)! {
-        case .detailExplain: return DetailExplainType.allCases.count
+        case .detailExplain:
+            guard let productData = productDetailData else { return 0 }
+            return productData.details.count
         default: return 1
         }
     }
@@ -116,8 +97,11 @@ extension ProductDetailInfoCell: UITableViewDataSource, UITableViewDelegate {
             let cell = tableView.dequeueReusableCell(
                 withIdentifier: ProductDetailContentCell.identifier,
                 for: indexPath) as! ProductDetailContentCell
-            cell.configure(titleText: DetailExplainType(rawValue: indexPath.row)!.description,
-                           contentsText: "CONTENTS TEXT")
+
+            guard let productData = productDetailData else { return cell }
+            cell.configure(titleText: productData.details[indexPath.row].detail_title,
+                           contentsText: productData.details[indexPath.row].detail_desc)
+
             return cell
         case .detailHappinessCenter:
             let cell = tableView.dequeueReusableCell(
@@ -130,11 +114,6 @@ extension ProductDetailInfoCell: UITableViewDataSource, UITableViewDelegate {
                 for: indexPath) as! ProductDetailOrderGuideCell
             cell.layoutChangedMethod = tableViewLayoutChanged
             return cell
-        case .detailBuyButton:
-            let cell = tableView.dequeueReusableCell(
-                withIdentifier: ProductExplainBuyButtonCell.identifier,
-                for: indexPath) as! ProductExplainBuyButtonCell
-            return cell
         }
     }
 
@@ -145,70 +124,20 @@ extension ProductDetailInfoCell: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         return 44
     }
-}
 
-import UIKit
-
-class ProductDetailOrderGuideCell: UITableViewCell {
-
-    // MARK: - Properties
-
-    static let identifier = "ProductDetailOrderGuideCell"
-
-    var layoutChangedMethod: (() -> Void)?
-
-    private let topLine = UIView().then {
-        $0.backgroundColor = ColorManager.General.backGray.rawValue
-    }
-
-    private let detailOrderView = DetailOrderView()
-
-    // MARK: - LifeCycle
-
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        configureUI()
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    // MARK: - Actions
-
-    func changedDetailOrderViewHeight(height: CGFloat) {
-        detailOrderView.snp.updateConstraints {
-            $0.height.equalTo(height)
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        if ProductDetailType.allCases.count - 1 == section {
+            return 12
         }
-        layoutChangedMethod?()
+        return .zero
     }
 
-    // MARK: - Helpers
-
-    func configureUI() {
-        self.backgroundColor = .white
-        configureLayout()
-        configureAttributes()
-    }
-
-    func configureLayout() {
-        [topLine, detailOrderView].forEach {
-            self.addSubview($0)
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        if ProductDetailType.allCases.count - 1 == section {
+            let view = UIView()
+            view.backgroundColor = .clear
+            return view
         }
-
-        topLine.snp.makeConstraints {
-            $0.top.leading.trailing.equalToSuperview()
-            $0.height.equalTo(12)
-        }
-
-        detailOrderView.snp.makeConstraints {
-            $0.top.equalTo(topLine.snp.bottom)
-            $0.leading.trailing.bottom.equalToSuperview()
-            $0.height.equalTo(840)
-        }
-    }
-
-    func configureAttributes() {
-        detailOrderView.changedTableViewHeight = changedDetailOrderViewHeight(height:)
+        return nil
     }
 }

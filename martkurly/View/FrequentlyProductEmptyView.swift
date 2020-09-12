@@ -17,7 +17,7 @@ class FrequentlyProductEmptyView: UIView {
         $0.textColor = ColorManager.General.mainGray.rawValue
     }
 
-    private let btn = UIButton().then {
+    let btn = UIButton().then {
         $0.layer.borderWidth = 1
         $0.layer.borderColor = ColorManager.General.mainPurple.rawValue.cgColor
         $0.setTitle("베스트 상품 보기", for: .normal)
@@ -61,9 +61,5 @@ class FrequentlyProductEmptyView: UIView {
 
         btn.clipsToBounds = true
         btn.layer.cornerRadius = 20
-    }
-    
-    func configure() {
-        
     }
 }

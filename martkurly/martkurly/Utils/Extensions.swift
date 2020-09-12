@@ -40,6 +40,7 @@ extension UIColor {
     static let checkmarkGray = UIColor(red: 220, green: 221, blue: 222)
     static let chevronForwardGray = UIColor(red: 143, green: 144, blue: 145)
     static let agreementInfoGray = UIColor(red: 151, green: 152, blue: 153)
+    static let inactiveButtonColor = UIColor(red: 220, green: 221, blue: 222)
 }
 
 // MARK: - UIImage
@@ -103,6 +104,10 @@ extension UIViewController {
             backPopBarButton.tintColor = .black
             backDismissBarButton.tintColor = .black
         }
+    }
+
+    func configureTitleText(titleText: String? = nil) {
+        navigationItem.title = titleText
     }
 
     @objc
