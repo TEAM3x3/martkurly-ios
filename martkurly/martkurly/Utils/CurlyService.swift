@@ -29,4 +29,18 @@ struct CurlyService {
             }
         }
     }
+
+    func requestProductDetailData(productID: Int, completion: @escaping(ProductDetail?) -> Void) {
+        let productURL = REF_GOODS + "\(productID)"
+        AF.request(productURL, method: .get).responseJSON { response in
+            guard let jsonData = response.data else { completion(nil); return }
+            do {
+                let productDetailInfo = try self.decoder.decode(ProductDetail?.self, from: jsonData)
+                completion(productDetailInfo)
+            } catch {
+                print("DEBUG: Product Detail Request Error", error.localizedDescription)
+                completion(nil)
+            }
+        }
+    }
 }

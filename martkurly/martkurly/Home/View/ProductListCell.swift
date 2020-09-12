@@ -16,6 +16,8 @@ class ProductListCell: UICollectionViewCell {
 
     private var productListView: ProductListView!
 
+    var detailViewProductMove: ((Int) -> Void)?
+
     // MARK: - LifeCycle
 
     override init(frame: CGRect) {
@@ -25,6 +27,12 @@ class ProductListCell: UICollectionViewCell {
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    // MARK: - Actions
+
+    func tappedProduct(productID: Int) {
+        detailViewProductMove?(productID)
     }
 
     // MARK: - Helpers
@@ -46,6 +54,7 @@ class ProductListCell: UICollectionViewCell {
     func configure(headerType: SortHeaderType, products: [Product]) {
         productListView = ProductListView(headerType: headerType)
         productListView.products = products
+        productListView.tappedProduct = tappedProduct(productID:)
         configureLayout()
     }
 }

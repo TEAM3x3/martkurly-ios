@@ -16,6 +16,10 @@ class ProductExplainBasicCell: UITableViewCell {
 
     private let sideInsetValue: CGFloat = 20
 
+    var productDetailData: ProductDetail? {
+        didSet { configure() }
+    }
+
     private let productImageView = UIImageView().then {
         $0.image = UIImage(named: "TestImage")
         $0.contentMode = .scaleAspectFill
@@ -25,14 +29,14 @@ class ProductExplainBasicCell: UITableViewCell {
     private let productTitleLabel = UILabel().then {
         $0.text = "[김구원선생] 무농약 콩나물 200g"
         $0.textColor = .black
-        $0.font = .boldSystemFont(ofSize: 20)
+        $0.font = .systemFont(ofSize: 20)
         $0.numberOfLines = 0
     }
 
     private let productDetailSubTitleLabel = UILabel().then {
         $0.text = "무농약 콩으로 재배한 콩나물(1봉/200g)"
         $0.textColor = ColorManager.General.chevronGray.rawValue
-        $0.font = .systemFont(ofSize: 16)
+        $0.font = .systemFont(ofSize: 14)
         $0.numberOfLines = 0
     }
 
@@ -174,5 +178,15 @@ class ProductExplainBasicCell: UITableViewCell {
             $0.bottom.equalToSuperview().offset(-20)
             $0.height.equalTo(1)
         }
+    }
+
+    func configure() {
+        guard let detailData = productDetailData else { return }
+        let viewModel = ProductDetailViewModel(productDetail: detailData)
+
+        productImageView.kf.setImage(with: viewModel.productMainImageURL)
+        productTitleLabel.text = detailData.title
+        productDetailSubTitleLabel.text = detailData.short_desc
+        pruductPriceLabel.attributedText = viewModel.priceAttributeText
     }
 }

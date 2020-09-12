@@ -53,6 +53,15 @@ class HomeVC: UIViewController {
 
     // MARK: - Actions
 
+    func detailViewProductMove(productID: Int) {
+        CurlyService.shared.requestProductDetailData(productID: productID) { reponseData in
+            let controller = ProductDetailVC()
+            controller.hidesBottomBarWhenPushed = true
+            controller.productDetailData = reponseData
+            self.navigationController?.pushViewController(controller, animated: true)
+        }
+    }
+
     func tappedEventItem(section: Int) {
         let controller = EventProductDetailListVC()
         controller.hidesBottomBarWhenPushed = true
@@ -139,6 +148,7 @@ extension HomeVC: UICollectionViewDataSource {
                 withReuseIdentifier: ProductListCell.identifier,
                 for: indexPath) as! ProductListCell
                 cell.configure(headerType: .fastAreaAndBenefit, products: cheapProducts)
+                cell.detailViewProductMove = detailViewProductMove(productID:)
             return cell
         case .eventProduct:
             let cell = collectionView.dequeueReusableCell(

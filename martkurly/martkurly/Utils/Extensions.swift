@@ -105,6 +105,10 @@ extension UIViewController {
         }
     }
 
+    func configureTitleText(titleText: String? = nil) {
+        navigationItem.title = titleText
+    }
+
     @objc
     func tappedPopButton() {
         self.navigationController?.popViewController(animated: true)
