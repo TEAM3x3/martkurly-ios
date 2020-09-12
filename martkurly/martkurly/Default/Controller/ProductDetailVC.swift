@@ -12,6 +12,8 @@ class ProductDetailVC: UIViewController {
 
     // MARK: - Properties
 
+    private let sideInsetValue: CGFloat = 12
+
     private lazy var catogoryMenuBar = CategoryMenuView(categoryType: .fixNonInsetStyle).then {
         $0.menuTitles = ProductCategoryType.getAllCases(reviewsCount: 50)
         $0.categorySelected = categorySelected(item:)
@@ -22,6 +24,8 @@ class ProductDetailVC: UIViewController {
     }
     private lazy var categoryMenuCollectionView = UICollectionView(frame: .zero,
                                                               collectionViewLayout: flowLayout)
+
+    private let productBuyButton = KurlyButton(title: "구매하기", style: .purple)
 
     var productDetailData: ProductDetail? {
         didSet { categoryMenuCollectionView.reloadData() }
@@ -51,7 +55,7 @@ class ProductDetailVC: UIViewController {
     }
 
     func configureLayout() {
-        [catogoryMenuBar, categoryMenuCollectionView].forEach {
+        [catogoryMenuBar, categoryMenuCollectionView, productBuyButton].forEach {
             view.addSubview($0)
         }
 
@@ -62,7 +66,15 @@ class ProductDetailVC: UIViewController {
 
         categoryMenuCollectionView.snp.makeConstraints {
             $0.top.equalTo(catogoryMenuBar.snp.bottom)
-            $0.leading.bottom.trailing.equalToSuperview()
+            $0.leading.trailing.equalToSuperview()
+        }
+
+        productBuyButton.snp.makeConstraints {
+            $0.top.equalTo(categoryMenuCollectionView.snp.bottom)
+            $0.leading.equalToSuperview().offset(sideInsetValue)
+            $0.trailing.equalToSuperview().offset(-sideInsetValue)
+            $0.bottom.equalTo(view.safeAreaLayoutGuide).offset(-sideInsetValue)
+            $0.height.equalTo(52)
         }
     }
 

@@ -17,7 +17,6 @@ class ProductInquiryCell: UICollectionViewCell {
     private let sideInsetValue: CGFloat = 12
 
     private let inquiryWriteButton = KurlyButton(title: "상품 문의하기", style: .white)
-    private let productBuyButton = KurlyButton(title: "구매하기", style: .purple)
     private let inquiryTableView = UITableView()
 
     // MARK: - LifeCycle
@@ -40,7 +39,7 @@ class ProductInquiryCell: UICollectionViewCell {
     }
 
     func configureLayout() {
-        [inquiryWriteButton, inquiryTableView, productBuyButton].forEach {
+        [inquiryWriteButton, inquiryTableView].forEach {
             self.addSubview($0)
         }
         inquiryWriteButton.snp.makeConstraints {
@@ -54,14 +53,7 @@ class ProductInquiryCell: UICollectionViewCell {
             $0.top.equalTo(inquiryWriteButton.snp.bottom).offset(24)
             $0.leading.equalToSuperview().offset(sideInsetValue)
             $0.trailing.equalToSuperview().offset(-sideInsetValue)
-        }
-
-        productBuyButton.snp.makeConstraints {
-            $0.top.equalTo(inquiryTableView.snp.bottom)
-            $0.leading.equalToSuperview().offset(sideInsetValue)
-            $0.trailing.equalToSuperview().offset(-sideInsetValue)
-            $0.bottom.equalTo(self.safeAreaLayoutGuide).offset(-24)
-            $0.height.equalTo(60)
+            $0.bottom.equalToSuperview()
         }
     }
 

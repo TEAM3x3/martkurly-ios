@@ -17,7 +17,6 @@ class ProductReviewsCell: UICollectionViewCell {
     private let sideInsetValue: CGFloat = 12
 
     private let reviewWriteButton = KurlyButton(title: "후기 쓰기", style: .white)
-    private let productBuyButton = KurlyButton(title: "구매하기", style: .purple)
     private let reviewsTableView = UITableView()
 
     // MARK: - LifeCycle
@@ -40,7 +39,7 @@ class ProductReviewsCell: UICollectionViewCell {
     }
 
     func configureLayout() {
-        [reviewWriteButton, reviewsTableView, productBuyButton].forEach {
+        [reviewWriteButton, reviewsTableView].forEach {
             self.addSubview($0)
         }
         reviewWriteButton.snp.makeConstraints {
@@ -54,14 +53,7 @@ class ProductReviewsCell: UICollectionViewCell {
             $0.top.equalTo(reviewWriteButton.snp.bottom).offset(24)
             $0.leading.equalToSuperview().offset(sideInsetValue)
             $0.trailing.equalToSuperview().offset(-sideInsetValue)
-        }
-
-        productBuyButton.snp.makeConstraints {
-            $0.top.equalTo(reviewsTableView.snp.bottom)
-            $0.leading.equalToSuperview().offset(sideInsetValue)
-            $0.trailing.equalToSuperview().offset(-sideInsetValue)
-            $0.bottom.equalTo(self.safeAreaLayoutGuide).offset(-24)
-            $0.height.equalTo(60)
+            $0.bottom.equalToSuperview()
         }
     }
 

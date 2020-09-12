@@ -17,7 +17,6 @@ class ProductExplainCell: UICollectionViewCell {
     private var infoViewModel = ExplainInfoViewModel()
 
     private let explainTableView = UITableView()
-    private let productBuyButton = KurlyButton(title: "구매하기", style: .purple)
 
     var productDetailData: ProductDetail? {
         didSet {
@@ -46,20 +45,9 @@ class ProductExplainCell: UICollectionViewCell {
     }
 
     func configureLayout() {
-        [explainTableView, productBuyButton].forEach {
-            self.addSubview($0)
-        }
-
+        self.addSubview(explainTableView)
         explainTableView.snp.makeConstraints {
-            $0.top.leading.trailing.equalToSuperview()
-        }
-
-        productBuyButton.snp.makeConstraints {
-            $0.top.equalTo(explainTableView.snp.bottom)
-            $0.leading.equalToSuperview().offset(sideInsetValue)
-            $0.trailing.equalToSuperview().offset(-sideInsetValue)
-            $0.bottom.equalTo(self.safeAreaLayoutGuide).offset(-24)
-            $0.height.equalTo(52)
+            $0.edges.equalToSuperview()
         }
     }
 

@@ -16,7 +16,6 @@ class ProductImageCell: UICollectionViewCell {
     private let sideInsetValue: CGFloat = 12
 
     private let imageTableView = UITableView()
-    private let productBuyButton = KurlyButton(title: "구매하기", style: .purple)
 
     var productDetailData: ProductDetail? {
         didSet { imageTableView.reloadData() }
@@ -39,20 +38,9 @@ class ProductImageCell: UICollectionViewCell {
     func configureUI() {
         self.backgroundColor = ColorManager.General.backGray.rawValue
 
-        [imageTableView, productBuyButton].forEach {
-            self.addSubview($0)
-        }
-
+        self.addSubview(imageTableView)
         imageTableView.snp.makeConstraints {
-            $0.top.leading.trailing.equalToSuperview()
-        }
-
-        productBuyButton.snp.makeConstraints {
-            $0.top.equalTo(imageTableView.snp.bottom).offset(12)
-            $0.leading.equalToSuperview().offset(sideInsetValue)
-            $0.trailing.equalToSuperview().offset(-sideInsetValue)
-            $0.bottom.equalTo(self.safeAreaLayoutGuide).offset(-24)
-            $0.height.equalTo(52)
+            $0.edges.equalToSuperview()
         }
     }
 
@@ -84,5 +72,15 @@ extension ProductImageCell: UITableViewDataSource, UITableViewDelegate {
         cell.productImageView.kf.setImage(with: imageURL)
 
         return cell
+    }
+
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 12
+    }
+
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        let view = UIView()
+        view.backgroundColor = .clear
+        return view
     }
 }
