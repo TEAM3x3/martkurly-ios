@@ -24,14 +24,14 @@ class ProductExplainInfoCell: UITableViewCell {
         $0.font = .systemFont(ofSize: 16)
     }
 
-    private let infoContent = UILabel().then {
+    private let infoContentLabel = UILabel().then {
         $0.text = "Content Text"
         $0.textColor = .black
         $0.font = .systemFont(ofSize: 16)
         $0.numberOfLines = 0
     }
 
-    private let infoSubContent = UILabel().then {
+    private let infoSubContentLabel = UILabel().then {
         $0.text = "Sub Content Text"
         $0.textColor = ColorManager.General.mainGray.rawValue
         $0.font = .systemFont(ofSize: 14)
@@ -68,18 +68,19 @@ class ProductExplainInfoCell: UITableViewCell {
         }
     }
 
-    func configure(titleText: String, subContent: String? = nil) {
-        infoTitleLabel.text = titleText
+    func configure(infoTitleText: String,
+                   infoContentText: String? = nil,
+                   infoSubContentText: String? = nil) {
+        infoTitleLabel.text = infoTitleText
+        infoContentLabel.text = infoContentText
+        infoSubContentLabel.text = infoSubContentText
 
-        guard let subContentText = subContent else {
-            viewAddAndSetupLayout(view: infoContent)
-            infoSubContent.text = subContent
+        guard infoSubContentText != nil else {
+            viewAddAndSetupLayout(view: infoContentLabel)
             return
         }
 
-        infoSubContent.text = subContentText
-
-        let stack = UIStackView(arrangedSubviews: [infoContent, infoSubContent])
+        let stack = UIStackView(arrangedSubviews: [infoContentLabel, infoSubContentLabel])
         stack.axis = .vertical
         stack.spacing = 4
 

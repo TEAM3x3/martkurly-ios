@@ -14,13 +14,9 @@ class ProductListCell: UICollectionViewCell {
 
     static let identifier = "ProductListCell"
 
-    var headerType: SortHeaderType = .notSort {
-        didSet {
-            productListView = ProductListView(headerType: headerType)
-            configureLayout()
-        }
-    }
     private var productListView: ProductListView!
+
+    var detailViewProductMove: ((Int) -> Void)?
 
     // MARK: - LifeCycle
 
@@ -31,6 +27,12 @@ class ProductListCell: UICollectionViewCell {
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    // MARK: - Actions
+
+    func tappedProduct(productID: Int) {
+        detailViewProductMove?(productID)
     }
 
     // MARK: - Helpers
@@ -47,5 +49,12 @@ class ProductListCell: UICollectionViewCell {
         productListView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
+    }
+
+    func configure(headerType: SortHeaderType, products: [Product]) {
+        productListView = ProductListView(headerType: headerType)
+        productListView.products = products
+        productListView.tappedProduct = tappedProduct(productID:)
+        configureLayout()
     }
 }

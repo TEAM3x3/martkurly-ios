@@ -102,7 +102,8 @@ class MainProductListCell: UITableViewCell {
                    titleType: ProductListTitleType,
                    backgroundColor: UIColor,
                    titleText: String,
-                   subTitleText: String? = nil) {
+                   subTitleText: String? = nil,
+                   isTopPadding: Bool = true) {
         productTitleLabel.text = titleText
         productSubTitleLabel.text = subTitleText
         self.directionType = directionType
@@ -142,7 +143,7 @@ class MainProductListCell: UITableViewCell {
          따라서 아래와 같이 낮춰줬더니 워닝이 발생하지 않음 :) 그래도 한번 다시 체크는 해봐야 할 듯 하다.
          */
         amountStackView.snp.remakeConstraints {
-            $0.top.equalToSuperview().offset(52)
+            $0.top.equalToSuperview().offset(isTopPadding ? 52 : 12)
             $0.leading.equalToSuperview().offset(sidePaddingValue)
             $0.trailing.equalToSuperview().offset(-sidePaddingValue)
         }

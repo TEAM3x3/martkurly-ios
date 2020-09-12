@@ -343,6 +343,41 @@ struct StringManager {
         ]
     ]
 
+    let myKurlyOrderHistoryDetailProductData = [
+        [
+            "image": "TestImage",
+            "category": "",
+            "title": "[인텔리젠시아] 블랫캣 클래식 콜드브루",
+            "price": "12,750",
+            "detail": "/ 1개 구매",
+            "deliveryStatus": "배송완료"
+        ],
+        [
+            "image": "TestImage",
+            "category": "",
+            "title": "[샐러딩] 트러플 머쉬룸 믹스 샐러드 217g",
+            "price": "6,900",
+            "detail": "/ 1개 구매",
+            "deliveryStatus": "배송완료"
+        ],
+        [
+            "image": "TestImage",
+            "category": "[어게인리프레쉬]샐러드 5종",
+            "title": "[어게인리프레쉬] 새우 샐러드",
+            "price": "5,900",
+            "detail": "/ 1개 구매",
+            "deliveryStatus": "배송완료"
+        ],
+        [
+            "image": "TestImage",
+            "category": "[샐러드판다] 병 샐러드 9 종",
+            "title": "[샐러드판다]판다는 불고기랑 연애중(소불고기&메추리알)",
+            "price": "6,900",
+            "detail": "/ 1개 구매",
+            "deliveryStatus": "배송완료"
+        ]
+    ]
+
     enum MyKurlyOrderHistoryDetail {
 
     }

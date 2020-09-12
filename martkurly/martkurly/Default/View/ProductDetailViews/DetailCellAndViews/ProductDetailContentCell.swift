@@ -22,6 +22,10 @@ class ProductDetailContentCell: UITableViewCell {
         $0.textColor = .black
         $0.font = .boldSystemFont(ofSize: 14)
         $0.numberOfLines = 0
+
+        $0.snp.makeConstraints {
+            $0.width.equalTo(108)
+        }
     }
 
     private let contentsLabel = UILabel().then {
@@ -52,20 +56,15 @@ class ProductDetailContentCell: UITableViewCell {
     func configureUI() {
         self.backgroundColor = .white
 
-        [titleLabel, contentsLabel].forEach {
-            self.addSubview($0)
-        }
+        let stack = UIStackView(arrangedSubviews: [titleLabel, contentsLabel])
+        stack.axis = .horizontal
+        stack.alignment = .top
+        stack.spacing = defaultSidePaddingValue
 
-        titleLabel.snp.makeConstraints {
+        self.addSubview(stack)
+        stack.snp.makeConstraints {
             $0.top.equalToSuperview().offset(defaultLinePaddingValue)
-            $0.bottom.equalToSuperview().offset(-defaultLinePaddingValue)
             $0.leading.equalToSuperview().offset(defaultSidePaddingValue)
-            $0.width.equalTo(108)
-        }
-
-        contentsLabel.snp.makeConstraints {
-            $0.top.equalTo(titleLabel)
-            $0.leading.equalTo(titleLabel.snp.trailing).offset(defaultSidePaddingValue)
             $0.bottom.equalToSuperview().offset(-defaultLinePaddingValue)
             $0.trailing.equalToSuperview().offset(-defaultSidePaddingValue)
         }

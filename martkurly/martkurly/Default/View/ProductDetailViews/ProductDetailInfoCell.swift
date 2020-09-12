@@ -16,6 +16,10 @@ class ProductDetailInfoCell: UICollectionViewCell {
 
     private let detailTableView = UITableView()
 
+    var productDetailData: ProductDetail? {
+        didSet { detailTableView.reloadData() }
+    }
+
     // MARK: - LifeCycle
 
     override init(frame: CGRect) {
@@ -75,37 +79,15 @@ extension ProductDetailInfoCell: UITableViewDataSource, UITableViewDelegate {
         case detailBuyButton
     }
 
-    enum DetailExplainType: Int, CaseIterable {
-        case packingSize
-        case relationLaw
-        case producer
-        case productCompose
-        case countryOfOrigin
-        case storageMethod
-        case dateOfProduction
-        case consumerCounseling
-
-        var description: String {
-            switch self {
-            case .packingSize: return "포장단위별 용량(중량), 수량, 크기"
-            case .relationLaw: return "관련법상 표시사항"
-            case .producer: return "생산자, 수입품의 경우 수입자를 함께 표기"
-            case .productCompose: return "상품구성"
-            case .countryOfOrigin: return "농수산물의 원산지 표시에 관한 법률에 따른 원산지"
-            case .storageMethod: return "보관방법 또는 취급방법"
-            case .dateOfProduction: return "제조연월일(포장일 또는 생산연도), 유통기한 또는 품질유지기한"
-            case .consumerCounseling: return "소비자상담 관련 전화번호"
-            }
-        }
-    }
-
     func numberOfSections(in tableView: UITableView) -> Int {
         return ProductDetailType.allCases.count
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch ProductDetailType(rawValue: section)! {
-        case .detailExplain: return DetailExplainType.allCases.count
+        case .detailExplain:
+            guard let productData = productDetailData else { return 0 }
+            return productData.details.count
         default: return 1
         }
     }
@@ -116,8 +98,11 @@ extension ProductDetailInfoCell: UITableViewDataSource, UITableViewDelegate {
             let cell = tableView.dequeueReusableCell(
                 withIdentifier: ProductDetailContentCell.identifier,
                 for: indexPath) as! ProductDetailContentCell
-            cell.configure(titleText: DetailExplainType(rawValue: indexPath.row)!.description,
-                           contentsText: "CONTENTS TEXT")
+
+            guard let productData = productDetailData else { return cell }
+            cell.configure(titleText: productData.details[indexPath.row].detail_title,
+                           contentsText: productData.details[indexPath.row].detail_desc)
+
             return cell
         case .detailHappinessCenter:
             let cell = tableView.dequeueReusableCell(

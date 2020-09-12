@@ -16,14 +16,61 @@ class MyKurlyOrderHistoryDetailVC: UIViewController {
     }
     private let scrollView = UIScrollView()
     private let contentView = UIView()
-    private let tableView = UITableView(frame: .zero, style: .grouped)
+    private let infoTableView = UITableView(frame: .zero, style: .grouped)
+    private let tableViewHeightForHeader: CGFloat = 8
+    private let tableViewDefualtRowHeight: CGFloat = 60
+    private let tableViewSubtitleHeight: CGFloat = 30
+    private var numberOfSubtitles = 0
     private let data = StringManager().myKurlyOrderHistoryDetailCellData
+    private let customerServiceButton = UIButton().then {
+        let image = UIImage(systemName: "chevron.right")?.withTintColor(.martkurlyMainPurpleColor, renderingMode: .alwaysOriginal)
+        let imageAttachment = NSTextAttachment()
+        imageAttachment.image = image
+        imageAttachment.bounds = CGRect(x: 0, y: 0, width: 11, height: 11)
+        let imageAttributedString = NSAttributedString(attachment: imageAttachment)
+        let string = "1:1 문의 작성 "
+        let attributes: [NSAttributedString.Key: Any] = [
+            .font: UIFont.systemFont(ofSize: 15, weight: .regular),
+            .foregroundColor: UIColor.martkurlyMainPurpleColor
+        ]
+        let attributedString = NSMutableAttributedString(string: string, attributes: attributes)
+        attributedString.append(imageAttributedString)
+        $0.setAttributedTitle(attributedString, for: .normal)
+        $0.setTitleColor(.martkurlyMainPurpleColor, for: .normal)
+        $0.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: .regular)
+    }
+    private let cancelOrderButton = KurlyButton(title: "전체 상품 주문 취소", style: .white)
+    private let cancelOrderInfoLabel = UILabel().then {
+        let string1 = "직접 주문취소는 "
+        let string2 = "\"입금확인\" "
+        let string3 = "상태일 경우에만 가능합니다."
+        let attributes: [NSAttributedString.Key: Any] =
+            [
+                NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13, weight: .regular),
+                NSAttributedString.Key.foregroundColor: UIColor.darkGray
+        ]
+        let boldAttributes: [NSAttributedString.Key: Any] =
+            [
+                NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13, weight: .bold),
+                NSAttributedString.Key.foregroundColor: UIColor.darkGray
+        ]
+        let attributedText = NSMutableAttributedString(string: string1, attributes: attributes)
+        let attributedText2 = NSMutableAttributedString(string: string2, attributes: boldAttributes)
+        let attributedText3 = NSMutableAttributedString(string: string3, attributes: attributes)
+        attributedText.append(attributedText2)
+        attributedText.append(attributedText3)
+        $0.attributedText = attributedText
+    }
+    private var selectedCell: Set<IndexPath> = [[0, 0]]
+
+    private lazy var tableViewAnchor = infoTableView.heightAnchor
+    private lazy var tableViewHeightAnchor = tableViewAnchor.constraint(equalToConstant: 400)
 
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .backgroundGray
         configureUI()
+        self.infoTableView.addObserver(self, forKeyPath: "contentSize", options: NSKeyValueObservingOptions.new, context: nil)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -31,20 +78,63 @@ class MyKurlyOrderHistoryDetailVC: UIViewController {
         setNavigationBarStatus(type: .whiteType, isShowCart: false, leftBarbuttonStyle: .pop, titleText: StringManager.MyKurlyOrderHistory.title2.rawValue)
     }
 
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        print(#function, cancelOrderInfoLabel.frame.maxY, "Debug")
+//        contentView.snp.removeConstraints()
+//        contentView.snp.makeConstraints {
+//            $0.edges.equalToSuperview()
+//            $0.width.equalTo(view)
+//            $0.height.equalTo(cancelOrderInfoLabel.frame.maxY + 10)
+//        }
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        infoTableView.snp.updateConstraints {
+            $0.height.equalTo(infoTableView.contentSize.height)
+        }
+        contentView.snp.makeConstraints {
+            $0.height.equalTo(cancelOrderInfoLabel.frame.maxY + 30)
+        }
+    }
+
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
+        print(#function)
+        infoTableView.layer.removeAllAnimations()
+        tableViewHeightAnchor.constant = infoTableView.contentSize.height
+        UIView.animate(withDuration: 0.5) {
+            self.updateViewConstraints()
+        }
+    }
+
+//    override func viewDidDisappear(_ animated: Bool) {
+//        super.viewDidDisappear(animated)
+//        self.tableView.removeObserver(self, forKeyPath: "contentSize")
+//    }
+
     // MARK: - UI
     private func configureUI() {
         view.backgroundColor = .white
+        scrollView.backgroundColor = .backgroundGray
+        contentView.backgroundColor = .backgroundGray
+        getNumberOfSubtitles()
         setAttributes()
         setContraints()
     }
 
     private func setAttributes() {
-        tableView.register(MyKurlyOrderHistoryDetailTableViewCell.self, forCellReuseIdentifier: MyKurlyOrderHistoryDetailTableViewCell.identifier)
-        tableView.dataSource = self
-        tableView.delegate = self
-        tableView.rowHeight = 60
-        tableView.tableFooterView = UIView()
-        tableView.sectionFooterHeight = 0
+        infoTableView.dataSource = self
+        infoTableView.delegate = self
+        infoTableView.isScrollEnabled = false
+        infoTableView.estimatedRowHeight = 100
+        infoTableView.tableFooterView = UIView()
+        infoTableView.sectionFooterHeight = 0
+        infoTableView.allowsMultipleSelection = true
+
+        customerServiceButton.addTarget(self, action: #selector(handleCustomerServiceButton), for: .touchUpInside)
+        cancelOrderButton.addTarget(self, action: #selector(handleCancelOrderButton), for: .touchUpInside)
+        cancelOrderButton.isActive = false
     }
 
     private func setContraints() {
@@ -62,17 +152,56 @@ class MyKurlyOrderHistoryDetailVC: UIViewController {
         contentView.snp.makeConstraints {
             $0.edges.equalToSuperview()
             $0.width.equalTo(view)
-            $0.height.equalTo(view.frame.height * 2)
         }
-        contentView.addSubview(tableView)
-        tableView.snp.makeConstraints {
+        [infoTableView, customerServiceButton, cancelOrderButton, cancelOrderInfoLabel].forEach {
+            contentView.addSubview($0)
+        }
+        infoTableView.snp.makeConstraints {
             $0.top.leading.trailing.equalToSuperview()
-            $0.height.equalTo(view.frame.height * 1.5)
+            $0.height.equalTo(
+                tableViewDefualtRowHeight * CGFloat(data.count)
+                    + tableViewHeightForHeader * CGFloat(data.count)
+                    + tableViewSubtitleHeight * CGFloat(numberOfSubtitles)
+            )
         }
+        customerServiceButton.snp.makeConstraints {
+            $0.top.equalTo(infoTableView.snp.bottom).offset(10)
+            $0.trailing.equalToSuperview().inset(10)
+        }
+        cancelOrderButton.snp.makeConstraints {
+            $0.top.equalTo(customerServiceButton.snp.bottom).offset(16)
+            $0.leading.trailing.equalToSuperview().inset(10)
+            $0.height.equalTo(52)
+        }
+        cancelOrderInfoLabel.snp.makeConstraints {
+            $0.top.equalTo(cancelOrderButton.snp.bottom).offset(20)
+            $0.centerX.equalToSuperview()
+        }
+    }
+
+    // MARK: - Helpers
+    private func getNumberOfSubtitles() {
+        for category in data {
+            for index in category.indices {
+                if index == 0 { continue }
+                numberOfSubtitles += 1
+            }
+        }
+    }
+
+    // MARK: - Selectors
+    @objc
+    private func handleCustomerServiceButton() {
+        print(#function)
+    }
+
+    @objc
+    private func handleCancelOrderButton() {
+        print(#function)
     }
 }
 
-// MARK: -
+// MARK: - UITableViewDataSource
 extension MyKurlyOrderHistoryDetailVC: UITableViewDataSource {
 
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -84,15 +213,33 @@ extension MyKurlyOrderHistoryDetailVC: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: MyKurlyOrderHistoryDetailTableViewCell.identifier, for: indexPath) as? MyKurlyOrderHistoryDetailTableViewCell else { fatalError() }
         let cellData = data[indexPath.section]
-        let cellType: MyKurlyDetailCellType = indexPath.section == 0 ? .orderNumber : .info
-        cell.configureCell(cellData: cellData, cellType: cellType)
-        return cell
+        switch indexPath.section {
+        case 0:
+            let orderNumberCell = MyKurlyOrderHistoryDetailTableViewOrderNumberCell()
+            orderNumberCell.configureCell(cellData: cellData)
+            if selectedCell.contains(indexPath) {
+                orderNumberCell.isFolded = false
+                print("configure", orderNumberCell.isFolded)
+            } else {
+                orderNumberCell.isFolded = true
+                print("configure", orderNumberCell.isFolded)
+            }
+            orderNumberCell.layoutIfNeeded()
+            return orderNumberCell
+        default:
+            let infoCell = MyKurlyOrderHistoryDetailTableViewInfoCell()
+            infoCell.configureCell(cellData: cellData)
+            if selectedCell.contains(indexPath) {
+                infoCell.isFolded = false
+            }
+            infoCell.layoutIfNeeded()
+            return infoCell
+        }
     }
 }
 
-// MARK: -
+// MARK: - UITableViewDelegate
 extension MyKurlyOrderHistoryDetailVC: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -103,6 +250,49 @@ extension MyKurlyOrderHistoryDetailVC: UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 12
+        return tableViewHeightForHeader
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        switch selectedCell.contains(indexPath) {
+        case true:
+            selectedCell.remove(indexPath)
+        case false:
+            selectedCell.insert(indexPath)
+            print(#function, "Debug")
+        }
+        tableView.reloadData()
+        contentView.snp.removeConstraints()
+        contentView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+            $0.width.equalTo(view)
+            $0.height.equalTo(cancelOrderInfoLabel.frame.maxY + 30)
+        }
+        print(cancelOrderInfoLabel.frame.maxY, "Debugging")
+    }
+
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        tableView.snp.updateConstraints {
+            $0.height.equalTo(tableView.contentSize.height)
+        }
+        contentView.snp.removeConstraints()
+        contentView.snp.updateConstraints {
+            $0.edges.equalToSuperview()
+            $0.width.equalTo(view)
+            $0.height.equalTo(cancelOrderInfoLabel.frame.maxY + 30)
+        }
+    }
+
+    func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        print("ContentSize", tableView.contentSize.height)
+        tableView.snp.updateConstraints {
+            $0.height.equalTo(tableView.contentSize.height)
+        }
+        contentView.snp.removeConstraints()
+        contentView.snp.updateConstraints {
+            $0.edges.equalToSuperview()
+            $0.width.equalTo(view)
+            $0.height.equalTo(cancelOrderInfoLabel.frame.maxY + 30)
+        }
     }
 }

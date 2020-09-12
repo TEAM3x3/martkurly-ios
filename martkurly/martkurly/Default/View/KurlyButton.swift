@@ -12,11 +12,18 @@ import UIKit
 class KurlyButton: UIButton {
 
     // MARK: - Properties
+    private var style: ButtonStyle = .white
+    var isActive = true {
+        didSet {
+            configureButtonStatus()
+        }
+    }
 
     // MARK: - Lifecycle
     init(title: String, style: ButtonStyle) {
         super.init(frame: .zero)
         self.setTitle(title, for: .normal)
+        self.style = style
         self.setColors(style: style)
         configureUI()
     }
@@ -57,6 +64,17 @@ class KurlyButton: UIButton {
         }
     }
 
+    // MARK: - Helpers
+    private func configureButtonStatus() {
+        switch isActive {
+        case true:
+            setColors(style: style)
+        case false:
+            self.backgroundColor = .inactiveButtonColor
+            self.layer.borderColor = UIColor.inactiveButtonColor.cgColor
+            self.setTitleColor(.white, for: .normal)
+        }
+    }
 }
 
 extension KurlyButton {
@@ -65,5 +83,4 @@ extension KurlyButton {
         case purple
         case white
     }
-
 }
