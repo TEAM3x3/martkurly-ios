@@ -9,9 +9,13 @@
 import UIKit
 import Then
 
-class CategoryMainButton: UIButton {
+class CategoryHeaderV: UIView {
 
     // MARK: - Properties
+//    let btn = UIButton().then {
+//        $0.backgroundColor = .white
+//    }
+
     private let titleImage = UIImageView().then {
         $0.backgroundColor = .white
         $0.tintColor = .black
@@ -23,6 +27,7 @@ class CategoryMainButton: UIButton {
 
     var chevron = UIImageView().then {
         $0.backgroundColor = .white
+        $0.tintColor = ColorManager.General.mainGray.rawValue
     }
 
     private let line = UIView().then {
@@ -46,38 +51,44 @@ class CategoryMainButton: UIButton {
     }
 
     private func setConstraints() {
-        self.snp.makeConstraints {
-            $0.height.equalTo(50)
-            $0.width.equalTo(UIScreen.main.bounds.width)
-        }
-        backgroundColor = .white
-        [titleImage, title, chevron].forEach {
+        [line].forEach {
             self.addSubview($0)
+        }
+
+        [titleImage, title, chevron].forEach {
+            addSubview($0)
             $0.snp.makeConstraints {
-                $0.centerY.equalTo(self.snp.centerY)
+                $0.centerY.equalTo(self)
             }
         }
-        addSubview(line)
+
+//        btn.snp.makeConstraints {
+//            $0.top.leading.trailing.bottom.equalTo(self)
+//            $0.height.equalTo(50)
+//        }
 
         titleImage.snp.makeConstraints {
-            $0.leading.equalTo(self.snp.leading).offset(16)
+            $0.leading.equalTo(self).offset(16)
         }
+
         title.snp.makeConstraints {
             $0.leading.equalTo(titleImage.snp.trailing).offset(8)
         }
+
         chevron.snp.makeConstraints {
-            $0.trailing.equalTo(self.snp.trailing).inset(16)
+            $0.trailing.equalTo(self).inset(16)
         }
+
         line.snp.makeConstraints {
             $0.bottom.equalTo(self.snp.bottom)
-            $0.leading.equalToSuperview()
+            $0.leading.width.equalTo(self)
             $0.height.equalTo(1)
-            $0.width.equalToSuperview()
         }
     }
 
-    func configure(image: String, setTitle: String) {
+    func configure(image: String, setTitle: String, direction: String) {
         titleImage.image = UIImage(named: image)
         title.text = setTitle
+        chevron.image = UIImage(systemName: direction)
     }
 }

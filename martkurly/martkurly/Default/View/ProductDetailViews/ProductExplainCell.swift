@@ -32,7 +32,6 @@ class ProductExplainCell: UICollectionViewCell {
 
     func configureUI() {
         self.backgroundColor = ColorManager.General.backGray.rawValue
-
         configureLayout()
     }
 

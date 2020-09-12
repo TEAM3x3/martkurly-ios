@@ -11,14 +11,11 @@ import UIKit
 class HomeVC: UIViewController {
 
     // MARK: - Properties
-//    let testView = CancelMoreNoticeView()
-//    private let menuCategory = CategoryMenuView()
 
     private lazy var menuCategory = CategoryMenuView(categoryType: .fixInsetStyle).then {
         $0.menuTitles = ["컬리추천", "신상품", "베스트", "알뜰쇼핑", "이벤트"]
         $0.categorySelected = categorySelected(item:)
     }
-//    private let mainImageCollectionView = HomeMainImageCollectionView()
 
     private let flowLayout = UICollectionViewFlowLayout().then {
         $0.scrollDirection = .horizontal
@@ -166,6 +163,9 @@ extension HomeVC: UICollectionViewDelegateFlowLayout {
         let indexPath = IndexPath(item: item, section: 0)
         categoryMenuCollectionView.selectItem(at: indexPath,
                                               animated: true,
+                                              scrollPosition: .centeredHorizontally)
+        categoryMenuCollectionView.selectItem(at: nil,
+                                              animated: false,
                                               scrollPosition: .centeredHorizontally)
     }
 }
