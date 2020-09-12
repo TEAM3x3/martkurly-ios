@@ -91,6 +91,21 @@ class ShoppingCartView: UIView {
         cartItemCountLabel.snp.makeConstraints {
             $0.top.trailing.equalToSuperview()
         }
+
+        addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(presentCart(_:))))
+        isUserInteractionEnabled = true
+    }
+
+    @objc func presentCart(_ gestureRecognizer: UITapGestureRecognizer) {
+        if var presentVC = UIApplication.shared.keyWindow?.rootViewController {
+            while let presentedViewController = presentVC.presentedViewController {
+                presentVC = presentedViewController
+            }
+            let cart = CartVC()
+            cart.modalPresentationStyle = .overFullScreen
+//            presentVC.present(cart, animated: true, completion: nil)
+            presentVC.present(cart, animated: true)
+        }
     }
 
     func configureWhiteMode() {
