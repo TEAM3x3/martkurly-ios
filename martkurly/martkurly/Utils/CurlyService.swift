@@ -15,6 +15,26 @@ struct CurlyService {
 
     private let decoder = JSONDecoder()
 
+    // MARK: - 이벤트 목록 및 이벤트 상품 가져오기
+
+    func fetchEventProducts(completion: @escaping([EventModel]) -> Void) {
+        var events = [EventModel]()
+
+        AF.request(REF_EVENTLIST, method: .get).responseJSON { response in
+            guard let jsonData = response.data else { return completion(events) }
+
+            do {
+                let eventList = try self.decoder.decode([EventModel].self, from: jsonData)
+                events = eventList
+            } catch {
+                print("DEBUG: Event List Request Error, ", error.localizedDescription)
+            }
+            completion(events)
+        }
+    }
+
+    // MARK: - 알뜰상품 목록 가져오기
+
     func fetchCheapProducts(completion: @escaping([Product]) -> Void) {
         var cheapProducts = [Product]()
 
@@ -23,12 +43,14 @@ struct CurlyService {
             do {
                 let products = try self.decoder.decode([Product].self, from: jsonData)
                 cheapProducts = products
-                completion(cheapProducts)
             } catch {
-                print("DEBUG: Cheap Products Request Error", error.localizedDescription)
+                print("DEBUG: Cheap Products Request Error, ", error.localizedDescription)
             }
+            completion(cheapProducts)
         }
     }
+
+    // MARK: - 상품 상세 정보 가져오기
 
     func requestProductDetailData(productID: Int, completion: @escaping(ProductDetail?) -> Void) {
         let productURL = REF_GOODS + "\(productID)"

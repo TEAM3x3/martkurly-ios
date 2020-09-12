@@ -14,6 +14,13 @@ class EventProductDetailListVC: UIViewController {
 
     private let productListView = ProductListView(headerType: .fastAreaAndCondition)
 
+    var eventProducts: EventModel? {
+        didSet {
+            guard let products = eventProducts?.goods else { return }
+            productListView.products = products
+        }
+    }
+
     // MARK: - LifeCycle
 
     override func viewDidLoad() {

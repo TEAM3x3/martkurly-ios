@@ -15,7 +15,7 @@ struct Product: Decodable {
     let short_desc: String
     let price: Int
     let img: String
-    let sales: Sales
+//    let sales: Sales?
 
     struct Sales: Decodable {
         let discount_rate: Int

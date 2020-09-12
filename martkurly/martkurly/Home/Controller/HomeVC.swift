@@ -16,6 +16,10 @@ class HomeVC: UIViewController {
         didSet { categoryMenuCollectionView.reloadData() }
     }
 
+    private var eventList = [EventModel]() {
+        didSet { categoryMenuCollectionView.reloadData() }
+    }
+
     private lazy var menuCategory = CategoryMenuView(categoryType: .fixInsetStyle).then {
         $0.menuTitles = ["컬리추천", "신상품", "베스트", "알뜰쇼핑", "이벤트"]
         $0.categorySelected = categorySelected(item:)
@@ -34,6 +38,7 @@ class HomeVC: UIViewController {
         configureUI()
         configureNavigationBar()
         fetchCheapProducts()
+        fetchEventList()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -51,6 +56,12 @@ class HomeVC: UIViewController {
         }
     }
 
+    func fetchEventList() {
+        CurlyService.shared.fetchEventProducts { eventList in
+            self.eventList = eventList
+        }
+    }
+
     // MARK: - Actions
 
     func detailViewProductMove(productID: Int) {
@@ -65,6 +76,7 @@ class HomeVC: UIViewController {
     func tappedEventItem(section: Int) {
         let controller = EventProductDetailListVC()
         controller.hidesBottomBarWhenPushed = true
+        controller.eventProducts = eventList[section]
         self.navigationController?.pushViewController(controller, animated: true)
     }
 
@@ -155,6 +167,7 @@ extension HomeVC: UICollectionViewDataSource {
                 withReuseIdentifier: EventListCell.identifier,
                 for: indexPath) as! EventListCell
             cell.tappedEventItem = tappedEventItem(section:)
+            cell.eventList = eventList
             return cell
         }
     }

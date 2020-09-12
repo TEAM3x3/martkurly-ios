@@ -13,7 +13,7 @@ class EventCell: UITableViewCell {
 
     static let identifier = "EventCell"
 
-    private let eventImageView = UIImageView().then {
+    let eventImageView = UIImageView().then {
         $0.backgroundColor = .white
         $0.contentMode = .scaleAspectFill
         $0.clipsToBounds = true
