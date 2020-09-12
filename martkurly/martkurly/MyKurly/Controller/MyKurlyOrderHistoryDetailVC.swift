@@ -16,7 +16,7 @@ class MyKurlyOrderHistoryDetailVC: UIViewController {
     }
     private let scrollView = UIScrollView()
     private let contentView = UIView()
-    private let tableView = UITableView(frame: .zero, style: .grouped)
+    private let infoTableView = UITableView(frame: .zero, style: .grouped)
     private let tableViewHeightForHeader: CGFloat = 8
     private let tableViewDefualtRowHeight: CGFloat = 60
     private let tableViewSubtitleHeight: CGFloat = 30
@@ -63,10 +63,14 @@ class MyKurlyOrderHistoryDetailVC: UIViewController {
     }
     private var selectedCell: Set<IndexPath> = [[0, 0]]
 
+    private lazy var tableViewAnchor = infoTableView.heightAnchor
+    private lazy var tableViewHeightAnchor = tableViewAnchor.constraint(equalToConstant: 400)
+
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
+        self.infoTableView.addObserver(self, forKeyPath: "contentSize", options: NSKeyValueObservingOptions.new, context: nil)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -87,10 +91,27 @@ class MyKurlyOrderHistoryDetailVC: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        infoTableView.snp.updateConstraints {
+            $0.height.equalTo(infoTableView.contentSize.height)
+        }
         contentView.snp.makeConstraints {
             $0.height.equalTo(cancelOrderInfoLabel.frame.maxY + 30)
         }
     }
+
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
+        print(#function)
+        infoTableView.layer.removeAllAnimations()
+        tableViewHeightAnchor.constant = infoTableView.contentSize.height
+        UIView.animate(withDuration: 0.5) {
+            self.updateViewConstraints()
+        }
+    }
+
+//    override func viewDidDisappear(_ animated: Bool) {
+//        super.viewDidDisappear(animated)
+//        self.tableView.removeObserver(self, forKeyPath: "contentSize")
+//    }
 
     // MARK: - UI
     private func configureUI() {
@@ -103,13 +124,13 @@ class MyKurlyOrderHistoryDetailVC: UIViewController {
     }
 
     private func setAttributes() {
-        tableView.dataSource = self
-        tableView.delegate = self
-        tableView.isScrollEnabled = false
-        tableView.estimatedRowHeight = 100
-        tableView.tableFooterView = UIView()
-        tableView.sectionFooterHeight = 0
-        tableView.allowsMultipleSelection = true
+        infoTableView.dataSource = self
+        infoTableView.delegate = self
+        infoTableView.isScrollEnabled = false
+        infoTableView.estimatedRowHeight = 100
+        infoTableView.tableFooterView = UIView()
+        infoTableView.sectionFooterHeight = 0
+        infoTableView.allowsMultipleSelection = true
 
         customerServiceButton.addTarget(self, action: #selector(handleCustomerServiceButton), for: .touchUpInside)
         cancelOrderButton.addTarget(self, action: #selector(handleCancelOrderButton), for: .touchUpInside)
@@ -132,19 +153,19 @@ class MyKurlyOrderHistoryDetailVC: UIViewController {
             $0.edges.equalToSuperview()
             $0.width.equalTo(view)
         }
-        [tableView, customerServiceButton, cancelOrderButton, cancelOrderInfoLabel].forEach {
+        [infoTableView, customerServiceButton, cancelOrderButton, cancelOrderInfoLabel].forEach {
             contentView.addSubview($0)
         }
-        tableView.snp.makeConstraints {
+        infoTableView.snp.makeConstraints {
             $0.top.leading.trailing.equalToSuperview()
-            $0.height.greaterThanOrEqualTo(
+            $0.height.equalTo(
                 tableViewDefualtRowHeight * CGFloat(data.count)
                     + tableViewHeightForHeader * CGFloat(data.count)
-//                    + tableViewSubtitleHeight * CGFloat(numberOfSubtitles)
+                    + tableViewSubtitleHeight * CGFloat(numberOfSubtitles)
             )
         }
         customerServiceButton.snp.makeConstraints {
-            $0.top.equalTo(tableView.snp.bottom).offset(10)
+            $0.top.equalTo(infoTableView.snp.bottom).offset(10)
             $0.trailing.equalToSuperview().inset(10)
         }
         cancelOrderButton.snp.makeConstraints {
@@ -252,14 +273,26 @@ extension MyKurlyOrderHistoryDetailVC: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         tableView.snp.updateConstraints {
-            $0.height.greaterThanOrEqualTo(tableView.contentSize.height)
+            $0.height.equalTo(tableView.contentSize.height)
+        }
+        contentView.snp.removeConstraints()
+        contentView.snp.updateConstraints {
+            $0.edges.equalToSuperview()
+            $0.width.equalTo(view)
+            $0.height.equalTo(cancelOrderInfoLabel.frame.maxY + 30)
         }
     }
 
     func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         print("ContentSize", tableView.contentSize.height)
         tableView.snp.updateConstraints {
-            $0.height.greaterThanOrEqualTo(tableView.contentSize.height)
+            $0.height.equalTo(tableView.contentSize.height)
+        }
+        contentView.snp.removeConstraints()
+        contentView.snp.updateConstraints {
+            $0.edges.equalToSuperview()
+            $0.width.equalTo(view)
+            $0.height.equalTo(cancelOrderInfoLabel.frame.maxY + 30)
         }
     }
 }
