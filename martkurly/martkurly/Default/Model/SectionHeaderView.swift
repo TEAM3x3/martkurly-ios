@@ -41,12 +41,9 @@ class SectionHeaderView: UICollectionReusableView {
             $0.top.leading.trailing.bottom.equalToSuperview()
         }
         lbl.snp.makeConstraints {
-            $0.centerY.equalTo(self.snp.centerY)
+            $0.bottom.equalTo(view.snp.bottom).inset(16)
             $0.leading.equalToSuperview().offset(16)
         }
-    }
-
-    func configure(title: String) {
-        lbl.text = title
+        lbl.text = "컬리의 추천"
     }
 }

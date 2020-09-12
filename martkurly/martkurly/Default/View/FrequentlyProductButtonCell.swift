@@ -9,7 +9,7 @@
 import UIKit
 import Then
 
-class frequentlyProductButtonCell: UIButton {
+class FrequentlyProductButtonCell: UITableViewCell {
 
     // MARK: - Properties
     private let title = UILabel().then {
@@ -23,8 +23,8 @@ class frequentlyProductButtonCell: UIButton {
     }
 
     // MARK: - Lifecycle
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
         setConfigure()
     }
 
@@ -38,30 +38,22 @@ class frequentlyProductButtonCell: UIButton {
     }
 
     private func setConstraints() {
-        self.snp.makeConstraints {
-            $0.height.equalTo(50)
-            $0.width.equalTo(UIScreen.main.bounds.width)
-        }
-        self.backgroundColor = .white
+        contentView.addSubview(title)
+        contentView.addSubview(chevron)
 
-        [title, chevron].forEach {
-            self.addSubview($0)
+        contentView.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(50)
         }
 
         title.snp.makeConstraints {
-            $0.centerY.equalTo(self)
-            $0.leading.equalTo(self).offset(16)
+            $0.centerY.equalTo(contentView.snp.centerY)
+            $0.leading.equalTo(contentView.snp.leading).offset(16)
         }
 
         chevron.snp.makeConstraints {
-            $0.centerY.equalTo(self)
-            $0.trailing.equalTo(self).inset(16)
+            $0.centerY.equalTo(contentView.snp.centerY)
+            $0.trailing.equalTo(contentView.snp.trailing).inset(16)
         }
-
-        self.addTarget(self, action: #selector(selectMe(_:)), for: .touchUpInside)
-    }
-
-    @objc func selectMe(_ sender: UIButton) {
-        print("a")
     }
 }

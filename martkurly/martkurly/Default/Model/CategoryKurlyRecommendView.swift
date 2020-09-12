@@ -9,7 +9,7 @@
 import UIKit
 import Then
 
-class CategoryKurlyRecommendView: UIView {
+class CategoryKurlyRecommendView: UITableViewCell {
 
     // MARK: - Properties
     private let layout = UICollectionViewFlowLayout()
@@ -18,16 +18,21 @@ class CategoryKurlyRecommendView: UIView {
     )
     var height: CGFloat = 0 {
         didSet {
-            CategoryMainView().collectionButton.reloadInputViews()
+//            CategoryMainView().collectionButton.reloadInputViews()
         }
     }
     private let titleData = StringManager().kurlyRecommend
 
     // MARK: - Lifecycle
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+//    override init(frame: CGRect) {
+//        super.init(frame: frame)
+//        setConfigure()
+//        largeContentTitle = "컬리의 선택"
+//    }
+
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
         setConfigure()
-        largeContentTitle = "컬리의 선택"
     }
 
     required init?(coder: NSCoder) {
@@ -53,6 +58,7 @@ class CategoryKurlyRecommendView: UIView {
 
         collection.snp.makeConstraints {
             $0.top.leading.trailing.bottom.equalToSuperview()
+            $0.height.equalTo(1450)
         }
     }
 
@@ -64,7 +70,7 @@ class CategoryKurlyRecommendView: UIView {
         layout.minimumInteritemSpacing = 8
         layout.sectionInset = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
 
-        layout.headerReferenceSize = CGSize(width: 50, height: 50)
+//        layout.headerReferenceSize = CGSize(width: 50, height: 50)
         layout.sectionHeadersPinToVisibleBounds = true
     }
 }
@@ -82,16 +88,20 @@ extension CategoryKurlyRecommendView: UICollectionViewDataSource {
         return cell
     }
 
-    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-
-        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: SectionHeaderView.identifier, for: indexPath) as! SectionHeaderView
-        header.configure(title: "컬리의 추천")
-        return header
-    }
+//    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+//
+//        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: SectionHeaderView.identifier, for: indexPath) as! SectionHeaderView
+//        header.configure(title: "컬리의 추천")
+//        return header
+//    }
 }
 
 extension CategoryKurlyRecommendView: UICollectionViewDelegate {
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        height = scrollView.contentOffset.y
+//    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+//        height = scrollView.contentOffset.y
+//    }
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print(indexPath)
     }
 }
