@@ -21,7 +21,6 @@ class EventListCell: UICollectionViewCell {
     }
 
     private lazy var eventTableView = UITableView().then {
-        $0.rowHeight = 156
         $0.backgroundColor = .white
 
         $0.dataSource = self
@@ -74,7 +73,12 @@ extension EventListCell: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 20
+        return 16
+    }
+
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        let width = UIScreen.main.bounds.width
+        return width * 0.25
     }
 }
 

@@ -33,7 +33,8 @@ struct ExplainInfoViewModel {
         case .transfer: return productDetailData.transfer
         case .origin: return productDetailData.origin
         case .packing:
-            let packingArray = productDetailData.packing.components(separatedBy: "\n")
+            guard let packing = productDetailData.packing else { return nil }
+            let packingArray = packing.components(separatedBy: "\n")
             return packingArray[0]
         case .allergy: return productDetailData.allergy
         case .expiration: return productDetailData.expiration
@@ -44,7 +45,8 @@ struct ExplainInfoViewModel {
         guard let productDetailData = productDetailData else { return nil }
         switch type {
         case .packing:
-            let packingArray = productDetailData.packing.components(separatedBy: "\n")
+            guard let packing = productDetailData.packing else { return nil }
+            let packingArray = packing.components(separatedBy: "\n")
             return packingArray[1]
         default:
             return nil

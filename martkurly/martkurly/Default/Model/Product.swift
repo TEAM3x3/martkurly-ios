@@ -10,16 +10,39 @@ import Foundation
 
 // 기본 Product 구조체
 struct Product: Decodable {
-    let id: Int
-    let title: String
-    let short_desc: String
-    let price: Int
-    let img: String
-//    let sales: Sales?
+    let id: Int                 // 상품 코드
+    let title: String           // 상품 명
+    let short_desc: String      // 상품 설명
+    let img: String             // 상품 이미지
+    let price: Int              // 상품 원가
+    let discount_price: Double? // 상품 할인가
+    let packing_status: String? // 상품 포장 상태
+    let sales: Sales            // 상품 할인(%)
+    let tagging: [Tagging]      // 상품 Tag
 
     struct Sales: Decodable {
-        let discount_rate: Int
+        let discount_rate: Int?
         let contents: String?
+    }
+
+    struct Tagging: Decodable {
+        let name: String
+
+        enum CodingKeys: String, CodingKey {
+            case tag
+        }
+
+        enum TagKeys: String, CodingKey {
+            case name
+        }
+
+        init(from decoder: Decoder) throws {
+            let keyedContainer = try decoder.container(keyedBy: CodingKeys.self)
+            let tagContainer = try keyedContainer.nestedContainer(
+                keyedBy: TagKeys.self,
+                forKey: .tag)
+            name = try tagContainer.decode(String.self, forKey: .name)
+        }
     }
 }
 
@@ -31,10 +54,10 @@ struct ProductDetail: Decodable {
     let title: String       // 상품 이름
     let short_desc: String  // 상품 설명
     let price: Int          // 상품 가격
-    let each: String        // 수량
+    let each: String?       // 수량
     let weight: String      // 무게
     let transfer: String?   // 배송 정보(샛별 / 택배)
-    let packing: String     // 포장 방법
+    let packing: String?    // 포장 방법
     let origin: String?     // 원산지
     let allergy: String?    // 알레르기 정보
     let info: String?       // 상품 안내

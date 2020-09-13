@@ -60,7 +60,7 @@ struct CurlyService {
                 let productDetailInfo = try self.decoder.decode(ProductDetail?.self, from: jsonData)
                 completion(productDetailInfo)
             } catch {
-                print("DEBUG: Product Detail Request Error", error.localizedDescription)
+                print("DEBUG: Product Detail Request Error, ", error.localizedDescription)
                 completion(nil)
             }
         }

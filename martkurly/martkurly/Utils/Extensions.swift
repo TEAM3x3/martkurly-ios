@@ -94,9 +94,8 @@ extension UIViewController {
             ShoppingCartSingleton.shared.shoppingCartView.configureWhiteMode()
             backPopBarButton.tintColor = .white
             backDismissBarButton.tintColor = .white
-
         case .whiteType:
-        navigationController?.navigationBar.barStyle = .default
+            navigationController?.navigationBar.barStyle = .default
             navigationController?.navigationBar.titleTextAttributes =
                 [NSAttributedString.Key.foregroundColor: UIColor.black]
             navigationController?.navigationBar.barTintColor = .white
