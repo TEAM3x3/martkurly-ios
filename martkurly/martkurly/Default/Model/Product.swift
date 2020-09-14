@@ -15,9 +15,9 @@ struct Product: Decodable {
     let short_desc: String      // 상품 설명
     let img: String             // 상품 이미지
     let price: Int              // 상품 원가
-    let discount_price: Double? // 상품 할인가
+    let discount_price: Int?    // 상품 할인가
     let packing_status: String? // 상품 포장 상태
-    let sales: Sales?            // 상품 할인(%)
+    let sales: Sales?           // 상품 할인(%)
     let tagging: [Tagging]      // 상품 Tag
 
     struct Sales: Decodable {

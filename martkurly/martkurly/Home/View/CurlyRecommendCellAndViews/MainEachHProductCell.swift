@@ -53,6 +53,40 @@ class MainEachHProductCell: UICollectionViewCell {
         }
     }
 
+    private let numberingTextLabel = UILabel().then {
+        $0.text = "03"
+        $0.textColor = .white
+        $0.font = .systemFont(ofSize: 40)
+
+        $0.layer.shadowColor = UIColor.black.cgColor
+        $0.layer.shadowOffset = CGSize(width: 1, height: 1)
+        $0.layer.shadowRadius = 0.1
+        $0.layer.shadowOpacity = 0.2
+
+        $0.isHidden = true
+    }
+
+    private lazy var cartButton = UIButton(type: .system).then {
+        $0.backgroundColor = UIColor(red: 110/255,
+                                     green: 85/255,
+                                     blue: 116/255,
+                                     alpha: 0.8)
+
+        let configuration = UIImage.SymbolConfiguration(
+            pointSize: 12,
+            weight: .medium,
+            scale: .large)
+        let symbolImage = UIImage(
+            systemName: "cart",
+            withConfiguration: configuration)
+
+        $0.setImage(symbolImage, for: .normal)
+        $0.tintColor = .white
+
+        $0.addTarget(self, action: #selector(tappedCartButton), for: .touchUpInside)
+        $0.isHidden = true
+    }
+
     private let productTitleLabel = UILabel().then {
         $0.text = "[그린팬] 그린쉐프 토콰즈 프라이팬 6종"
         $0.textColor = .black
@@ -89,6 +123,12 @@ class MainEachHProductCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
+    // MARK: - Selectors
+
+    @objc func tappedCartButton(_ sender: UIButton) {
+
+    }
+
     // MARK: - Helpers
 
     func configureUI() {
@@ -97,7 +137,7 @@ class MainEachHProductCell: UICollectionViewCell {
     }
 
     func configureLayout() {
-        [productImageView, saleDisplayView].forEach {
+        [productImageView, saleDisplayView, numberingTextLabel, cartButton].forEach {
             self.addSubview($0)
         }
 
@@ -112,6 +152,17 @@ class MainEachHProductCell: UICollectionViewCell {
             $0.width.equalTo(44)
         }
 
+        numberingTextLabel.snp.makeConstraints {
+            $0.top.equalToSuperview()
+            $0.trailing.equalToSuperview().offset(-4)
+        }
+
+        cartButton.snp.makeConstraints {
+            $0.width.height.equalTo(32)
+            $0.bottom.trailing.equalTo(productImageView).offset(-8)
+        }
+        cartButton.layer.cornerRadius = 32 / 2
+
         let infoStack = UIStackView(arrangedSubviews: [productTitleLabel,
                                                        productSalePriceLabel,
                                                        productBasicPriceLabel])
@@ -125,5 +176,10 @@ class MainEachHProductCell: UICollectionViewCell {
             $0.leading.equalToSuperview().offset(4)
             $0.trailing.equalToSuperview().offset(-4)
         }
+    }
+
+    func configure(isShowRanking: Bool, isShowBasket: Bool) {
+        numberingTextLabel.isHidden = !isShowRanking
+        cartButton.isHidden = !isShowBasket
     }
 }

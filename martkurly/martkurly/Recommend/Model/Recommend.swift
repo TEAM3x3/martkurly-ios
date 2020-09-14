@@ -7,3 +7,15 @@
 //
 
 import Foundation
+
+enum RecommendationType {
+    case basicProductList
+    case rankingProductList
+    case productAndReviews
+    case anotherRecommendation
+}
+
+struct RecommendationList {
+    let title: String
+    let cellType: RecommendationType
+}
