@@ -65,4 +65,10 @@ struct CurlyService {
             }
         }
     }
+
+    // MARK: - 회원가입
+    func signUp(id: String, pw: String) {
+        let url = REF_SIGNUP
+//        AF.request(url, method: .post, parameters: <#T##Encodable?#>, encoder: <#T##ParameterEncoder#>, headers: <#T##HTTPHeaders?#>, interceptor: <#T##RequestInterceptor?#>, requestModifier: <#T##Session.RequestModifier?##Session.RequestModifier?##(inout URLRequest) throws -> Void#>)
+    }
 }
