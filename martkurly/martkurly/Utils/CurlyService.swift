@@ -94,7 +94,7 @@ struct CurlyService {
     }
 
     // MARK: - 아이디 중복확인
-    func checkUsername(username: String) {
+    func checkUsername(username: String, completionHandler: @escaping () -> Void) {
         let urlString = REF_SIGNUP + "/check_username?username=" + username
         print(urlString)
         let request = URLRequest(url: URL(string: urlString)!)
@@ -112,6 +112,7 @@ struct CurlyService {
             case .failure(let error):
                 print("Error", error.localizedDescription)
             }
+            completionHandler()
         }
     }
 }
