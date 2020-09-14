@@ -77,8 +77,8 @@ struct CurlyService {
             "address": address
         ]
 
-        let url = REF_SIGNUP
-        var request = URLRequest(url: URL(string: url)!)
+        let urlString = REF_SIGNUP
+        var request = URLRequest(url: URL(string: urlString)!)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.httpBody = try! JSONSerialization.data(withJSONObject: value)
@@ -92,7 +92,26 @@ struct CurlyService {
             }
         }
     }
-    
+
     // MARK: - 아이디 중복확인
-    
+    func checkUsername(username: String) {
+        let urlString = REF_SIGNUP + "/check_username?username=" + username
+        print(urlString)
+        let request = URLRequest(url: URL(string: urlString)!)
+        AF.request(request).responseJSON { (response) in
+            switch response.result {
+            case .success(_):
+                switch response.response?.statusCode {
+                case 200:
+                    print("Great")
+                case 400:
+                    print("Username is already taken.")
+                default:
+                    print("Unknown Response StatusCode")
+                }
+            case .failure(let error):
+                print("Error", error.localizedDescription)
+            }
+        }
+    }
 }

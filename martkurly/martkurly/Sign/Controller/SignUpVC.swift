@@ -22,7 +22,7 @@ final class SignUpVC: UIViewController {
     }
     private var textFieldTitleLabels = [SignUpTextFieldTitleView]()
     private var textFieldViews = [UserTextFieldView]() // 아이디, 비밀번호, 비밀번호 확인, 이름, 이메일 뷰가 순서로 들어있음
-    private let idCheckButton = KurlyButton(title: StringManager.SignUp.checkDuplicate.rawValue, style: .white)
+    private let checkUsernameButton = KurlyButton(title: StringManager.SignUp.checkDuplicate.rawValue, style: .white)
     private let phoneNumberCheckButton = KurlyButton(title: StringManager.SignUp.checkPhoneNumber.rawValue, style: .white)
     private let addressView = SignUpAddressView()
     private let birthdayTitleView = SignUpTextFieldTitleView(title: StringManager.SignUp.birthday.rawValue, mendatory: false)
@@ -89,6 +89,8 @@ final class SignUpVC: UIViewController {
 
         agreementTableView.delegate = self
         agreementTableView.dataSource = self
+
+        checkUsernameButton.addTarget(self, action: #selector(handleCheckUsernameButton), for: .touchUpInside)
     }
 
     private func setConstraints() {
@@ -96,7 +98,7 @@ final class SignUpVC: UIViewController {
             let idTextField = textFieldViews.first,
             let phoneNumberTextField = textFieldViews.last
             else { return }
-        idCheckButton.snp.makeConstraints {
+        checkUsernameButton.snp.makeConstraints {
             $0.trailing.equalTo(view).inset(20)
             $0.centerY.equalTo(idTextField)
             $0.height.equalTo(48)
@@ -155,7 +157,7 @@ final class SignUpVC: UIViewController {
             $0.height.equalTo(view.frame.height * 1.5)
             $0.width.equalTo(view)
         }
-        [idCheckButton, phoneNumberCheckButton, addressView, birthdayTitleView, birthdayTextFields, genderChoice, additionalInfoView].forEach {
+        [checkUsernameButton, phoneNumberCheckButton, addressView, birthdayTitleView, birthdayTextFields, genderChoice, additionalInfoView].forEach {
             contentView.addSubview($0)
         }
         scrollView.addSubview(contentView2)
@@ -206,7 +208,7 @@ final class SignUpVC: UIViewController {
                 textField.snp.makeConstraints {
                     $0.top.equalTo(titleLabel.snp.bottom).offset(4)
                     $0.leading.equalToSuperview().inset(20)
-                    $0.trailing.equalTo(idCheckButton.snp.leading).offset(-10)
+                    $0.trailing.equalTo(checkUsernameButton.snp.leading).offset(-10)
                     $0.height.equalTo(48)
                 }
             } else if textFieldViews.count == 5 {
@@ -247,6 +249,12 @@ final class SignUpVC: UIViewController {
     }
 
     // MARK: - Selectors
+    @objc
+    private func handleCheckUsernameButton() {
+        guard let username = textFieldViews[0].textField.text else { return }
+        CurlyService.shared.checkUsername(username: username)
+    }
+
     @objc
     private func handleSMSTapGesture(_ sender: UITapGestureRecognizer) {
         agreementCells[5].smsCheckmark.isActive
