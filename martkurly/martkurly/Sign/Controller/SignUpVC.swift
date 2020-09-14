@@ -251,9 +251,32 @@ final class SignUpVC: UIViewController {
     // MARK: - Selectors
     @objc
     private func handleCheckUsernameButton() {
-        guard let username = textFieldViews[0].textField.text else { return }
-        CurlyService.shared.checkUsername(username: username, completionHandler: {
+        var isValidUsername = true
+        guard let username = textFieldViews[0].textField.text?.lowercased() else { return }
+        guard username.count <= 20, username.count >= 6, username != "" else {
+            generateAlert(title: "6자 이상의 영문 혹은 영문과 숫자를 조합으로 입력해 주세요")
             return
+        }
+        for character in username {
+            guard let asciiValue = character.asciiValue else {
+                generateAlert(title: "6자 이상의 영문 혹은 영문과 숫자를 조합으로 입력해 주세요")
+                return
+            }
+            switch asciiValue {
+            case UInt8(48)...UInt8(57):
+                fallthrough
+            case UInt8(97)...UInt8(122):
+                continue
+            default:
+                isValidUsername = false
+            }
+        }
+        guard isValidUsername == true else {
+            generateAlert(title: "6자 이상의 영문 혹은 영문과 숫자를 조합으로 입력해 주세요")
+            return
+        }
+        CurlyService.shared.checkUsername(username: username, completionHandler: { title in
+            self.generateAlert(title: title)
         })
     }
 
@@ -445,6 +468,13 @@ final class SignUpVC: UIViewController {
         default:
             return { return }
         }
+    }
+
+    private func generateAlert(title: String) {
+        let alert = UIAlertController(title: title, message: "", preferredStyle: .alert)
+        let confirmAction = UIAlertAction(title: "확인", style: .default, handler: nil)
+        alert.addAction(confirmAction)
+        self.present(alert, animated: true)
     }
 }
 

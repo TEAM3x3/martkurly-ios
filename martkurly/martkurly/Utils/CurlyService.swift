@@ -108,7 +108,7 @@ struct CurlyService {
     }
 
     // MARK: - 아이디 중복확인
-    func checkUsername(username: String, completionHandler: @escaping () -> Void) {
+    func checkUsername(username: String, completionHandler: @escaping (String) -> Void) {
         let urlString = REF_SIGNUP + "/check_username?username=" + username
         print(urlString)
         let request = URLRequest(url: URL(string: urlString)!)
@@ -117,16 +117,19 @@ struct CurlyService {
             case .success:
                 switch response.response?.statusCode {
                 case 200:
-                    print("Great")
+                    print("Great Username")
+                    completionHandler("사용하실 수 있는 아이디입니다!")
                 case 400:
                     print("Username is already taken.")
+                    completionHandler("동일한 아이디가 이미 등록되어 있습니다")
                 default:
                     print("Unknown Response StatusCode")
+                    completionHandler("알 수 없는 오류가 발생했습니다")
                 }
             case .failure(let error):
                 print("Error", error.localizedDescription)
+                completionHandler("통신에 실패했습니다. 다시 시도해주세요.")
             }
-            completionHandler()
         }
     }
 }
