@@ -252,7 +252,9 @@ final class SignUpVC: UIViewController {
     @objc
     private func handleCheckUsernameButton() {
         guard let username = textFieldViews[0].textField.text else { return }
-        CurlyService.shared.checkUsername(username: username)
+        CurlyService.shared.checkUsername(username: username, completionHandler: {
+            return
+        })
     }
 
     @objc

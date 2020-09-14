@@ -100,7 +100,7 @@ struct CurlyService {
         let request = URLRequest(url: URL(string: urlString)!)
         AF.request(request).responseJSON { (response) in
             switch response.result {
-            case .success(_):
+            case .success:
                 switch response.response?.statusCode {
                 case 200:
                     print("Great")
