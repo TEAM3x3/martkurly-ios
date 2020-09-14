@@ -125,8 +125,9 @@ class MyKurlyVC: UIViewController {
     @objc
     private func handleSignButton(_ sender: UIButton) {
         let nextVC = SignInVC()
-        nextVC.modalPresentationStyle = .fullScreen
-        present(nextVC, animated: true)
+        let naviVC = UINavigationController(rootViewController: nextVC)
+        naviVC.modalPresentationStyle = .fullScreen
+        present(naviVC, animated: true)
     }
 
     // MARK: - Helpers

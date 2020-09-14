@@ -67,8 +67,32 @@ struct CurlyService {
     }
 
     // MARK: - 회원가입
-    func signUp(id: String, pw: String) {
+    func signUp(username: String, password: String, email: String, phone: String, gener: String, address: String) {
+        let value = [
+            "username": username,
+            "password": password,
+            "email": email,
+            "phone": phone,
+            "gender": gener,
+            "address": address
+        ]
+
         let url = REF_SIGNUP
-//        AF.request(url, method: .post, parameters: <#T##Encodable?#>, encoder: <#T##ParameterEncoder#>, headers: <#T##HTTPHeaders?#>, interceptor: <#T##RequestInterceptor?#>, requestModifier: <#T##Session.RequestModifier?##Session.RequestModifier?##(inout URLRequest) throws -> Void#>)
+        var request = URLRequest(url: URL(string: url)!)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpBody = try! JSONSerialization.data(withJSONObject: value)
+
+        AF.request(request).responseJSON { (response) in
+            switch response.result {
+            case .success(let data):
+                print("Success", data)
+            case .failure(let error):
+                print("Failure", error)
+            }
+        }
     }
+    
+    // MARK: - 아이디 중복확인
+    
 }
