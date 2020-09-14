@@ -17,10 +17,10 @@ struct CurlyService {
 
     // MARK: - 이벤트 목록 및 이벤트 상품 가져오기
 
-    func fetchEventProducts(completion: @escaping([EventModel]) -> Void) {
+    func fetchEventList(completion: @escaping([EventModel]) -> Void) {
         var events = [EventModel]()
 
-        AF.request(REF_EVENTLIST, method: .get).responseJSON { response in
+        AF.request(CURLY_EVENT_REF, method: .get).responseJSON { response in
             guard let jsonData = response.data else { return completion(events) }
 
             do {
@@ -30,6 +30,20 @@ struct CurlyService {
                 print("DEBUG: Event List Request Error, ", error.localizedDescription)
             }
             completion(events)
+        }
+    }
+
+    func fetchEventProducts(eventID: Int, completion: @escaping(EventProducts?) -> Void) {
+        AF.request(REF_EVENT_GOODS + "\(eventID)", method: .get).responseJSON { response in
+            guard let jsonData = response.data else { return completion(nil) }
+
+            do {
+                let eventProducts = try self.decoder.decode(EventProducts.self, from: jsonData)
+                completion(eventProducts)
+            } catch {
+                print("DEBUG: Event Products Request Error, ", error.localizedDescription)
+                completion(nil)
+            }
         }
     }
 

@@ -14,7 +14,7 @@ class EventProductDetailListVC: UIViewController {
 
     private let productListView = ProductListView(headerType: .fastAreaAndCondition)
 
-    var eventProducts: EventModel?
+    var eventProducts: EventProducts?
 
     // MARK: - LifeCycle
 
