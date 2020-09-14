@@ -57,7 +57,7 @@ class HomeVC: UIViewController {
     }
 
     func fetchEventList() {
-        CurlyService.shared.fetchEventProducts { eventList in
+        CurlyService.shared.fetchEventList { eventList in
             self.eventList = eventList
         }
     }
@@ -74,10 +74,13 @@ class HomeVC: UIViewController {
     }
 
     func tappedEventItem(section: Int) {
-        let controller = EventProductDetailListVC()
-        controller.hidesBottomBarWhenPushed = true
-        controller.eventProducts = eventList[section]
-        self.navigationController?.pushViewController(controller, animated: true)
+        CurlyService.shared.fetchEventProducts(eventID: eventList[section].id) { eventProducts in
+            guard let eventProducts = eventProducts else { return }
+            let controller = EventProductDetailListVC()
+            controller.hidesBottomBarWhenPushed = true
+            controller.eventProducts = eventProducts
+            self.navigationController?.pushViewController(controller, animated: true)
+        }
     }
 
     // MARK: - Helpers
