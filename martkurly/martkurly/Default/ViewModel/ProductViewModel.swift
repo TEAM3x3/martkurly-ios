@@ -24,32 +24,46 @@ struct ProductViewModel {
     }
 
     var isShowSaleView: Bool {
-        return product.sales.contents == nil &&
-            product.sales.discount_rate == nil
+        return product.sales?.contents == nil &&
+            product.sales?.discount_rate == nil
     }
 
     var saleDisplayText: NSAttributedString? {
         guard isShowSaleView == false else { return nil }
 
-        if product.sales.discount_rate != nil,
-            let rate = product.sales.discount_rate {
-            let boldAttributes: [NSAttributedString.Key: Any] = [
-                .font: UIFont.boldSystemFont(ofSize: 20),
-                .foregroundColor: UIColor.white
-            ]
+        let boldAttributes: [NSAttributedString.Key: Any] = [
+            .font: UIFont.boldSystemFont(ofSize: 20),
+            .foregroundColor: UIColor.white
+        ]
 
-            let attributes: [NSAttributedString.Key: Any] = [
-                .font: UIFont.systemFont(ofSize: 14),
-                .foregroundColor: UIColor.white
-            ]
+        let giftAttributes: [NSAttributedString.Key: Any] = [
+            .font: UIFont.boldSystemFont(ofSize: 16),
+            .foregroundColor: UIColor.white
+        ]
+
+        let attributes: [NSAttributedString.Key: Any] = [
+            .font: UIFont.systemFont(ofSize: 14),
+            .foregroundColor: UIColor.white
+        ]
+
+        if product.sales?.discount_rate != nil,
+            let rate = product.sales?.discount_rate {
 
             let stringValue = NSMutableAttributedString(string: "SAVE\n", attributes: attributes)
             stringValue.append(NSAttributedString(string: "\(rate)", attributes: boldAttributes))
             stringValue.append(NSAttributedString(string: "%", attributes: attributes))
             return stringValue
-        } else {
-            return nil
+        } else if let contents = product.sales?.contents {
+            if contents == "1+1" {
+                let stringValue = NSMutableAttributedString(string: "EVENT\n", attributes: attributes)
+                stringValue.append(NSAttributedString(string: "\(contents)", attributes: boldAttributes))
+                return stringValue
+            } else if contents == "+gift" {
+                let stringValue = NSAttributedString(string: "GIFT", attributes: giftAttributes)
+                return stringValue
+            }
         }
+        return nil
     }
 
     var priceDisplayText: NSAttributedString {

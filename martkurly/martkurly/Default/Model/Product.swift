@@ -15,18 +15,18 @@ struct Product: Decodable {
     let short_desc: String      // 상품 설명
     let img: String             // 상품 이미지
     let price: Int              // 상품 원가
-    let discount_price: Double? // 상품 할인가
+    let discount_price: Int?    // 상품 할인가
     let packing_status: String? // 상품 포장 상태
-    let sales: Sales            // 상품 할인(%)
+    let sales: Sales?           // 상품 할인(%)
     let tagging: [Tagging]      // 상품 Tag
 
     struct Sales: Decodable {
-        let discount_rate: Int?
-        let contents: String?
+        let discount_rate: Int? // 할인(%)
+        let contents: String?   // 다른방식
     }
 
     struct Tagging: Decodable {
-        let name: String
+        let name: String        // 태그명
 
         enum CodingKeys: String, CodingKey {
             case tag

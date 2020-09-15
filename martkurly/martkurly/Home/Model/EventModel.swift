@@ -12,5 +12,10 @@ struct EventModel: Decodable {
     let id: Int
     let title: String
     let image: String
+}
+
+struct EventProducts: Decodable {
+    let id: Int
+    let title: String
     let goods: [Product]
 }
