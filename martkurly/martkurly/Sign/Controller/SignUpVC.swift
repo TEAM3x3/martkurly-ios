@@ -91,6 +91,10 @@ final class SignUpVC: UIViewController {
         agreementTableView.dataSource = self
 
         checkUsernameButton.addTarget(self, action: #selector(handleCheckUsernameButton), for: .touchUpInside)
+
+        let addressTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleaddressTapGesture(_:)))
+        addressView.addGestureRecognizer(addressTapGesture)
+        addressView.isUserInteractionEnabled = true
     }
 
     private func setConstraints() {
@@ -278,6 +282,11 @@ final class SignUpVC: UIViewController {
         CurlyService.shared.checkUsername(username: username, completionHandler: { title in
             self.generateAlert(title: title)
         })
+    }
+
+    @objc
+    private func handleaddressTapGesture(_ sender: UITapGestureRecognizer) {
+        print(#function)
     }
 
     @objc

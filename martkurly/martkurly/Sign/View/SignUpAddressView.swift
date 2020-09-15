@@ -12,7 +12,7 @@ class SignUpAddressView: UIView {
 
     // MARK: - Properties
     private let textFieldTitle = SignUpTextFieldTitleView(title: StringManager.SignUp.address.rawValue, mendatory: true)
-    private let addressLabel = SignUpAddressInputView()
+    let addressLabel = SignUpAddressInputView()
     private let specificAddress = UserTextFieldView(placeholder: StringManager.SignUp.addtionalAddress.rawValue, fontSize: 16)
     private let infoLabel = UILabel().then {
         $0.text = StringManager.SignUp.addtionalAddressInfo.rawValue
