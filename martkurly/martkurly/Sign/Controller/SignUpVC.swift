@@ -111,12 +111,12 @@ final class SignUpVC: UIViewController {
             $0.width.equalTo(120)
         }
         addressView.snp.makeConstraints {
-            $0.top.equalTo(phoneNumberTextField.snp.bottom).offset(20)
+            $0.top.equalTo(phoneNumberTextField.snp.bottom).offset(30)
             $0.leading.trailing.equalTo(view).inset(20)
             $0.height.equalTo(150)
         }
         birthdayTitleView.snp.makeConstraints {
-            $0.top.equalTo(addressView.snp.bottom).offset(45)
+            $0.top.equalTo(addressView.snp.bottom).offset(60)
             $0.leading.trailing.equalTo(view).inset(20)
         }
         birthdayTextFields.snp.makeConstraints {
@@ -125,7 +125,7 @@ final class SignUpVC: UIViewController {
             $0.height.equalTo(48)
         }
         genderChoice.snp.makeConstraints {
-            $0.top.equalTo(birthdayTextFields.snp.bottom).offset(25)
+            $0.top.equalTo(birthdayTextFields.snp.bottom).offset(35)
             $0.leading.trailing.equalTo(view).inset(20)
             $0.height.equalTo(170)
         }
@@ -217,7 +217,7 @@ final class SignUpVC: UIViewController {
                     let firstObject = textFieldViews.first,
                     let lastObject = textFieldViews.last else { return }
                 titleLabel.snp.makeConstraints {
-                    $0.top.equalTo(lastObject.snp.bottom).offset(8)
+                    $0.top.equalTo(lastObject.snp.bottom).offset(12)
                     $0.leading.trailing.equalTo(view).inset(20)
                     $0.height.equalTo(30)
                 }
@@ -232,7 +232,7 @@ final class SignUpVC: UIViewController {
                     let firstObject = textFieldViews.first,
                     let lastObject = textFieldViews.last else { return }
                 titleLabel.snp.makeConstraints {
-                    $0.top.equalTo(lastObject.snp.bottom).offset(8)
+                    $0.top.equalTo(lastObject.snp.bottom).offset(12)
                     $0.leading.trailing.equalTo(view).inset(20)
                     $0.height.equalTo(30)
                 }
