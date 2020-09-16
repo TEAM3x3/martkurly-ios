@@ -15,12 +15,12 @@ struct CurlyService {
 
     private let decoder = JSONDecoder()
 
-    // MARK: - 메인 이벤트 목록 가져오기
+    // MARK: - 메인 이벤트 목록 가져오기 & 이벤트 상품 가져오기
 
     func fetchMainEventList(completion: @escaping([MainEvent]) -> Void) {
         var mainEventList = [MainEvent]()
 
-        AF.request(REF_MAIN_EVENT, method: .get).responseJSON { response in
+        AF.request(CURLY_MAIN_EVENT_REF, method: .get).responseJSON { response in
             guard let jsonData = response.data else { return completion(mainEventList) }
 
             do {
@@ -30,6 +30,20 @@ struct CurlyService {
                 print("DEBUG: Main Event List Request Error, ", error.localizedDescription)
             }
             completion(mainEventList)
+        }
+    }
+
+    func fetchMainEventProducts(eventID: Int, completion: @escaping(MainEventProducts?) -> Void) {
+        AF.request(REF_MAIN_EVENT + "\(eventID)", method: .get).responseJSON { response in
+            guard let jsonData = response.data else { return completion(nil) }
+
+            do {
+                let eventProducts = try self.decoder.decode(MainEventProducts.self, from: jsonData)
+                completion(eventProducts)
+            } catch {
+                print("DEBUG: Main Event Products Request Error, ", error.localizedDescription)
+                completion(nil)
+            }
         }
     }
 

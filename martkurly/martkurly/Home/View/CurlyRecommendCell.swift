@@ -8,6 +8,10 @@
 
 import UIKit
 
+protocol CurlyRecommendDelegate: class {
+    func tappedItem(selectedID: Int)
+}
+
 class CurlyRecommendCell: UICollectionViewCell {
 
     // MARK: - Properties
@@ -17,6 +21,8 @@ class CurlyRecommendCell: UICollectionViewCell {
     private let bannerHeightValue: CGFloat = 80
 
     private let recommendTableView = UITableView()
+
+    var tappedEvent: ((Int) -> Void)?
 
     var mainEventList = [MainEvent]() {
         didSet { recommendTableView.reloadData() }
@@ -109,6 +115,7 @@ extension CurlyRecommendCell: UITableViewDataSource {
                 withIdentifier: RecommendImageSliderCell.identifier,
                 for: indexPath) as! RecommendImageSliderCell
             cell.mainEventList = mainEventList
+            cell.delegate = self
             return cell
         case .productRecommendCell:
             let cell = tableView.dequeueReusableCell(
@@ -210,6 +217,12 @@ extension CurlyRecommendCell: UITableViewDataSource {
             cell.configure(cellType: InfoCellType(rawValue: indexPath.row)!)
             return cell
         }
+    }
+}
+
+extension CurlyRecommendCell: CurlyRecommendDelegate {
+    func tappedItem(selectedID: Int) {
+        tappedEvent?(selectedID)
     }
 }
 

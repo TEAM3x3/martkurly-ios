@@ -14,6 +14,8 @@ class RecommendImageSliderCell: UITableViewCell {
 
     static let identifier = "RecommendImageSideCell"
 
+    weak var delegate: CurlyRecommendDelegate?
+
     var mainEventList = [MainEvent]() {
         didSet {
             imageCountLabel.text = "1 / \(mainEventList.count)"
@@ -126,7 +128,7 @@ extension RecommendImageSliderCell: UICollectionViewDelegateFlowLayout {
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print(indexPath.item)
+        delegate?.tappedItem(selectedID: mainEventList[indexPath.item].id)
     }
 }
 
@@ -140,7 +142,7 @@ class MainImageCell: UICollectionViewCell {
 
     let imageView = UIImageView().then {
         $0.image = UIImage(named: "TestImage")
-        $0.contentMode = .scaleAspectFit
+        $0.contentMode = .scaleToFill
         $0.clipsToBounds = true
     }
 

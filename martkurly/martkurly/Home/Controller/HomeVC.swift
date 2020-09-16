@@ -76,7 +76,7 @@ class HomeVC: UIViewController {
 
     // MARK: - Actions
 
-    func detailViewProductMove(productID: Int) {
+    func detailViewProduct(productID: Int) {
         CurlyService.shared.requestProductDetailData(productID: productID) { reponseData in
             let controller = ProductDetailVC()
             controller.hidesBottomBarWhenPushed = true
@@ -90,6 +90,14 @@ class HomeVC: UIViewController {
             guard let eventProducts = eventProducts else { return }
             let controller = EventProductDetailListVC()
             controller.hidesBottomBarWhenPushed = true
+            controller.eventProducts = eventProducts
+            self.navigationController?.pushViewController(controller, animated: true)
+        }
+    }
+
+    func tappedEvent(eventID: Int) {
+        CurlyService.shared.fetchMainEventProducts(eventID: eventID) { eventProducts in
+            let controller = CategoryProductsVC()
             controller.eventProducts = eventProducts
             self.navigationController?.pushViewController(controller, animated: true)
         }
@@ -158,6 +166,7 @@ extension HomeVC: UICollectionViewDataSource {
                 withReuseIdentifier: CurlyRecommendCell.identifier,
                 for: indexPath) as! CurlyRecommendCell
             cell.mainEventList = mainEventList
+            cell.tappedEvent = tappedEvent
             return cell
         case .newProduct:
             let cell = collectionView.dequeueReusableCell(
@@ -176,7 +185,7 @@ extension HomeVC: UICollectionViewDataSource {
                 withReuseIdentifier: ProductListCell.identifier,
                 for: indexPath) as! ProductListCell
                 cell.configure(headerType: .fastAreaAndBenefit, products: cheapProducts)
-                cell.detailViewProductMove = detailViewProductMove(productID:)
+                cell.detailViewProduct = detailViewProduct(productID:)
             return cell
         case .eventProduct:
             let cell = collectionView.dequeueReusableCell(

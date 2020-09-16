@@ -168,8 +168,8 @@ class ProductCell: UICollectionViewCell {
 
         saleDisplayView.snp.makeConstraints {
             $0.top.leading.equalToSuperview()
-            $0.height.equalTo(52)
-            $0.width.equalTo(64)
+            $0.height.equalTo(48)
+            $0.width.equalTo(56)
         }
 
         cartButton.snp.makeConstraints {

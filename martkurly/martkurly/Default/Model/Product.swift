@@ -20,11 +20,6 @@ struct Product: Decodable {
     let sales: Sales?           // 상품 할인(%)
     let tagging: [Tagging]      // 상품 Tag
 
-    struct Sales: Decodable {
-        let discount_rate: Int? // 할인(%)
-        let contents: String?   // 다른방식
-    }
-
     struct Tagging: Decodable {
         let name: String        // 태그명
 
@@ -46,22 +41,29 @@ struct Product: Decodable {
     }
 }
 
+struct Sales: Decodable {
+    let discount_rate: Int? // 할인(%)
+    let contents: String?   // 다른방식
+}
+
 // 상세정보 Product 구조체
 struct ProductDetail: Decodable {
-    let id: Int             // 상품 번호
-    let img: String         // 상품 이미지
-    let info_img: String    // 상품 정보 이미지
-    let title: String       // 상품 이름
-    let short_desc: String  // 상품 설명
-    let price: Int          // 상품 가격
-    let each: String?       // 수량
-    let weight: String      // 무게
-    let transfer: String?   // 배송 정보(샛별 / 택배)
-    let packing: String?    // 포장 방법
-    let origin: String?     // 원산지
-    let allergy: String?    // 알레르기 정보
-    let info: String?       // 상품 안내
-    let expiration: String? // 만료? 만기?(유통기한?)
+    let id: Int                 // 상품 번호
+    let img: String             // 상품 이미지
+    let info_img: String        // 상품 정보 이미지
+    let title: String           // 상품 이름
+    let short_desc: String      // 상품 설명
+    let price: Int              // 상품 가격
+    let discount_price: Int?    // 상품 할인가격
+    let sales: Sales?           // 상품 할인 정보
+    let each: String?           // 수량
+    let weight: String          // 무게
+    let transfer: String?       // 배송 정보(샛별 / 택배)
+    let packing: String?        // 포장 방법
+    let origin: String?         // 원산지
+    let allergy: String?        // 알레르기 정보
+    let info: String?           // 상품 안내
+    let expiration: String?     // 상품 유통기한
     let explains: [ProductExplain]
     let details: [ProductDetailInfomation]
 
