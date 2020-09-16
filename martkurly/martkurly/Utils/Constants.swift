@@ -19,3 +19,4 @@ let CURLY_EVENT_REF = CURLY_REF + "/event"
 let REF_EVENT_GOODS = CURLY_EVENT_REF + "/"
 
 let REF_SIGNUP = CURLY_REF + "/users"
+let REF_MAIN_EVENT = CURLY_REF + "/mainEvent"

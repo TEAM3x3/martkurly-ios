@@ -25,6 +25,17 @@ final class SignUpVC: UIViewController {
     private let checkUsernameButton = KurlyButton(title: StringManager.SignUp.checkDuplicate.rawValue, style: .white)
     private let phoneNumberCheckButton = KurlyButton(title: StringManager.SignUp.checkPhoneNumber.rawValue, style: .white)
     private let addressView = SignUpAddressView()
+    var address: String {
+        get { addressView.addressLabel.addressLabel.text! }
+        set { addressView.addressLabel.addressLabel.text = newValue }
+    }
+    var isAddressFilled = false {
+        willSet {
+            addressView.snp.updateConstraints { $0.height.equalTo(150) }
+            birthdayTitleView.snp.updateConstraints { $0.top.equalTo(addressView.snp.bottom).offset(60) }
+            addressView.quickDeliveryAvailable = true
+        }
+    }
     private let birthdayTitleView = SignUpTextFieldTitleView(title: StringManager.SignUp.birthday.rawValue, mendatory: false)
     private let birthdayTextFields = SingUpBirthdayView() // YYYY, MM, DD 3개의 TextFields 로 구성되어 있다.
     private let genderChoice = SignUpGenderView()
@@ -91,6 +102,10 @@ final class SignUpVC: UIViewController {
         agreementTableView.dataSource = self
 
         checkUsernameButton.addTarget(self, action: #selector(handleCheckUsernameButton), for: .touchUpInside)
+
+        let addressTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleaddressTapGesture(_:)))
+        addressView.addGestureRecognizer(addressTapGesture)
+        addressView.isUserInteractionEnabled = true
     }
 
     private func setConstraints() {
@@ -113,10 +128,10 @@ final class SignUpVC: UIViewController {
         addressView.snp.makeConstraints {
             $0.top.equalTo(phoneNumberTextField.snp.bottom).offset(30)
             $0.leading.trailing.equalTo(view).inset(20)
-            $0.height.equalTo(150)
+            $0.height.equalTo(100)
         }
         birthdayTitleView.snp.makeConstraints {
-            $0.top.equalTo(addressView.snp.bottom).offset(60)
+            $0.top.equalTo(addressView.snp.bottom).offset(30)
             $0.leading.trailing.equalTo(view).inset(20)
         }
         birthdayTextFields.snp.makeConstraints {
@@ -278,6 +293,15 @@ final class SignUpVC: UIViewController {
         CurlyService.shared.checkUsername(username: username, completionHandler: { title in
             self.generateAlert(title: title)
         })
+    }
+
+    @objc
+    private func handleaddressTapGesture(_ sender: UITapGestureRecognizer) {
+        let nextVC = KakaoAddressVC()
+        let naviVC = UINavigationController(rootViewController: nextVC)
+        naviVC.modalPresentationStyle = .overFullScreen
+        naviVC.modalTransitionStyle = .crossDissolve
+        present(naviVC, animated: true)
     }
 
     @objc
