@@ -23,7 +23,7 @@ class MyKurlyVC: UIViewController {
     private let bottomBarView = UIView().then {
         $0.backgroundColor = .backgroundGray
     }
-    private var isSignedIn = true
+    private var isSignedIn = false
     private var price = "0" // 적립금
     private var coupon = "0" // 쿠폰
     private var nextVC = UIViewController()
@@ -125,8 +125,9 @@ class MyKurlyVC: UIViewController {
     @objc
     private func handleSignButton(_ sender: UIButton) {
         let nextVC = SignInVC()
-        nextVC.modalPresentationStyle = .fullScreen
-        present(nextVC, animated: true)
+        let naviVC = UINavigationController(rootViewController: nextVC)
+        naviVC.modalPresentationStyle = .fullScreen
+        present(naviVC, animated: true)
     }
 
     // MARK: - Helpers

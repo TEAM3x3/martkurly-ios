@@ -142,4 +142,15 @@ extension UserTextFieldView: UITextFieldDelegate {
         showSubtitleLabels()
         return true
     }
+
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        if let char = string.cString(using: String.Encoding.utf8) {
+            let isBackSpace = strcmp(char, "\\b")
+            if isBackSpace == -92 {
+                return true
+            }
+        }
+        guard textField.text!.count < 14 else { return false }
+        return true
+    }
 }
