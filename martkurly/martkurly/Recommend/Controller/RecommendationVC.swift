@@ -42,6 +42,32 @@ class RecommendationVC: UIViewController {
                                titleText: "추천")
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        TimerSingleton.shared.timer = Timer.scheduledTimer(timeInterval: 2.5,
+                                                           target: self,
+                                                           selector: #selector(nextReviews),
+                                                           userInfo: nil,
+                                                           repeats: true)
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        if TimerSingleton.shared.timer != nil {
+            TimerSingleton.shared.timer!.invalidate()
+            TimerSingleton.shared.timer = nil
+        }
+    }
+
+    // MARK: - Selectros
+
+    @objc func nextReviews() {
+        NotificationCenter.default
+            .post(name: .init(TimerSingleton.nextReviews),
+                  object: nil)
+    }
+
     // MARK: - Helpers
 
     func configureUI() {
@@ -108,66 +134,4 @@ extension RecommendationVC: UITableViewDataSource {
 
 extension RecommendationVC: UITableViewDelegate {
 
-}
-
-import UIKit
-
-class RecommendReviewsProductCell: UITableViewCell {
-
-    // MARK: - Properties
-
-    static let identifier = "RecommendReviewsProductCell"
-
-    private let lineSpacingValue: CGFloat = 32
-    private let sideSpacingValue: CGFloat = 16
-    private let itemSpacingValue: CGFloat = 8
-    private let collectionViewHeight: CGFloat = 240
-
-    private let productListTitleLabel = UILabel().then {
-        $0.text = "후기가 좋은 간식"
-        $0.textColor = .black
-        $0.font = .systemFont(ofSize: 18)
-    }
-
-    private let flowLayout = UICollectionViewFlowLayout().then {
-        $0.scrollDirection = .horizontal
-    }
-
-    private lazy var productCollectionView = UICollectionView(frame: .zero,
-                                                              collectionViewLayout: flowLayout)
-
-    // MARK: - LifeCycle
-
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        configureUI()
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    // MARK: - Helpers
-
-    func configureUI() {
-        self.backgroundColor = .systemRed
-        configureLayout()
-    }
-
-    func configureLayout() {
-        [productListTitleLabel, productCollectionView].forEach {
-            self.addSubview($0)
-        }
-
-        productListTitleLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(lineSpacingValue)
-            $0.leading.equalToSuperview().offset(sideSpacingValue)
-        }
-
-        productCollectionView.snp.makeConstraints {
-            $0.top.equalTo(productListTitleLabel.snp.bottom).offset(sideSpacingValue)
-            $0.leading.bottom.trailing.equalToSuperview()
-            $0.height.equalTo(collectionViewHeight)
-        }
-    }
 }

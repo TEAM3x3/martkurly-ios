@@ -16,3 +16,5 @@ let REF_CHEAP = CURLY_GOODS_REF + "/sale"
 
 let CURLY_EVENT_REF = CURLY_REF + "/event"
 let REF_EVENT_GOODS = CURLY_EVENT_REF + "/"
+
+let REF_MAIN_EVENT = CURLY_REF + "/mainEvent"
