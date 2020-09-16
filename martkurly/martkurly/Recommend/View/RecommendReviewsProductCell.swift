@@ -1,5 +1,5 @@
 //
-//  RecommendProductListCell.swift
+//  RecommendReviewsProductCell.swift
 //  martkurly
 //
 //  Created by 천지운 on 2020/09/15.
@@ -8,25 +8,20 @@
 
 import UIKit
 
-class RecommendProductListCell: UITableViewCell {
+class RecommendReviewsProductCell: UITableViewCell {
 
     // MARK: - Properties
 
-    static let identifier = "RecommendProductListCell"
+    static let identifier = "RecommendReviewsProductCell"
 
     private let lineSpacingValue: CGFloat = 32
     private let sideSpacingValue: CGFloat = 16
     private let itemSpacingValue: CGFloat = 8
-    private let collectionViewHeight: CGFloat = 240
-
-    private let cellCount: Int = 10
-
-    private var productsType: RecommendationType = .basicProductList {
-        didSet { productCollectionView.reloadData() }
-    }
+    private let collectionViewInset: CGFloat = 4
+    private let collectionViewHeight: CGFloat = (UIScreen.main.bounds.width * 1.28)
 
     private let productListTitleLabel = UILabel().then {
-        $0.text = "인기 신상품 랭킹"
+        $0.text = "후기가 좋은 간식"
         $0.textColor = .black
         $0.font = .systemFont(ofSize: 18)
     }
@@ -43,7 +38,6 @@ class RecommendProductListCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         configureUI()
-        configureCollectionView()
     }
 
     required init?(coder: NSCoder) {
@@ -55,6 +49,7 @@ class RecommendProductListCell: UITableViewCell {
     func configureUI() {
         self.backgroundColor = .clear
         configureLayout()
+        configureCollectionView()
     }
 
     func configureLayout() {
@@ -81,74 +76,63 @@ class RecommendProductListCell: UITableViewCell {
         productCollectionView.dataSource = self
         productCollectionView.delegate = self
 
-        productCollectionView.register(MainEachHProductCell.self,
-                                       forCellWithReuseIdentifier: MainEachHProductCell.identifier)
-    }
-
-    func configure(titleText: String, productsType: RecommendationType) {
-        self.productsType = productsType
-        productListTitleLabel.text = titleText
+        productCollectionView.register(ReviewsProductCell.self,
+                                       forCellWithReuseIdentifier: ReviewsProductCell.identifier)
     }
 }
 
 // MARK: - UICollectionViewDataSource
 
-extension RecommendProductListCell: UICollectionViewDataSource {
+extension RecommendReviewsProductCell: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return cellCount
+        return 5
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: MainEachHProductCell.identifier,
-            for: indexPath) as! MainEachHProductCell
-
-        switch self.productsType {
-        case .basicProductList:
-            cell.configure(isShowRanking: false, isShowBasket: true)
-        default:
-            cell.configure(isShowRanking: true, isShowBasket: true)
-        }
-
+            withReuseIdentifier: ReviewsProductCell.identifier,
+            for: indexPath) as! ReviewsProductCell
         return cell
     }
 }
 
 // MARK: - UICollectionViewDelegateFlowLayout
 
-extension RecommendProductListCell: UICollectionViewDelegateFlowLayout {
+extension RecommendReviewsProductCell: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let width = UIScreen.main.bounds.width - (sideSpacingValue * 2)
+        let height = collectionViewHeight - (collectionViewInset * 2)
+        return CGSize(width: width, height: height)
+    }
+
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 0, left: sideSpacingValue, bottom: 0, right: sideSpacingValue)
+        return UIEdgeInsets(top: collectionViewInset,
+                            left: sideSpacingValue,
+                            bottom: collectionViewInset,
+                            right: sideSpacingValue)
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return itemSpacingValue
     }
-
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width = (UIScreen.main.bounds.width
-            - (sideSpacingValue * 2)
-            - (itemSpacingValue * 2)) / 3
-        return CGSize(width: width, height: self.collectionViewHeight)
-    }
 }
 
-extension RecommendProductListCell: UIScrollViewDelegate {
+// MARK: - UIScrollViewDelegate
+
+extension RecommendReviewsProductCell: UIScrollViewDelegate {
     func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
 
+        // https://eunjin3786.tistory.com/203
+        // 페이지마다 멈출 수 있게
         targetContentOffset.pointee = scrollView.contentOffset
         var indexes = self.productCollectionView.indexPathsForVisibleItems
         indexes.sort()
-
-        guard let indexPath = indexes.first else { return }
-        let cell = self.productCollectionView.cellForItem(at: indexPath)!
-
-        let item = indexPath.row + ((cell.center.x > scrollView.contentOffset.x) ? 1 : 2)
-        let moveIndexPath = IndexPath(item: item,
-                                      section: indexPath.section)
-        guard self.productCollectionView.cellForItem(at: moveIndexPath) != nil else { return }
-        self.productCollectionView.selectItem(at: moveIndexPath,
-                                              animated: true,
-                                              scrollPosition: .centeredHorizontally)
+        var index = indexes.first!
+        let cell = self.productCollectionView.cellForItem(at: index)!
+        let position = self.productCollectionView.contentOffset.x - cell.frame.origin.x
+        if position > cell.frame.size.width / 2 {
+           index.row = index.row + 1
+        }
+        self.productCollectionView.scrollToItem(at: index, at: .centeredHorizontally, animated: true)
     }
 }

@@ -14,9 +14,9 @@ class RecommendImageSliderCell: UITableViewCell {
 
     static let identifier = "RecommendImageSideCell"
 
-    var imageArray = ["TestImage", "TestImage", "TestImage", "TestImage"] {
+    var mainEventList = [MainEvent]() {
         didSet {
-            imageCountLabel.text = "1 / \(imageArray.count)"
+            imageCountLabel.text = "1 / \(mainEventList.count)"
             imageCollectionView.reloadData()
         }
     }
@@ -91,14 +91,15 @@ class RecommendImageSliderCell: UITableViewCell {
 
 extension RecommendImageSliderCell: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return imageArray.count
+        return mainEventList.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: MainImageCell.identifier,
             for: indexPath) as! MainImageCell
-        cell.imageView.image = UIImage(named: imageArray[indexPath.item])
+        let imageURL = URL(string: mainEventList[indexPath.row].image)
+        cell.imageView.kf.setImage(with: imageURL)
         return cell
     }
 }
@@ -121,7 +122,11 @@ extension RecommendImageSliderCell: UICollectionViewDelegateFlowLayout {
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         let width = scrollView.frame.width
         let currentPage = Int(scrollView.contentOffset.x / width) + 1
-        imageCountLabel.text = "\(currentPage) / \(imageArray.count)"
+        imageCountLabel.text = "\(currentPage) / \(mainEventList.count)"
+    }
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print(indexPath.item)
     }
 }
 
@@ -135,7 +140,7 @@ class MainImageCell: UICollectionViewCell {
 
     let imageView = UIImageView().then {
         $0.image = UIImage(named: "TestImage")
-        $0.contentMode = .scaleAspectFill
+        $0.contentMode = .scaleAspectFit
         $0.clipsToBounds = true
     }
 
