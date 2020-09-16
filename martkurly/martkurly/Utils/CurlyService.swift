@@ -111,4 +111,57 @@ struct CurlyService {
             }
         }
     }
+
+    // MARK: - 회원가입
+    func signUp(username: String, password: String, email: String, phone: String, gener: String, address: String) {
+        let value = [
+            "username": username,
+            "password": password,
+            "email": email,
+            "phone": phone,
+            "gender": gener,
+            "address": address
+        ]
+
+        let urlString = REF_SIGNUP
+        var request = URLRequest(url: URL(string: urlString)!)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpBody = try! JSONSerialization.data(withJSONObject: value)
+
+        AF.request(request).responseJSON { (response) in
+            switch response.result {
+            case .success(let data):
+                print("Success", data)
+            case .failure(let error):
+                print("Failure", error)
+            }
+        }
+    }
+
+    // MARK: - 아이디 중복확인
+    func checkUsername(username: String, completionHandler: @escaping (String) -> Void) {
+        let urlString = REF_SIGNUP + "/check_username?username=" + username
+        print(urlString)
+        let request = URLRequest(url: URL(string: urlString)!)
+        AF.request(request).responseJSON { (response) in
+            switch response.result {
+            case .success:
+                switch response.response?.statusCode {
+                case 200:
+                    print("Great Username")
+                    completionHandler("사용하실 수 있는 아이디입니다!")
+                case 400:
+                    print("Username is already taken.")
+                    completionHandler("동일한 아이디가 이미 등록되어 있습니다")
+                default:
+                    print("Unknown Response StatusCode")
+                    completionHandler("알 수 없는 오류가 발생했습니다")
+                }
+            case .failure(let error):
+                print("Error", error.localizedDescription)
+                completionHandler("통신에 실패했습니다. 다시 시도해주세요.")
+            }
+        }
+    }
 }

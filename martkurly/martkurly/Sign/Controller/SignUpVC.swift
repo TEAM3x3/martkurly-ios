@@ -22,9 +22,20 @@ final class SignUpVC: UIViewController {
     }
     private var textFieldTitleLabels = [SignUpTextFieldTitleView]()
     private var textFieldViews = [UserTextFieldView]() // 아이디, 비밀번호, 비밀번호 확인, 이름, 이메일 뷰가 순서로 들어있음
-    private let idCheckButton = KurlyButton(title: StringManager.SignUp.checkDuplicate.rawValue, style: .white)
+    private let checkUsernameButton = KurlyButton(title: StringManager.SignUp.checkDuplicate.rawValue, style: .white)
     private let phoneNumberCheckButton = KurlyButton(title: StringManager.SignUp.checkPhoneNumber.rawValue, style: .white)
     private let addressView = SignUpAddressView()
+    var address: String {
+        get { addressView.addressLabel.addressLabel.text! }
+        set { addressView.addressLabel.addressLabel.text = newValue }
+    }
+    var isAddressFilled = false {
+        willSet {
+            addressView.snp.updateConstraints { $0.height.equalTo(150) }
+            birthdayTitleView.snp.updateConstraints { $0.top.equalTo(addressView.snp.bottom).offset(60) }
+            addressView.quickDeliveryAvailable = true
+        }
+    }
     private let birthdayTitleView = SignUpTextFieldTitleView(title: StringManager.SignUp.birthday.rawValue, mendatory: false)
     private let birthdayTextFields = SingUpBirthdayView() // YYYY, MM, DD 3개의 TextFields 로 구성되어 있다.
     private let genderChoice = SignUpGenderView()
@@ -89,6 +100,12 @@ final class SignUpVC: UIViewController {
 
         agreementTableView.delegate = self
         agreementTableView.dataSource = self
+
+        checkUsernameButton.addTarget(self, action: #selector(handleCheckUsernameButton), for: .touchUpInside)
+
+        let addressTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleaddressTapGesture(_:)))
+        addressView.addGestureRecognizer(addressTapGesture)
+        addressView.isUserInteractionEnabled = true
     }
 
     private func setConstraints() {
@@ -96,7 +113,7 @@ final class SignUpVC: UIViewController {
             let idTextField = textFieldViews.first,
             let phoneNumberTextField = textFieldViews.last
             else { return }
-        idCheckButton.snp.makeConstraints {
+        checkUsernameButton.snp.makeConstraints {
             $0.trailing.equalTo(view).inset(20)
             $0.centerY.equalTo(idTextField)
             $0.height.equalTo(48)
@@ -109,12 +126,12 @@ final class SignUpVC: UIViewController {
             $0.width.equalTo(120)
         }
         addressView.snp.makeConstraints {
-            $0.top.equalTo(phoneNumberTextField.snp.bottom).offset(20)
+            $0.top.equalTo(phoneNumberTextField.snp.bottom).offset(30)
             $0.leading.trailing.equalTo(view).inset(20)
-            $0.height.equalTo(150)
+            $0.height.equalTo(100)
         }
         birthdayTitleView.snp.makeConstraints {
-            $0.top.equalTo(addressView.snp.bottom).offset(45)
+            $0.top.equalTo(addressView.snp.bottom).offset(30)
             $0.leading.trailing.equalTo(view).inset(20)
         }
         birthdayTextFields.snp.makeConstraints {
@@ -123,7 +140,7 @@ final class SignUpVC: UIViewController {
             $0.height.equalTo(48)
         }
         genderChoice.snp.makeConstraints {
-            $0.top.equalTo(birthdayTextFields.snp.bottom).offset(25)
+            $0.top.equalTo(birthdayTextFields.snp.bottom).offset(35)
             $0.leading.trailing.equalTo(view).inset(20)
             $0.height.equalTo(170)
         }
@@ -155,7 +172,7 @@ final class SignUpVC: UIViewController {
             $0.height.equalTo(view.frame.height * 1.5)
             $0.width.equalTo(view)
         }
-        [idCheckButton, phoneNumberCheckButton, addressView, birthdayTitleView, birthdayTextFields, genderChoice, additionalInfoView].forEach {
+        [checkUsernameButton, phoneNumberCheckButton, addressView, birthdayTitleView, birthdayTextFields, genderChoice, additionalInfoView].forEach {
             contentView.addSubview($0)
         }
         scrollView.addSubview(contentView2)
@@ -206,7 +223,7 @@ final class SignUpVC: UIViewController {
                 textField.snp.makeConstraints {
                     $0.top.equalTo(titleLabel.snp.bottom).offset(4)
                     $0.leading.equalToSuperview().inset(20)
-                    $0.trailing.equalTo(idCheckButton.snp.leading).offset(-10)
+                    $0.trailing.equalTo(checkUsernameButton.snp.leading).offset(-10)
                     $0.height.equalTo(48)
                 }
             } else if textFieldViews.count == 5 {
@@ -215,7 +232,7 @@ final class SignUpVC: UIViewController {
                     let firstObject = textFieldViews.first,
                     let lastObject = textFieldViews.last else { return }
                 titleLabel.snp.makeConstraints {
-                    $0.top.equalTo(lastObject.snp.bottom).offset(8)
+                    $0.top.equalTo(lastObject.snp.bottom).offset(12)
                     $0.leading.trailing.equalTo(view).inset(20)
                     $0.height.equalTo(30)
                 }
@@ -230,7 +247,7 @@ final class SignUpVC: UIViewController {
                     let firstObject = textFieldViews.first,
                     let lastObject = textFieldViews.last else { return }
                 titleLabel.snp.makeConstraints {
-                    $0.top.equalTo(lastObject.snp.bottom).offset(8)
+                    $0.top.equalTo(lastObject.snp.bottom).offset(12)
                     $0.leading.trailing.equalTo(view).inset(20)
                     $0.height.equalTo(30)
                 }
@@ -247,6 +264,46 @@ final class SignUpVC: UIViewController {
     }
 
     // MARK: - Selectors
+    @objc
+    private func handleCheckUsernameButton() {
+        var isValidUsername = true
+        guard let username = textFieldViews[0].textField.text?.lowercased() else { return }
+        guard username.count <= 20, username.count >= 6, username != "" else {
+            generateAlert(title: "6자 이상의 영문 혹은 영문과 숫자를 조합으로 입력해 주세요")
+            return
+        }
+        for character in username {
+            guard let asciiValue = character.asciiValue else {
+                generateAlert(title: "6자 이상의 영문 혹은 영문과 숫자를 조합으로 입력해 주세요")
+                return
+            }
+            switch asciiValue {
+            case UInt8(48)...UInt8(57):
+                fallthrough
+            case UInt8(97)...UInt8(122):
+                continue
+            default:
+                isValidUsername = false
+            }
+        }
+        guard isValidUsername == true else {
+            generateAlert(title: "6자 이상의 영문 혹은 영문과 숫자를 조합으로 입력해 주세요")
+            return
+        }
+        CurlyService.shared.checkUsername(username: username, completionHandler: { title in
+            self.generateAlert(title: title)
+        })
+    }
+
+    @objc
+    private func handleaddressTapGesture(_ sender: UITapGestureRecognizer) {
+        let nextVC = KakaoAddressVC()
+        let naviVC = UINavigationController(rootViewController: nextVC)
+        naviVC.modalPresentationStyle = .overFullScreen
+        naviVC.modalTransitionStyle = .crossDissolve
+        present(naviVC, animated: true)
+    }
+
     @objc
     private func handleSMSTapGesture(_ sender: UITapGestureRecognizer) {
         agreementCells[5].smsCheckmark.isActive
@@ -435,6 +492,13 @@ final class SignUpVC: UIViewController {
         default:
             return { return }
         }
+    }
+
+    private func generateAlert(title: String) {
+        let alert = UIAlertController(title: title, message: "", preferredStyle: .alert)
+        let confirmAction = UIAlertAction(title: "확인", style: .default, handler: nil)
+        alert.addAction(confirmAction)
+        self.present(alert, animated: true)
     }
 }
 
