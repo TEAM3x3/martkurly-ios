@@ -12,7 +12,7 @@ class SearchBarView: UIView {
 
     // MARK: - Properties
 
-    private lazy var searchTextField = UITextField().then {
+    lazy var searchTextField = UITextField().then {
         $0.placeholder = "검색어를 입력해 주세요"
         $0.font = .systemFont(ofSize: 18)
 
@@ -28,8 +28,7 @@ class SearchBarView: UIView {
         $0.leftView = searchIcon
         $0.leftViewMode = .always
         $0.clearButtonMode = .whileEditing
-
-        $0.addTarget(self, action: #selector(textFieldEditingChanged(_:)), for: .editingChanged)
+        $0.returnKeyType = .search
     }
 
     private lazy var searchTextCustomView = UIView().then {
@@ -42,13 +41,12 @@ class SearchBarView: UIView {
         }
     }
 
-    private lazy var cancelButton = UIButton(type: .system).then {
+    let cancelButton = UIButton(type: .system).then {
         $0.setTitle("취소", for: .normal)
         $0.setTitleColor(.black, for: .normal)
         $0.setTitleColor(.lightGray, for: .disabled)
         $0.titleLabel?.font = .systemFont(ofSize: 18)
         $0.isEnabled = false
-        $0.addTarget(self, action: #selector(tappedCancelButton), for: .touchUpInside)
     }
 
     // MARK: - LifeCycle
@@ -60,20 +58,6 @@ class SearchBarView: UIView {
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-
-    // MARK: - Selectors
-
-    @objc
-    func textFieldEditingChanged(_ sender: UITextField) {
-        guard let text = sender.text else { return }
-        cancelButton.isEnabled = text.count > 0 ? true : false
-    }
-
-    @objc
-    func tappedCancelButton(_ sender: UIButton) {
-        searchTextField.text = nil
-        textFieldEditingChanged(searchTextField)
     }
 
     // MARK: - Helpers
