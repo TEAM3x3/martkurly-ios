@@ -15,19 +15,26 @@ class ChooseProductsDetailView: UIView {
         $0.font = UIFont.systemFont(ofSize: 15, weight: .regular)
     }
     private let currentPrice = UILabel().then {
-        $0.font = UIFont.systemFont(ofSize: 15, weight: .regular)
+        $0.font = UIFont.systemFont(ofSize: 16, weight: .regular)
     }
     private let priorPrice = UILabel().then {
-        $0.font = UIFont.systemFont(ofSize: 15, weight: .regular)
+        $0.font = UIFont.systemFont(ofSize: 14, weight: .regular)
+        $0.textColor = .backgroundGray
+    }
+    private let strikethrough = UIView().then {
+        $0.backgroundColor = .backgroundGray
     }
     private let stepper = KurlyStepper()
-
     private var isOnSale = false
 
     // MARK: - Lifecycle
-    init(isOnSale: Bool) {
+    init(title: String, currentPrice: String, priorPrice: String, isOnSale: Bool) {
         super.init(frame: .zero)
+        self.titleLabel.text = title
+        self.currentPrice.text = currentPrice
+        self.priorPrice.text = priorPrice
         self.isOnSale = isOnSale
+        configureUI()
     }
 
     required init?(coder: NSCoder) {
@@ -36,26 +43,53 @@ class ChooseProductsDetailView: UIView {
 
     // MARK: - UI
     private func configureUI() {
-        isOnSale ? setContraints() : setConstraintsForIsOnSale()
+        isOnSale ? setConstraintsForIsOnSale() : setContraints()
     }
 
     private func setContraints() {
-        [titleLabel, currentPrice, priorPrice, stepper].forEach {
+        [titleLabel, currentPrice, stepper].forEach {
             self.addSubview($0)
         }
         titleLabel.snp.makeConstraints {
             $0.top.equalToSuperview()
             $0.leading.equalToSuperview()
         }
-
+        stepper.snp.makeConstraints {
+            $0.top.equalTo(titleLabel.snp.bottom).offset(12)
+            $0.trailing.equalToSuperview()
+            $0.bottom.equalToSuperview()
+        }
+        currentPrice.snp.makeConstraints {
+            $0.leading.equalTo(titleLabel)
+            $0.bottom.equalTo(stepper)
+        }
     }
 
     private func setConstraintsForIsOnSale() {
-
-    }
-
-    // MARK: - Helpers
-    func configureViewData(title: String, currentPrice: String, priorPrice: String) {
-
+        [titleLabel, currentPrice, priorPrice, strikethrough, stepper].forEach {
+            self.addSubview($0)
+        }
+        titleLabel.snp.makeConstraints {
+            $0.top.equalToSuperview()
+            $0.leading.equalToSuperview()
+        }
+        stepper.snp.makeConstraints {
+            $0.top.equalTo(titleLabel.snp.bottom).offset(10)
+            $0.trailing.equalToSuperview()
+            $0.bottom.equalToSuperview()
+        }
+        priorPrice.snp.makeConstraints {
+            $0.leading.equalTo(titleLabel)
+            $0.centerY.equalTo(currentPrice)
+        }
+        strikethrough.snp.makeConstraints {
+            $0.leading.trailing.equalTo(priorPrice)
+            $0.centerY.equalTo(priorPrice)
+            $0.height.equalTo(1)
+        }
+        currentPrice.snp.makeConstraints {
+            $0.leading.equalTo(priorPrice.snp.trailing).offset(5)
+            $0.bottom.equalTo(stepper)
+        }
     }
 }
