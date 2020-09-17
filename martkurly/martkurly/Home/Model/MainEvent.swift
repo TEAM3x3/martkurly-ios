@@ -10,11 +10,13 @@ import Foundation
 
 struct MainEvent: Decodable {
     let id: Int             // 이벤트 ID
+    let title: String       // 이벤트 명
     let image: String       // 이벤트 이미지
 }
 
 struct MainEventProducts: Decodable {
     let id: Int                     // 이벤트 ID
+    let title: String               // 이벤트 명
     let event: [MainEventCategory]  // 이벤트 하위 카테고리들
 
     struct MainEventCategory: Decodable {

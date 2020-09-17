@@ -23,8 +23,8 @@ enum SearchType {
 
     var emptySentence: String {
         switch self {
-        case .popular: fallthrough
-        case .fileShort: return ""
+        case .popular: return ""
+        case .fileShort: return "추천 상품이 없습니다."
         case .recent: return "최근 검색어가 없습니다."
         }
     }
