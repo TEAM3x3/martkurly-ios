@@ -498,4 +498,20 @@ struct StringManager {
         static let inquiryHomepageUsage = "※고객센터 운영 시간에 순차적으로 답변해드리겠습니다."
     }
 
+    let ChooseProductsVCMockData = [
+        [
+            "category": "후퍼스 블럭통 2종"
+        ],
+        [
+            "title": "[허쉬] 후퍼스 연 보라색 블럭통 210g",
+            "originalPrice": "9,000",
+            "discountPrice": "8,910"
+        ],
+        [
+            "title": "[허쉬] 후퍼스 보라색 블럭통 210g",
+            "originalPrice": "9,000",
+            "discountPrice": "8,910"
+        ]
+    ]
+
 }
