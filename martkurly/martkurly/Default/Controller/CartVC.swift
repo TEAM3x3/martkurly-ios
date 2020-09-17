@@ -22,8 +22,8 @@ class CartVC: UIViewController {
         $0.dismissBtn.addTarget(self, action: #selector(dismissing(_:)), for: .touchUpInside)
     }
 
-    private let emptyView = AllSelectButtonLineView().then {
-        $0.backgroundColor = .clear
+    private let tableV = UITableView().then {
+        $0.backgroundColor = ColorManager.General.backGray.rawValue
     }
 
     // MARK: - Lifecycle
@@ -31,6 +31,14 @@ class CartVC: UIViewController {
         super.viewDidLoad()
         setConfigure()
     }
+
+//    override func viewWillAppear(_ animated: Bool) {
+//        super.viewWillAppear(animated)
+//        setNavigationBarStatus(type: .whiteType,
+//                               isShowCart: false,
+//                               leftBarbuttonStyle: .pop,
+//                               titleText: "장바구니")
+//    }
 
     // MARK: - Action
     @objc
@@ -45,7 +53,7 @@ class CartVC: UIViewController {
 
     private func setConstraints() {
         view.backgroundColor = ColorManager.General.backGray.rawValue
-        [navi, emptyView].forEach {
+        [navi, tableV].forEach {
             view.addSubview($0)
         }
 
@@ -54,15 +62,52 @@ class CartVC: UIViewController {
             $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.top).offset(44)
         }
 
-        if count < 0 {
-
+        tableV.snp.makeConstraints {
+            $0.top.equalTo(navi.snp.bottom)
+            $0.leading.trailing.equalTo(view)
+            $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
         }
 
-        emptyView.snp.makeConstraints {
-            $0.top.equalTo(navi.snp.bottom)
-            $0.leading.trailing.equalToSuperview()
-            $0.height.equalTo(80)
+        tableV.dataSource = self
+        tableV.delegate = self
+        tableV.separatorStyle = .none
+
+        if count > 0 {
+
+        } else {
+            let button = KurlyButton(title: "주문하기", style: .purple)
+            view.addSubview(button)
+            button.snp.makeConstraints {
+                $0.bottom.equalToSuperview().inset(48)
+                $0.leading.trailing.equalToSuperview().offset(8).inset(8)
+                $0.height.equalTo(55)
+            }
+            button.addTarget(self, action: #selector(emptyBtnTap), for: .touchUpInside)
+        }
+    }
+
+    @objc
+    func emptyBtnTap(_ sender: UIButton) {
+        let view = UIView().then {
+            $0.backgroundColor = .magenta
+
         }
 
     }
+}
+
+extension CartVC: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 1
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = AllSelectButtonLineView()
+        cell.selectionStyle = .none
+        return cell
+    }
+}
+
+extension CartVC: UITableViewDelegate {
+
 }

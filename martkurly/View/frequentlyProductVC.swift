@@ -43,8 +43,8 @@ class frequentlyProductVC: UIViewController {
             emptyView.snp.makeConstraints {
                 $0.top.leading.trailing.bottom.equalTo(view.safeAreaLayoutGuide)
             }
-            
-            emptyView.btn.addTarget(self, action: <#T##Selector#>, for: <#T##UIControl.Event#>)
+
+//            emptyView.btn.addTarget(self, action: <#T##Selector#>, for: <#T##UIControl.Event#>)
         }
     }
 }
