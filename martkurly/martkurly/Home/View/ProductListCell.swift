@@ -16,7 +16,7 @@ class ProductListCell: UICollectionViewCell {
 
     private var productListView: ProductListView!
 
-    var detailViewProductMove: ((Int) -> Void)?
+    var detailViewProduct: ((Int) -> Void)?
 
     // MARK: - LifeCycle
 
@@ -32,7 +32,7 @@ class ProductListCell: UICollectionViewCell {
     // MARK: - Actions
 
     func tappedProduct(productID: Int) {
-        detailViewProductMove?(productID)
+        detailViewProduct?(productID)
     }
 
     // MARK: - Helpers

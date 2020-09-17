@@ -10,6 +10,14 @@ import Foundation
 
 let CURLY_REF = "http://13.209.33.72/api"
 
-let REF_GOODS = CURLY_REF + "/goods/"
-let REF_CHEAP = CURLY_REF + "/goods/sale"
-let REF_EVENTLIST = CURLY_REF + "/event"
+let CURLY_GOODS_REF = CURLY_REF + "/goods"
+let REF_GOODS = CURLY_GOODS_REF + "/"
+let REF_CHEAP = CURLY_GOODS_REF + "/sale"
+
+let CURLY_EVENT_REF = CURLY_REF + "/event"
+let REF_EVENT_GOODS = CURLY_EVENT_REF + "/"
+
+let CURLY_MAIN_EVENT_REF = CURLY_REF + "/mainEvent"
+let REF_MAIN_EVENT = CURLY_MAIN_EVENT_REF + "/"
+
+let REF_SIGNUP = CURLY_REF + "/users"

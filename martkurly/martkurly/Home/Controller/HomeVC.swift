@@ -20,6 +20,10 @@ class HomeVC: UIViewController {
         didSet { categoryMenuCollectionView.reloadData() }
     }
 
+    private var mainEventList = [MainEvent]() {
+        didSet { categoryMenuCollectionView.reloadData() }
+    }
+
     private lazy var menuCategory = CategoryMenuView(categoryType: .fixInsetStyle).then {
         $0.menuTitles = ["컬리추천", "신상품", "베스트", "알뜰쇼핑", "이벤트"]
         $0.categorySelected = categorySelected(item:)
@@ -37,8 +41,10 @@ class HomeVC: UIViewController {
         super.viewDidLoad()
         configureUI()
         configureNavigationBar()
+
         fetchCheapProducts()
         fetchEventList()
+        fetchMainEvent()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -57,14 +63,20 @@ class HomeVC: UIViewController {
     }
 
     func fetchEventList() {
-        CurlyService.shared.fetchEventProducts { eventList in
+        CurlyService.shared.fetchEventList { eventList in
             self.eventList = eventList
+        }
+    }
+
+    func fetchMainEvent() {
+        CurlyService.shared.fetchMainEventList { mainEventList in
+            self.mainEventList = mainEventList
         }
     }
 
     // MARK: - Actions
 
-    func detailViewProductMove(productID: Int) {
+    func detailViewProduct(productID: Int) {
         CurlyService.shared.requestProductDetailData(productID: productID) { reponseData in
             let controller = ProductDetailVC()
             controller.hidesBottomBarWhenPushed = true
@@ -74,10 +86,21 @@ class HomeVC: UIViewController {
     }
 
     func tappedEventItem(section: Int) {
-        let controller = EventProductDetailListVC()
-        controller.hidesBottomBarWhenPushed = true
-        controller.eventProducts = eventList[section]
-        self.navigationController?.pushViewController(controller, animated: true)
+        CurlyService.shared.fetchEventProducts(eventID: eventList[section].id) { eventProducts in
+            guard let eventProducts = eventProducts else { return }
+            let controller = EventProductDetailListVC()
+            controller.hidesBottomBarWhenPushed = true
+            controller.eventProducts = eventProducts
+            self.navigationController?.pushViewController(controller, animated: true)
+        }
+    }
+
+    func tappedEvent(eventID: Int) {
+        CurlyService.shared.fetchMainEventProducts(eventID: eventID) { eventProducts in
+            let controller = CategoryProductsVC()
+            controller.eventProducts = eventProducts
+            self.navigationController?.pushViewController(controller, animated: true)
+        }
     }
 
     // MARK: - Helpers
@@ -142,6 +165,8 @@ extension HomeVC: UICollectionViewDataSource {
             let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: CurlyRecommendCell.identifier,
                 for: indexPath) as! CurlyRecommendCell
+            cell.mainEventList = mainEventList
+            cell.tappedEvent = tappedEvent
             return cell
         case .newProduct:
             let cell = collectionView.dequeueReusableCell(
@@ -160,7 +185,7 @@ extension HomeVC: UICollectionViewDataSource {
                 withReuseIdentifier: ProductListCell.identifier,
                 for: indexPath) as! ProductListCell
                 cell.configure(headerType: .fastAreaAndBenefit, products: cheapProducts)
-                cell.detailViewProductMove = detailViewProductMove(productID:)
+                cell.detailViewProduct = detailViewProduct(productID:)
             return cell
         case .eventProduct:
             let cell = collectionView.dequeueReusableCell(

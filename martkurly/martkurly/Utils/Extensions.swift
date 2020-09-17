@@ -41,6 +41,7 @@ extension UIColor {
     static let chevronForwardGray = UIColor(red: 143, green: 144, blue: 145)
     static let agreementInfoGray = UIColor(red: 151, green: 152, blue: 153)
     static let inactiveButtonColor = UIColor(red: 220, green: 221, blue: 222)
+    static let rateTextOrange = UIColor(red: 224, green: 68, blue: 32)
 }
 
 // MARK: - UIImage
@@ -94,9 +95,8 @@ extension UIViewController {
             ShoppingCartSingleton.shared.shoppingCartView.configureWhiteMode()
             backPopBarButton.tintColor = .white
             backDismissBarButton.tintColor = .white
-
         case .whiteType:
-        navigationController?.navigationBar.barStyle = .default
+            navigationController?.navigationBar.barStyle = .default
             navigationController?.navigationBar.titleTextAttributes =
                 [NSAttributedString.Key.foregroundColor: UIColor.black]
             navigationController?.navigationBar.barTintColor = .white
@@ -140,7 +140,7 @@ extension UILabel {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = lineSpacing
         paragraphStyle.lineHeightMultiple = lineHeightMultiple
-        paragraphStyle.alignment = .center
+        paragraphStyle.alignment = .left
 
         let attributedString: NSMutableAttributedString
         if let labelattributedText = self.attributedText {

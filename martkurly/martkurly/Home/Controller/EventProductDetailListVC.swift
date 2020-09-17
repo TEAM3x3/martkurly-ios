@@ -14,12 +14,7 @@ class EventProductDetailListVC: UIViewController {
 
     private let productListView = ProductListView(headerType: .fastAreaAndCondition)
 
-    var eventProducts: EventModel? {
-        didSet {
-            guard let products = eventProducts?.goods else { return }
-            productListView.products = products
-        }
-    }
+    var eventProducts: EventProducts?
 
     // MARK: - LifeCycle
 
@@ -28,20 +23,14 @@ class EventProductDetailListVC: UIViewController {
         configureUI()
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-
-        self.setNavigationBarStatus(type: .whiteType,
-                                    isShowCart: true,
-                                    leftBarbuttonStyle: .pop,
-                                    titleText: "테스트")
-    }
-
     // MARK: - Actions
 
     func tappedProduct(productID: Int) {
-        let controller = ProductDetailVC()
-        self.navigationController?.pushViewController(controller, animated: true)
+        CurlyService.shared.requestProductDetailData(productID: productID) { productDetailData in
+            let controller = ProductDetailVC()
+            controller.productDetailData = productDetailData
+            self.navigationController?.pushViewController(controller, animated: true)
+        }
     }
 
     // MARK: - Helpers
@@ -50,6 +39,17 @@ class EventProductDetailListVC: UIViewController {
         view.backgroundColor = .white
         configureLayout()
         configureAttributes()
+        configureNavigationBar()
+    }
+
+    func configureNavigationBar() {
+        guard let eventProducts = eventProducts else { return }
+        productListView.products = eventProducts.goods
+
+        self.setNavigationBarStatus(type: .whiteType,
+                                    isShowCart: true,
+                                    leftBarbuttonStyle: .pop,
+                                    titleText: eventProducts.title)
     }
 
     func configureLayout() {

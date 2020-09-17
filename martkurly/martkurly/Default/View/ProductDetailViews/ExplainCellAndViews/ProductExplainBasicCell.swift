@@ -54,6 +54,8 @@ class ProductExplainBasicCell: UITableViewCell {
     }
 
     private let pruductPriceLabel = UILabel().then {
+        $0.numberOfLines = 0
+
         let boldAttributes: [NSAttributedString.Key: Any] = [
             .font: UIFont.boldSystemFont(ofSize: 24),
             .foregroundColor: UIColor.black
@@ -188,5 +190,6 @@ class ProductExplainBasicCell: UITableViewCell {
         productTitleLabel.text = detailData.title
         productDetailSubTitleLabel.text = detailData.short_desc
         pruductPriceLabel.attributedText = viewModel.priceAttributeText
+        pruductPriceLabel.setLineSpacing(lineSpacing: 6)
     }
 }
