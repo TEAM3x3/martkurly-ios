@@ -26,15 +26,17 @@ class ChooseProductsDetailView: UIView {
     private let strikethrough = UIView().then {
         $0.backgroundColor = .backgroundGray
     }
+    var price = 0
     let stepper = KurlyStepper()
     private var isOnSale = false
 
     // MARK: - Lifecycle
-    init(title: String, currentPrice: String, priorPrice: String, isOnSale: Bool) {
+    init(title: String, currentPrice: String, priorPrice: String, price: Int, isOnSale: Bool) {
         super.init(frame: .zero)
         self.titleLabel.text = title
-        self.currentPrice.text = currentPrice + "원"
-        self.priorPrice.text = priorPrice + "원"
+        self.currentPrice.text = currentPrice
+        self.priorPrice.text = priorPrice
+        self.price = price
         self.isOnSale = isOnSale
         configureUI()
     }

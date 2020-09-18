@@ -23,7 +23,7 @@ class ChooseProductsVC: UIViewController {
     private var isOfferingVariousProducts = false // 다양한 상품 선택가능 여부
     private var isOnSale = false // 상품 가격할인 여부
 
-    private var productViews = [ChooseProductsDetailView]()
+    private var productViews = [ChooseProductsDetailView]() // 각각의 ProductView 가 순서대로 담겨있음
     private let sumTitleLabel = UILabel().then {
         $0.text = "합계"
         $0.font = UIFont.systemFont(ofSize: 16.5, weight: .regular)
@@ -93,14 +93,17 @@ class ChooseProductsVC: UIViewController {
     private func generateProductViews() {
         print(#function)
         let title = products[0]["title"] ?? ""
-        let currentPrice = products[0]["originalPrice"] ?? ""
-        let priorPrice = products[0]["discountPrice"] ?? ""
+        let currentPriceInInt = Int(products[0]["discountPrice"] ?? "0") ?? 0
+        let currentPrice = convertToWon(int: currentPriceInInt)
+        let priorPriceInInt = Int(products[0]["originalPrice"] ?? "0") ?? 0
+        let priorPrice = convertToWon(int: priorPriceInInt)
         var isOnSale = true
         if priorPrice == "" {
             print("It's not on sale")
             isOnSale = false
         }
-        let productView = ChooseProductsDetailView(title: title, currentPrice: currentPrice, priorPrice: priorPrice, isOnSale: isOnSale)
+        let price = isOnSale ? Int(products[0]["discountPrice"] ?? "0") : Int(products[0]["originalPrice"] ?? "0")
+        let productView = ChooseProductsDetailView(title: title, currentPrice: currentPrice, priorPrice: priorPrice, price: price!, isOnSale: isOnSale)
         let separator = UIView().then {
             $0.backgroundColor = .separatorGray
         }
@@ -156,14 +159,17 @@ class ChooseProductsVC: UIViewController {
                 }
             default:
                 let title = products[index]["title"] ?? ""
-                let currentPrice = products[index]["discountPrice"] ?? ""
-                let priorPrice = products[index]["originalPrice"] ?? ""
+                let currentPriceInInt = Int(products[index]["discountPrice"] ?? "0") ?? 0
+                let currentPrice = convertToWon(int: currentPriceInInt)
+                let priorPriceInInt = Int(products[index]["originalPrice"] ?? "0") ?? 0
+                let priorPrice = convertToWon(int: priorPriceInInt)
                 var isOnSale = true
                 if priorPrice == "" {
                     print("It's not on sale")
                     isOnSale = false
                 }
-                let productView = ChooseProductsDetailView(title: title, currentPrice: currentPrice, priorPrice: priorPrice, isOnSale: isOnSale).then {
+                let price = isOnSale ? Int(products[index]["discountPrice"] ?? "0") : Int(products[index]["originalPrice"] ?? "0")
+                let productView = ChooseProductsDetailView(title: title, currentPrice: currentPrice, priorPrice: priorPrice, price: price!, isOnSale: isOnSale).then {
                     $0.tag = index - 1
                     $0.stepper.subtractButton.tag = index - 1
                     $0.stepper.subtractButton.addTarget(self, action: #selector(handleSteppers(_:)), for: .touchUpInside)
@@ -226,22 +232,30 @@ class ChooseProductsVC: UIViewController {
         self.isOfferingVariousProducts = true
     }
 
+    private func convertToWon(int: Int) -> String {
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = .decimal
+        let result = numberFormatter.string(from: NSNumber(value: int))! + "원"
+        return result
+    }
+
     // MARK: - Selectors
     @objc
     private func handleSteppers(_ sender: UIButton) {
         let stepper = productViews[sender.tag].stepper
+        let price = productViews[sender.tag].price
         switch sender {
         case stepper.subtractButton:
             guard stepper.productCounts >= 1 else { return }
             stepper.productCounts -= 1
-            total -= 8000
+            total -= price
         case stepper.addButton:
             stepper.productCounts += 1
-            total += 8000
+            total += price
         default:
             fatalError()
         }
-        sumLabel.text = String(total) + "원"
+        sumLabel.text = convertToWon(int: total)
     }
 
     @objc

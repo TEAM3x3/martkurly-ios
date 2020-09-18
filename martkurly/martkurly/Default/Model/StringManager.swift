@@ -504,13 +504,13 @@ struct StringManager {
         ],
         [
             "title": "[허쉬] 후퍼스 연 보라색 블럭통 210g",
-            "originalPrice": "9,000",
-            "discountPrice": "8,910"
+            "originalPrice": "9000",
+            "discountPrice": "8910"
         ],
         [
             "title": "[허쉬] 후퍼스 보라색 블럭통 210g",
-            "originalPrice": "9,000",
-            "discountPrice": "8,910"
+            "originalPrice": "9000",
+            "discountPrice": "8910"
         ]
     ]
 
