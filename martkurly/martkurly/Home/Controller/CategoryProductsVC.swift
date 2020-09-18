@@ -40,7 +40,7 @@ class CategoryProductsVC: UIViewController {
         self.setNavigationBarStatus(type: .whiteType,
                                     isShowCart: true,
                                     leftBarbuttonStyle: .pop,
-                                    titleText: "테스트")
+                                    titleText: eventProducts?.title)
     }
 
     // MARK: - Actions
