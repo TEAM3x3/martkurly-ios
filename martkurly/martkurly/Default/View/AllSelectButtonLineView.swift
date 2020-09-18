@@ -35,6 +35,7 @@ class AllSelectButtonLineView: UITableViewCell {
         $0.textColor = .black
     }
 
+    private let test = CartProductView()
     private let sumEmpty = PriceView()
 
     // MARK: - Lifecycle
@@ -55,7 +56,7 @@ class AllSelectButtonLineView: UITableViewCell {
 
     private func setConstraints() {
         backgroundColor = .clear
-        [check, allSelectLabel, deleteBtn, emptyview, emptyLabel, sumEmpty].forEach {
+        [check, allSelectLabel, deleteBtn, emptyview, emptyLabel, sumEmpty, test].forEach {
             addSubview($0)
         }
         check.addSubview(checkImg)
@@ -94,19 +95,25 @@ class AllSelectButtonLineView: UITableViewCell {
         lbl.font = UIFont.systemFont(ofSize: 12)
         lbl.textColor = .black
 
-        emptyview.snp.makeConstraints {
+//        emptyview.snp.makeConstraints {
+//            $0.top.equalTo(check.snp.bottom).offset(32)
+//            $0.leading.trailing.equalToSuperview().offset(8).inset(8)
+//            $0.height.equalTo(150)
+//        }
+//
+//        emptyLabel.snp.makeConstraints {
+//            $0.centerY.equalTo(emptyview.snp.centerY)
+//            $0.centerX.equalTo(emptyview.snp.centerX)
+//        }
+
+        test.snp.makeConstraints {
             $0.top.equalTo(check.snp.bottom).offset(32)
             $0.leading.trailing.equalToSuperview().offset(8).inset(8)
             $0.height.equalTo(150)
         }
 
-        emptyLabel.snp.makeConstraints {
-            $0.centerY.equalTo(emptyview.snp.centerY)
-            $0.centerX.equalTo(emptyview.snp.centerX)
-        }
-
         sumEmpty.snp.makeConstraints {
-            $0.top.equalTo(emptyview.snp.bottom).offset(16)
+            $0.top.equalTo(test.snp.bottom).offset(16)
             $0.leading.trailing.equalToSuperview()
             $0.height.equalTo(250)
         }
