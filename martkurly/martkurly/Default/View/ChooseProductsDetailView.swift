@@ -13,26 +13,28 @@ class ChooseProductsDetailView: UIView {
     // MARK: - Properties
     private let titleLabel = UILabel().then {
         $0.font = UIFont.systemFont(ofSize: 15, weight: .regular)
+        $0.textColor = .textMainGray
     }
     private let currentPrice = UILabel().then {
-        $0.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        $0.font = UIFont.systemFont(ofSize: 14.5, weight: .regular)
+        $0.textColor = .black
     }
     private let priorPrice = UILabel().then {
-        $0.font = UIFont.systemFont(ofSize: 14, weight: .regular)
-        $0.textColor = .backgroundGray
+        $0.font = UIFont.systemFont(ofSize: 13.5, weight: .regular)
+        $0.textColor = .textLightGray
     }
     private let strikethrough = UIView().then {
         $0.backgroundColor = .backgroundGray
     }
-    private let stepper = KurlyStepper()
+    let stepper = KurlyStepper()
     private var isOnSale = false
 
     // MARK: - Lifecycle
     init(title: String, currentPrice: String, priorPrice: String, isOnSale: Bool) {
         super.init(frame: .zero)
         self.titleLabel.text = title
-        self.currentPrice.text = currentPrice
-        self.priorPrice.text = priorPrice
+        self.currentPrice.text = currentPrice + "원"
+        self.priorPrice.text = priorPrice + "원"
         self.isOnSale = isOnSale
         configureUI()
     }

@@ -500,7 +500,7 @@ struct StringManager {
 
     let ChooseProductsVCMockData = [
         [
-            "category": "후퍼스 블럭통 2종"
+            "category": "[허쉬] 후퍼스 블럭통 2종"
         ],
         [
             "title": "[허쉬] 후퍼스 연 보라색 블럭통 210g",
