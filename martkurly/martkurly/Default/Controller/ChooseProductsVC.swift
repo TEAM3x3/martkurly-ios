@@ -22,7 +22,7 @@ class ChooseProductsVC: UIViewController {
     private var products = StringManager().ChooseProductsVCMockData
     private var isOfferingVariousProducts = false // 다양한 상품 선택가능 여부
     private var isOnSale = false // 상품 가격할인 여부
-    
+
     private let sumTitleLabel = UILabel().then {
         $0.text = "합계"
         $0.font = UIFont.systemFont(ofSize: 20, weight: .regular)
@@ -89,7 +89,7 @@ class ChooseProductsVC: UIViewController {
         let separator = UIView().then {
             $0.backgroundColor = .separatorGray
         }
-        
+
         [productView, separator, sumTitleLabel, sumLabel].forEach {
             view.addSubview($0)
         }
@@ -111,7 +111,7 @@ class ChooseProductsVC: UIViewController {
             $0.trailing.equalTo(productView)
         }
     }
-    
+
     private func generateVariousProductsViews() {
         for index in products.indices {
             switch index {
@@ -121,10 +121,10 @@ class ChooseProductsVC: UIViewController {
                 }
                 contentView.addSubview(categoryTitle)
             default:
-                <#code#>
+                break
             }
         }
-        
+
         let title = products[0]["title"] ?? ""
         let currentPrice = products[0]["originalPrice"] ?? ""
         let priorPrice = products[0]["discountPrice"] ?? ""
@@ -159,7 +159,7 @@ class ChooseProductsVC: UIViewController {
             $0.trailing.equalTo(productView)
         }
     }
-    
+
     // MARK: - Helpers
     private func checkIsOfferingVariousProducts() {
         guard products.count > 1 else { return }
