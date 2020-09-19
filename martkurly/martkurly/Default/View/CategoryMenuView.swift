@@ -240,6 +240,7 @@ extension CategoryMenuView: UICollectionViewDelegateFlowLayout {
         switch categoryType {
         case .fixNonInsetsmallBarStyle: fallthrough
         case .fixInsetStyle: fallthrough
+        case .fixNonInsetTBLineStyle: fallthrough
         case .fixNonInsetStyle:
             width = (UIScreen.main.bounds.width - (categoryType.sideInset * 2))
                 / CGFloat(menuTitles.count)

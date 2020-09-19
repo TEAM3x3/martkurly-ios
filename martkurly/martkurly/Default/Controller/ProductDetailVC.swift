@@ -46,6 +46,15 @@ class ProductDetailVC: UIViewController {
                                     titleText: productDetailData?.title)
     }
 
+    // MARK: - Actions
+
+    func productReviewWrite() {
+        let controller = ProductReviewsListVC()
+        let naviVC = UINavigationController(rootViewController: controller)
+        naviVC.modalPresentationStyle = .fullScreen
+        self.present(naviVC, animated: true)
+    }
+
     // MARK: - Helpers
 
     func configureUI() {
@@ -129,6 +138,7 @@ extension ProductDetailVC: UICollectionViewDataSource {
             let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: ProductReviewsCell.identifier,
                 for: indexPath) as! ProductReviewsCell
+            cell.tappedWriteReviewEvent = productReviewWrite
             return cell
         case .productInquiry:
             let cell = collectionView.dequeueReusableCell(
