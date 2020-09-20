@@ -12,7 +12,7 @@ class ReviewsHeaderView: UIView {
 
     // MARK: - Properties
 
-    private let sideInsetValue: CGFloat = 8
+    private let sideInsetValue: CGFloat = 12
     private let lineInsetValue: CGFloat = 4
 
     private let orderTitleLabel = UILabel().then {

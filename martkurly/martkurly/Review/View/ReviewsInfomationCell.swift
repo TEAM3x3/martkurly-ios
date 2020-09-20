@@ -14,7 +14,7 @@ class ReviewsInfomationCell: UITableViewCell {
 
     static let identifier = "ReviewsInfomationCell"
 
-    private let sideInsetValue: CGFloat = 8
+    private let sideInsetValue: CGFloat = 12
     private let lineInsetValue: CGFloat = 20
 
     // MARK: - LifeCycle
