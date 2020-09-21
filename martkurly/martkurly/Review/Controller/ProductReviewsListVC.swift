@@ -41,6 +41,10 @@ class ProductReviewsListVC: UIViewController {
 
     // MARK: - Actions
 
+    func reviewWriteEvent() {
+        print(#function)
+    }
+
     // MARK: - Helpers
 
     func configureUI() {

@@ -18,6 +18,8 @@ class ProductStatusReviewCell: UITableViewCell {
     private let sideInsetValue: CGFloat = 12
     private let lineInsetValue: CGFloat = 12
 
+    var handleReviewWrite: (() -> Void)?
+
     private let cellView = UIView().then {
         $0.backgroundColor = .white
     }
@@ -65,11 +67,25 @@ class ProductStatusReviewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
+    // MARK: - Selectors
+
+    @objc
+    func handleReviewWriteEvent(_ sender: UIButton) {
+        handleReviewWrite?()
+    }
+
     // MARK: - Helpers
 
     func configureUI() {
         self.backgroundColor = .clear
         configureLayout()
+        configureAttributes()
+    }
+
+    func configureAttributes() {
+        reviewWriteButton.addTarget(self,
+                                    action: #selector(handleReviewWriteEvent(_:)),
+                                    for: .touchUpInside)
     }
 
     func configureLayout() {

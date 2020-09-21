@@ -133,6 +133,8 @@
 		AF8D2F0524F415D600AE177D /* EventProductDetailListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF8D2F0424F415D600AE177D /* EventProductDetailListVC.swift */; };
 		AF8D2F0724F418FA00AE177D /* ProductListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF8D2F0624F418FA00AE177D /* ProductListView.swift */; };
 		AF8D2F0924F427D900AE177D /* ProductListHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF8D2F0824F427D900AE177D /* ProductListHeaderView.swift */; };
+		AF8E061C2518AB9F00618A07 /* ReviewRegisterVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF8E061B2518AB9F00618A07 /* ReviewRegisterVC.swift */; };
+		AF8E061F251919CB00618A07 /* ReviewRegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF8E061E251919CB00618A07 /* ReviewRegisterView.swift */; };
 		AF8E45A5250A735F009942F2 /* ExplainInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF8E45A4250A735F009942F2 /* ExplainInfoViewModel.swift */; };
 		AF8E45A7250A738B009942F2 /* ExplainTableViewCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF8E45A6250A738B009942F2 /* ExplainTableViewCase.swift */; };
 		AF91A0A124F5646000717239 /* SortListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF91A0A024F5646000717239 /* SortListCell.swift */; };
@@ -314,6 +316,8 @@
 		AF8D2F0424F415D600AE177D /* EventProductDetailListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventProductDetailListVC.swift; sourceTree = "<group>"; };
 		AF8D2F0624F418FA00AE177D /* ProductListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListView.swift; sourceTree = "<group>"; };
 		AF8D2F0824F427D900AE177D /* ProductListHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListHeaderView.swift; sourceTree = "<group>"; };
+		AF8E061B2518AB9F00618A07 /* ReviewRegisterVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewRegisterVC.swift; sourceTree = "<group>"; };
+		AF8E061E251919CB00618A07 /* ReviewRegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewRegisterView.swift; sourceTree = "<group>"; };
 		AF8E45A4250A735F009942F2 /* ExplainInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExplainInfoViewModel.swift; sourceTree = "<group>"; };
 		AF8E45A6250A738B009942F2 /* ExplainTableViewCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExplainTableViewCase.swift; sourceTree = "<group>"; };
 		AF91A0A024F5646000717239 /* SortListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortListCell.swift; sourceTree = "<group>"; };
@@ -569,6 +573,7 @@
 			isa = PBXGroup;
 			children = (
 				AF7C58E52515E2F00007FC58 /* ProductReviewsListVC.swift */,
+				AF8E061B2518AB9F00618A07 /* ReviewRegisterVC.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -582,6 +587,7 @@
 				AF9EB56C2516754600E30F27 /* ReviewsHeaderView.swift */,
 				AF7C9B8D2517516200E7AF4E /* ProductStatusReviewCell.swift */,
 				AF7C9B902517C41200E7AF4E /* ReviewCompleteCell.swift */,
+				AF8E061E251919CB00618A07 /* ReviewRegisterView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1044,6 +1050,7 @@
 				AF72A5B924F6650700D96920 /* ProductDetailVC.swift in Sources */,
 				AF72A5B724F6265E00D96920 /* SearchTableViewHeaderView.swift in Sources */,
 				AF9906B324EE3844005A8D89 /* CategoryMenuView.swift in Sources */,
+				AF8E061F251919CB00618A07 /* ReviewRegisterView.swift in Sources */,
 				42AF3DF524F8B41100F7E1DA /* MyKurlyVC.swift in Sources */,
 				AF8962D52504C6C900F42FFD /* MDRecommendProductListCell.swift in Sources */,
 				AF8D2F0724F418FA00AE177D /* ProductListView.swift in Sources */,
@@ -1192,6 +1199,7 @@
 				42F44E7A24F915A8001B9294 /* MyKurlyNotificationVC.swift in Sources */,
 				AF8D2F0124F3A41D00AE177D /* ProductCell.swift in Sources */,
 				0EB631E724EDAE60006AA976 /* MoreButtonCell.swift in Sources */,
+				AF8E061C2518AB9F00618A07 /* ReviewRegisterVC.swift in Sources */,
 				AFAA99D9250FCD63000F46EF /* RecommendProductListCell.swift in Sources */,
 				AF7BB673250B66870005B382 /* ProductDetailOrderGuideCell.swift in Sources */,
 				AF92F95B2511175A00C12965 /* TimerSingleton.swift in Sources */,

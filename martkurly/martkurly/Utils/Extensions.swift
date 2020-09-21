@@ -169,3 +169,16 @@ extension UIStackView {
         insertSubview(subView, at: 0)
     }
 }
+
+extension UIView {
+    var parentViewController: UIViewController? {
+        var responder: UIResponder? = self
+        while let nextResponder = responder?.next {
+            responder = nextResponder
+            if let vc = nextResponder as? UIViewController {
+                return vc
+            }
+        }
+        return nil
+    }
+}
