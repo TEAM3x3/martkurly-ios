@@ -29,8 +29,10 @@ extension UIColor {
 
     static let martkurlyMainPurpleColor = UIColor(red: 85, green: 0, blue: 114)
     static let separatorGray = UIColor(red: 244, green: 244, blue: 244)
+    static let textLightGray = UIColor(red: 213, green: 214, blue: 215)
     static let textDarkGray = UIColor(red: 82, green: 82, blue: 82) // WhyKurly 진한 회색
     static let backgroundGray = UIColor(red: 243, green: 244, blue: 245) // 배경회색
+    static let stepperBorderGray = UIColor(red: 227, green: 228, blue: 229)
     static let buttonGray = UIColor(red: 241, green: 242, blue: 243)
     static let chevronGray = UIColor(red: 136, green: 137, blue: 138) // chevronGray
     static let textMainGray = UIColor(red: 102, green: 102, blue: 102)
@@ -156,5 +158,14 @@ extension UILabel {
         attributedString.addAttribute(NSAttributedString.Key.paragraphStyle, value: paragraphStyle, range: NSRange(location: 0, length: attributedString.length))
 
         self.attributedText = attributedString
+    }
+}
+
+extension UIStackView {
+    func addBackground(color: UIColor) {
+        let subView = UIView(frame: bounds)
+        subView.backgroundColor = color
+        subView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        insertSubview(subView, at: 0)
     }
 }
