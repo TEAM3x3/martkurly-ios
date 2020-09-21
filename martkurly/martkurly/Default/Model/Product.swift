@@ -47,7 +47,7 @@ struct Sales: Decodable {
 }
 
 // 상세정보 Product 구조체
-struct ProductDetail: Decodable, Equatable {
+struct ProductDetail: Decodable {
     let id: Int                 // 상품 번호
     let img: String             // 상품 이미지
     let info_img: String        // 상품 정보 이미지
@@ -96,27 +96,6 @@ struct ProductDetail: Decodable, Equatable {
                 forKey: .detail_title)
             detail_title = try detailKeys.decode(String.self, forKey: .title)
         }
-    }
-    
-    static func == (lhs: ProductDetail, rhs: ProductDetail) -> Bool {
-        return lhs.id == rhs.id &&
-            lhs.img == rhs.img &&
-            lhs.info_img == rhs.info_img &&
-            lhs.title == rhs.title &&
-            lhs.short_desc == rhs.short_desc &&
-            lhs.price == rhs.price &&
-            lhs.discount_price == rhs.discount_price &&
-            lhs.sales == rhs.sales &&
-            lhs.each == rhs.each &&
-            lhs.weight == rhs.weight &&
-            lhs.transfer == rhs.transfer &&
-            lhs.packing == rhs.packing &&
-            lhs.origin == rhs.origin &&
-            lhs.allergy == rhs.allergy &&
-            lhs.info == rhs.info &&
-            lhs.expiration == rhs.expiration &&
-            lhs.explains == rhs.explains &&
-            lhs.details == rhs.details
     }
 }
 

@@ -70,8 +70,10 @@ class AllSelectButtonLineView: UITableViewCell {
         checkImg.snp.makeConstraints {
             $0.top.leading.trailing.bottom.equalToSuperview()
         }
+
         checkImg.image = UIImage(systemName: "checkmark.circle")
         checkImg.tintColor = .lightGray
+        checkImg.backgroundColor = .clear
         check.addTarget(self, action: #selector(btnTap(_:)), for: .touchUpInside)
 
         allSelectLabel.snp.makeConstraints {
@@ -95,25 +97,25 @@ class AllSelectButtonLineView: UITableViewCell {
         lbl.font = UIFont.systemFont(ofSize: 12)
         lbl.textColor = .black
 
-//        emptyview.snp.makeConstraints {
-//            $0.top.equalTo(check.snp.bottom).offset(32)
-//            $0.leading.trailing.equalToSuperview().offset(8).inset(8)
-//            $0.height.equalTo(150)
-//        }
-//
-//        emptyLabel.snp.makeConstraints {
-//            $0.centerY.equalTo(emptyview.snp.centerY)
-//            $0.centerX.equalTo(emptyview.snp.centerX)
-//        }
-
-        test.snp.makeConstraints {
+        emptyview.snp.makeConstraints {
             $0.top.equalTo(check.snp.bottom).offset(32)
             $0.leading.trailing.equalToSuperview().offset(8).inset(8)
             $0.height.equalTo(150)
         }
 
+        emptyLabel.snp.makeConstraints {
+            $0.centerY.equalTo(emptyview.snp.centerY)
+            $0.centerX.equalTo(emptyview.snp.centerX)
+        }
+
+//        test.snp.makeConstraints {
+//            $0.top.equalTo(check.snp.bottom).offset(32)
+//            $0.leading.trailing.equalToSuperview().offset(8).inset(8)
+//            $0.height.equalTo(150)
+//        }
+
         sumEmpty.snp.makeConstraints {
-            $0.top.equalTo(test.snp.bottom).offset(16)
+            $0.top.equalTo(emptyview.snp.bottom).offset(16)
             $0.leading.trailing.equalToSuperview()
             $0.height.equalTo(250)
         }

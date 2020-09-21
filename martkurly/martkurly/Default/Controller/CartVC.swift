@@ -32,13 +32,10 @@ class CartVC: UIViewController {
         setConfigure()
     }
 
-//    override func viewWillAppear(_ animated: Bool) {
-//        super.viewWillAppear(animated)
-//        setNavigationBarStatus(type: .whiteType,
-//                               isShowCart: false,
-//                               leftBarbuttonStyle: .pop,
-//                               titleText: "장바구니")
-//    }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.navigationBar.isHidden = true
+    }
 
     // MARK: - Action
     @objc
@@ -102,9 +99,14 @@ extension CartVC: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = AllSelectButtonLineView()
-        cell.selectionStyle = .none
-        return cell
+        if count > 0 {
+            let cell = UITableViewCell()
+            return cell
+        } else {
+            let cell = AllSelectButtonLineView()
+            cell.selectionStyle = .none
+            return cell
+        }
     }
 }
 
