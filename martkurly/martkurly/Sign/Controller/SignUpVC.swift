@@ -73,11 +73,19 @@ final class SignUpVC: UIViewController {
                                titleText: StringManager.Sign.signUp.rawValue)
     }
 
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        print(#function)
+    }
+
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+        print(#function)
         contentView.snp.updateConstraints {
             $0.height.equalTo(additionalInfoView.frame.maxY + 12)
+//            $0.height.equalTo(additionalInfoTableView.frame.maxY + 12)
         }
+
         contentView2.snp.updateConstraints {
             $0.height.equalTo(signUpButton.frame.maxY + 20)
         }
@@ -148,6 +156,7 @@ final class SignUpVC: UIViewController {
             $0.top.equalTo(genderChoice.snp.bottom).offset(20)
             $0.leading.trailing.equalTo(view).inset(20)
             $0.height.equalTo(150)
+//            $0.bottom.equalToSuperview().offset(-30)
         }
     }
 
@@ -469,24 +478,36 @@ final class SignUpVC: UIViewController {
         }
     }
 
-    private func viewSizeHandler(tag: Int) -> () -> Void {
+    private func viewSizeHandler(tag: Int) -> () -> Void { // 텍스트필드가 활성화되었을 때 크기 조절
         switch tag {
         case 0:
             return {
+                let offset: CGFloat = 50
                 self.textFieldTitleLabels[1].snp.updateConstraints {
-                    $0.top.equalTo(self.textFieldViews[0].snp.bottom).offset(50)
+                    $0.top.equalTo(self.textFieldViews[0].snp.bottom).offset(offset)
+                }
+                self.contentView.snp.updateConstraints {
+                    $0.height.equalTo(self.additionalInfoView.frame.maxY + offset)
                 }
             }
         case 1:
             return {
+                let offset: CGFloat = 70
                 self.textFieldTitleLabels[2].snp.updateConstraints {
-                    $0.top.equalTo(self.textFieldViews[1].snp.bottom).offset(70)
+                    $0.top.equalTo(self.textFieldViews[1].snp.bottom).offset(offset)
+                }
+                self.contentView.snp.updateConstraints {
+                    $0.height.equalTo(self.additionalInfoView.frame.maxY + offset)
                 }
             }
         case 2:
             return {
+                let offset: CGFloat = 32
                 self.textFieldTitleLabels[3].snp.updateConstraints {
-                    $0.top.equalTo(self.textFieldViews[2].snp.bottom).offset(32)
+                    $0.top.equalTo(self.textFieldViews[2].snp.bottom).offset(offset)
+                }
+                self.contentView.snp.updateConstraints {
+                    $0.height.equalTo(self.additionalInfoView.frame.maxY + offset)
                 }
             }
         default:
