@@ -229,9 +229,9 @@ extension HomeVC: UICollectionViewDelegateFlowLayout {
                                               animated: false,
                                               scrollPosition: .centeredHorizontally)
 
-        let controller = ReviewRegisterVC()
-        let naviVC = UINavigationController(rootViewController: controller)
-        naviVC.modalPresentationStyle = .fullScreen
-        self.present(naviVC, animated: true)
+//        let controller = ReviewRegisterVC()
+//        let naviVC = UINavigationController(rootViewController: controller)
+//        naviVC.modalPresentationStyle = .fullScreen
+//        self.present(naviVC, animated: true)
     }
 }

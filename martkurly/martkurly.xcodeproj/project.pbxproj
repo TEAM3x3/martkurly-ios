@@ -103,6 +103,7 @@
 		AF564ABE24E56DED00989F82 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AF564ABC24E56DED00989F82 /* LaunchScreen.storyboard */; };
 		AF6506222502755100A42788 /* MainEachHProductCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF6506212502755100A42788 /* MainEachHProductCell.swift */; };
 		AF6506242502757800A42788 /* MainEachVProductCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF6506232502757800A42788 /* MainEachVProductCell.swift */; };
+		AF6D6928251A64E300296DEE /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF6D6927251A64E300296DEE /* Category.swift */; };
 		AF72A5B524F6152000D96920 /* Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF72A5B424F6152000D96920 /* Search.swift */; };
 		AF72A5B724F6265E00D96920 /* SearchTableViewHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF72A5B624F6265E00D96920 /* SearchTableViewHeaderView.swift */; };
 		AF72A5B924F6650700D96920 /* ProductDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF72A5B824F6650700D96920 /* ProductDetailVC.swift */; };
@@ -287,6 +288,7 @@
 		AF564ABF24E56DED00989F82 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AF6506212502755100A42788 /* MainEachHProductCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainEachHProductCell.swift; sourceTree = "<group>"; };
 		AF6506232502757800A42788 /* MainEachVProductCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainEachVProductCell.swift; sourceTree = "<group>"; };
+		AF6D6927251A64E300296DEE /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
 		AF72A5B424F6152000D96920 /* Search.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Search.swift; sourceTree = "<group>"; };
 		AF72A5B624F6265E00D96920 /* SearchTableViewHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTableViewHeaderView.swift; sourceTree = "<group>"; };
 		AF72A5B824F6650700D96920 /* ProductDetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailVC.swift; sourceTree = "<group>"; };
@@ -802,6 +804,7 @@
 			isa = PBXGroup;
 			children = (
 				0E534A8B25064B5000EDA6EC /* CategoryTitleModel.swift */,
+				AF6D6927251A64E300296DEE /* Category.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1076,6 +1079,7 @@
 				0E534A8A25064B3400EDA6EC /* EventCell.swift in Sources */,
 				AFDA26D7250AA531009F11E0 /* ProductDetailCell.swift in Sources */,
 				AF84DFAA24EFBD81001F3F45 /* ProductListCell.swift in Sources */,
+				AF6D6928251A64E300296DEE /* Category.swift in Sources */,
 				AF72A5B524F6152000D96920 /* Search.swift in Sources */,
 				42F44E6E24F91281001B9294 /* MyKurlyDeliveryInfoVC.swift in Sources */,
 				42FAF02F24EE476F00063981 /* ForgotPWVC.swift in Sources */,

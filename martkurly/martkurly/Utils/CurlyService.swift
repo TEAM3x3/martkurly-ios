@@ -15,6 +15,59 @@ struct CurlyService {
 
     private let decoder = JSONDecoder()
 
+    // MARK: - 타입 상품 목록 가져오기
+
+    func requestTypeProdcuts(type: String, completion: @escaping([Product]) -> Void) {
+        var typeProducts = [Product]()
+
+        let parameters = ["type": type]
+        AF.request(CURLY_GOODS_REF, method: .get, parameters: parameters).responseJSON { response in
+            guard let jsonData = response.data else { return completion(typeProducts) }
+
+            do {
+                typeProducts = try self.decoder.decode([Product].self, from: jsonData)
+            } catch {
+                print("DEBUG: Category List Request Error, ", error.localizedDescription)
+            }
+            completion(typeProducts)
+        }
+    }
+
+    // MARK: - 카테고리 전체보기 상품 목록 가져오기
+
+    func requestCategoryProdcuts(category: String, completion: @escaping([Product]) -> Void) {
+        var categoryProducts = [Product]()
+
+        let parameters = ["category": category]
+        AF.request(CURLY_GOODS_REF, method: .get, parameters: parameters).responseJSON { response in
+            guard let jsonData = response.data else { return completion(categoryProducts) }
+
+            do {
+                categoryProducts = try self.decoder.decode([Product].self, from: jsonData)
+            } catch {
+                print("DEBUG: Category List Request Error, ", error.localizedDescription)
+            }
+            completion(categoryProducts)
+        }
+    }
+
+    // MARK: - 카테고리 목록 가져오기
+
+    func requestCurlyCategoryList(completion: @escaping([Category]) -> Void) {
+        var categoryList = [Category]()
+
+        AF.request(REF_CATEGORY, method: .get).responseJSON { response in
+            guard let jsonData = response.data else { return completion(categoryList) }
+
+            do {
+                categoryList = try self.decoder.decode([Category].self, from: jsonData)
+            } catch {
+                print("DEBUG: Category List Request Error, ", error.localizedDescription)
+            }
+            completion(categoryList)
+        }
+    }
+
     // MARK: - 상품 검색 목록 가져오기
 
     func requestSearchProducts(searchKeyword: String, completion: @escaping([Product]) -> Void) {

@@ -25,9 +25,9 @@ class ReviewRegisterVC: UIViewController {
 
     private let imagePicker = ImagePickerController().then {
         $0.settings.selection.max = 8
-        $0.settings.theme.selectionStyle = .numbered
-        $0.settings.fetch.assets.supportedMediaTypes = [.image]
         $0.settings.selection.unselectOnReachingMax = true
+        $0.settings.fetch.assets.supportedMediaTypes = [.image]
+        $0.settings.theme.selectionStyle = .numbered
         $0.settings.theme.selectionFillColor = ColorManager.General.mainPurple.rawValue
         $0.settings.theme.selectionStrokeColor = .white
     }
