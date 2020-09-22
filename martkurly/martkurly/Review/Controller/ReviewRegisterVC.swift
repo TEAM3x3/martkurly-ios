@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import BSImagePicker
+import Photos
 
 class ReviewRegisterVC: UIViewController {
 
@@ -21,6 +23,15 @@ class ReviewRegisterVC: UIViewController {
 
     private let reviewRegisterView = ReviewRegisterView()
 
+    private let imagePicker = ImagePickerController().then {
+        $0.settings.selection.max = 8
+        $0.settings.theme.selectionStyle = .numbered
+        $0.settings.fetch.assets.supportedMediaTypes = [.image]
+        $0.settings.selection.unselectOnReachingMax = true
+        $0.settings.theme.selectionFillColor = ColorManager.General.mainPurple.rawValue
+        $0.settings.theme.selectionStrokeColor = .white
+    }
+
     // MARK: - LifeCycle
 
     override func viewDidLoad() {
@@ -31,6 +42,38 @@ class ReviewRegisterVC: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         configureNavigationBar()
+    }
+
+    // MARK: - Actions
+
+    func tappedRegisterPicture() {
+        let option = PHImageRequestOptions()
+        option.isSynchronous = true
+        option.isNetworkAccessAllowed = true
+        option.resizeMode = .none
+
+        self.presentImagePicker(imagePicker, select: { (_) in
+//            print("Selected: \(asset)")
+        }, deselect: { (_) in
+//            print("Deselected: \(asset)")
+        }, cancel: { (assets) in
+//            print("Canceled with selections: \(assets)")
+        }, finish: { (assets) in
+//            debugPrint("Finished with selections: \(assets)")
+            self.reviewRegisterView.pictureArray.removeAll()
+            assets.forEach {
+                PHImageManager.default().requestImage(
+                    for: $0,
+                    targetSize: PHImageManagerMaximumSize,
+                    contentMode: .aspectFill,
+                    options: option) { (image, _) in
+                    guard let image = image else { return }
+                    self.reviewRegisterView.pictureArray.append(image)
+                }
+            }
+        }, completion: {
+
+        })
     }
 
     // MARK: - Helpers
@@ -77,6 +120,7 @@ class ReviewRegisterVC: UIViewController {
             target: nil,
             action: nil)
         registerButton.tintColor = .black
+        registerButton.isEnabled = false
 
         self.navigationItem.rightBarButtonItem = registerButton
     }
@@ -89,6 +133,7 @@ extension ReviewRegisterVC: UITextViewDelegate {
         switch textView {
         case reviewRegisterView.reviewTitleTextView:
             reviewRegisterView.isShowTitlePlaceHolder = textView.text.isEmpty
+            reviewRegisterView.titleTextCount = textView.text.count
         case reviewRegisterView.reviewContentsTextView:
             reviewRegisterView.isShowContentsPlaceHolder = textView.text.isEmpty
             reviewRegisterView.contentsTextCount = textView
@@ -98,6 +143,8 @@ extension ReviewRegisterVC: UITextViewDelegate {
         default:
             print(#function)
         }
+
+        self.navigationItem.rightBarButtonItem?.isEnabled = reviewRegisterView.isRegisterEnabled
     }
 
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {

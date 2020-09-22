@@ -176,6 +176,7 @@
 		AFC8E08925095E640018DC20 /* ProductDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFC8E08825095E640018DC20 /* ProductDetailViewModel.swift */; };
 		AFDA26D7250AA531009F11E0 /* ProductDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFDA26D6250AA531009F11E0 /* ProductDetailCell.swift */; };
 		AFE1487A250D2FEA00C9FC8F /* EventModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFE14879250D2FEA00C9FC8F /* EventModel.swift */; };
+		AFF488C72519CBCC005CF3E8 /* BSImagePicker in Frameworks */ = {isa = PBXBuildFile; productRef = AFF488C62519CBCC005CF3E8 /* BSImagePicker */; };
 		AFF8597F2511EA4F0085066F /* MainEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFF8597E2511EA4F0085066F /* MainEvent.swift */; };
 		AFF859812512279C0085066F /* MainCurlyInfomationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFF859802512279C0085066F /* MainCurlyInfomationCell.swift */; };
 		AFF85983251268240085066F /* CategoryProductsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFF85982251268240085066F /* CategoryProductsVC.swift */; };
@@ -368,6 +369,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AF9799B524E6AC650067C611 /* Alamofire in Frameworks */,
+				AFF488C72519CBCC005CF3E8 /* BSImagePicker in Frameworks */,
 				AF9799AF24E6AAB80067C611 /* Kingfisher in Frameworks */,
 				AF9799A924E6A9EF0067C611 /* SnapKit in Frameworks */,
 				AF9799AC24E6AA260067C611 /* Then in Frameworks */,
@@ -934,6 +936,7 @@
 				AF9799AB24E6AA260067C611 /* Then */,
 				AF9799AE24E6AAB80067C611 /* Kingfisher */,
 				AF9799B424E6AC650067C611 /* Alamofire */,
+				AFF488C62519CBCC005CF3E8 /* BSImagePicker */,
 			);
 			productName = martkurly;
 			productReference = AF564AAE24E56DEA00989F82 /* martkurly.app */;
@@ -968,6 +971,7 @@
 				AF9799AA24E6AA260067C611 /* XCRemoteSwiftPackageReference "Then" */,
 				AF9799AD24E6AAB80067C611 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				AF9799B324E6AC650067C611 /* XCRemoteSwiftPackageReference "Alamofire" */,
+				AFF488C52519CBCC005CF3E8 /* XCRemoteSwiftPackageReference "BSImagePicker" */,
 			);
 			productRefGroup = AF564AAF24E56DEA00989F82 /* Products */;
 			projectDirPath = "";
@@ -1438,6 +1442,14 @@
 				minimumVersion = 5.2.2;
 			};
 		};
+		AFF488C52519CBCC005CF3E8 /* XCRemoteSwiftPackageReference "BSImagePicker" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/mikaoj/BSImagePicker.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.2.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1460,6 +1472,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = AF9799B324E6AC650067C611 /* XCRemoteSwiftPackageReference "Alamofire" */;
 			productName = Alamofire;
+		};
+		AFF488C62519CBCC005CF3E8 /* BSImagePicker */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AFF488C52519CBCC005CF3E8 /* XCRemoteSwiftPackageReference "BSImagePicker" */;
+			productName = BSImagePicker;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

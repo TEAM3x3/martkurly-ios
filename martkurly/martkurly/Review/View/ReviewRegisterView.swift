@@ -23,10 +23,20 @@ class ReviewRegisterView: UIView {
         didSet { reviewContentsPlaceHolder.isHidden = !isShowContentsPlaceHolder }
     }
 
+    var titleTextCount: Int = 0
+
     var contentsTextCount: Int = 0 {
         didSet { reviewContentsTextCountLabel.text =
             "\(contentsTextCount)자 / 최소 10자"
         }
+    }
+
+    var isRegisterEnabled: Bool {
+        let isEnabled = (titleTextCount > 0) && (contentsTextCount >= 10)
+        reviewRegisterButton.backgroundColor = isEnabled ?
+            ColorManager.General.mainPurple.rawValue :
+            ColorManager.General.backGray.rawValue
+        return isEnabled
     }
 
     private let productTitleLabel = UILabel().then {
@@ -124,7 +134,7 @@ class ReviewRegisterView: UIView {
         $0.setTitle("등록하기", for: .normal)
         $0.setTitleColor(.white, for: .normal)
         $0.titleLabel?.font = .systemFont(ofSize: 18)
-        $0.backgroundColor = ColorManager.General.mainPurple.rawValue
+        $0.backgroundColor = ColorManager.General.backGray.rawValue
     }
 
     // Picture CollectionView
@@ -136,6 +146,10 @@ class ReviewRegisterView: UIView {
     private lazy var pictureCollectionView = UICollectionView(frame: .zero,
                                                        collectionViewLayout: flowLayout)
 
+    var pictureArray: [UIImage] = [] {
+        didSet { pictureCollectionView.reloadData() }
+    }
+
     // MARK: - LifeCycle
 
     override init(frame: CGRect) {
@@ -146,6 +160,12 @@ class ReviewRegisterView: UIView {
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    // MARK: - Actions
+
+    func tappedReviewPictureRemove(index: Int) {
+        pictureArray.remove(at: index)
     }
 
     // MARK: - Helpers
@@ -259,6 +279,8 @@ class ReviewRegisterView: UIView {
 
         pictureCollectionView.register(ReviewPictureCell.self,
                                        forCellWithReuseIdentifier: ReviewPictureCell.identifier)
+        pictureCollectionView.register(ReviewPictureRegisterButtonCell.self,
+                                       forCellWithReuseIdentifier: ReviewPictureRegisterButtonCell.identifier)
     }
 }
 
@@ -266,14 +288,24 @@ class ReviewRegisterView: UIView {
 
 extension ReviewRegisterView: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 5
+        return pictureArray.count < 8 ? pictureArray.count + 1 : 8
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: ReviewPictureCell.identifier,
-            for: indexPath) as! ReviewPictureCell
-        return cell
+        if indexPath.item == pictureArray.count {
+            let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: ReviewPictureRegisterButtonCell.identifier,
+                for: indexPath) as! ReviewPictureRegisterButtonCell
+            return cell
+        } else {
+            let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: ReviewPictureCell.identifier,
+                for: indexPath) as! ReviewPictureCell
+            cell.removeButton.tag = indexPath.item
+            cell.tappedRemoveButton = tappedReviewPictureRemove(index:)
+            cell.reviewImageView.image = pictureArray[indexPath.item]
+            return cell
+        }
     }
 }
 
@@ -288,6 +320,13 @@ extension ReviewRegisterView: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 8
     }
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if indexPath.item == pictureArray.count,
+           let parentVC = self.parentViewController as? ReviewRegisterVC {
+            parentVC.tappedRegisterPicture()
+        }
+    }
 }
 
 import UIKit
@@ -298,16 +337,21 @@ class ReviewPictureCell: UICollectionViewCell {
 
     static let identifier = "ReviewPictureCell"
 
-    private let reviewImageView = UIImageView().then {
+    var tappedRemoveButton: ((Int) -> Void)?
+
+    let reviewImageView = UIImageView().then {
         $0.image = UIImage(named: "TestImage")
         $0.contentMode = .scaleToFill
         $0.clipsToBounds = true
     }
 
-    private let removeButton = UIButton().then {
+    lazy var removeButton = UIButton().then {
         $0.setImage(UIImage(systemName: "xmark.circle"), for: .normal)
         $0.tintColor = .darkGray
         $0.backgroundColor = .white
+        $0.addTarget(self,
+                     action: #selector(handleRemoveEvent(_:)),
+                     for: .touchUpInside)
     }
 
     // MARK: - LifeCycle
@@ -319,6 +363,13 @@ class ReviewPictureCell: UICollectionViewCell {
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    // MARK: - Selecters
+
+    @objc
+    func handleRemoveEvent(_ sender: UIButton) {
+        tappedRemoveButton?(sender.tag)
     }
 
     // MARK: - Helpers
@@ -340,5 +391,47 @@ class ReviewPictureCell: UICollectionViewCell {
             $0.height.width.equalTo(20)
         }
         removeButton.layer.cornerRadius = 20 / 2
+    }
+}
+
+import UIKit
+
+class ReviewPictureRegisterButtonCell: UICollectionViewCell {
+
+    // MARK: - Properties
+
+    static let identifier = "ReviewPictureRegisterButtonCell"
+
+    private let registerLabel = UILabel().then {
+        $0.text = "+"
+        $0.textColor = ColorManager.General.mainPurple.rawValue
+        $0.textAlignment = .center
+        $0.font = .systemFont(ofSize: 28)
+
+        $0.layer.borderWidth = 1
+        $0.layer.borderColor = UIColor.lightGray.cgColor
+    }
+
+    // MARK: - LifeCycle
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        configureUI()
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    // MARK: - Helpers
+
+    func configureUI() {
+        self.backgroundColor = .clear
+
+        self.addSubview(registerLabel)
+        registerLabel.snp.makeConstraints {
+            $0.leading.bottom.equalToSuperview()
+            $0.height.width.equalTo(80)
+        }
     }
 }
