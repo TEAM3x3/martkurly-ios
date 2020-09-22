@@ -16,16 +16,12 @@ class UserTextFieldView: UIView {
         $0.textColor = ColorManager.General.placeholder.rawValue
     }
     private var isActive = false {
-        willSet {
-            configureTextFieldStatus(newValue: newValue)
-        }
+        willSet { configureTextFieldStatus(newValue: newValue) }
     }
     var text: String? { // 텍스트필드의 값을 반환
-        get {
-            return self.textField.text
-        }
+        get { return self.textField.text }
     }
-    private var subtitles: [String]?
+    private var subtitles: [String]? // 텍스트필드 아래에 나타나는 부가설명
     private var viewSizeHandler: ( () -> Void )?
     private var subtitleLabels: [UILabel] = []
     var isEditing = false

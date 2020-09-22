@@ -73,17 +73,10 @@ final class SignUpVC: UIViewController {
                                titleText: StringManager.Sign.signUp.rawValue)
     }
 
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-        print(#function)
-    }
-
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        print(#function)
         contentView.snp.updateConstraints {
             $0.height.equalTo(additionalInfoView.frame.maxY + 12)
-//            $0.height.equalTo(additionalInfoTableView.frame.maxY + 12)
         }
 
         contentView2.snp.updateConstraints {

@@ -24,13 +24,13 @@ class AdditionalInfoTableViewCell: UITableViewCell {
         $0.backgroundColor = .white
     }
     private let label = UILabel().then {
-        $0.text = "남자"
+        $0.text = "추천인 아이디"
         $0.font = UIFont.systemFont(ofSize: 18)
     }
+    private let textField = UserTextFieldView(placeholder: "추천인 아이디를 입력해주세요", fontSize: 14)
+
     var isActive = false {
-        willSet {
-            emptyCircle.backgroundColor = newValue ? ColorManager.General.mainPurple.rawValue : .white
-        }
+        willSet { emptyCircle.backgroundColor = newValue ? ColorManager.General.mainPurple.rawValue : .white }
     }
 
     // MARK: - Lifecycle
@@ -50,7 +50,7 @@ class AdditionalInfoTableViewCell: UITableViewCell {
     }
 
     private func setContraints() {
-        [emptyCircle, label].forEach {
+        [emptyCircle, label, textField].forEach {
             self.addSubview($0)
         }
         emptyCircle.addSubview(filledCircle)
@@ -67,6 +67,10 @@ class AdditionalInfoTableViewCell: UITableViewCell {
             $0.leading.equalTo(emptyCircle.snp.trailing).offset(12)
             $0.centerY.equalTo(emptyCircle)
         }
+//        textField.snp.makeConstraints {
+//            $0.leading.trailing.equalToSuperview()
+//            
+//        }
     }
 
     // MARK: - Helpers
