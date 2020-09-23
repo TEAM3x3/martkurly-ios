@@ -71,10 +71,11 @@ struct CurlyService {
     // MARK: - 상품 검색 목록 가져오기
 
     func requestSearchProducts(searchKeyword: String, completion: @escaping([Product]) -> Void) {
+        let headers: HTTPHeaders = ["Authorization": "token 88f0566e6db5ebaa0e46eae16f5a092610f46345"]
         let parameter = ["word": searchKeyword]
         var products = [Product]()
 
-        AF.request(REF_SEARCH_PRODUCTS, method: .get, parameters: parameter).responseJSON { response in
+        AF.request(REF_SEARCH_PRODUCTS, method: .get, parameters: parameter, headers: headers).responseJSON { response in
             print(response)
             guard let jsonData = response.data else { return completion(products) }
 
