@@ -26,6 +26,7 @@ class ProductListView: UIView {
     private var fastAreaSelectType: FastAreaType = .샛별지역상품
     private var conditionSelectType: ConditionType = .신상품순
     private var benefitSelectType: BenefitType = .혜택순
+    private var recommendSelectType: RecommendType = .추천순
 
     private let flowLayout = UICollectionViewFlowLayout()
     private lazy var productListCollectionView =
@@ -185,6 +186,8 @@ extension ProductListView: UITableViewDataSource {
             isSelected = cellText == conditionSelectType.rawValue ? true : false
         case .benefit:
             isSelected = cellText == benefitSelectType.rawValue ? true : false
+        case .recommend:
+            isSelected = cellText == recommendSelectType.rawValue ? true : false
         }
 
         cell.configure(cellText: cellText, isSelected: isSelected)
@@ -208,6 +211,8 @@ extension ProductListView: UITableViewDelegate {
             conditionSelectType = ConditionType(rawValue: sortKey)!
         case .benefit:
             benefitSelectType = BenefitType(rawValue: sortKey)!
+        case .recommend:
+            recommendSelectType = RecommendType(rawValue: sortKey)!
         }
     }
 }

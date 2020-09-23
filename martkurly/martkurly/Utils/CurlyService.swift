@@ -75,6 +75,7 @@ struct CurlyService {
         var products = [Product]()
 
         AF.request(REF_SEARCH_PRODUCTS, method: .get, parameters: parameter).responseJSON { response in
+            print(response)
             guard let jsonData = response.data else { return completion(products) }
 
             do {

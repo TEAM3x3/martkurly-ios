@@ -55,6 +55,37 @@ extension UIImage {
 // MARK: - UIViewController
 
 extension UIViewController {
+    static let indicate = UIActivityIndicatorView()
+    static let indicateView = UIView().then {
+        let indicate = UIViewController.indicate
+        indicate.hidesWhenStopped = true
+        indicate.style = .large
+        indicate.color = .white
+
+        $0.addSubview(indicate)
+        indicate.snp.makeConstraints {
+            $0.width.height.equalTo(60)
+            $0.center.equalToSuperview()
+        }
+
+        $0.isHidden = true
+        $0.backgroundColor = UIColor(white: 0, alpha: 0.3)
+    }
+
+    func showIndicate() {
+        self.view.addSubview(UIViewController.indicateView)
+        UIViewController.indicateView.isHidden = false
+        UIViewController.indicateView.snp.remakeConstraints {
+            $0.edges.equalToSuperview()
+        }
+        UIViewController.indicate.startAnimating()
+    }
+
+    func stopIndicate() {
+        UIViewController.indicateView.isHidden = true
+        UIViewController.indicate.stopAnimating()
+    }
+
     // 네비게이션바의 배경색이 보라색이면 .purpleType이고, 카트아이콘이 보이고 싶으면 isShowCart => true
     // titleText는 기본값이 nil 이므로 넣어줘도 되고 안넣어줘도 됨
     // BackButton이 필요한 경우 isShowBack => true

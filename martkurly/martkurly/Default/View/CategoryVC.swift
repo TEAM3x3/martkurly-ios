@@ -12,7 +12,9 @@ import Then
 class CategoryVC: UIViewController {
 
     // MARK: - Properties
-    private var categoryList = [Category]()
+    private var categoryList = [Category]() {
+        didSet { tableV.reloadData() }
+    }
 
     let tableV = UITableView().then {
         $0.backgroundColor = .white
@@ -44,10 +46,11 @@ class CategoryVC: UIViewController {
     // MARK: - API
     func requestCategoryList() {
         // 카테고리 목록 가져오기
-//        CurlyService.shared.requestCurlyCategoryList { categories in
-//            self.categoryList = categories
-//            print(self.categoryList)
-//        }
+        self.showIndicate()
+        CurlyService.shared.requestCurlyCategoryList { categories in
+            self.stopIndicate()
+            self.categoryList = categories
+        }
 
         // 해당 카테고리 전체 상품 목록 가져오기
 //        CurlyService.shared.requestCategoryProdcuts(category: "채소") { products in
@@ -55,9 +58,9 @@ class CategoryVC: UIViewController {
 //        }
 
         // 해당 타입 상품 목록 가져오기
-        CurlyService.shared.requestTypeProdcuts(type: "기본채소") { products in
-            print(products)
-        }
+//        CurlyService.shared.requestTypeProdcuts(type: "기본채소") { products in
+//            print(products)
+//        }
     }
 
     // MARK: - UI
@@ -112,7 +115,7 @@ extension CategoryVC: UITableViewDataSource {
         case .oftenBuyProducts:
             return 1
         case .productsCategory:
-            return 17
+            return categoryList.count
         case .kurlyCommend:
             return 1
         }
@@ -126,7 +129,9 @@ extension CategoryVC: UITableViewDataSource {
             return cell
         case .productsCategory:
             let cell = CustomCell()
-            cell.configure(data: StringManager().categoryTitleData[indexPath.row])
+            cell.configure(category: categoryList[indexPath.row])
+            cell.tag = indexPath.row
+            cell.delegate = self
             if let selectedCell = selectedCell, selectedCell == indexPath {
                 cell.subView.isHidden = false
                 cell.mainTitle.title.textColor = ColorManager.General.mainPurple.rawValue
@@ -197,6 +202,37 @@ extension CategoryVC: UITableViewDelegate {
             tableV.reloadData()
         case .kurlyCommend:
             print("a")
+        }
+    }
+}
+
+// MARK: - CustomCellDelegate
+
+extension CategoryVC: CustomCellDelegate {
+    func tappedCategoryType(categoryNumbering: Int, categoryTypeNumbering: Int) {
+        let group = DispatchGroup.init()
+        let queue = DispatchQueue.main
+
+        self.showIndicate()
+        categoryList[categoryNumbering].types.enumerated().forEach {
+            let index = $0.offset
+            let type = $0.element.name
+
+            group.enter()
+            queue.async {
+                CurlyService.shared.requestTypeProdcuts(type: type) { products in
+                    self.categoryList[categoryNumbering].types[index].products = products
+                    group.leave()
+                }
+            }
+        }
+
+        group.notify(queue: queue) {
+            self.stopIndicate()
+            let controller = CategoryProductListVC()
+            controller.configure(category: self.categoryList[categoryNumbering],
+                                 categoryTypeNumbering: categoryTypeNumbering)
+            self.navigationController?.pushViewController(controller, animated: true)
         }
     }
 }

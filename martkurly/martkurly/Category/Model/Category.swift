@@ -9,10 +9,19 @@
 import Foundation
 
 struct Category: Decodable {
-    let name: String        // 카테고리 이름
-    let types: [CategoryType]
+    let name: String            // 카테고리 이름
+    let category_img: String    // 카테고리 이미지
+    var types: [CategoryType]
 
     struct CategoryType: Decodable {
-        let name: String    // 타입 이름
+        let name: String        // 타입 이름
+        var products: [Product]?
     }
+}
+
+class CategoryHelpers {
+    static let shared = CategoryHelpers()
+    private init() { }
+
+    var categoryList: [Category]?
 }
