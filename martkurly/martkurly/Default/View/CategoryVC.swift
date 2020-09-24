@@ -12,6 +12,10 @@ import Then
 class CategoryVC: UIViewController {
 
     // MARK: - Properties
+    private var categoryList = [Category]() {
+        didSet { tableV.reloadData() }
+    }
+
     let tableV = UITableView().then {
         $0.backgroundColor = .white
     }
@@ -27,6 +31,7 @@ class CategoryVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setConfigure()
+        requestCategoryList()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -36,6 +41,26 @@ class CategoryVC: UIViewController {
             isShowCart: true,
             leftBarbuttonStyle: .none,
             titleText: "카테고리")
+    }
+
+    // MARK: - API
+    func requestCategoryList() {
+        // 카테고리 목록 가져오기
+        self.showIndicate()
+        CurlyService.shared.requestCurlyCategoryList { categories in
+            self.stopIndicate()
+            self.categoryList = categories
+        }
+
+        // 해당 카테고리 전체 상품 목록 가져오기
+//        CurlyService.shared.requestCategoryProdcuts(category: "채소") { products in
+//            print(products)
+//        }
+
+        // 해당 타입 상품 목록 가져오기
+//        CurlyService.shared.requestTypeProdcuts(type: "기본채소") { products in
+//            print(products)
+//        }
     }
 
     // MARK: - UI
@@ -60,17 +85,10 @@ class CategoryVC: UIViewController {
         tableV.showsVerticalScrollIndicator = false
         tableV.alwaysBounceVertical = true
         tableV.decelerationRate = .fast
-//                tableV.bounces = false
-
-//        tableV.register(CustomCell.self, forCellReuseIdentifier: CustomCell.identifier)
 
         tableV.snp.makeConstraints {
             $0.top.leading.trailing.bottom.equalTo(view.safeAreaLayoutGuide)
         }
-
-//        tableV.translatesAutoresizingMaskIntoConstraints = false
-//        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[tableView]|", options: [], metrics: nil, views: ["tableView": tableV]))
-//        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[tableView]|", options: [], metrics: nil, views: ["tableView": tableV]))
     }
 
     // MARK: - Action
@@ -82,29 +100,38 @@ class CategoryVC: UIViewController {
 }
 
 extension CategoryVC: UITableViewDataSource {
+    enum CategoryType: Int, CaseIterable {
+        case oftenBuyProducts
+        case productsCategory
+        case kurlyCommend
+    }
+
     func numberOfSections(in tableView: UITableView) -> Int {
-        3
+        return CategoryType.allCases.count
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch section {
-        case 0:
+        switch CategoryType(rawValue: section)! {
+        case .oftenBuyProducts:
             return 1
-        case 1:
-            return 17
-        default:
+        case .productsCategory:
+            return categoryList.count
+        case .kurlyCommend:
             return 1
         }
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.section == 0 {
+        switch CategoryType(rawValue: indexPath.section)! {
+        case .oftenBuyProducts:
             let cell = FrequentlyProductButtonCell()
             cell.selectionStyle = .none
             return cell
-        } else if indexPath.section == 1 {
+        case .productsCategory:
             let cell = CustomCell()
-            cell.configure(data: StringManager().categoryTitleData[indexPath.row])
+            cell.configure(category: categoryList[indexPath.row])
+            cell.tag = indexPath.row
+            cell.delegate = self
             if let selectedCell = selectedCell, selectedCell == indexPath {
                 cell.subView.isHidden = false
                 cell.mainTitle.title.textColor = ColorManager.General.mainPurple.rawValue
@@ -114,15 +141,15 @@ extension CategoryVC: UITableViewDataSource {
                 cell.subView.isHidden = true
             }
             return cell
-        } else {
+        case .kurlyCommend:
             let cell = CategoryKurlyRecommendView()
             return cell
         }
     }
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        switch section {
-        case 2:
+        switch CategoryType(rawValue: section)! {
+        case .kurlyCommend:
             let header = SectionHeaderView()
             return header
         default:
@@ -137,23 +164,23 @@ extension CategoryVC: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        switch section {
-        case 2:
-            return 80
-        case 1:
-            return 0
-        default:
+        switch CategoryType(rawValue: section)! {
+        case .oftenBuyProducts:
             return 24
+        case .productsCategory:
+            return 0
+        case .kurlyCommend:
+            return 80
         }
     }
 
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        switch section {
-        case 0:
+        switch CategoryType(rawValue: section)! {
+        case .oftenBuyProducts:
             return 24
-        case 1:
+        case .productsCategory:
             return 24
-        default:
+        case .kurlyCommend:
             return 16
         }
     }
@@ -161,20 +188,51 @@ extension CategoryVC: UITableViewDataSource {
 
 extension CategoryVC: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-
-        switch indexPath.section {
-        case 0:
+        switch CategoryType(rawValue: indexPath.section)! {
+        case .oftenBuyProducts:
             let controller = frequentlyProductVC()
             navigationController?.pushViewController(controller, animated: true)
-        case 1:
+        case .productsCategory:
             if selectedCell != indexPath {
                 selectedCell = indexPath
             } else {
                 selectedCell = [2, 0]
             }
+
             tableV.reloadData()
-        default:
+        case .kurlyCommend:
             print("a")
+        }
+    }
+}
+
+// MARK: - CustomCellDelegate
+
+extension CategoryVC: CustomCellDelegate {
+    func tappedCategoryType(categoryNumbering: Int, categoryTypeNumbering: Int) {
+        let group = DispatchGroup.init()
+        let queue = DispatchQueue.main
+
+        self.showIndicate()
+        categoryList[categoryNumbering].types.enumerated().forEach {
+            let index = $0.offset
+            let type = $0.element.name
+
+            group.enter()
+            queue.async {
+                CurlyService.shared.requestTypeProdcuts(type: type) { products in
+                    self.categoryList[categoryNumbering].types[index].products = products
+                    group.leave()
+                }
+            }
+        }
+
+        group.notify(queue: queue) {
+            self.stopIndicate()
+            let controller = CategoryProductListVC()
+            controller.configure(category: self.categoryList[categoryNumbering],
+                                 categoryTypeNumbering: categoryTypeNumbering)
+            self.navigationController?.pushViewController(controller, animated: true)
         }
     }
 }

@@ -39,6 +39,9 @@ class ProductListHeaderView: UICollectionReusableView {
     private lazy var benefitButton =
         makeSortStackView(title: SortType.benefit.sortList[0],
                           type: .benefit)
+    private lazy var recommendButton =
+        makeSortStackView(title: SortType.recommend.sortList[0],
+                          type: .recommend)
 
     // MARK: - LifeCycle
 
@@ -73,6 +76,8 @@ class ProductListHeaderView: UICollectionReusableView {
             whatIsShowListButton = conditionButton
         case .benefit:
             whatIsShowListButton = benefitButton
+        case .recommend:
+            whatIsShowListButton = recommendButton
         }
     }
 
@@ -138,12 +143,14 @@ class ProductListHeaderView: UICollectionReusableView {
             initSortType == .fastAreaAndCondition ? false : true
         benefitButton.isHidden =
             initSortType == .fastAreaAndBenefit ? false : true
+        recommendButton.isHidden =
+            initSortType == .fastAreaAndRecommend ? false : true
     }
 
     func configureUI() {
         self.backgroundColor = .clear
 
-        [fastAreaButton, conditionButton, benefitButton].forEach {
+        [fastAreaButton, conditionButton, benefitButton, recommendButton].forEach {
             self.addSubview($0)
         }
 
@@ -152,14 +159,11 @@ class ProductListHeaderView: UICollectionReusableView {
             $0.bottom.equalToSuperview().offset(-16)
         }
 
-        conditionButton.snp.makeConstraints {
-            $0.trailing.equalToSuperview().offset(-8)
-            $0.centerY.equalTo(fastAreaButton)
-        }
-
-        benefitButton.snp.makeConstraints {
-            $0.trailing.equalToSuperview().offset(-8)
-            $0.centerY.equalTo(fastAreaButton)
+        [conditionButton, benefitButton, recommendButton].forEach {
+            $0.snp.makeConstraints {
+                $0.trailing.equalToSuperview().offset(-8)
+                $0.centerY.equalTo(fastAreaButton)
+            }
         }
     }
 

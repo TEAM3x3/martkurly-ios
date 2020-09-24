@@ -16,6 +16,10 @@ class CategoryKurlyRecommendView: UITableViewCell {
     lazy var collection = UICollectionView(
         frame: .zero, collectionViewLayout: layout
     )
+
+    private let insetValue: CGFloat = 8
+    private let paddingValue: CGFloat = 16
+
     var height: CGFloat = 0 {
         didSet {
 //            CategoryMainView().collectionButton.reloadInputViews()
@@ -52,25 +56,25 @@ class CategoryKurlyRecommendView: UITableViewCell {
         collection.dataSource = self
         collection.delegate = self
         collection.isSpringLoaded = true
+        collection.isScrollEnabled = false
         collection.register(KurlyRecommendCell.self, forCellWithReuseIdentifier: KurlyRecommendCell.identifier)
         collection.register(SectionHeaderView.self,
         forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: SectionHeaderView.identifier)
 
         collection.snp.makeConstraints {
             $0.top.leading.trailing.bottom.equalToSuperview()
-            $0.height.equalTo(1450)
+            $0.height.equalTo(1600)
         }
     }
 
     private func setLayout() {
-        let width = UIScreen.main.bounds.width / 2 - 16
-
+        let width = (UIScreen.main.bounds.width - (insetValue) - (paddingValue * 2)) / 2
         layout.itemSize = CGSize(width: width, height: width)
-        layout.minimumLineSpacing = 8
-        layout.minimumInteritemSpacing = 8
-        layout.sectionInset = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+        layout.minimumLineSpacing = insetValue
+        layout.minimumInteritemSpacing = insetValue
+        layout.sectionInset = UIEdgeInsets(top: 0, left: paddingValue,
+                                           bottom: 0, right: paddingValue)
 
-//        layout.headerReferenceSize = CGSize(width: 50, height: 50)
         layout.sectionHeadersPinToVisibleBounds = true
     }
 }
@@ -96,7 +100,7 @@ extension CategoryKurlyRecommendView: UICollectionViewDataSource {
 //    }
 }
 
-extension CategoryKurlyRecommendView: UICollectionViewDelegate {
+extension CategoryKurlyRecommendView: UICollectionViewDelegateFlowLayout {
 //    func scrollViewDidScroll(_ scrollView: UIScrollView) {
 //        height = scrollView.contentOffset.y
 //    }

@@ -12,13 +12,12 @@ import Then
 class CategoryHeaderV: UIView {
 
     // MARK: - Properties
-//    let btn = UIButton().then {
-//        $0.backgroundColor = .white
-//    }
 
     private let titleImage = UIImageView().then {
         $0.backgroundColor = .white
         $0.tintColor = .black
+        $0.clipsToBounds = true
+        $0.contentMode = .scaleAspectFill
     }
 
     var title = UILabel().then {
@@ -62,13 +61,9 @@ class CategoryHeaderV: UIView {
             }
         }
 
-//        btn.snp.makeConstraints {
-//            $0.top.leading.trailing.bottom.equalTo(self)
-//            $0.height.equalTo(50)
-//        }
-
         titleImage.snp.makeConstraints {
             $0.leading.equalTo(self).offset(16)
+            $0.height.width.equalTo(36)
         }
 
         title.snp.makeConstraints {
@@ -87,7 +82,7 @@ class CategoryHeaderV: UIView {
     }
 
     func configure(image: String, setTitle: String, direction: String) {
-        titleImage.image = UIImage(named: image)
+        titleImage.kf.setImage(with: URL(string: image))
         title.text = setTitle
         chevron.image = UIImage(systemName: direction)
     }

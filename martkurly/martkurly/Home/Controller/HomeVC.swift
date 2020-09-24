@@ -41,10 +41,7 @@ class HomeVC: UIViewController {
         super.viewDidLoad()
         configureUI()
         configureNavigationBar()
-
-        fetchCheapProducts()
-        fetchEventList()
-        fetchMainEvent()
+        requestMainData()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -56,21 +53,42 @@ class HomeVC: UIViewController {
 
     // MARK: - API
 
+    private let group = DispatchGroup.init()
+    private let queue = DispatchQueue.main
+
+    func requestMainData() {
+        self.showIndicate()
+
+        fetchMainEvent()
+        fetchCheapProducts()
+        fetchEventList()
+
+        group.notify(queue: queue) {
+            self.stopIndicate()
+        }
+    }
+
+    func fetchMainEvent() {
+        group.enter()
+        CurlyService.shared.fetchMainEventList { mainEventList in
+            self.group.leave()
+            self.mainEventList = mainEventList
+        }
+    }
+
     func fetchCheapProducts() {
+        group.enter()
         CurlyService.shared.fetchCheapProducts { products in
+            self.group.leave()
             self.cheapProducts = products
         }
     }
 
     func fetchEventList() {
+        group.enter()
         CurlyService.shared.fetchEventList { eventList in
+            self.group.leave()
             self.eventList = eventList
-        }
-    }
-
-    func fetchMainEvent() {
-        CurlyService.shared.fetchMainEventList { mainEventList in
-            self.mainEventList = mainEventList
         }
     }
 
@@ -228,5 +246,10 @@ extension HomeVC: UICollectionViewDelegateFlowLayout {
         categoryMenuCollectionView.selectItem(at: nil,
                                               animated: false,
                                               scrollPosition: .centeredHorizontally)
+
+//        let controller = ReviewRegisterVC()
+//        let naviVC = UINavigationController(rootViewController: controller)
+//        naviVC.modalPresentationStyle = .fullScreen
+//        self.present(naviVC, animated: true)
     }
 }

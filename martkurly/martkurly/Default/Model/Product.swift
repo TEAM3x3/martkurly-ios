@@ -125,6 +125,7 @@ enum SortHeaderType: String {
     case fastAreaAndNot
     case fastAreaAndCondition
     case fastAreaAndBenefit
+    case fastAreaAndRecommend
     case notSort
 
     var sortList: [String] {
@@ -135,6 +136,8 @@ enum SortHeaderType: String {
             return ["신상품순", "인기상품순", "낮은 가격순", "높은 가격순"]
         case .fastAreaAndBenefit:
             return ["혜택순", "신상품순", "인기상품순", "낮은 가격순", "높은 가격순"]
+        case .fastAreaAndRecommend:
+            return ["추천순", "신상품순", "인기상품순", "낮은 가격순", "높은 가격순"]
         case .notSort:
             return []
         }
@@ -145,6 +148,7 @@ enum SortType: String {
     case fastArea
     case condition
     case benefit
+    case recommend
 
     var sortList: [String] {
         switch self {
@@ -154,6 +158,8 @@ enum SortType: String {
             return ConditionType.allValues
         case .benefit:
             return BenefitType.allValues
+        case .recommend:
+            return RecommendType.allValues
         }
     }
 }
@@ -196,6 +202,22 @@ enum BenefitType: String, CaseIterable {
     static var allValues: [String] {
         var array = [String]()
         BenefitType.allCases.forEach {
+            array.append($0.rawValue)
+        }
+        return array
+    }
+}
+
+enum RecommendType: String, CaseIterable {
+    case 추천순
+    case 신상품순
+    case 인기상품순
+    case 낮은가격순 = "낮은 가격순"
+    case 높은가격순 = "높은 가격순"
+
+    static var allValues: [String] {
+        var array = [String]()
+        RecommendType.allCases.forEach {
             array.append($0.rawValue)
         }
         return array
