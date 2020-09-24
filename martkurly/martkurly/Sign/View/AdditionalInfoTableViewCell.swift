@@ -55,9 +55,12 @@ class AdditionalInfoTableViewCell: UITableViewCell {
         }
         emptyCircle.addSubview(filledCircle)
         emptyCircle.snp.makeConstraints {
+            $0.top.equalToSuperview().inset(10)
             $0.leading.equalToSuperview()
-            $0.centerY.equalToSuperview()
             $0.width.height.equalTo(25)
+//            $0.leading.equalToSuperview()
+//            $0.centerY.equalToSuperview()
+//            $0.width.height.equalTo(25)
         }
         filledCircle.snp.makeConstraints {
             $0.centerX.centerY.equalToSuperview()
@@ -67,10 +70,12 @@ class AdditionalInfoTableViewCell: UITableViewCell {
             $0.leading.equalTo(emptyCircle.snp.trailing).offset(12)
             $0.centerY.equalTo(emptyCircle)
         }
-//        textField.snp.makeConstraints {
-//            $0.leading.trailing.equalToSuperview()
-//            
-//        }
+        textField.snp.makeConstraints {
+            $0.top.equalTo(emptyCircle.snp.bottom).offset(10)
+            $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(40)
+//            $0.bottom.equalToSuperview()
+        }
     }
 
     // MARK: - Helpers

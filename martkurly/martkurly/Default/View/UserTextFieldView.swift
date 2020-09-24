@@ -63,6 +63,9 @@ class UserTextFieldView: UIView {
     }
 
     private func setConstraints() {
+        self.snp.makeConstraints {
+            $0.width.equalTo(200).priority(.low)
+        }
         [textField, placeholder].forEach {
             self.addSubview($0)
         }

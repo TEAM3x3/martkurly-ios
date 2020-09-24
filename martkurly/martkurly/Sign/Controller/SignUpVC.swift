@@ -9,7 +9,7 @@
 import UIKit
 
 final class SignUpVC: UIViewController {
-
+    
     // MARK: - Properties
     private let separtor = UIView().then {
         $0.backgroundColor = .separatorGray
@@ -43,7 +43,8 @@ final class SignUpVC: UIViewController {
     private var genderSelected: Gender = .unknwon // 유저가 선택한 성별
     private let additionalInfoView = AdditionalInfoView()
     private lazy var additionalInfoTableView = additionalInfoView.tableView // 추천인 및 참여 이벤트명 선택
-
+    private let newAddtionalInfoView = NewAdditionalInfoView()
+    
     private let contentView2 = UIView().then {
         $0.backgroundColor = .white
     }
@@ -55,7 +56,7 @@ final class SignUpVC: UIViewController {
     private var agreementSelectedCells: Set<Int> = [] // 유저가 선택한 이용약관동의에 대한 정보
     private var selectedPromotion: Set<Int> = [] // 유저가 선택한 혜택정보 수신에 대한 정보
     private let signUpButton = KurlyButton(title: StringManager.SignUp.signUp.rawValue, style: .purple)
-
+    
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -63,7 +64,7 @@ final class SignUpVC: UIViewController {
         self.hideKeyboardWhenTappedAround()
         configureUI()
     }
-
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.isHidden = false
@@ -72,18 +73,18 @@ final class SignUpVC: UIViewController {
                                leftBarbuttonStyle: .pop,
                                titleText: StringManager.Sign.signUp.rawValue)
     }
-
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         contentView.snp.updateConstraints {
-            $0.height.equalTo(additionalInfoView.frame.maxY + 12)
+            $0.height.equalTo(newAddtionalInfoView.frame.maxY)
         }
-
+        
         contentView2.snp.updateConstraints {
             $0.height.equalTo(signUpButton.frame.maxY + 20)
         }
     }
-
+    
     // MARK: - UI
     private func configureUI() {
         setScrollView()
@@ -91,29 +92,31 @@ final class SignUpVC: UIViewController {
         setAttributes()
         setConstraints()
     }
-
+    
     private func setAttributes() {
         genderTableView.delegate = self
         genderTableView.dataSource = self
-
+        
         additionalInfoTableView.delegate = self
         additionalInfoTableView.dataSource = self
-
+        
         agreementTableView.delegate = self
         agreementTableView.dataSource = self
-
+        
         checkUsernameButton.addTarget(self, action: #selector(handleCheckUsernameButton), for: .touchUpInside)
-
+        
         let addressTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleaddressTapGesture(_:)))
         addressView.addGestureRecognizer(addressTapGesture)
         addressView.isUserInteractionEnabled = true
+        
+        addAdditionalViewTapGesture()
     }
-
+    
     private func setConstraints() {
         guard
             let idTextField = textFieldViews.first,
             let phoneNumberTextField = textFieldViews.last
-            else { return }
+        else { return }
         checkUsernameButton.snp.makeConstraints {
             $0.trailing.equalTo(view).inset(20)
             $0.centerY.equalTo(idTextField)
@@ -127,32 +130,31 @@ final class SignUpVC: UIViewController {
             $0.width.equalTo(120)
         }
         addressView.snp.makeConstraints {
-            $0.top.equalTo(phoneNumberTextField.snp.bottom).offset(30)
+            $0.top.equalTo(phoneNumberTextField.snp.bottom).offset(16)
             $0.leading.trailing.equalTo(view).inset(20)
-            $0.height.equalTo(100)
+            $0.height.equalTo(94)
         }
         birthdayTitleView.snp.makeConstraints {
-            $0.top.equalTo(addressView.snp.bottom).offset(30)
+            $0.top.equalTo(addressView.snp.bottom).offset(16)
             $0.leading.trailing.equalTo(view).inset(20)
         }
         birthdayTextFields.snp.makeConstraints {
-            $0.top.equalTo(birthdayTitleView).offset(20)
+            $0.top.equalTo(birthdayTitleView.snp.bottom).offset(8)
             $0.leading.trailing.equalTo(view).inset(20)
             $0.height.equalTo(48)
         }
         genderChoice.snp.makeConstraints {
-            $0.top.equalTo(birthdayTextFields.snp.bottom).offset(35)
+            $0.top.equalTo(birthdayTextFields.snp.bottom).offset(20)
             $0.leading.trailing.equalTo(view).inset(20)
             $0.height.equalTo(170)
         }
-        additionalInfoView.snp.makeConstraints {
+        newAddtionalInfoView.snp.makeConstraints {
             $0.top.equalTo(genderChoice.snp.bottom).offset(20)
             $0.leading.trailing.equalTo(view).inset(20)
-            $0.height.equalTo(150)
-//            $0.bottom.equalToSuperview().offset(-30)
+            $0.height.equalTo(160)
         }
     }
-
+    
     private func setScrollView() {
         [separtor, scrollView].forEach {
             view.addSubview($0)
@@ -174,7 +176,7 @@ final class SignUpVC: UIViewController {
             $0.height.equalTo(view.frame.height * 1.5)
             $0.width.equalTo(view)
         }
-        [checkUsernameButton, phoneNumberCheckButton, addressView, birthdayTitleView, birthdayTextFields, genderChoice, additionalInfoView].forEach {
+        [checkUsernameButton, phoneNumberCheckButton, addressView, birthdayTitleView, birthdayTextFields, genderChoice, newAddtionalInfoView].forEach {
             contentView.addSubview($0)
         }
         scrollView.addSubview(contentView2)
@@ -202,44 +204,43 @@ final class SignUpVC: UIViewController {
             $0.height.equalTo(48)
         }
     }
-
+    
     private func generateTextFields() {
         for info in StringManager().signUpTextFieldsInfo {
             guard let title = info["title"] as? String,
-                let placeHolder = info["placeholder"] as? String
-                else { return }
+                  let placeHolder = info["placeholder"] as? String
+            else { return }
             let titleLabel = SignUpTextFieldTitleView(title: title, mendatory: true)
             let subtitles = info["subtitles"] as? [String] ?? nil
             let textField = UserTextFieldView(placeholder: placeHolder, fontSize: 14, subtitles: subtitles, viewSizeHandler: viewSizeHandler(tag: textFieldViews.count))
-
+            
             [titleLabel, textField].forEach {
                 contentView.addSubview($0)
             }
-
-            if textFieldViews.isEmpty == true {
+            
+            if textFieldViews.isEmpty == true { // 첫번째 텍스트필드 값이면...
                 titleLabel.snp.makeConstraints {
-                    $0.top.equalToSuperview().offset(12)
+                    $0.top.equalToSuperview().offset(16)
                     $0.leading.trailing.equalTo(view).inset(20)
-                    $0.height.equalTo(30)
+                    //                    $0.height.equalTo(30)
                 }
                 textField.snp.makeConstraints {
-                    $0.top.equalTo(titleLabel.snp.bottom).offset(4)
+                    $0.top.equalTo(titleLabel.snp.bottom).offset(8)
                     $0.leading.equalToSuperview().inset(20)
                     $0.trailing.equalTo(checkUsernameButton.snp.leading).offset(-10)
                     $0.height.equalTo(48)
                 }
-            } else if textFieldViews.count == 5 {
-                // 휴대폰 입력 텍스트필드
+            } else if textFieldViews.count == 5 { // 휴대폰 입력 텍스트필드
                 guard
                     let firstObject = textFieldViews.first,
                     let lastObject = textFieldViews.last else { return }
                 titleLabel.snp.makeConstraints {
-                    $0.top.equalTo(lastObject.snp.bottom).offset(12)
+                    $0.top.equalTo(lastObject.snp.bottom).offset(16)
                     $0.leading.trailing.equalTo(view).inset(20)
-                    $0.height.equalTo(30)
+                    //                    $0.height.equalTo(30)
                 }
                 textField.snp.makeConstraints {
-                    $0.top.equalTo(titleLabel.snp.bottom).offset(4)
+                    $0.top.equalTo(titleLabel.snp.bottom).offset(8)
                     $0.leading.equalTo(firstObject)
                     $0.trailing.equalTo(phoneNumberCheckButton.snp.leading).offset(-10)
                     $0.height.equalTo(48)
@@ -249,12 +250,12 @@ final class SignUpVC: UIViewController {
                     let firstObject = textFieldViews.first,
                     let lastObject = textFieldViews.last else { return }
                 titleLabel.snp.makeConstraints {
-                    $0.top.equalTo(lastObject.snp.bottom).offset(12)
+                    $0.top.equalTo(lastObject.snp.bottom).offset(16)
                     $0.leading.trailing.equalTo(view).inset(20)
-                    $0.height.equalTo(30)
+                    //                    $0.height.equalTo(30)
                 }
                 textField.snp.makeConstraints {
-                    $0.top.equalTo(titleLabel.snp.bottom).offset(4)
+                    $0.top.equalTo(titleLabel.snp.bottom).offset(8)
                     $0.leading.equalTo(firstObject)
                     $0.trailing.equalTo(view).inset(20)
                     $0.height.equalTo(48)
@@ -264,7 +265,7 @@ final class SignUpVC: UIViewController {
             textFieldViews.append(textField)
         }
     }
-
+    
     // MARK: - Selectors
     @objc
     private func handleCheckUsernameButton() {
@@ -296,7 +297,7 @@ final class SignUpVC: UIViewController {
             self.generateAlert(title: title)
         })
     }
-
+    
     @objc
     private func handleaddressTapGesture(_ sender: UITapGestureRecognizer) {
         let nextVC = KakaoAddressVC()
@@ -305,7 +306,7 @@ final class SignUpVC: UIViewController {
         naviVC.modalTransitionStyle = .crossDissolve
         present(naviVC, animated: true)
     }
-
+    
     @objc
     private func handleSMSTapGesture(_ sender: UITapGestureRecognizer) {
         agreementCells[5].smsCheckmark.isActive
@@ -324,7 +325,35 @@ final class SignUpVC: UIViewController {
                 selectedPromotion.insert(1) }()
         checkPromotionStatus()
     }
-
+    
+    @objc
+    private func handleRecommendationViewTapGesutre(_ sender: UITapGestureRecognizer) {
+        newAddtionalInfoView.isRecommendationViewActive.toggle()
+        newAddtionalInfoView.isEventNameViewActive = false
+        self.newAddtionalInfoView.snp.updateConstraints {
+            $0.height.equalTo(185)
+        }
+        DispatchQueue.main.async {
+            self.contentView.snp.updateConstraints {
+                $0.height.equalTo(self.newAddtionalInfoView.frame.maxY)
+            }
+        }
+    }
+    
+    @objc
+    private func handleEventViewTapGesutre(_ sender: UITapGestureRecognizer) {
+        newAddtionalInfoView.isEventNameViewActive.toggle()
+        newAddtionalInfoView.isRecommendationViewActive = false
+        newAddtionalInfoView.snp.updateConstraints {
+            $0.height.equalTo(185)
+        }
+        DispatchQueue.main.async {
+            self.contentView.snp.updateConstraints {
+                $0.height.equalTo(self.newAddtionalInfoView.frame.maxY + 10)
+            }
+        }
+    }
+    
     // MARK: - Helpers
     private func handleGenderTableView(tableView: UITableView, indexPath: IndexPath) {
         guard let cell = tableView.cellForRow(at: indexPath) as? SignUpGenderTableViewCell else { return }
@@ -340,7 +369,7 @@ final class SignUpVC: UIViewController {
         }
         cell.isActive = true
     }
-
+    
     private func handleAdditionalInfoTableView(tableView: UITableView, indexPath: IndexPath) {
         guard let cell = tableView.cellForRow(at: indexPath) as? AdditionalInfoTableViewCell else { return }
         switch indexPath.row {
@@ -353,7 +382,7 @@ final class SignUpVC: UIViewController {
         }
         cell.isActive = true
     }
-
+    
     private func handleAgreementTableView(tableView: UITableView, indexPath: IndexPath) {
         guard let cell = tableView.cellForRow(at: indexPath) as? AgreementTableViewCell else { return }
         switch indexPath.row {
@@ -370,7 +399,7 @@ final class SignUpVC: UIViewController {
             agreementSelectedCells.contains(0) ? deactivateSelectsAll() : activateSelectsAll()
         }
     }
-
+    
     private func configureCellType(type: String) -> AgreementCellType {
         switch type {
         case "title":
@@ -385,19 +414,25 @@ final class SignUpVC: UIViewController {
             fatalError()
         }
     }
-
+    
     private func addTapGestures(cell: AgreementTableViewCell, indexPath: IndexPath) {
         guard indexPath.row == 5 else { return }
         let smsCheckmarkGesture = UITapGestureRecognizer(target: self, action: #selector(handleSMSTapGesture(_:)))
-//        let smsLabelGesture = UITapGestureRecognizer(target: self, action: #selector(handleSMSTapGesture(_:)))
         let emailCheckmarkGesture = UITapGestureRecognizer(target: self, action: #selector(handleEmailTapGesture(_:)))
-//        let emailLabelGesture = UITapGestureRecognizer(target: self, action: #selector(handleEmailTapGesture(_:)))
         cell.smsCheckmark.addGestureRecognizer(smsCheckmarkGesture)
-//        cell.smsLabel.addGestureRecognizer(smsLabelGesture)
         cell.emailCheckmark.addGestureRecognizer(emailCheckmarkGesture)
-//        cell.emailLabel.addGestureRecognizer(emailLabelGesture)
     }
-
+    
+    private func addAdditionalViewTapGesture() {
+        let recommendationViewTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleRecommendationViewTapGesutre(_:)))
+        newAddtionalInfoView.recommendationView.addGestureRecognizer(recommendationViewTapGesture)
+        newAddtionalInfoView.recommendationView.isUserInteractionEnabled = true
+        
+        let eventNameViewTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleEventViewTapGesutre(_:)))
+        newAddtionalInfoView.eventNameView.addGestureRecognizer(eventNameViewTapGesture)
+        newAddtionalInfoView.eventNameView.isUserInteractionEnabled = true
+    }
+    
     private func activateAllCells() {
         var counter = 0
         for cell in agreementCells {
@@ -411,7 +446,7 @@ final class SignUpVC: UIViewController {
         selectedPromotion.insert(0)
         selectedPromotion.insert(1)
     }
-
+    
     private func deactivateAllCells() {
         for cell in agreementCells {
             cell.checkmark.isActive = false
@@ -421,47 +456,47 @@ final class SignUpVC: UIViewController {
             selectedPromotion.removeAll()
         }
     }
-
+    
     private func activateSelectsAll() {
         if agreementSelectedCells.contains(1),
-            agreementSelectedCells.contains(2),
-            agreementSelectedCells.contains(3),
-            agreementSelectedCells.contains(4),
-            agreementSelectedCells.contains(6) {
+           agreementSelectedCells.contains(2),
+           agreementSelectedCells.contains(3),
+           agreementSelectedCells.contains(4),
+           agreementSelectedCells.contains(6) {
             activateAllCells()
         }
     }
-
+    
     private func deactivateSelectsAll() {
         guard let cell = agreementCells.first else { return }
         cell.checkmark.isActive = false
         agreementSelectedCells.remove(0)
     }
-
+    
     private func insertCellInfo(indexPath: IndexPath) {
         agreementSelectedCells.insert(indexPath.row)
     }
-
+    
     private func deleteCellInfo(indexPath: IndexPath) {
         agreementSelectedCells.remove(indexPath.row)
     }
-
+    
     private func selectsAllPromotion() {
         agreementCells[5].smsCheckmark.isActive = true
         agreementCells[5].emailCheckmark.isActive = true
         selectedPromotion.insert(0)
         selectedPromotion.insert(1)
     }
-
+    
     private func deselectsAllPromotion() {
         agreementCells[5].smsCheckmark.isActive = false
         agreementCells[5].emailCheckmark.isActive = false
         selectedPromotion.removeAll()
     }
-
+    
     private func checkPromotionStatus() {
         if selectedPromotion.contains(0),
-            selectedPromotion.contains(1) {
+           selectedPromotion.contains(1) {
             agreementCells[4].checkmark.isActive = true
             agreementSelectedCells.insert(4)
             activateSelectsAll()
@@ -470,7 +505,7 @@ final class SignUpVC: UIViewController {
             deactivateSelectsAll()
         }
     }
-
+    
     private func viewSizeHandler(tag: Int) -> () -> Void { // 텍스트필드가 활성화되었을 때 크기 조절
         switch tag {
         case 0:
@@ -480,7 +515,7 @@ final class SignUpVC: UIViewController {
                     $0.top.equalTo(self.textFieldViews[0].snp.bottom).offset(offset)
                 }
                 self.contentView.snp.updateConstraints {
-                    $0.height.equalTo(self.additionalInfoView.frame.maxY + offset)
+                    $0.height.equalTo(self.newAddtionalInfoView.frame.maxY + offset)
                 }
             }
         case 1:
@@ -490,7 +525,7 @@ final class SignUpVC: UIViewController {
                     $0.top.equalTo(self.textFieldViews[1].snp.bottom).offset(offset)
                 }
                 self.contentView.snp.updateConstraints {
-                    $0.height.equalTo(self.additionalInfoView.frame.maxY + offset)
+                    $0.height.equalTo(self.newAddtionalInfoView.frame.maxY + offset)
                 }
             }
         case 2:
@@ -500,14 +535,14 @@ final class SignUpVC: UIViewController {
                     $0.top.equalTo(self.textFieldViews[2].snp.bottom).offset(offset)
                 }
                 self.contentView.snp.updateConstraints {
-                    $0.height.equalTo(self.additionalInfoView.frame.maxY + offset)
+                    $0.height.equalTo(self.newAddtionalInfoView.frame.maxY + offset)
                 }
             }
         default:
             return { return }
         }
     }
-
+    
     private func generateAlert(title: String) {
         let alert = UIAlertController(title: title, message: "", preferredStyle: .alert)
         let confirmAction = UIAlertAction(title: "확인", style: .default, handler: nil)
@@ -518,7 +553,7 @@ final class SignUpVC: UIViewController {
 
 // MARK: - UITableViewDataSource
 extension SignUpVC: UITableViewDataSource {
-
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch tableView {
         case genderTableView:
@@ -533,7 +568,7 @@ extension SignUpVC: UITableViewDataSource {
             return 0
         }
     }
-
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch tableView {
         case genderTableView:
@@ -553,7 +588,7 @@ extension SignUpVC: UITableViewDataSource {
                 let subtitle = data[indexPath.row]["subtitle"],
                 let info = data[indexPath.row]["info"],
                 let type = data[indexPath.row]["type"]
-                else { fatalError() }
+            else { fatalError() }
             let cellType = configureCellType(type: type)
             cell.configureCell(title: title, info: info, subtitle: subtitle, cellType: cellType)
             addTapGestures(cell: cell, indexPath: indexPath)
@@ -567,7 +602,7 @@ extension SignUpVC: UITableViewDataSource {
 
 // MARK: - UITableViewDelegate
 extension SignUpVC: UITableViewDelegate {
-
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch tableView {
         case genderTableView:
@@ -580,7 +615,7 @@ extension SignUpVC: UITableViewDelegate {
             break
         }
     }
-
+    
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         switch tableView {
         case genderTableView:
@@ -595,17 +630,17 @@ extension SignUpVC: UITableViewDelegate {
             break
         }
     }
-
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         switch tableView {
         case genderTableView:
             return 50
         case additionalInfoTableView:
-            return 50
+            return 100
         case agreementTableView:
             switch indexPath.row {
             case 0:
-                return 100
+                return 50
             case 1:
                 return 50
             case 2:

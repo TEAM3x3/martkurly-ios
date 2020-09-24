@@ -35,11 +35,8 @@ class SignUpTextFieldTitleView: UIView {
 
     // MARK: - UI
     private func configureUI() {
-        setPropertyAttributes()
         setConstraints()
     }
-
-    private func setPropertyAttributes() {}
 
     private func setConstraints() {
         guard let mendatory = mendatory else { return }
@@ -48,8 +45,9 @@ class SignUpTextFieldTitleView: UIView {
                 self.addSubview($0)
             }
             titleLabel.snp.makeConstraints {
+                $0.top.bottom.equalToSuperview()
                 $0.leading.equalToSuperview()
-                $0.centerY.equalToSuperview()
+//                $0.centerY.equalToSuperview()
             }
             mendatoryCheckmark.snp.makeConstraints {
                 $0.top.equalTo(titleLabel).offset(1)
@@ -58,8 +56,9 @@ class SignUpTextFieldTitleView: UIView {
         } else {
             self.addSubview(titleLabel)
             titleLabel.snp.makeConstraints {
+                $0.top.bottom.equalToSuperview()
                 $0.leading.equalToSuperview()
-                $0.centerY.equalToSuperview()
+//                $0.centerY.equalToSuperview()
             }
         }
     }
