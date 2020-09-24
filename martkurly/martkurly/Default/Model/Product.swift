@@ -8,6 +8,19 @@
 
 import Foundation
 
+struct Cart: Decodable {
+
+    let id: Int
+    let quantity_of_goods: Int
+    let items: [Items]
+
+    struct Items: Decodable {
+        let id: Int
+        let cart: Int
+    }
+
+}
+
 // 기본 Product 구조체
 struct Product: Decodable {
     let id: Int                 // 상품 코드

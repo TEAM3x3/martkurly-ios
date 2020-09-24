@@ -26,6 +26,8 @@ class CartVC: UIViewController {
         $0.backgroundColor = ColorManager.General.backGray.rawValue
     }
 
+//    private let emptyV = AllSelectButtonLineView()
+
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,6 +38,13 @@ class CartVC: UIViewController {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.isHidden = true
     }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.navigationBar.isHidden = true
+    }
+
+    let button = KurlyButton(title: "주문하기", style: .purple)
 
     // MARK: - Action
     @objc
@@ -54,58 +63,122 @@ class CartVC: UIViewController {
             view.addSubview($0)
         }
 
+        view.addSubview(button)
+
         navi.snp.makeConstraints {
             $0.top.leading.trailing.equalToSuperview()
             $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.top).offset(44)
         }
 
+//        navi.snp.makeConstraints {
+//            $0.top.leading.trailing.equalToSuperview()
+//            $0.bottom.equalTo(view.safeAreaLayoutGuide)
+//        }
+
         tableV.snp.makeConstraints {
             $0.top.equalTo(navi.snp.bottom)
             $0.leading.trailing.equalTo(view)
-            $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
+            $0.bottom.equalTo(button.snp.top)
         }
+
+//        emptyV.snp.makeConstraints {
+//            $0.top.equalTo(navi.snp.bottom)
+//            $0.leading.trailing.equalTo(view)
+//            $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
+//        }
 
         tableV.dataSource = self
         tableV.delegate = self
+        tableV.backgroundColor = ColorManager.General.backGray.rawValue
         tableV.separatorStyle = .none
 
-        if count > 0 {
+//        tableV.register(AllSelectButtonLineView.self, forCellReuseIdentifier: "cell")
 
-        } else {
-            let button = KurlyButton(title: "주문하기", style: .purple)
-            view.addSubview(button)
-            button.snp.makeConstraints {
-                $0.bottom.equalToSuperview().inset(48)
-                $0.leading.trailing.equalToSuperview().offset(8).inset(8)
-                $0.height.equalTo(55)
-            }
-            button.addTarget(self, action: #selector(emptyBtnTap), for: .touchUpInside)
+        button.snp.makeConstraints {
+            $0.bottom.equalToSuperview().inset(48)
+            $0.leading.trailing.equalToSuperview().offset(8).inset(8)
+            $0.height.equalTo(55)
         }
+        button.addTarget(self, action: #selector(emptyBtnTap), for: .touchUpInside)
+
     }
 
     @objc
     func emptyBtnTap(_ sender: UIButton) {
-        let view = UIView().then {
-            $0.backgroundColor = .magenta
-
-        }
-
+        print("주문하기")
     }
 }
 
 extension CartVC: UITableViewDataSource {
+    func numberOfSections(in tableView: UITableView) -> Int {
+        2
+    }
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        switch section {
+        case 0:
+            return 1
+        default:
+            return 1
+        }
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if count > 0 {
-            let cell = UITableViewCell()
-            return cell
-        } else {
-            let cell = AllSelectButtonLineView()
+
+        if indexPath.section == 0 {
+            if indexPath.row == 0 {
+                let cell = AllSelectView()
+                cell.selectionStyle = .none
+                cell.configure(number: "(0/0)", bool: true)
+                return cell
+            } else {
+                let cell = UITableViewCell()
+                cell.selectionStyle = .none
+                return cell
+            }
+//        } else if indexPath.section == 1 {
+//            let cell = PriceView()
+//            cell.selectionStyle = .none
+//            return cell
+        } else if indexPath.section == 1 {
+            let cell = PriceView()
             cell.selectionStyle = .none
             return cell
+        } else {
+            let cell = UITableViewCell()
+            cell.selectionStyle = .none
+            return cell
+        }
+    }
+
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if indexPath.section == 0 {
+            return 50 + 200
+        } else if indexPath.section == 1 {
+            return 250
+        } else {
+            return 0
+        }
+    }
+
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+
+        switch section {
+        case 0:
+            let view = CartHeaderView()
+            return view
+        default:
+            let cell = UIView()
+            return cell
+        }
+    }
+
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        switch section {
+        case 0:
+            return 35
+        default:
+            return 0
         }
     }
 }
