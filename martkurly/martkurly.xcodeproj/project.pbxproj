@@ -56,7 +56,7 @@
 		425C5BD724F69E45002C57D2 /* AdditionalInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425C5BD624F69E45002C57D2 /* AdditionalInfoView.swift */; };
 		425C5BD924F6A01E002C57D2 /* AdditionalInfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425C5BD824F6A01E002C57D2 /* AdditionalInfoTableViewCell.swift */; };
 		425C887E2511288100ED4411 /* KakaoAddressVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425C887D2511288100ED4411 /* KakaoAddressVC.swift */; };
-		4263A2BD24F52239004CB90A /* SingUpBirthdayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4263A2BC24F52239004CB90A /* SingUpBirthdayView.swift */; };
+		4263A2BD24F52239004CB90A /* SignUpBirthdayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4263A2BC24F52239004CB90A /* SignUpBirthdayView.swift */; };
 		4277F958251B2EC70011E927 /* NewAdditionalInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4277F957251B2EC70011E927 /* NewAdditionalInfoView.swift */; };
 		4289621025138F2A00277DF4 /* ChooseProductsDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4289620F25138F2A00277DF4 /* ChooseProductsDetailView.swift */; };
 		42896213251390B200277DF4 /* KurlyStepper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42896212251390B200277DF4 /* KurlyStepper.swift */; };
@@ -226,7 +226,7 @@
 		425C5BD624F69E45002C57D2 /* AdditionalInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdditionalInfoView.swift; sourceTree = "<group>"; };
 		425C5BD824F6A01E002C57D2 /* AdditionalInfoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdditionalInfoTableViewCell.swift; sourceTree = "<group>"; };
 		425C887D2511288100ED4411 /* KakaoAddressVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoAddressVC.swift; sourceTree = "<group>"; };
-		4263A2BC24F52239004CB90A /* SingUpBirthdayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingUpBirthdayView.swift; sourceTree = "<group>"; };
+		4263A2BC24F52239004CB90A /* SignUpBirthdayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpBirthdayView.swift; sourceTree = "<group>"; };
 		4277F957251B2EC70011E927 /* NewAdditionalInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewAdditionalInfoView.swift; sourceTree = "<group>"; };
 		4289620F25138F2A00277DF4 /* ChooseProductsDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseProductsDetailView.swift; sourceTree = "<group>"; };
 		42896212251390B200277DF4 /* KurlyStepper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KurlyStepper.swift; sourceTree = "<group>"; };
@@ -465,7 +465,7 @@
 				4246D14324F50D9F0001F9E8 /* SignUpAddressInputView.swift */,
 				4246D13D24F4BD780001F9E8 /* SignUpTextFieldTitleView.swift */,
 				42CD086524F623F7006A8087 /* SignUpBirthdayTextFieldView.swift */,
-				4263A2BC24F52239004CB90A /* SingUpBirthdayView.swift */,
+				4263A2BC24F52239004CB90A /* SignUpBirthdayView.swift */,
 				42B4FD7224F63AC30087F6B1 /* SignUpGenderView.swift */,
 				424EA5EE24F63D9C003CC478 /* SignUpGenderTableViewCell.swift */,
 			);
@@ -1118,7 +1118,7 @@
 				422C6F4425021E5F00E3F2A1 /* MyKurlyMileageVC.swift in Sources */,
 				42FAF01B24ED296C00063981 /* TestVC.swift in Sources */,
 				422C6F502502200300E3F2A1 /* MyKurlyAssistantVC.swift in Sources */,
-				4263A2BD24F52239004CB90A /* SingUpBirthdayView.swift in Sources */,
+				4263A2BD24F52239004CB90A /* SignUpBirthdayView.swift in Sources */,
 				42F44E7024F9129F001B9294 /* MyKurlyNoticeVC.swift in Sources */,
 				AFE1487A250D2FEA00C9FC8F /* EventModel.swift in Sources */,
 				42E95B7924F8B6510097F028 /* MyKurlySignView.swift in Sources */,
@@ -1277,7 +1277,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = ZLCDRXJTXW;
+				DEVELOPMENT_TEAM = DX4KVUBK56;
 				INFOPLIST_FILE = martkurly/Supporting/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1299,7 +1299,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = ZLCDRXJTXW;
+				DEVELOPMENT_TEAM = DX4KVUBK56;
 				INFOPLIST_FILE = martkurly/Supporting/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (

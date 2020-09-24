@@ -9,7 +9,7 @@
 import UIKit
 
 final class SignUpVC: UIViewController {
-    
+
     // MARK: - Properties
     private let separtor = UIView().then {
         $0.backgroundColor = .separatorGray
@@ -21,7 +21,7 @@ final class SignUpVC: UIViewController {
         $0.backgroundColor = .white
     }
     private var textFieldTitleLabels = [SignUpTextFieldTitleView]()
-    private var textFieldViews = [UserTextFieldView]() // 아이디, 비밀번호, 비밀번호 확인, 이름, 이메일 뷰가 순서로 들어있음
+    private var textFieldViews = [UserTextFieldView]() // 아이디, 비밀번호, 비밀번호 확인, 이름, 이메일, 휴대폰 뷰가 순서로 들어있음
     private let checkUsernameButton = KurlyButton(title: StringManager.SignUp.checkDuplicate.rawValue, style: .white)
     private let phoneNumberCheckButton = KurlyButton(title: StringManager.SignUp.checkPhoneNumber.rawValue, style: .white)
     private let addressView = SignUpAddressView()
@@ -37,14 +37,14 @@ final class SignUpVC: UIViewController {
         }
     }
     private let birthdayTitleView = SignUpTextFieldTitleView(title: StringManager.SignUp.birthday.rawValue, mendatory: false)
-    private let birthdayTextFields = SingUpBirthdayView() // YYYY, MM, DD 3개의 TextFields 로 구성되어 있다.
+    private let birthdayTextFields = SignUpBirthdayView() // YYYY, MM, DD 3개의 TextFields 로 구성되어 있다.
     private let genderChoice = SignUpGenderView()
     private lazy var genderTableView = genderChoice.tableView // 성별 선택
     private var genderSelected: Gender = .unknwon // 유저가 선택한 성별
     private let additionalInfoView = AdditionalInfoView()
     private lazy var additionalInfoTableView = additionalInfoView.tableView // 추천인 및 참여 이벤트명 선택
     private let newAddtionalInfoView = NewAdditionalInfoView()
-    
+
     private let contentView2 = UIView().then {
         $0.backgroundColor = .white
     }
@@ -56,7 +56,7 @@ final class SignUpVC: UIViewController {
     private var agreementSelectedCells: Set<Int> = [] // 유저가 선택한 이용약관동의에 대한 정보
     private var selectedPromotion: Set<Int> = [] // 유저가 선택한 혜택정보 수신에 대한 정보
     private let signUpButton = KurlyButton(title: StringManager.SignUp.signUp.rawValue, style: .purple)
-    
+
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -64,7 +64,7 @@ final class SignUpVC: UIViewController {
         self.hideKeyboardWhenTappedAround()
         configureUI()
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.isHidden = false
@@ -73,18 +73,18 @@ final class SignUpVC: UIViewController {
                                leftBarbuttonStyle: .pop,
                                titleText: StringManager.Sign.signUp.rawValue)
     }
-    
+
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         contentView.snp.updateConstraints {
             $0.height.equalTo(newAddtionalInfoView.frame.maxY)
         }
-        
+
         contentView2.snp.updateConstraints {
             $0.height.equalTo(signUpButton.frame.maxY + 20)
         }
     }
-    
+
     // MARK: - UI
     private func configureUI() {
         setScrollView()
@@ -92,26 +92,31 @@ final class SignUpVC: UIViewController {
         setAttributes()
         setConstraints()
     }
-    
+
     private func setAttributes() {
+        textFieldViews[1].textField.isSecureTextEntry = true
+        textFieldViews[2].textField.isSecureTextEntry = true
+        textFieldViews[4].textField.keyboardType = .emailAddress
+        textFieldViews[5].textField.keyboardType = .numberPad
+
         genderTableView.delegate = self
         genderTableView.dataSource = self
-        
+
         additionalInfoTableView.delegate = self
         additionalInfoTableView.dataSource = self
-        
+
         agreementTableView.delegate = self
         agreementTableView.dataSource = self
-        
+
         checkUsernameButton.addTarget(self, action: #selector(handleCheckUsernameButton), for: .touchUpInside)
-        
+
         let addressTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleaddressTapGesture(_:)))
         addressView.addGestureRecognizer(addressTapGesture)
         addressView.isUserInteractionEnabled = true
-        
+
         addAdditionalViewTapGesture()
     }
-    
+
     private func setConstraints() {
         guard
             let idTextField = textFieldViews.first,
@@ -154,7 +159,7 @@ final class SignUpVC: UIViewController {
             $0.height.equalTo(160)
         }
     }
-    
+
     private func setScrollView() {
         [separtor, scrollView].forEach {
             view.addSubview($0)
@@ -194,7 +199,7 @@ final class SignUpVC: UIViewController {
             $0.leading.trailing.equalToSuperview().inset(20)
         }
         agreementView.snp.makeConstraints {
-            $0.top.equalTo(agreementTitleView).offset(20)
+            $0.top.equalTo(agreementTitleView.snp.bottom).offset(20)
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.height.equalTo(500)
         }
@@ -204,8 +209,9 @@ final class SignUpVC: UIViewController {
             $0.height.equalTo(48)
         }
     }
-    
+
     private func generateTextFields() {
+        var tag = 0
         for info in StringManager().signUpTextFieldsInfo {
             guard let title = info["title"] as? String,
                   let placeHolder = info["placeholder"] as? String
@@ -213,16 +219,16 @@ final class SignUpVC: UIViewController {
             let titleLabel = SignUpTextFieldTitleView(title: title, mendatory: true)
             let subtitles = info["subtitles"] as? [String] ?? nil
             let textField = UserTextFieldView(placeholder: placeHolder, fontSize: 14, subtitles: subtitles, viewSizeHandler: viewSizeHandler(tag: textFieldViews.count))
-            
+            textField.tag = tag
+
             [titleLabel, textField].forEach {
                 contentView.addSubview($0)
             }
-            
+
             if textFieldViews.isEmpty == true { // 첫번째 텍스트필드 값이면...
                 titleLabel.snp.makeConstraints {
                     $0.top.equalToSuperview().offset(16)
                     $0.leading.trailing.equalTo(view).inset(20)
-                    //                    $0.height.equalTo(30)
                 }
                 textField.snp.makeConstraints {
                     $0.top.equalTo(titleLabel.snp.bottom).offset(8)
@@ -237,7 +243,6 @@ final class SignUpVC: UIViewController {
                 titleLabel.snp.makeConstraints {
                     $0.top.equalTo(lastObject.snp.bottom).offset(16)
                     $0.leading.trailing.equalTo(view).inset(20)
-                    //                    $0.height.equalTo(30)
                 }
                 textField.snp.makeConstraints {
                     $0.top.equalTo(titleLabel.snp.bottom).offset(8)
@@ -252,7 +257,6 @@ final class SignUpVC: UIViewController {
                 titleLabel.snp.makeConstraints {
                     $0.top.equalTo(lastObject.snp.bottom).offset(16)
                     $0.leading.trailing.equalTo(view).inset(20)
-                    //                    $0.height.equalTo(30)
                 }
                 textField.snp.makeConstraints {
                     $0.top.equalTo(titleLabel.snp.bottom).offset(8)
@@ -263,9 +267,10 @@ final class SignUpVC: UIViewController {
             }
             textFieldTitleLabels.append(titleLabel)
             textFieldViews.append(textField)
+            tag += 1
         }
     }
-    
+
     // MARK: - Selectors
     @objc
     private func handleCheckUsernameButton() {
@@ -297,7 +302,7 @@ final class SignUpVC: UIViewController {
             self.generateAlert(title: title)
         })
     }
-    
+
     @objc
     private func handleaddressTapGesture(_ sender: UITapGestureRecognizer) {
         let nextVC = KakaoAddressVC()
@@ -306,7 +311,7 @@ final class SignUpVC: UIViewController {
         naviVC.modalTransitionStyle = .crossDissolve
         present(naviVC, animated: true)
     }
-    
+
     @objc
     private func handleSMSTapGesture(_ sender: UITapGestureRecognizer) {
         agreementCells[5].smsCheckmark.isActive
@@ -325,23 +330,26 @@ final class SignUpVC: UIViewController {
                 selectedPromotion.insert(1) }()
         checkPromotionStatus()
     }
-    
+
     @objc
     private func handleRecommendationViewTapGesutre(_ sender: UITapGestureRecognizer) {
+        guard newAddtionalInfoView.isRecommendationViewActive == false else { return }
         newAddtionalInfoView.isRecommendationViewActive.toggle()
         newAddtionalInfoView.isEventNameViewActive = false
         self.newAddtionalInfoView.snp.updateConstraints {
             $0.height.equalTo(185)
         }
         DispatchQueue.main.async {
+            let height = self.newAddtionalInfoView.frame.maxY < 1120 ? 1128 : self.newAddtionalInfoView.frame.maxY
             self.contentView.snp.updateConstraints {
-                $0.height.equalTo(self.newAddtionalInfoView.frame.maxY)
+                $0.height.equalTo(height + 10)
             }
         }
     }
-    
+
     @objc
     private func handleEventViewTapGesutre(_ sender: UITapGestureRecognizer) {
+        guard newAddtionalInfoView.isEventNameViewActive == false else { return }
         newAddtionalInfoView.isEventNameViewActive.toggle()
         newAddtionalInfoView.isRecommendationViewActive = false
         newAddtionalInfoView.snp.updateConstraints {
@@ -353,7 +361,7 @@ final class SignUpVC: UIViewController {
             }
         }
     }
-    
+
     // MARK: - Helpers
     private func handleGenderTableView(tableView: UITableView, indexPath: IndexPath) {
         guard let cell = tableView.cellForRow(at: indexPath) as? SignUpGenderTableViewCell else { return }
@@ -369,7 +377,7 @@ final class SignUpVC: UIViewController {
         }
         cell.isActive = true
     }
-    
+
     private func handleAdditionalInfoTableView(tableView: UITableView, indexPath: IndexPath) {
         guard let cell = tableView.cellForRow(at: indexPath) as? AdditionalInfoTableViewCell else { return }
         switch indexPath.row {
@@ -382,7 +390,7 @@ final class SignUpVC: UIViewController {
         }
         cell.isActive = true
     }
-    
+
     private func handleAgreementTableView(tableView: UITableView, indexPath: IndexPath) {
         guard let cell = tableView.cellForRow(at: indexPath) as? AgreementTableViewCell else { return }
         switch indexPath.row {
@@ -399,7 +407,7 @@ final class SignUpVC: UIViewController {
             agreementSelectedCells.contains(0) ? deactivateSelectsAll() : activateSelectsAll()
         }
     }
-    
+
     private func configureCellType(type: String) -> AgreementCellType {
         switch type {
         case "title":
@@ -414,7 +422,7 @@ final class SignUpVC: UIViewController {
             fatalError()
         }
     }
-    
+
     private func addTapGestures(cell: AgreementTableViewCell, indexPath: IndexPath) {
         guard indexPath.row == 5 else { return }
         let smsCheckmarkGesture = UITapGestureRecognizer(target: self, action: #selector(handleSMSTapGesture(_:)))
@@ -422,17 +430,17 @@ final class SignUpVC: UIViewController {
         cell.smsCheckmark.addGestureRecognizer(smsCheckmarkGesture)
         cell.emailCheckmark.addGestureRecognizer(emailCheckmarkGesture)
     }
-    
+
     private func addAdditionalViewTapGesture() {
         let recommendationViewTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleRecommendationViewTapGesutre(_:)))
         newAddtionalInfoView.recommendationView.addGestureRecognizer(recommendationViewTapGesture)
         newAddtionalInfoView.recommendationView.isUserInteractionEnabled = true
-        
+
         let eventNameViewTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleEventViewTapGesutre(_:)))
         newAddtionalInfoView.eventNameView.addGestureRecognizer(eventNameViewTapGesture)
         newAddtionalInfoView.eventNameView.isUserInteractionEnabled = true
     }
-    
+
     private func activateAllCells() {
         var counter = 0
         for cell in agreementCells {
@@ -446,7 +454,7 @@ final class SignUpVC: UIViewController {
         selectedPromotion.insert(0)
         selectedPromotion.insert(1)
     }
-    
+
     private func deactivateAllCells() {
         for cell in agreementCells {
             cell.checkmark.isActive = false
@@ -456,7 +464,7 @@ final class SignUpVC: UIViewController {
             selectedPromotion.removeAll()
         }
     }
-    
+
     private func activateSelectsAll() {
         if agreementSelectedCells.contains(1),
            agreementSelectedCells.contains(2),
@@ -466,34 +474,34 @@ final class SignUpVC: UIViewController {
             activateAllCells()
         }
     }
-    
+
     private func deactivateSelectsAll() {
         guard let cell = agreementCells.first else { return }
         cell.checkmark.isActive = false
         agreementSelectedCells.remove(0)
     }
-    
+
     private func insertCellInfo(indexPath: IndexPath) {
         agreementSelectedCells.insert(indexPath.row)
     }
-    
+
     private func deleteCellInfo(indexPath: IndexPath) {
         agreementSelectedCells.remove(indexPath.row)
     }
-    
+
     private func selectsAllPromotion() {
         agreementCells[5].smsCheckmark.isActive = true
         agreementCells[5].emailCheckmark.isActive = true
         selectedPromotion.insert(0)
         selectedPromotion.insert(1)
     }
-    
+
     private func deselectsAllPromotion() {
         agreementCells[5].smsCheckmark.isActive = false
         agreementCells[5].emailCheckmark.isActive = false
         selectedPromotion.removeAll()
     }
-    
+
     private func checkPromotionStatus() {
         if selectedPromotion.contains(0),
            selectedPromotion.contains(1) {
@@ -505,7 +513,7 @@ final class SignUpVC: UIViewController {
             deactivateSelectsAll()
         }
     }
-    
+
     private func viewSizeHandler(tag: Int) -> () -> Void { // 텍스트필드가 활성화되었을 때 크기 조절
         switch tag {
         case 0:
@@ -542,7 +550,7 @@ final class SignUpVC: UIViewController {
             return { return }
         }
     }
-    
+
     private func generateAlert(title: String) {
         let alert = UIAlertController(title: title, message: "", preferredStyle: .alert)
         let confirmAction = UIAlertAction(title: "확인", style: .default, handler: nil)
@@ -553,7 +561,7 @@ final class SignUpVC: UIViewController {
 
 // MARK: - UITableViewDataSource
 extension SignUpVC: UITableViewDataSource {
-    
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch tableView {
         case genderTableView:
@@ -568,7 +576,7 @@ extension SignUpVC: UITableViewDataSource {
             return 0
         }
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch tableView {
         case genderTableView:
@@ -602,7 +610,7 @@ extension SignUpVC: UITableViewDataSource {
 
 // MARK: - UITableViewDelegate
 extension SignUpVC: UITableViewDelegate {
-    
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch tableView {
         case genderTableView:
@@ -615,7 +623,7 @@ extension SignUpVC: UITableViewDelegate {
             break
         }
     }
-    
+
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         switch tableView {
         case genderTableView:
@@ -630,7 +638,7 @@ extension SignUpVC: UITableViewDelegate {
             break
         }
     }
-    
+
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         switch tableView {
         case genderTableView:
@@ -640,7 +648,7 @@ extension SignUpVC: UITableViewDelegate {
         case agreementTableView:
             switch indexPath.row {
             case 0:
-                return 50
+                return 100
             case 1:
                 return 50
             case 2:

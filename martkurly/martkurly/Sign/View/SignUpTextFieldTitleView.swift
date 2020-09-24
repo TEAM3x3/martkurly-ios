@@ -13,6 +13,7 @@ class SignUpTextFieldTitleView: UIView {
     // MARK: - Properties
     private let titleLabel = UILabel().then {
         $0.font = UIFont.boldSystemFont(ofSize: 14)
+        $0.textColor = .textBlack
     }
     private let mendatoryCheckmark = UILabel().then {
         $0.text = "*"

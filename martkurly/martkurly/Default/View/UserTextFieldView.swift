@@ -11,7 +11,10 @@ import UIKit
 class UserTextFieldView: UIView {
 
     // MARK: - Properties
-    let textField = UITextField()
+    let textField = UITextField().then {
+        $0.textColor = .textBlack
+        $0.autocapitalizationType = .none
+    }
     private let placeholder = UILabel().then {
         $0.textColor = ColorManager.General.placeholder.rawValue
     }
@@ -143,6 +146,7 @@ extension UserTextFieldView: UITextFieldDelegate {
     }
 
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        guard self.tag != 4 else { return true } // 이메일 입력필드 갯수제한 해제
         if let char = string.cString(using: String.Encoding.utf8) {
             let isBackSpace = strcmp(char, "\\b")
             if isBackSpace == -92 {
