@@ -25,3 +25,5 @@ let REF_SIGNUP = CURLY_REF + "/users"
 
 let REF_CART = CURLY_REF + "/cart"
 let REF_CART_REF = REF_CART + "/1"
+
+let REF_CATEGORY = CURLY_REF + "/category"
