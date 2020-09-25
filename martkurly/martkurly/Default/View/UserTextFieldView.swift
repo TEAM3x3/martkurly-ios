@@ -26,6 +26,7 @@ class UserTextFieldView: UIView {
     }
     private var subtitles: [String]? // 텍스트필드 아래에 나타나는 부가설명
     private var viewSizeHandler: ( () -> Void )?
+    private var completionHandler: ( () -> Void )?
     private var subtitleLabels: [UILabel] = []
     var isEditing = false
 
@@ -43,6 +44,16 @@ class UserTextFieldView: UIView {
         self.placeholder.font = UIFont.systemFont(ofSize: fontSize)
         self.subtitles = subtitles
         self.viewSizeHandler = viewSizeHandler
+        configureUI()
+    }
+
+    init(placeholder: String, fontSize: CGFloat, subtitles: [String]?, viewSizeHandler: @escaping () -> Void, completionHandler: ( () -> Void )? ) {
+        super.init(frame: .zero)
+        self.placeholder.text = placeholder
+        self.placeholder.font = UIFont.systemFont(ofSize: fontSize)
+        self.subtitles = subtitles
+        self.viewSizeHandler = viewSizeHandler
+        self.completionHandler = completionHandler
         configureUI()
     }
 
@@ -134,6 +145,8 @@ extension UserTextFieldView: UITextFieldDelegate {
 
     func textFieldDidChangeSelection(_ textField: UITextField) {
         self.isActive = text?.isEmpty == true ? false : true
+        guard let completionHandler = self.completionHandler else { return }
+        completionHandler()
     }
 
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {

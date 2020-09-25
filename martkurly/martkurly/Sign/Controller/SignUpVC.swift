@@ -32,8 +32,12 @@ final class SignUpVC: UIViewController {
     var isAddressFilled = false {
         willSet {
             addressView.snp.updateConstraints { $0.height.equalTo(150) }
-            birthdayTitleView.snp.updateConstraints { $0.top.equalTo(addressView.snp.bottom).offset(60) }
+            birthdayTitleView.snp.updateConstraints { $0.top.equalTo(addressView.snp.bottom).offset(50) }
             addressView.quickDeliveryAvailable = true
+            DispatchQueue.main.async {
+                self.contentView.snp.updateConstraints { $0.height.equalTo(self.newAddtionalInfoView.frame.maxY + 1000) }
+                print(self.newAddtionalInfoView.frame.maxY)
+            }
         }
     }
     private let birthdayTitleView = SignUpTextFieldTitleView(title: StringManager.SignUp.birthday.rawValue, mendatory: false)
@@ -56,6 +60,8 @@ final class SignUpVC: UIViewController {
     private var agreementSelectedCells: Set<Int> = [] // 유저가 선택한 이용약관동의에 대한 정보
     private var selectedPromotion: Set<Int> = [] // 유저가 선택한 혜택정보 수신에 대한 정보
     private let signUpButton = KurlyButton(title: StringManager.SignUp.signUp.rawValue, style: .purple)
+
+    private var isValidID = false
 
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -115,6 +121,8 @@ final class SignUpVC: UIViewController {
         addressView.isUserInteractionEnabled = true
 
         addAdditionalViewTapGesture()
+
+        signUpButton.addTarget(self, action: #selector(handleSignUpButton(_:)), for: .touchUpInside)
     }
 
     private func setConstraints() {
@@ -218,7 +226,10 @@ final class SignUpVC: UIViewController {
             else { return }
             let titleLabel = SignUpTextFieldTitleView(title: title, mendatory: true)
             let subtitles = info["subtitles"] as? [String] ?? nil
-            let textField = UserTextFieldView(placeholder: placeHolder, fontSize: 14, subtitles: subtitles, viewSizeHandler: viewSizeHandler(tag: textFieldViews.count))
+            let textField =
+                tag == 0
+                ? UserTextFieldView(placeholder: placeHolder, fontSize: 14, subtitles: subtitles, viewSizeHandler: viewSizeHandler(tag: textFieldViews.count), completionHandler: resetIDValidity)
+                : UserTextFieldView(placeholder: placeHolder, fontSize: 14, subtitles: subtitles, viewSizeHandler: viewSizeHandler(tag: textFieldViews.count))
             textField.tag = tag
 
             [titleLabel, textField].forEach {
@@ -301,6 +312,7 @@ final class SignUpVC: UIViewController {
         CurlyService.shared.checkUsername(username: username, completionHandler: { title in
             self.generateAlert(title: title)
         })
+        isValidID = true
     }
 
     @objc
@@ -321,6 +333,7 @@ final class SignUpVC: UIViewController {
                 selectedPromotion.insert(0) }()
         checkPromotionStatus()
     }
+
     @objc
     private func handleEmailTapGesture(_ sender: UITapGestureRecognizer) {
         agreementCells[5].emailCheckmark.isActive
@@ -360,6 +373,47 @@ final class SignUpVC: UIViewController {
                 $0.height.equalTo(self.newAddtionalInfoView.frame.maxY + 10)
             }
         }
+    }
+
+    @objc
+    private func handleSignUpButton(_ sender: UIButton) {
+        var isValid = false
+        guard
+            let username = textFieldViews[0].textField.text,
+            let password = textFieldViews[2].textField.text,
+            let nickname = textFieldViews[3].textField.text,
+            let email = textFieldViews[4].textField.text,
+            let phone = textFieldViews[5].textField.text
+        else { return }
+        let address = self.address
+        let gender = genderSelected
+
+        func genderToString(gender: Gender) -> String {
+            switch gender {
+            case .female:
+                return "F"
+            case .male:
+                return "M"
+            case .unknwon:
+                return "N"
+            }
+        }
+
+        checkValidity(isValid: &isValid)
+        guard isValid == true else { return }
+
+        CurlyService.shared.signUp(
+            username: username,
+            password: password,
+            nickname: nickname,
+            email: email,
+            phone: phone,
+            gender: genderToString(gender: gender),
+            address: address,
+            completionHandler: { return }
+        )
+
+        print(username, password, nickname, email, phone, genderToString(gender: gender), address)
     }
 
     // MARK: - Helpers
@@ -556,6 +610,44 @@ final class SignUpVC: UIViewController {
         let confirmAction = UIAlertAction(title: "확인", style: .default, handler: nil)
         alert.addAction(confirmAction)
         self.present(alert, animated: true)
+    }
+
+    private func checkValidity(isValid: inout Bool) {
+        let id = textFieldViews[0].textField.text
+        let password = textFieldViews[1].textField.text
+        let password2 = textFieldViews[2].textField.text
+        let name = textFieldViews[3].textField.text
+        let email = textFieldViews[4].textField.text
+        let phone = textFieldViews[5].textField.text
+
+        if id == "" {
+            presentAlert(title: "아이디을(를) 입력해 주세요")
+        } else if isValidID == false {
+            presentAlert(title: "아이디 중복확인을 확인해 주세요")
+        } else if password == "" {
+            presentAlert(title: "비밀번호를 입력해 주세요")
+        } else if password2 == "" {
+            presentAlert(title: "비밀번호를 한번 더 입력해 주세요")
+        } else if name == "" {
+            presentAlert(title: "이름을 입력해 주세요")
+        } else if email == "" {
+            presentAlert(title: "이메일 형식을 확인해 주세요")
+        } else if phone == "" {
+            presentAlert(title: "휴대폰 인증을 완료 해 주세요")
+        } else {
+            isValid = true
+        }
+    }
+
+    private func resetIDValidity() {
+        isValidID = false
+    }
+
+    private func presentAlert(title: String) {
+        let alert = UIAlertController(title: title, message: nil, preferredStyle: .alert)
+        let action = UIAlertAction(title: "확인", style: .default, handler: nil)
+        alert.addAction(action)
+        present(alert, animated: true, completion: nil)
     }
 }
 
