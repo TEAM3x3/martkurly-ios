@@ -186,13 +186,14 @@ struct CurlyService {
     }
 
     // MARK: - 회원가입
-    func signUp(username: String, password: String, email: String, phone: String, gener: String, address: String) {
+    func signUp(username: String, password: String, nickname: String, email: String, phone: String, gender: String, address: String, completionHandler: @escaping () -> Void ) {
         let value = [
             "username": username,
+            "nickname": nickname,
             "password": password,
             "email": email,
             "phone": phone,
-            "gender": gener,
+            "gender": gender,
             "address": address
         ]
 
@@ -202,10 +203,11 @@ struct CurlyService {
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.httpBody = try! JSONSerialization.data(withJSONObject: value)
 
-        AF.request(request).responseJSON { (response) in
+        AF.request(request).responseString { (response) in
             switch response.result {
             case .success(let data):
                 print("Success", data)
+                completionHandler()
             case .failure(let error):
                 print("Failure", error)
             }

@@ -49,7 +49,7 @@ class SignUpAddressView: UIView {
             $0.top.leading.equalToSuperview()
         }
         addressLabel.snp.makeConstraints {
-            $0.top.equalTo(textFieldTitle.snp.bottom).offset(20)
+            $0.top.equalTo(textFieldTitle.snp.bottom).offset(8)
             $0.leading.trailing.equalToSuperview()
             $0.height.equalTo(48)
         }
@@ -65,7 +65,7 @@ class SignUpAddressView: UIView {
         case true:
             self.addSubview(specificAddress)
             addressLabel.snp.updateConstraints {
-                $0.top.equalTo(textFieldTitle.snp.bottom).offset(20)
+                $0.top.equalTo(textFieldTitle.snp.bottom).offset(8)
                 $0.leading.trailing.equalToSuperview()
                 $0.height.equalTo(72)
             }

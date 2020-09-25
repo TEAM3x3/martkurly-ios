@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SingUpBirthdayView: UIView {
+class SignUpBirthdayView: UIView {
 
     // MARK: - Properties
     private lazy var stackView = UIStackView(arrangedSubviews: [yearTextField, separator1, monthTextField, separator2, dayTextField]).then {
@@ -17,9 +17,9 @@ class SingUpBirthdayView: UIView {
         $0.distribution = .fillProportionally
         $0.spacing = 10
     }
-    private let yearTextField = SignUpBirthdayTextFieldView(placeholder: "YYYY")
-    private let monthTextField = SignUpBirthdayTextFieldView(placeholder: "MM")
-    private let dayTextField = SignUpBirthdayTextFieldView(placeholder: "DD")
+    private let yearTextField = SignUpBirthdayTextFieldView(placeholder: "YYYY", maxCount: 4)
+    private let monthTextField = SignUpBirthdayTextFieldView(placeholder: "MM", maxCount: 2)
+    private let dayTextField = SignUpBirthdayTextFieldView(placeholder: "DD", maxCount: 2)
     private let separator1 = UILabel().then {
         $0.text = "/"
         $0.textColor = ColorManager.General.placeholder.rawValue
