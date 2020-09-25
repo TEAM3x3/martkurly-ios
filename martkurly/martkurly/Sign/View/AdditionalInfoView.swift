@@ -42,6 +42,7 @@ class AdditionalInfoView: UIView {
     private func setAttributes() {
         tableView.register(AdditionalInfoTableViewCell.self, forCellReuseIdentifier: AdditionalInfoTableViewCell.identifier)
         tableView.separatorStyle = .none
+        tableView.isScrollEnabled = false
     }
 
     private func setContraints() {
