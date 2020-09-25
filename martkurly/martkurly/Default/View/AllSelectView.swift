@@ -35,18 +35,6 @@ class AllSelectView: UITableViewCell {
         $0.textAlignment = .center
     }
 
-    var emptyBool = false {
-        didSet {
-
-        }
-    }
-
-    private let empty = UILabel().then {
-        $0.text = "장바구니에 담긴 상품이 없습니다."
-        $0.textAlignment = .center
-        $0.font = UIFont.systemFont(ofSize: 12)
-    }
-
     // MARK: - Lifecycle
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -59,9 +47,10 @@ class AllSelectView: UITableViewCell {
 
     // MARK: - UI
     private func setConstraints() {
-        backgroundColor = ColorManager.General.backGray.rawValue
+        contentView.backgroundColor = ColorManager.General.backGray.rawValue
+
         [check, allSelectLabel, selectNumber, deleteBtn].forEach {
-            self.addSubview($0)
+            contentView.addSubview($0)
         }
 
         deleteBtn.addSubview(lbl)
@@ -93,15 +82,6 @@ class AllSelectView: UITableViewCell {
         }
 
         deleteBtn.addTarget(self, action: #selector(deleteAction(_:)), for: .touchUpInside)
-
-        addSubview(empty)
-        empty.snp.makeConstraints {
-            $0.top.equalTo(deleteBtn.snp.bottom).offset(16)
-            $0.leading.equalToSuperview().offset(8)
-            $0.trailing.equalToSuperview().inset(8)
-            $0.height.equalTo(180)
-        }
-        empty.backgroundColor = .white
     }
 
     @objc
@@ -109,9 +89,8 @@ class AllSelectView: UITableViewCell {
         print("A")
     }
 
-    func configure(number: String, bool: Bool) {
+    func configure(number: String) {
         selectNumber.text = number
-        emptyBool = bool
     }
 
 }

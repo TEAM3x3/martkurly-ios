@@ -24,6 +24,8 @@
 		0E534A8A25064B3400EDA6EC /* EventCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E534A8925064B3400EDA6EC /* EventCell.swift */; };
 		0E534A8C25064B5000EDA6EC /* CategoryTitleModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E534A8B25064B5000EDA6EC /* CategoryTitleModel.swift */; };
 		0E63BF98250CE6C9003FA8AA /* frequentlyProductVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E63BF97250CE6C9003FA8AA /* frequentlyProductVC.swift */; };
+		0E69041A251DB33C00164167 /* CartEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E690419251DB33C00164167 /* CartEmptyView.swift */; };
+		0E69041D251DD29400164167 /* Cart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E69041C251DD29400164167 /* Cart.swift */; };
 		0E7D1A7C2511D083004A97C1 /* PriceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E7D1A7B2511D083004A97C1 /* PriceView.swift */; };
 		0E966DF224ED7AD500869F83 /* CancelMoreNoticeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E966DF124ED7AD500869F83 /* CancelMoreNoticeView.swift */; };
 		0EB5115624FF5E1E001B12FF /* CartNaviView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EB5115524FF5E1E001B12FF /* CartNaviView.swift */; };
@@ -209,6 +211,8 @@
 		0E534A8925064B3400EDA6EC /* EventCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventCell.swift; sourceTree = "<group>"; };
 		0E534A8B25064B5000EDA6EC /* CategoryTitleModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CategoryTitleModel.swift; path = martkurly/Home/View/CategoryTitleModel.swift; sourceTree = SOURCE_ROOT; };
 		0E63BF97250CE6C9003FA8AA /* frequentlyProductVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = frequentlyProductVC.swift; path = View/frequentlyProductVC.swift; sourceTree = SOURCE_ROOT; };
+		0E690419251DB33C00164167 /* CartEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartEmptyView.swift; sourceTree = "<group>"; };
+		0E69041C251DD29400164167 /* Cart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cart.swift; sourceTree = "<group>"; };
 		0E7D1A7B2511D083004A97C1 /* PriceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceView.swift; sourceTree = "<group>"; };
 		0E966DF124ED7AD500869F83 /* CancelMoreNoticeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelMoreNoticeView.swift; sourceTree = "<group>"; };
 		0EB5115524FF5E1E001B12FF /* CartNaviView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartNaviView.swift; sourceTree = "<group>"; };
@@ -428,6 +432,7 @@
 				42FAF00F24ED105E00063981 /* StringManager.swift */,
 				AFBA2C0A24EEF1170065DD29 /* CategoryType.swift */,
 				AF4759D224F2792600FE617A /* Product.swift */,
+				0E69041C251DD29400164167 /* Cart.swift */,
 				AF8E45A6250A738B009942F2 /* ExplainTableViewCase.swift */,
 			);
 			path = Model;
@@ -456,6 +461,7 @@
 				0EB5115524FF5E1E001B12FF /* CartNaviView.swift */,
 				0EB5115724FF7434001B12FF /* AllSelectButtonLineView.swift */,
 				0E1E0AA42512E777005F631D /* CartProductView.swift */,
+				0E690419251DB33C00164167 /* CartEmptyView.swift */,
 				0EE86844251B45C50043EEE7 /* CartHeaderView.swift */,
 				0EE86840251887240043EEE7 /* AllSelectView.swift */,
 				0E7D1A7B2511D083004A97C1 /* PriceView.swift */,
@@ -1074,6 +1080,7 @@
 				AF72A5B924F6650700D96920 /* ProductDetailVC.swift in Sources */,
 				AF72A5B724F6265E00D96920 /* SearchTableViewHeaderView.swift in Sources */,
 				0EE86845251B45C50043EEE7 /* CartHeaderView.swift in Sources */,
+				0E69041D251DD29400164167 /* Cart.swift in Sources */,
 				AF9906B324EE3844005A8D89 /* CategoryMenuView.swift in Sources */,
 				AF8E061F251919CB00618A07 /* ReviewRegisterView.swift in Sources */,
 				42AF3DF524F8B41100F7E1DA /* MyKurlyVC.swift in Sources */,
@@ -1086,6 +1093,7 @@
 				42F44E7624F913D3001B9294 /* MyKurlyInstructionVC.swift in Sources */,
 				AF8962D72504FE8400F42FFD /* MainCurlyRecipeCell.swift in Sources */,
 				428D874925037EFB00191E9F /* MyKurlyOrderHistoryDetailVC.swift in Sources */,
+				0E69041A251DB33C00164167 /* CartEmptyView.swift in Sources */,
 				42FAF01024ED105E00063981 /* StringManager.swift in Sources */,
 				AFAD082924FB94E500A8DC5D /* ProductDetailContentCell.swift in Sources */,
 				AF7C58EA2515EAD00007FC58 /* ReviewsCategoryType.swift in Sources */,

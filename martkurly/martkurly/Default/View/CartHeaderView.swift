@@ -12,11 +12,14 @@ import Then
 class CartHeaderView: UIView {
 
     // MARK: - Properties
+    private let truckImg = UIImageView().then {
+        $0.image = UIImage(named: "truck")
+        $0.sizeToFit()
+    }
+    var storage = ""
 
-    var storage = "냉장"
-
-    lazy var shipping = UILabel().then {
-        $0.text = "\(storage) 박스로 배송됩니다"
+    var shipping = UILabel().then {
+        $0.text = "박스로 배송됩니다"
         $0.textColor = .black
     }
 
@@ -37,10 +40,21 @@ class CartHeaderView: UIView {
     }
 
     private func setConfigure() {
-        [shipping].forEach {
+        [truckImg, shipping].forEach {
             self.addSubview($0)
         }
-        backgroundColor = .red
 
+        truckImg.snp.makeConstraints {
+            $0.centerY.equalTo(shipping.snp.centerY)
+            $0.leading.equalToSuperview().offset(16)
+            $0.width.height.equalTo(26)
+        }
+
+        shipping.snp.makeConstraints {
+            $0.top.trailing.bottom.equalToSuperview()
+            $0.leading.equalTo(truckImg.snp.trailing).offset(4)
+        }
+
+        backgroundColor = ColorManager.General.backGray.rawValue
     }
 }

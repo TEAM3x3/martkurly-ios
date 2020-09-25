@@ -12,10 +12,8 @@ import Then
 class CartVC: UIViewController {
 
     // MARK: - Properties
-    var count = ShoppingCartView().basketCount {
-        didSet {
-            setConstraints()
-        }
+    private var cartProduct = [Cart]() {
+        didSet { tableV.reloadData() }
     }
 
     private let navi = CartNaviView().then {
@@ -32,6 +30,7 @@ class CartVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setConfigure()
+        requestMainData()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -45,6 +44,24 @@ class CartVC: UIViewController {
     }
 
     let button = KurlyButton(title: "주문하기", style: .purple)
+
+    // MARK: - API
+
+    private let group = DispatchGroup.init()
+
+    func requestMainData() {
+
+        cartListProduct()
+
+    }
+
+    func cartListProduct() {
+        group.enter()
+        CurlyService.shared.setListCart { cartProduct in
+            self.group.leave()
+            self.cartProduct = cartProduct
+        }
+    }
 
     // MARK: - Action
     @objc
@@ -117,7 +134,7 @@ extension CartVC: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
         case 0:
-            return 1
+            return 2
         default:
             return 1
         }
@@ -129,10 +146,10 @@ extension CartVC: UITableViewDataSource {
             if indexPath.row == 0 {
                 let cell = AllSelectView()
                 cell.selectionStyle = .none
-                cell.configure(number: "(0/0)", bool: true)
+                cell.configure(number: "(0/0)")
                 return cell
             } else {
-                let cell = UITableViewCell()
+                let cell = CartProductView()
                 cell.selectionStyle = .none
                 return cell
             }
@@ -153,7 +170,11 @@ extension CartVC: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.section == 0 {
-            return 50 + 200
+            if indexPath.row == 0 {
+                return 50
+            } else {
+                return 180
+            }
         } else if indexPath.section == 1 {
             return 250
         } else {
@@ -165,8 +186,13 @@ extension CartVC: UITableViewDataSource {
 
         switch section {
         case 0:
-            let view = CartHeaderView()
-            return view
+//            if cartProduct > 0 {
+                let view = CartHeaderView()
+                return view
+//            } else {
+//                let cell = UIView()
+//                return cell
+//            }
         default:
             let cell = UIView()
             return cell
@@ -176,7 +202,11 @@ extension CartVC: UITableViewDataSource {
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         switch section {
         case 0:
-            return 35
+//            if cartProduct > 0 {
+                return 35
+//            } else {
+//                return 0
+//            }
         default:
             return 0
         }

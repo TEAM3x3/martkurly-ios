@@ -122,16 +122,16 @@ class PriceView: UITableViewCell {
     }
 
     private func setConfigure() {
-        backgroundColor = .white
+        contentView.backgroundColor = .white
         [sumLabel, sumCount, discountLabel, discountCount, shipLabel, shipCount, line, estimateSumLabel, estimateSumCount, estimateWon, sumWon, discountWon, shipWon, cupon].forEach {
-            addSubview($0)
+            contentView.addSubview($0)
         }
         [sumLabel, sumCount, discountLabel, discountCount, shipLabel, shipCount, estimateSumLabel, estimateSumCount, estimateWon, sumWon, discountWon, shipWon, cupon].forEach {
             $0.textColor = .black
         }
 
         [freeShipMoney, shipMoney, freeShip].forEach {
-            addSubview($0)
+            contentView.addSubview($0)
             $0.textColor = ColorManager.General.mainPurple.rawValue
             $0.snp.makeConstraints {
                 $0.top.equalTo(shipWon.snp.bottom).offset(8)
@@ -139,7 +139,7 @@ class PriceView: UITableViewCell {
         }
 
         [saving1, saving2, savingPrice].forEach {
-            addSubview($0)
+            contentView.addSubview($0)
             $0.snp.makeConstraints {
                 $0.top.equalTo(estimateWon.snp.bottom).offset(4)
             }

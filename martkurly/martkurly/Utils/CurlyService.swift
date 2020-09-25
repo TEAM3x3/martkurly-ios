@@ -237,7 +237,23 @@ struct CurlyService {
             }
         }
     }
-
     // MARK: - 장바구니
 
+    func setListCart(completion: @escaping([Cart]) -> Void) {
+        let headers: HTTPHeaders = ["Authorization": "token 88f0566e6db5ebaa0e46eae16f5a092610f46345"]
+        var cartList = [Cart]()
+
+        AF.request(REF_CART, method: .get, headers: headers).responseJSON { response in
+            guard let jsonData = response.data else { print("Guard"); return completion(cartList) }
+            print(jsonData)
+            do {
+                let cartUpList = try self.decoder.decode(Cart.self, from: jsonData)
+                print(cartUpList)
+                cartList = [cartUpList]
+            } catch {
+                print("DEBUG: Cart List Request Error, ", error)
+            }
+            completion(cartList)
+        }
+    }
 }
