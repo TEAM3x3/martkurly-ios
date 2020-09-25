@@ -19,6 +19,8 @@ class ProductReviewsCell: UICollectionViewCell {
     private let reviewWriteButton = KurlyButton(title: "후기 쓰기", style: .white)
     private let reviewsTableView = UITableView()
 
+    var tappedWriteReviewEvent: (() -> Void)?
+
     // MARK: - LifeCycle
 
     override init(frame: CGRect) {
@@ -31,11 +33,19 @@ class ProductReviewsCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
+    // MARK: - Selectors
+
+    @objc
+    func tappedWriteReview(_ sender: UIButton) {
+        tappedWriteReviewEvent?()
+    }
+
     // MARK: - Helpers
 
     func configureUI() {
         self.backgroundColor = ColorManager.General.backGray.rawValue
         configureLayout()
+        configureAttributes()
     }
 
     func configureLayout() {
@@ -55,6 +65,12 @@ class ProductReviewsCell: UICollectionViewCell {
             $0.trailing.equalToSuperview().offset(-sideInsetValue)
             $0.bottom.equalToSuperview()
         }
+    }
+
+    func configureAttributes() {
+        reviewWriteButton.addTarget(self,
+                                    action: #selector(tappedWriteReview(_:)),
+                                    for: .touchUpInside)
     }
 
     func configureTableView() {

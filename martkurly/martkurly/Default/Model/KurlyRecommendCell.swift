@@ -44,10 +44,10 @@ class KurlyRecommendCell: UICollectionViewCell {
         }
 
         lbl.snp.makeConstraints {
-            $0.top.equalTo(img.snp.bottom).offset(1)
+//            $0.top.equalTo(img.snp.bottom).offset(1)
             $0.height.equalTo(contentView.snp.height).multipliedBy(0.2)
             $0.width.equalTo(contentView.snp.width)
-            $0.trailing.bottom.equalToSuperview()
+            $0.trailing.equalToSuperview()
         }
     }
 

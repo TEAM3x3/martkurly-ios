@@ -15,13 +15,68 @@ struct CurlyService {
 
     private let decoder = JSONDecoder()
 
+    // MARK: - 타입 상품 목록 가져오기
+
+    func requestTypeProdcuts(type: String, completion: @escaping([Product]) -> Void) {
+        var typeProducts = [Product]()
+
+        let parameters = ["type": type]
+        AF.request(CURLY_GOODS_REF, method: .get, parameters: parameters).responseJSON { response in
+            guard let jsonData = response.data else { return completion(typeProducts) }
+
+            do {
+                typeProducts = try self.decoder.decode([Product].self, from: jsonData)
+            } catch {
+                print("DEBUG: Category List Request Error, ", error.localizedDescription)
+            }
+            completion(typeProducts)
+        }
+    }
+
+    // MARK: - 카테고리 전체보기 상품 목록 가져오기
+
+    func requestCategoryProdcuts(category: String, completion: @escaping([Product]) -> Void) {
+        var categoryProducts = [Product]()
+
+        let parameters = ["category": category]
+        AF.request(CURLY_GOODS_REF, method: .get, parameters: parameters).responseJSON { response in
+            guard let jsonData = response.data else { return completion(categoryProducts) }
+
+            do {
+                categoryProducts = try self.decoder.decode([Product].self, from: jsonData)
+            } catch {
+                print("DEBUG: Category List Request Error, ", error.localizedDescription)
+            }
+            completion(categoryProducts)
+        }
+    }
+
+    // MARK: - 카테고리 목록 가져오기
+
+    func requestCurlyCategoryList(completion: @escaping([Category]) -> Void) {
+        var categoryList = [Category]()
+
+        AF.request(REF_CATEGORY, method: .get).responseJSON { response in
+            guard let jsonData = response.data else { return completion(categoryList) }
+
+            do {
+                categoryList = try self.decoder.decode([Category].self, from: jsonData)
+            } catch {
+                print("DEBUG: Category List Request Error, ", error.localizedDescription)
+            }
+            completion(categoryList)
+        }
+    }
+
     // MARK: - 상품 검색 목록 가져오기
 
     func requestSearchProducts(searchKeyword: String, completion: @escaping([Product]) -> Void) {
+        let headers: HTTPHeaders = ["Authorization": "token 88f0566e6db5ebaa0e46eae16f5a092610f46345"]
         let parameter = ["word": searchKeyword]
         var products = [Product]()
 
-        AF.request(REF_SEARCH_PRODUCTS, method: .get, parameters: parameter).responseJSON { response in
+        AF.request(REF_SEARCH_PRODUCTS, method: .get, parameters: parameter, headers: headers).responseJSON { response in
+            print(response)
             guard let jsonData = response.data else { return completion(products) }
 
             do {
@@ -131,13 +186,14 @@ struct CurlyService {
     }
 
     // MARK: - 회원가입
-    func signUp(username: String, password: String, email: String, phone: String, gener: String, address: String) {
+    func signUp(username: String, password: String, nickname: String, email: String, phone: String, gender: String, address: String, completionHandler: @escaping () -> Void ) {
         let value = [
             "username": username,
+            "nickname": nickname,
             "password": password,
             "email": email,
             "phone": phone,
-            "gender": gener,
+            "gender": gender,
             "address": address
         ]
 
@@ -147,10 +203,11 @@ struct CurlyService {
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.httpBody = try! JSONSerialization.data(withJSONObject: value)
 
-        AF.request(request).responseJSON { (response) in
+        AF.request(request).responseString { (response) in
             switch response.result {
             case .success(let data):
                 print("Success", data)
+                completionHandler()
             case .failure(let error):
                 print("Failure", error)
             }

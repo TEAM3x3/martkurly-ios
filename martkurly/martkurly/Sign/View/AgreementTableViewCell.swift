@@ -62,6 +62,7 @@ class AgreementTableViewCell: UITableViewCell {
 
     // MARK: - UI
     private func configureUI() {
+        self.backgroundColor = .white
         setPropertyAttributes()
         setConstraints()
     }
