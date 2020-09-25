@@ -57,7 +57,7 @@ class ProductInfomationCell: UITableViewCell {
     // MARK: - Helpers
 
     func configureUI() {
-        self.backgroundColor = .clear
+        self.backgroundColor = .white
 
         [productImageView, underLine].forEach {
             self.addSubview($0)

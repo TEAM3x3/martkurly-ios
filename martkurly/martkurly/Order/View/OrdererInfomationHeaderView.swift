@@ -23,14 +23,14 @@ class OrdererInfomationHeaderView: UIView {
     private let ordererInfomationLabel = UILabel().then {
         $0.text = "주문자 정보*"
         $0.textColor = .black
-        $0.font = .boldSystemFont(ofSize: 18)
+        $0.font = .boldSystemFont(ofSize: 16)
     }
 
     private let ordererBasicInfoLabel = UILabel().then {
         $0.text = "천지운, 010-1234-5678"
         $0.textColor = .black
         $0.textAlignment = .right
-        $0.font = .systemFont(ofSize: 18)
+        $0.font = .systemFont(ofSize: 16)
     }
 
     private let showListButton = UIImageView().then {
@@ -60,7 +60,7 @@ class OrdererInfomationHeaderView: UIView {
     }
 
     func configureLayout() {
-        self.backgroundColor = .clear
+        self.backgroundColor = .white
 
         [ordererInfomationLabel, ordererBasicInfoLabel, showListButton].forEach {
             self.addSubview($0)

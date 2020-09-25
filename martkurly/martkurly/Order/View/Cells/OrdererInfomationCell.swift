@@ -52,7 +52,7 @@ class OrdererInfomationCell: UITableViewCell {
     // MARK: - Helpers
 
     func configureUI() {
-        self.backgroundColor = .clear
+        self.backgroundColor = .white
 
         let amountStack = UIStackView(arrangedSubviews: [
             makeInfoStackView(titleText: "보내는 분", displayLabel: ordererNameLabel),

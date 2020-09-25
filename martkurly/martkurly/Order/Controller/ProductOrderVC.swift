@@ -22,6 +22,8 @@ class ProductOrderVC: UIViewController {
     private var isShowOrdererList: Bool = false { didSet { orderTableView.reloadData() } }
     private let ordererInfomationHeaderView = OrdererInfomationHeaderView()
 
+    private let orderDeliveryHeaderView = OrderDeliveryHeaderView()
+
     // MARK: - LifeCycle
 
     override func viewDidLoad() {
@@ -49,6 +51,9 @@ class ProductOrderVC: UIViewController {
         case .ordererInfomation:
             isShowOrdererList.toggle()
             ordererInfomationHeaderView.isShowOrdererList = isShowOrdererList
+        case .orderDelivery:
+            let controller = UserDeliverySettingVC()
+            self.navigationController?.pushViewController(controller, animated: true)
         }
     }
 
@@ -82,7 +87,7 @@ class ProductOrderVC: UIViewController {
     }
 
     func configureAttributes() {
-        orderTableView.backgroundColor = .clear
+        orderTableView.backgroundColor = ColorManager.General.backGray.rawValue
         orderTableView.separatorStyle = .none
         orderTableView.allowsSelection = false
 
@@ -96,6 +101,8 @@ class ProductOrderVC: UIViewController {
                       gestureName: OrderCellType.productInfomation.rawValue)
         addTapGesture(addView: ordererInfomationHeaderView,
                       gestureName: OrderCellType.ordererInfomation.rawValue)
+        addTapGesture(addView: orderDeliveryHeaderView,
+                      gestureName: OrderCellType.orderDelivery.rawValue)
     }
 
     func addTapGesture(addView: UIView, gestureName: Int) {
@@ -114,6 +121,7 @@ extension ProductOrderVC: UITableViewDataSource {
     enum OrderCellType: Int, CaseIterable {
         case productInfomation
         case ordererInfomation
+        case orderDelivery
     }
 
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -122,10 +130,9 @@ extension ProductOrderVC: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch OrderCellType(rawValue: section)! {
-        case .productInfomation:
-            return isShowProductList ? 5 : 0
-        case .ordererInfomation:
-            return isShowOrdererList ? 1 : 0
+        case .productInfomation: return isShowProductList ? 5 : 0
+        case .ordererInfomation: return isShowOrdererList ? 1 : 0
+        case .orderDelivery: return 1
         }
     }
 
@@ -138,6 +145,9 @@ extension ProductOrderVC: UITableViewDataSource {
             return cell
         case .ordererInfomation:
             let cell = OrdererInfomationCell()
+            return cell
+        case .orderDelivery:
+            let cell = OrderDeliveryCell()
             return cell
         }
     }
@@ -152,13 +162,15 @@ extension ProductOrderVC: UITableViewDelegate {
             return orderProductInfomationHeaderView
         case .ordererInfomation:
             return ordererInfomationHeaderView
+        case .orderDelivery:
+            return orderDeliveryHeaderView
         }
     }
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         switch OrderCellType(rawValue: section)! {
         default:
-            return 72
+            return 60
         }
     }
 

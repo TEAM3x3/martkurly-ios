@@ -24,19 +24,19 @@ class OrderProductInfomationHeaderView: UIView {
     private let productInfomationLabel = UILabel().then {
         $0.text = "상품정보"
         $0.textColor = .black
-        $0.font = .boldSystemFont(ofSize: 18)
+        $0.font = .boldSystemFont(ofSize: 16)
     }
 
     private let productTitleLabel = UILabel().then {
         $0.text = "[은하수산] 딱새우 회 130g(냉동)"
         $0.textColor = .black
-        $0.font = .systemFont(ofSize: 18)
+        $0.font = .systemFont(ofSize: 16)
     }
 
     private let productCountLabel = UILabel().then {
         $0.text = "외 2건"
         $0.textColor = .black
-        $0.font = .systemFont(ofSize: 18)
+        $0.font = .systemFont(ofSize: 16)
     }
 
     private let showListButton = UIImageView().then {
@@ -66,7 +66,7 @@ class OrderProductInfomationHeaderView: UIView {
     }
 
     func configureLayout() {
-        self.backgroundColor = .clear
+        self.backgroundColor = .white
 
         [productInfomationLabel, productTitleLabel, productCountLabel, showListButton].forEach {
             self.addSubview($0)
