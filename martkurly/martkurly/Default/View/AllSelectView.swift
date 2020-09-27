@@ -12,7 +12,10 @@ import Then
 class AllSelectView: UITableViewCell {
 
     // MARK: - Propertise
-    private let check = UIButton().then {
+
+    static let identifier = "AllSelectView"
+
+    var check = UIButton().then {
         $0.setImage(UIImage(systemName: "checkmark.circle"), for: .normal)
         $0.tintColor = .lightGray
     }
@@ -40,6 +43,11 @@ class AllSelectView: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setConstraints()
     }
+
+//    override init(frame: CGRect) {
+//        super.init(frame: frame)
+//        setConstraints()
+//    }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -89,8 +97,8 @@ class AllSelectView: UITableViewCell {
         print("A")
     }
 
-    func configure(number: String) {
-        selectNumber.text = number
+    func configure(cart: String) {
+        selectNumber.text = cart
     }
 
 }

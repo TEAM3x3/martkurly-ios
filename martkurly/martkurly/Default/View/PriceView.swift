@@ -100,11 +100,7 @@ class PriceView: UITableViewCell {
         $0.font = .systemFont(ofSize: 10)
     }
 
-    var hide = true {
-        didSet {
-
-        }
-    }
+    var hide = true
 
     // MARK: - Lifecycle
 //    override init(frame: CGRect) {

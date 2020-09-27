@@ -19,7 +19,7 @@ class CartHeaderView: UIView {
     var storage = ""
 
     var shipping = UILabel().then {
-        $0.text = "박스로 배송됩니다"
+        $0.text = " 박스로 배송됩니다"
         $0.textColor = .black
     }
 
@@ -56,5 +56,9 @@ class CartHeaderView: UIView {
         }
 
         backgroundColor = ColorManager.General.backGray.rawValue
+    }
+
+    func configure(txt: String) {
+        shipping.text = txt
     }
 }
