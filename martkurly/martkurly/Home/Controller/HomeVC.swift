@@ -95,7 +95,9 @@ class HomeVC: UIViewController {
     // MARK: - Actions
 
     func detailViewProduct(productID: Int) {
+        self.showIndicate()
         CurlyService.shared.requestProductDetailData(productID: productID) { reponseData in
+            self.stopIndicate()
             let controller = ProductDetailVC()
             controller.hidesBottomBarWhenPushed = true
             controller.productDetailData = reponseData
@@ -104,7 +106,9 @@ class HomeVC: UIViewController {
     }
 
     func tappedEventItem(section: Int) {
+        self.showIndicate()
         CurlyService.shared.fetchEventProducts(eventID: eventList[section].id) { eventProducts in
+            self.stopIndicate()
             guard let eventProducts = eventProducts else { return }
             let controller = EventProductDetailListVC()
             controller.hidesBottomBarWhenPushed = true
@@ -114,7 +118,9 @@ class HomeVC: UIViewController {
     }
 
     func tappedEvent(eventID: Int) {
+        self.showIndicate()
         CurlyService.shared.fetchMainEventProducts(eventID: eventID) { eventProducts in
+            self.stopIndicate()
             let controller = CategoryProductsVC()
             controller.eventProducts = eventProducts
             self.navigationController?.pushViewController(controller, animated: true)
@@ -251,5 +257,8 @@ extension HomeVC: UICollectionViewDelegateFlowLayout {
 //        let naviVC = UINavigationController(rootViewController: controller)
 //        naviVC.modalPresentationStyle = .fullScreen
 //        self.present(naviVC, animated: true)
+
+        let controller = ProductOrderVC()
+        self.navigationController?.pushViewController(controller, animated: true)
     }
 }

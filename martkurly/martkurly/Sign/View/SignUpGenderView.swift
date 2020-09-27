@@ -12,7 +12,9 @@ class SignUpGenderView: UIView {
 
     // MARK: - Properties
     private let title = SignUpTextFieldTitleView(title: StringManager.SignUp.gender.rawValue, mendatory: false)
-    let tableView = UITableView()
+    let tableView = UITableView().then {
+        $0.backgroundColor = .white
+    }
 
     // MARK: - Lifecycle
     override init(frame: CGRect) {
@@ -30,6 +32,7 @@ class SignUpGenderView: UIView {
 
     // MARK: - UI
     private func configureUI() {
+        self.backgroundColor = .white
         setAttributes()
         setContraints()
     }
@@ -37,6 +40,7 @@ class SignUpGenderView: UIView {
     private func setAttributes() {
         tableView.register(SignUpGenderTableViewCell.self, forCellReuseIdentifier: SignUpGenderTableViewCell.identifier)
         tableView.separatorStyle = .none
+        tableView.isScrollEnabled = false
     }
 
     private func setContraints() {

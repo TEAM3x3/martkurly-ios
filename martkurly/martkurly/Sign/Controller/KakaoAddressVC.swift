@@ -107,13 +107,13 @@ class KakaoAddressVC: UIViewController {
 extension KakaoAddressVC: WKScriptMessageHandler {
     //데이터를 받았을때 Invoke 하는 메서드
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
-        if let postCodData = message.body as? [String: Any] {
-            zipCode = postCodData["zonecode"] as? String ?? ""
-            address = postCodData["roadAddress"] as? String ?? ""
+        if let postCodeData = message.body as? [String: Any] {
+            zipCode = postCodeData["zonecode"] as? String ?? ""
+            address = postCodeData["roadAddress"] as? String ?? ""
         }
         print("Post Code:", zipCode)
         print("Address:", address)
-        guard let navigationControllers = (self.presentingViewController as? UINavigationController)?.viewControllers else { return }
+        guard let navigationControllers = (self.presentingViewController as? UINavigationController)?.viewControllers else { print(#function, "Guard Activated"); return }
         for viewController in navigationControllers {
             if let signUpVC = viewController as? SignUpVC {
                 signUpVC.address = address

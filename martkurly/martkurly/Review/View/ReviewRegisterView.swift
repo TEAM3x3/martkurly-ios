@@ -147,7 +147,10 @@ class ReviewRegisterView: UIView {
                                                        collectionViewLayout: flowLayout)
 
     var pictureArray: [UIImage] = [] {
-        didSet { pictureCollectionView.reloadData() }
+        didSet {
+            pictureRegisterCountLabel.text = "\(pictureArray.count)장 / 최대 8장"
+            pictureCollectionView.reloadData()
+        }
     }
 
     // MARK: - LifeCycle

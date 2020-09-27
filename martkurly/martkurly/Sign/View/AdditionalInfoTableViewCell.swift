@@ -24,13 +24,13 @@ class AdditionalInfoTableViewCell: UITableViewCell {
         $0.backgroundColor = .white
     }
     private let label = UILabel().then {
-        $0.text = "남자"
+        $0.text = "추천인 아이디"
         $0.font = UIFont.systemFont(ofSize: 18)
     }
+    private let textField = UserTextFieldView(placeholder: "추천인 아이디를 입력해주세요", fontSize: 14)
+
     var isActive = false {
-        willSet {
-            emptyCircle.backgroundColor = newValue ? ColorManager.General.mainPurple.rawValue : .white
-        }
+        willSet { emptyCircle.backgroundColor = newValue ? ColorManager.General.mainPurple.rawValue : .white }
     }
 
     // MARK: - Lifecycle
@@ -50,14 +50,17 @@ class AdditionalInfoTableViewCell: UITableViewCell {
     }
 
     private func setContraints() {
-        [emptyCircle, label].forEach {
+        [emptyCircle, label, textField].forEach {
             self.addSubview($0)
         }
         emptyCircle.addSubview(filledCircle)
         emptyCircle.snp.makeConstraints {
+            $0.top.equalToSuperview().inset(10)
             $0.leading.equalToSuperview()
-            $0.centerY.equalToSuperview()
             $0.width.height.equalTo(25)
+//            $0.leading.equalToSuperview()
+//            $0.centerY.equalToSuperview()
+//            $0.width.height.equalTo(25)
         }
         filledCircle.snp.makeConstraints {
             $0.centerX.centerY.equalToSuperview()
@@ -66,6 +69,12 @@ class AdditionalInfoTableViewCell: UITableViewCell {
         label.snp.makeConstraints {
             $0.leading.equalTo(emptyCircle.snp.trailing).offset(12)
             $0.centerY.equalTo(emptyCircle)
+        }
+        textField.snp.makeConstraints {
+            $0.top.equalTo(emptyCircle.snp.bottom).offset(10)
+            $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(40)
+//            $0.bottom.equalToSuperview()
         }
     }
 

@@ -11,22 +11,22 @@ import UIKit
 class UserTextFieldView: UIView {
 
     // MARK: - Properties
-    let textField = UITextField()
+    let textField = UITextField().then {
+        $0.textColor = .textBlack
+        $0.autocapitalizationType = .none
+    }
     private let placeholder = UILabel().then {
         $0.textColor = ColorManager.General.placeholder.rawValue
     }
     private var isActive = false {
-        willSet {
-            configureTextFieldStatus(newValue: newValue)
-        }
+        willSet { configureTextFieldStatus(newValue: newValue) }
     }
     var text: String? { // 텍스트필드의 값을 반환
-        get {
-            return self.textField.text
-        }
+        get { return self.textField.text }
     }
-    private var subtitles: [String]?
+    private var subtitles: [String]? // 텍스트필드 아래에 나타나는 부가설명
     private var viewSizeHandler: ( () -> Void )?
+    private var completionHandler: ( () -> Void )?
     private var subtitleLabels: [UILabel] = []
     var isEditing = false
 
@@ -44,6 +44,16 @@ class UserTextFieldView: UIView {
         self.placeholder.font = UIFont.systemFont(ofSize: fontSize)
         self.subtitles = subtitles
         self.viewSizeHandler = viewSizeHandler
+        configureUI()
+    }
+
+    init(placeholder: String, fontSize: CGFloat, subtitles: [String]?, viewSizeHandler: @escaping () -> Void, completionHandler: ( () -> Void )? ) {
+        super.init(frame: .zero)
+        self.placeholder.text = placeholder
+        self.placeholder.font = UIFont.systemFont(ofSize: fontSize)
+        self.subtitles = subtitles
+        self.viewSizeHandler = viewSizeHandler
+        self.completionHandler = completionHandler
         configureUI()
     }
 
@@ -67,6 +77,9 @@ class UserTextFieldView: UIView {
     }
 
     private func setConstraints() {
+        self.snp.makeConstraints {
+            $0.width.equalTo(200).priority(.low)
+        }
         [textField, placeholder].forEach {
             self.addSubview($0)
         }
@@ -132,6 +145,8 @@ extension UserTextFieldView: UITextFieldDelegate {
 
     func textFieldDidChangeSelection(_ textField: UITextField) {
         self.isActive = text?.isEmpty == true ? false : true
+        guard let completionHandler = self.completionHandler else { return }
+        completionHandler()
     }
 
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
@@ -144,6 +159,7 @@ extension UserTextFieldView: UITextFieldDelegate {
     }
 
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        guard self.tag != 4 else { return true } // 이메일 입력필드 갯수제한 해제
         if let char = string.cString(using: String.Encoding.utf8) {
             let isBackSpace = strcmp(char, "\\b")
             if isBackSpace == -92 {
