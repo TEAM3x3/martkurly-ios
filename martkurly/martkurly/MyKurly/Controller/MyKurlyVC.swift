@@ -23,7 +23,11 @@ class MyKurlyVC: UIViewController {
     private let bottomBarView = UIView().then {
         $0.backgroundColor = .backgroundGray
     }
-    private var isSignedIn = false
+    private var isSignedIn = false {
+        willSet {
+//            updateViews(newValue: newValue)
+        }
+    }
     private var price = "0" // 적립금
     private var coupon = "0" // 쿠폰
     private var nextVC = UIViewController()
@@ -76,6 +80,7 @@ class MyKurlyVC: UIViewController {
             $0.bottom.equalToSuperview()
             $0.width.equalTo(view)
         }
+        checkSignInStatus()
         isSignedIn ? setContraintsForSignedInStatus() : setContraintsForSignedOutStatus()
     }
 
@@ -119,6 +124,32 @@ class MyKurlyVC: UIViewController {
             $0.leading.trailing.equalToSuperview()
             $0.height.equalTo(10)
         }
+    }
+
+    private func updateViews(newValue: Bool) {
+        checkSignInStatus()
+        switch newValue {
+        case true:
+            break
+        case false:
+            break
+        }
+    }
+
+    private func checkSignInStatus() {
+        print(UserDefaults.standard.string(forKey: "token"))
+        if let _ = UserDefaults.standard.string(forKey: "token") {
+            isSignedIn = true
+        } else {
+            isSignedIn = false
+        }
+
+//        if UserDefaults.standard.string(forKey: "token") == nil {
+//            isSignedIn = false
+//        } else {
+//            isSignedIn = true
+//        }
+        print(isSignedIn)
     }
 
     // MARK: - Selectors
@@ -192,9 +223,11 @@ class MyKurlyVC: UIViewController {
         case [3, 1]:
             nextVC = MyKurlyNotificationVC()
         case [4, 0]:
-            break
+            print("Sign Out")
+            UserDefaults.standard.removeObject(forKey: "token")
+            return
         default:
-            break
+            return
         }
         navigationController?.pushViewController(nextVC, animated: true)
     }

@@ -22,5 +22,6 @@ let CURLY_MAIN_EVENT_REF = CURLY_REF + "/mainEvent"
 let REF_MAIN_EVENT = CURLY_MAIN_EVENT_REF + "/"
 
 let REF_SIGNUP = CURLY_REF + "/users"
+let REF_SIGNIN = CURLY_REF + "/users/login"
 
 let REF_CATEGORY = CURLY_REF + "/category"
