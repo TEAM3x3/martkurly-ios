@@ -266,6 +266,8 @@ extension ProductOrderVC: UITableViewDataSource {
             let cell = PayForProductCell()
             return cell
         }
+        
+        // AgreementCheckMarkView => V 체크모양버튼
     }
 }
 
