@@ -259,6 +259,7 @@ extension HomeVC: UICollectionViewDelegateFlowLayout {
 //        self.present(naviVC, animated: true)
 
         let controller = ProductOrderVC()
+        controller.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(controller, animated: true)
     }
 }

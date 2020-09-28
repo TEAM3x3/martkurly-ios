@@ -45,7 +45,7 @@ class DeliveryAdditionButtonView: UIView {
     }
 
     func configureLayout() {
-        self.backgroundColor = .systemRed
+        self.backgroundColor = .white
 
         self.addSubview(additionButton)
         additionButton.snp.makeConstraints {

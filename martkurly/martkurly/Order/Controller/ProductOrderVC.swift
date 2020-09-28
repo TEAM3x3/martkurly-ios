@@ -16,6 +16,13 @@ class ProductOrderVC: UIViewController {
 
     private let orderTableView = UITableView(frame: .zero, style: .grouped)
 
+    private var undeliveryType: UnDeliveryActionType = .paymentRefund {
+        didSet {
+            orderTableView.reloadData()
+            orderDeliveryActionHeaderView.actionContentsLabel.text = undeliveryType.description
+        }
+    }
+
     // 상품정보
     private var isShowProductList: Bool = false { didSet { orderTableView.reloadData() } }
     private let orderProductInfomationHeaderView = OrderProductInfomationHeaderView()
@@ -142,7 +149,7 @@ class ProductOrderVC: UIViewController {
     func configureAttributes() {
         orderTableView.backgroundColor = ColorManager.General.backGray.rawValue
         orderTableView.separatorStyle = .none
-        orderTableView.allowsSelection = false
+        orderTableView.allowsSelection = true
 
         orderTableView.dataSource = self
         orderTableView.delegate = self
@@ -206,7 +213,7 @@ extension ProductOrderVC: UITableViewDataSource {
         case .orderReceiveSpace: return 1
         case .orderPaymentPrice: return paymentTypes.count
         case .methodsOfPayMent: return isShowPaymentList ? 1 : 0
-        case .deliveryAction: return isShowActionList ? 1 : 0
+        case .deliveryAction: return isShowActionList ? UnDeliveryActionType.allCases.count : 0
         case .payForProduct: return 1
         }
     }
@@ -261,13 +268,18 @@ extension ProductOrderVC: UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(
                 withIdentifier: DeliveryActionCell.identifier,
                 for: indexPath) as! DeliveryActionCell
+
+            let actionType = UnDeliveryActionType(rawValue: indexPath.row) ?? .paymentRefund
+            cell.configure(isChecked: undeliveryType == actionType,
+                           titleText: actionType.description)
             return cell
         case .payForProduct:
             let cell = PayForProductCell()
             return cell
         }
-        
+
         // AgreementCheckMarkView => V 체크모양버튼
+        // KurlyChecker => 동그라미버튼
     }
 }
 
@@ -318,56 +330,12 @@ extension ProductOrderVC: UITableViewDelegate {
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         return 44
     }
-}
 
-import UIKit
-
-class DeliveryActionCell: UITableViewCell {
-
-    // MARK: - Properties
-
-    static let identifier = "DeliveryActionCell"
-
-    // MARK: - LifeCycle
-
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        configureUI()
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    // MARK: - Helpers
-
-    func configureUI() {
-        self.backgroundColor = .systemRed
-    }
-}
-
-import UIKit
-
-class PayForProductCell: UITableViewCell {
-
-    // MARK: - Properties
-
-    static let identifier = "PayForProductCell"
-
-    // MARK: - LifeCycle
-
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        configureUI()
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    // MARK: - Helpers
-
-    func configureUI() {
-        self.backgroundColor = .systemBlue
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        switch OrderCellType(rawValue: indexPath.section)! {
+        case .deliveryAction: undeliveryType = UnDeliveryActionType(rawValue: indexPath.row)!
+        default: break
+        }
+        tableView.selectRow(at: nil, animated: false, scrollPosition: .none)
     }
 }
