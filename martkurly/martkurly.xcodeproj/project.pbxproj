@@ -103,6 +103,8 @@
 		AF564AB224E56DEA00989F82 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF564AB124E56DEA00989F82 /* AppDelegate.swift */; };
 		AF564ABB24E56DED00989F82 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AF564ABA24E56DED00989F82 /* Assets.xcassets */; };
 		AF564ABE24E56DED00989F82 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AF564ABC24E56DED00989F82 /* LaunchScreen.storyboard */; };
+		AF648B042521EF7E0001CDDE /* DeliveryAddressCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF648B032521EF7E0001CDDE /* DeliveryAddressCell.swift */; };
+		AF648B072521EF9F0001CDDE /* DeliveryEditFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF648B062521EF9F0001CDDE /* DeliveryEditFooterView.swift */; };
 		AF6506222502755100A42788 /* MainEachHProductCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF6506212502755100A42788 /* MainEachHProductCell.swift */; };
 		AF6506242502757800A42788 /* MainEachVProductCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF6506232502757800A42788 /* MainEachVProductCell.swift */; };
 		AF686AE3251B25B700C247C7 /* CategoryProductListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF686AE2251B25B700C247C7 /* CategoryProductListVC.swift */; };
@@ -315,6 +317,8 @@
 		AF564ABA24E56DED00989F82 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AF564ABD24E56DED00989F82 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		AF564ABF24E56DED00989F82 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		AF648B032521EF7E0001CDDE /* DeliveryAddressCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeliveryAddressCell.swift; sourceTree = "<group>"; };
+		AF648B062521EF9F0001CDDE /* DeliveryEditFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeliveryEditFooterView.swift; sourceTree = "<group>"; };
 		AF6506212502755100A42788 /* MainEachHProductCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainEachHProductCell.swift; sourceTree = "<group>"; };
 		AF6506232502757800A42788 /* MainEachVProductCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainEachVProductCell.swift; sourceTree = "<group>"; };
 		AF686AE2251B25B700C247C7 /* CategoryProductListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryProductListVC.swift; sourceTree = "<group>"; };
@@ -982,6 +986,7 @@
 				AF8FB428251FBFCE009105EA /* OrderPaymentPriceHeaderView.swift */,
 				AF7F62C32520D8CE00A14D7A /* MethodsOfPaymentHeaderView.swift */,
 				AF7F62C92521029600A14D7A /* OrderDeliveryActionHeaderView.swift */,
+				AF648B062521EF9F0001CDDE /* DeliveryEditFooterView.swift */,
 			);
 			name = View;
 			path = martkurly/Order/View;
@@ -1000,6 +1005,7 @@
 				AF7F62C62521021B00A14D7A /* MethodsOfPayMentCell.swift */,
 				AF74828E2521BFBF006E8434 /* DeliveryActionCell.swift */,
 				AF7482912521BFE1006E8434 /* PayForProductCell.swift */,
+				AF648B032521EF7E0001CDDE /* DeliveryAddressCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -1167,6 +1173,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AFF1675A251D2F4A00C7696D /* OrdererInfomationHeaderView.swift in Sources */,
+				AF648B072521EF9F0001CDDE /* DeliveryEditFooterView.swift in Sources */,
 				AF72CDEB24FCC85C007E78FE /* ProductDetailHappinessCenterCell.swift in Sources */,
 				0EFD8E6B24EEC2CA0078652E /* AddressSearchView.swift in Sources */,
 				AF8E45A5250A735F009942F2 /* ExplainInfoViewModel.swift in Sources */,
@@ -1359,6 +1366,7 @@
 				AF8E061C2518AB9F00618A07 /* ReviewRegisterVC.swift in Sources */,
 				AFAA99D9250FCD63000F46EF /* RecommendProductListCell.swift in Sources */,
 				AF7BB673250B66870005B382 /* ProductDetailOrderGuideCell.swift in Sources */,
+				AF648B042521EF7E0001CDDE /* DeliveryAddressCell.swift in Sources */,
 				AF92F95B2511175A00C12965 /* TimerSingleton.swift in Sources */,
 				42FAF02D24EE475B00063981 /* ForgotIDVC.swift in Sources */,
 				0E1365CD24FCCFA40074EB16 /* CartVC.swift in Sources */,

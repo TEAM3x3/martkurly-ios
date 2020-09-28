@@ -18,6 +18,10 @@ class UserDeliverySettingVC: UIViewController {
     private let deliveryAdditionHeaderView = DeliveryAdditionButtonView()
     private let confirmButton = KurlyButton(title: "확인", style: .purple)
 
+    private var selectAddressIndex: Int = 0 {
+        didSet { deliveryAddressTableView.reloadData() }
+    }
+
     // MARK: - LifeCycle
 
     override func viewDidLoad() {
@@ -43,12 +47,21 @@ class UserDeliverySettingVC: UIViewController {
     func configureLayout() {
         view.backgroundColor = .white
 
-        [deliveryAddressTableView, confirmButton].forEach {
+        let topLineView = UIView()
+        topLineView.backgroundColor = ColorManager.General.backGray.rawValue
+
+        [topLineView, deliveryAddressTableView, confirmButton].forEach {
             self.view.addSubview($0)
         }
 
-        deliveryAddressTableView.snp.makeConstraints {
+        topLineView.snp.makeConstraints {
             $0.top.leading.trailing.equalToSuperview()
+            $0.height.equalTo(1)
+        }
+
+        deliveryAddressTableView.snp.makeConstraints {
+            $0.top.equalTo(topLineView.snp.bottom)
+            $0.leading.trailing.equalToSuperview()
         }
 
         confirmButton.snp.makeConstraints {
@@ -88,6 +101,7 @@ extension UserDeliverySettingVC: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(
             withIdentifier: DeliveryAddressCell.identifier,
             for: indexPath) as! DeliveryAddressCell
+        cell.selectButton.isActive = selectAddressIndex == indexPath.section
         return cell
     }
 }
@@ -112,73 +126,9 @@ extension UserDeliverySettingVC: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return 40
     }
-}
 
-import UIKit
-
-class DeliveryAddressCell: UITableViewCell {
-
-    // MARK: - Properties
-
-    static let identifier = "DeliveryAddressCell"
-
-    // MARK: - LifeCycle
-
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        configureUI()
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    // MARK: - Helpers
-
-    func configureUI() {
-        self.backgroundColor = .systemRed
-    }
-}
-
-import UIKit
-
-class DeliveryEditFooterView: UITableViewHeaderFooterView {
-
-    // MARK: - Properties
-
-    static let identifier = "DeliveryEditFooterView"
-
-    private let footerContentView = UIView().then {
-        $0.backgroundColor = .systemBlue
-    }
-
-    // MARK: - LifeCycle
-
-    override init(reuseIdentifier: String?) {
-        super.init(reuseIdentifier: reuseIdentifier)
-        configureUI()
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    // MARK: - Helpers
-
-    func configureUI() {
-        configureLayout()
-        configureAttributes()
-    }
-
-    func configureLayout() {
-        self.addSubview(footerContentView)
-        footerContentView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
-        }
-
-    }
-
-    func configureAttributes() {
-
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        selectAddressIndex = indexPath.section
+        tableView.selectRow(at: nil, animated: false, scrollPosition: .none)
     }
 }
