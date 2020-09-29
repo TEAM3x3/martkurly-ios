@@ -188,6 +188,7 @@ class SignInVC: UIViewController {
             UserDefaults.standard.set(token, forKey: "token")
             print("UserDefaults", UserDefaults.standard.string(forKey: "token"))
             print("Login Success")
+            self.dismiss(animated: true, completion: nil)
         case false:
             print("Login Failed")
         }

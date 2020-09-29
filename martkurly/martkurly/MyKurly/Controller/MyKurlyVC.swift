@@ -23,11 +23,7 @@ class MyKurlyVC: UIViewController {
     private let bottomBarView = UIView().then {
         $0.backgroundColor = .backgroundGray
     }
-    private var isSignedIn = false {
-        willSet {
-//            updateViews(newValue: newValue)
-        }
-    }
+    private var isSignedIn = false
     private var price = "0" // 적립금
     private var coupon = "0" // 쿠폰
     private var nextVC = UIViewController()
@@ -41,10 +37,12 @@ class MyKurlyVC: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setNavigationBarStatus(type: .purpleType, isShowCart: true, leftBarbuttonStyle: .none, titleText: StringManager.MyKurly.title.rawValue)
+        checkSignInStatus()
+        updateViews(newValue: isSignedIn)
     }
 
     override func viewDidAppear(_ animated: Bool) {
-        contentView.snp.makeConstraints {
+        contentView.snp.updateConstraints {
             $0.height.equalTo(bottomBarView.frame.maxY)
         }
     }
@@ -74,18 +72,27 @@ class MyKurlyVC: UIViewController {
             $0.bottom.equalToSuperview()
         }
         scrollView.addSubview(contentView)
-        contentView.snp.makeConstraints {
-            $0.top.equalToSuperview()
-            $0.leading.trailing.equalTo(view)
-            $0.bottom.equalToSuperview()
-            $0.width.equalTo(view)
+        [tableView, bottomBarView].forEach {
+            contentView.addSubview($0)
         }
+        contentView.snp.makeConstraints {
+            $0.top.bottom.equalToSuperview()
+            $0.leading.trailing.equalTo(view)
+            $0.width.equalTo(view)
+            $0.height.equalTo(bottomBarView.frame.maxY)
+        }
+        bottomBarView.snp.makeConstraints {
+            $0.top.equalTo(tableView.snp.bottom)
+            $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(10)
+        }
+
         checkSignInStatus()
         isSignedIn ? setContraintsForSignedInStatus() : setContraintsForSignedOutStatus()
     }
 
     private func setContraintsForSignedInStatus() {
-        [infoView, tableView, bottomBarView].forEach {
+        [infoView].forEach {
             contentView.addSubview($0)
         }
         infoView.snp.makeConstraints {
@@ -98,15 +105,10 @@ class MyKurlyVC: UIViewController {
             $0.leading.trailing.equalTo(view)
             $0.height.equalTo(1105)
         }
-        bottomBarView.snp.makeConstraints {
-            $0.top.equalTo(tableView.snp.bottom)
-            $0.leading.trailing.equalToSuperview()
-            $0.height.equalTo(10)
-        }
     }
 
     private func setContraintsForSignedOutStatus() {
-        [signView, tableView, bottomBarView].forEach {
+        [signView].forEach {
             contentView.addSubview($0)
         }
         signView.snp.makeConstraints {
@@ -119,37 +121,80 @@ class MyKurlyVC: UIViewController {
             $0.leading.trailing.equalTo(view)
             $0.height.equalTo(500)
         }
-        bottomBarView.snp.makeConstraints {
-            $0.top.equalTo(tableView.snp.bottom)
-            $0.leading.trailing.equalToSuperview()
-            $0.height.equalTo(10)
+    }
+
+    private func removeConstrains() {
+        switch isSignedIn {
+        case true:
+            [signView].forEach {
+                $0.snp.removeConstraints()
+                $0.removeFromSuperview()
+            }
+        case false:
+            [infoView].forEach {
+                $0.snp.removeConstraints()
+                $0.removeFromSuperview()
+            }
         }
+        tableView.snp.removeConstraints()
+//        tableView.removeFromSuperview()
+//        bottomBarView.snp.removeConstraints()
+//        bottomBarView.removeFromSuperview()
     }
 
     private func updateViews(newValue: Bool) {
-        checkSignInStatus()
+        print(#function, newValue)
+        removeConstrains()
         switch newValue {
         case true:
-            break
+            [infoView].forEach {
+                contentView.addSubview($0)
+            }
+            infoView.snp.makeConstraints {
+                $0.top.equalToSuperview()
+                $0.leading.trailing.equalToSuperview()
+                $0.height.equalTo(215)
+            }
+            tableView.snp.makeConstraints {
+                $0.top.equalTo(infoView.snp.bottom).offset(12)
+                $0.leading.trailing.equalTo(view)
+                $0.height.equalTo(1105)
+            }
+            contentView.snp.updateConstraints {
+                $0.height.equalTo(bottomBarView.frame.maxY)
+            }
         case false:
-            break
+            [signView].forEach {
+                contentView.addSubview($0)
+            }
+            signView.snp.makeConstraints {
+                $0.top.equalToSuperview()
+                $0.leading.trailing.equalToSuperview().inset(20)
+                $0.height.equalTo(230)
+            }
+            tableView.snp.makeConstraints {
+                $0.top.equalTo(signView.snp.bottom).offset(12)
+                $0.leading.trailing.equalTo(view)
+                $0.height.equalTo(500)
+            }
+            contentView.snp.updateConstraints {
+                $0.height.equalTo(752)
+            }
         }
+        tableView.reloadData()
+//        contentView.snp.updateConstraints {
+//            $0.height.equalTo(bottomBarView.frame.maxY)
+//        }
+        print("TableView Height: ", tableView.frame.maxY)
+        print(bottomBarView.frame.maxY)
     }
 
     private func checkSignInStatus() {
-        print(UserDefaults.standard.string(forKey: "token"))
         if let _ = UserDefaults.standard.string(forKey: "token") {
             isSignedIn = true
         } else {
             isSignedIn = false
         }
-
-//        if UserDefaults.standard.string(forKey: "token") == nil {
-//            isSignedIn = false
-//        } else {
-//            isSignedIn = true
-//        }
-        print(isSignedIn)
     }
 
     // MARK: - Selectors
@@ -162,6 +207,14 @@ class MyKurlyVC: UIViewController {
     }
 
     // MARK: - Helpers
+    private func logout() {
+        print(#function)
+        UserDefaults.standard.removeObject(forKey: "token")
+        checkSignInStatus()
+        updateViews(newValue: isSignedIn)
+        scrollView.contentOffset = CGPoint(x: 0, y: 0)
+    }
+
     private func configureNextVCWhenSignedOut(indexPath: IndexPath) {
         switch indexPath {
         case [0, 0]:
@@ -223,8 +276,7 @@ class MyKurlyVC: UIViewController {
         case [3, 1]:
             nextVC = MyKurlyNotificationVC()
         case [4, 0]:
-            print("Sign Out")
-            UserDefaults.standard.removeObject(forKey: "token")
+            logout()
             return
         default:
             return
