@@ -29,6 +29,7 @@ class EventProductDetailListVC: UIViewController {
         CurlyService.shared.requestProductDetailData(productID: productID) { productDetailData in
             let controller = ProductDetailVC()
             controller.productDetailData = productDetailData
+            controller.hidesBottomBarWhenPushed = true
             self.navigationController?.pushViewController(controller, animated: true)
         }
     }

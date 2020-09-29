@@ -47,6 +47,7 @@ class CategoryProductListVC: UIViewController {
         CurlyService.shared.requestProductDetailData(productID: productID) { productDetailData in
             self.stopIndicate()
             let controller = ProductDetailVC()
+            controller.hidesBottomBarWhenPushed = true
             controller.productDetailData = productDetailData
             self.navigationController?.pushViewController(controller, animated: true)
         }
