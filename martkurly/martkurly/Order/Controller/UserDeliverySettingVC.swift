@@ -37,6 +37,16 @@ class UserDeliverySettingVC: UIViewController {
                                     titleText: "배송지 선택")
     }
 
+    // MARK: - Selectors
+
+    @objc
+    func tappedDeliveryAddition() {
+        let controller = RegisterDeliveryVC()
+        let naviVC =  UINavigationController(rootViewController: controller)
+        naviVC.modalPresentationStyle = .fullScreen
+        self.present(naviVC, animated: true)
+    }
+
     // MARK: - Helpers
 
     func configureUI() {
@@ -83,6 +93,11 @@ class UserDeliverySettingVC: UIViewController {
                                           forCellReuseIdentifier: DeliveryAddressCell.identifier)
         deliveryAddressTableView.register(DeliveryEditFooterView.self,
                                           forHeaderFooterViewReuseIdentifier: DeliveryEditFooterView.identifier)
+
+        deliveryAdditionHeaderView.additionButton.addTarget(
+            self,
+            action: #selector(tappedDeliveryAddition),
+            for: .touchUpInside)
     }
 }
 

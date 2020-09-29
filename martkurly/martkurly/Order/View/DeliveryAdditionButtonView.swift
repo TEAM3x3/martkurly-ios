@@ -12,7 +12,7 @@ class DeliveryAdditionButtonView: UIView {
 
     // MARK: - Properties
 
-    private let additionButton = UIButton(type: .system).then {
+    let additionButton = UIButton(type: .system).then {
         $0.setTitle("+ 새 배송지 추가", for: .normal)
         $0.setTitleColor(.black, for: .normal)
         $0.titleLabel?.font = .systemFont(ofSize: 16)
