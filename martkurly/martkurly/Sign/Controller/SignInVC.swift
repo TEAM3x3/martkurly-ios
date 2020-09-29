@@ -33,6 +33,8 @@ class SignInVC: UIViewController {
     private let signUpButton = KurlyButton(title: StringManager.Sign.signUp.rawValue, style: .white)
     private let warning = IncorrectInputWarningView(title: "")
 
+    private var isValid = false
+
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -157,7 +159,13 @@ class SignInVC: UIViewController {
     private func handleButtons(_ sender: UIButton) {
         switch sender {
         case loginButton:
+            //            isValid = false
             checkTextFieldValidity()
+
+            let username = idTextField.text!
+            let password = pwTextField.text!
+
+            CurlyService.shared.signIn(username: username, password: password, completionHandler: loginProcessHandler(result:token:))
         case forgotIDButton:
             let nextVC = ForgotIDVC()
             navigationController?.pushViewController(nextVC, animated: true)
@@ -169,6 +177,20 @@ class SignInVC: UIViewController {
             navigationController?.pushViewController(nextVC, animated: true)
         default:
             return
+        }
+    }
+
+    // MARK: - Helpers
+    private func loginProcessHandler(result: Bool, token: String?) {
+        switch result {
+        case true:
+            guard let token = token else { return }
+            UserDefaults.standard.set(token, forKey: "token")
+            print("UserDefaults", UserDefaults.standard.string(forKey: "token"))
+            print("Login Success")
+            self.dismiss(animated: true, completion: nil)
+        case false:
+            print("Login Failed")
         }
     }
 }
