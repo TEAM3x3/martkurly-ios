@@ -10,6 +10,7 @@ import UIKit
 import Then
 
 class CartProductView: UITableViewCell {
+
     // MARK: - Properties
     private let inView = UIView().then {
         $0.backgroundColor = .white
@@ -30,7 +31,6 @@ class CartProductView: UITableViewCell {
     var condition = UILabel()
 
     var discount = 0
-
     private lazy var discountMoney = UILabel().then {
         let discountAttributes: [NSAttributedString.Key: Any] = [
                     .font: UIFont.systemFont(ofSize: 13),
@@ -46,10 +46,24 @@ class CartProductView: UITableViewCell {
         $0.attributedText = attributeString
     }
 
-    var product = 19000
+    var product = 0 {
+        didSet {
+
+        }
+    }
+
     private lazy var productPrice = UILabel().then {
-        $0.text = "\(product)원"
-        $0.font = .boldSystemFont(ofSize: 15)
+        let productPriceAttributes: [NSAttributedString.Key: Any] = [
+            .font: UIFont.systemFont(ofSize: 15),
+            .foregroundColor: UIColor.black
+        ]
+
+        let attributeString = NSAttributedString(
+            string: "\(product) 원",
+            attributes: productPriceAttributes
+        )
+
+        $0.attributedText = attributeString
     }
 
     private let dismissBtn = UIButton().then {
@@ -88,7 +102,7 @@ class CartProductView: UITableViewCell {
         contentView.backgroundColor = ColorManager.General.backGray.rawValue
         contentView.addSubview(inView)
 
-        [checkBtn, title, dismissBtn, productImage, condition, productPrice, discountMoney, stepper, total, totalPrice, totalWon].forEach {
+        [checkBtn, title, dismissBtn, productImage, condition, discountMoney, productPrice, stepper, total, totalPrice, totalWon].forEach {
             inView.addSubview($0)
         }
 

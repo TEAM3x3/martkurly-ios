@@ -15,10 +15,9 @@ class AllSelectView: UITableViewCell {
 
     static let identifier = "AllSelectView"
 
-    var check = UIButton().then {
-        $0.setImage(UIImage(systemName: "checkmark.circle"), for: .normal)
-        $0.tintColor = .lightGray
-    }
+    private var data = [Cart]()
+
+    var check = UIButton()
 
     private let allSelectLabel = UILabel().then {
         $0.text = "전체선택"
@@ -26,7 +25,7 @@ class AllSelectView: UITableViewCell {
 
     var selectNumber = UILabel()
 
-    private let deleteBtn = UIButton().then {
+    let deleteBtn = UIButton().then {
         $0.layer.borderWidth = 1
         $0.layer.cornerRadius = 3
         $0.layer.borderColor = UIColor.lightGray.cgColor
@@ -61,6 +60,8 @@ class AllSelectView: UITableViewCell {
             contentView.addSubview($0)
         }
 
+        selectNumber.text = "\(data.count)"
+
         deleteBtn.addSubview(lbl)
 
         check.snp.makeConstraints {
@@ -90,6 +91,7 @@ class AllSelectView: UITableViewCell {
         }
 
         deleteBtn.addTarget(self, action: #selector(deleteAction(_:)), for: .touchUpInside)
+
     }
 
     @objc
@@ -97,8 +99,7 @@ class AllSelectView: UITableViewCell {
         print("A")
     }
 
-    func configure(cart: String) {
-        selectNumber.text = cart
+    func configure(data: [Cart]) {
+        self.data = data
     }
-
 }

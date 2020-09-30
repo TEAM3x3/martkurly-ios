@@ -15,7 +15,6 @@ class CartVC: UIViewController {
     private var cartProduct = [Cart]() {
         didSet {
             tableV.reloadData()
-            checkingButton = true
         }
     }
 
@@ -31,7 +30,19 @@ class CartVC: UIViewController {
 
     lazy var button = KurlyButton(title: buttonStr ?? "주문하기", style: .purple)
 
-    private var checkingButton = false
+    private var checkingButton = true {
+        didSet {
+            tableV.reloadData()
+        }
+    }
+
+    private var productBtn: IndexPath?
+
+    private var selectCount: Int = 0 {
+        didSet {
+            tableV.reloadData()
+        }
+    }
 
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -106,8 +117,6 @@ class CartVC: UIViewController {
         tableV.backgroundColor = ColorManager.General.backGray.rawValue
         tableV.separatorStyle = .none
 
-        tableV.register(AllSelectView.self, forCellReuseIdentifier: AllSelectView.identifier)
-
         button.snp.makeConstraints {
             $0.bottom.equalToSuperview().inset(48)
             $0.leading.trailing.equalToSuperview().offset(8).inset(8)
@@ -123,10 +132,10 @@ class CartVC: UIViewController {
     }
 }
 
-extension CartVC: UITableViewDataSource {
-
+extension CartVC: UITableViewDataSource, UITableViewDelegate {
     func numberOfSections(in tableView: UITableView) -> Int {
         cartProduct.count + 1
+
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -139,38 +148,28 @@ extension CartVC: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-
-        if indexPath.section == 0 {
-            if indexPath.row == 0 {
-                let cell = tableView.dequeueReusableCell(withIdentifier: AllSelectView.identifier, for: indexPath) as! AllSelectView
-                cell.selectionStyle = .none
-                if cartProduct.count == 1 {
-                    cell.configure(cart: "(0/\(cartProduct[0].discount_total_pay))")
-                } else {
-                    cell.configure(cart: "(0/0)")
-                }
-                print(cartProduct)
-//                cell.configure(cart: "\(cartProduct[0].quantity_of_goods)")
-//                cell.check.addTarget(<#T##target: Any?##Any?#>, action: <#T##Selector#>, for: <#T##UIControl.Event#>)
+        switch cartProduct.count {
+        case 1:
+            switch indexPath.section {
+            case 0:
+                let cell = AllSelectView()
                 return cell
-            } else {
-                let cell = CartProductView()
-                cell.selectionStyle = .none
+            default:
+                let cell = PriceView()
                 return cell
             }
-//        } else if indexPath.section == 1 {
-//            let cell = PriceView()
-//            cell.selectionStyle = .none
-//            return cell
-        } else if indexPath.section == 1 {
-            let cell = PriceView()
-            cell.selectionStyle = .none
-            cell.hide = false
-            return cell
-        } else {
-            let cell = UITableViewCell()
-            cell.selectionStyle = .none
-            return cell
+        default:
+            switch indexPath.section {
+            case 0:
+                let cell = AllSelectView()
+                cell.check.setImage(UIImage(systemName: "checkmark.circle"), for: .normal)
+                cell.check.tintColor = .lightGray
+                cell.configure(data: cartProduct)
+                return cell
+            default:
+                let cell = PriceView()
+                return cell
+            }
         }
     }
 
@@ -198,19 +197,6 @@ extension CartVC: UITableViewDataSource {
             view.configure(txt: "\(cartProduct[0].items[0].goods.packing_status) 박스로 배송됩니다 ")
             return view
         }
-//        switch section {
-//        case 0:
-//            if cartProduct > 0 {
-//                let view = CartHeaderView()
-//                return view
-//            } else {
-//                let cell = UIView()
-//                return cell
-//            }
-//        default:
-//            let cell = UIView()
-//            return cell
-//        }
     }
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -225,8 +211,4 @@ extension CartVC: UITableViewDataSource {
             return 0
         }
     }
-}
-
-extension CartVC: UITableViewDelegate {
-
 }

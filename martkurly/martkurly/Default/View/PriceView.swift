@@ -12,6 +12,8 @@ import Then
 class PriceView: UITableViewCell {
 
     // MARK: - Propertise
+    private var data = [Cart]()
+
     private let sumLabel = UILabel().then {
         $0.text = "상품금액"
     }
@@ -42,14 +44,28 @@ class PriceView: UITableViewCell {
         $0.text = "원"
     }
 
-    var freeShipMoney = UILabel()
+    var shippingMoney = 0
+    private lazy var freeShipMoney = UILabel().then {
+        let shippingMoneyAttribute: [NSAttributedString.Key: Any] = [
+            .font: UIFont.systemFont(ofSize: 12),
+            .foregroundColor: ColorManager.General.mainPurple.rawValue
+        ]
 
-    private let shipMoney = UILabel().then {
-        $0.textColor = ColorManager.General.mainPurple.rawValue
-        $0.text = "원 추가주문 시,"
+        let attributeString = NSAttributedString(
+            string: "\(shippingMoney) 원",
+            attributes: shippingMoneyAttribute
+        )
+
+        $0.attributedText = attributeString
     }
 
-    private let freeShip = UILabel().then {
+    let shipMoney = UILabel().then {
+        $0.textColor = ColorManager.General.mainPurple.rawValue
+        $0.text = "원 추가주문 시,"
+        $0.font = .systemFont(ofSize: 12)
+    }
+
+    let freeShip = UILabel().then {
         $0.text = "무료배송"
         $0.textColor = ColorManager.General.mainPurple.rawValue
         $0.font = .boldSystemFont(ofSize: 12)
@@ -71,14 +87,14 @@ class PriceView: UITableViewCell {
         $0.text = "원"
     }
 
-    private let savingButton = UIButton().then {
+    let savingButton = UIButton().then {
         $0.setTitle("적립", for: .normal)
         $0.titleLabel?.font = .systemFont(ofSize: 10)
         $0.backgroundColor = .orange
         $0.layer.borderWidth = 1
     }
 
-    private let saving1 = UILabel().then {
+    let saving1 = UILabel().then {
         $0.text = "구매 시"
         $0.textColor = .gray
         $0.font = .systemFont(ofSize: 12)
@@ -89,7 +105,7 @@ class PriceView: UITableViewCell {
         $0.font = UIFont.boldSystemFont(ofSize: 12)
     }
 
-    private let saving2 = UILabel().then {
+    let saving2 = UILabel().then {
         $0.text = "원 적립"
         $0.font = UIFont.boldSystemFont(ofSize: 12)
     }
@@ -100,7 +116,11 @@ class PriceView: UITableViewCell {
         $0.font = .systemFont(ofSize: 10)
     }
 
-    var hide = true
+    var hide = true {
+        didSet {
+
+        }
+    }
 
     // MARK: - Lifecycle
 //    override init(frame: CGRect) {
@@ -111,6 +131,11 @@ class PriceView: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setConfigure()
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+
     }
 
     required init?(coder: NSCoder) {
@@ -141,15 +166,15 @@ class PriceView: UITableViewCell {
             }
         }
 
-        if hide {
-            [freeShipMoney, shipMoney, freeShip, saving1, saving2, savingPrice, savingButton].forEach {
-                $0.isHidden = true
-            }
-        } else {
-            [freeShipMoney, shipMoney, freeShip, saving1, saving2, savingPrice, savingButton].forEach {
-                $0.isHidden = false
-            }
-        }
+//        if hide {
+//            [freeShipMoney, shipMoney, freeShip, saving1, saving2, savingPrice, savingButton].forEach {
+//                $0.isHidden = false
+//            }
+//        } else {
+//            [freeShipMoney, shipMoney, freeShip, saving1, saving2, savingPrice, savingButton].forEach {
+//                $0.isHidden = true
+//            }
+//        }
 
         addSubview(savingButton)
 
@@ -199,19 +224,19 @@ class PriceView: UITableViewCell {
         }
 
         freeShipMoney.snp.makeConstraints {
-            $0.trailing.equalTo(freeShip.snp.leading).inset(4)
+            $0.trailing.equalTo(shipMoney.snp.leading).offset(-4)
         }
 
         freeShip.snp.makeConstraints {
-            $0.trailing.equalTo(shipMoney.snp.leading).inset(4)
-        }
-
-        shipMoney.snp.makeConstraints {
             $0.trailing.equalToSuperview().inset(16)
         }
 
+        shipMoney.snp.makeConstraints {
+            $0.trailing.equalTo(freeShip.snp.leading).offset(-4)
+        }
+
         line.snp.makeConstraints {
-            $0.top.equalTo(shipMoney.snp.bottom)
+            $0.top.equalTo(shipMoney.snp.bottom).offset(4)
             $0.leading.trailing.equalToSuperview().offset(16).inset(16)
             $0.height.equalTo(1)
         }
@@ -257,7 +282,8 @@ class PriceView: UITableViewCell {
 
     }
 
-    func configure(money: String) {
-        freeShipMoney.text = money
+    func configure(money: Int, data: [Cart]) {
+        shippingMoney = money
+        self.data = data
     }
 }
