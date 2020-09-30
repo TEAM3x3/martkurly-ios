@@ -11,6 +11,10 @@ import UIKit
 class ChooseProductsVC: UIViewController {
 
     // MARK: - Properties
+    var productDetailData: ProductDetail? { // 상품 정보
+        didSet { print(productDetailData) }
+    }
+
     private let separator = UIView().then {
         $0.backgroundColor = .separatorGray
     }
@@ -42,10 +46,10 @@ class ChooseProductsVC: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        setNavigationBarStatus(type: .whiteType, isShowCart: false, leftBarbuttonStyle: .dismiss, titleText: "상품 선택")
-    }
-
-    override func viewDidAppear(_ animated: Bool) {
+        setNavigationBarStatus(type: .whiteType,
+                               isShowCart: false,
+                               leftBarbuttonStyle: .dismiss,
+                               titleText: "상품 선택")
     }
 
     // MARK: - UI

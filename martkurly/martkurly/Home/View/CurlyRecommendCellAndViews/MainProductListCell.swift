@@ -193,7 +193,11 @@ extension MainProductListCell: UICollectionViewDataSource {
             return cell
         }
     }
+}
 
+// MARK: - UICollectionViewDelegateFlowLayout
+
+extension MainProductListCell: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         switch directionType {
         case .horizontal:
@@ -237,10 +241,4 @@ extension MainProductListCell: UICollectionViewDataSource {
             break
         }
     }
-}
-
-// MARK: - UICollectionViewDelegateFlowLayout
-
-extension MainProductListCell: UICollectionViewDelegateFlowLayout {
-
 }
