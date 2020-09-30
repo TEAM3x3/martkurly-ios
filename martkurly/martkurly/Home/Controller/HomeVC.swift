@@ -92,6 +92,14 @@ class HomeVC: UIViewController {
         }
     }
 
+    // MARK: - Selectors
+
+    @objc
+    func moveProductDetailView(_ noti: Notification) {
+        guard let productID = noti.object as? Int else { return }
+        detailViewProduct(productID: productID)
+    }
+
     // MARK: - Actions
 
     func detailViewProduct(productID: Int) {
@@ -129,6 +137,14 @@ class HomeVC: UIViewController {
 
     // MARK: - Helpers
 
+    func configureAttributes() {
+        NotificationCenter.default
+            .addObserver(self,
+                         selector: #selector(moveProductDetailView),
+                         name: .init(PRODUCT_DETAILVIEW_EVENT),
+                         object: nil)
+    }
+
     func configureNavigationBar() {
         // 이미지 이상함...ㅋㅋㅋ 한번 확인 필요
         let titleImageView = UIImageView(image: .martcurlyMainTitleWhiteImage)
@@ -137,6 +153,7 @@ class HomeVC: UIViewController {
     }
 
     func configureUI() {
+        configureAttributes()
         view.backgroundColor = .white
 
         configureNavigationBar()

@@ -228,6 +228,8 @@ extension CurlyRecommendCell: UITableViewDataSource {
     }
 }
 
+// MARK: - CurlyRecommendDelegate
+
 extension CurlyRecommendCell: CurlyRecommendDelegate {
     func tappedItem(selectedID: Int) {
         tappedEvent?(selectedID)

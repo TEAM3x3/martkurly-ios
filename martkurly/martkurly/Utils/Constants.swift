@@ -26,3 +26,7 @@ let REF_SIGNUP = CURLY_REF + "/users"
 let REF_SIGNIN = CURLY_REF + "/users/login"
 
 let REF_CATEGORY = CURLY_REF + "/category"
+
+// Notification
+
+let PRODUCT_DETAILVIEW_EVENT = "PRODUCT_DETAILVIEW_EVENT"

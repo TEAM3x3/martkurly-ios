@@ -226,6 +226,17 @@ extension MainProductListCell: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return sidePaddingValue
     }
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        switch directionType {
+        case .horizontal:
+            NotificationCenter.default
+                .post(name: .init(PRODUCT_DETAILVIEW_EVENT),
+                      object: productsDetailDatas[indexPath.item].id)
+        case .vertical:
+            break
+        }
+    }
 }
 
 // MARK: - UICollectionViewDelegateFlowLayout
