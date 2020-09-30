@@ -21,6 +21,32 @@ class MethodsOfPayMentCell: UITableViewCell {
     private lazy var paymentCollectionView = UICollectionView(frame: .zero,
                                                               collectionViewLayout: flowLayout)
 
+    private let checkMarkButton = AgreementCheckMarkView()
+    private lazy var nextPaymentView = UIView().then {
+        let label = UILabel()
+        label.text = "선택한 결제 수단을 다음에도 사용"
+        label.textColor = .black
+        label.font = UIFont.systemFont(ofSize: 16)
+
+        $0.addSubview(checkMarkButton)
+        $0.addSubview(label)
+
+        checkMarkButton.snp.makeConstraints {
+            $0.centerY.leading.equalToSuperview()
+            $0.height.width.equalTo(28)
+        }
+
+        label.snp.makeConstraints {
+            $0.centerY.equalToSuperview()
+            $0.leading.equalTo(checkMarkButton.snp.trailing).offset(12)
+        }
+
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tappedPaymentNext))
+        $0.addGestureRecognizer(tapGesture)
+        $0.isUserInteractionEnabled = true
+        $0.backgroundColor = .clear
+    }
+
     var selectedPaymentType: ((Int) -> Void)?
     var selectedType: PaymentType = .creditCard
 
@@ -43,12 +69,19 @@ class MethodsOfPayMentCell: UITableViewCell {
                                          scrollPosition: .bottom)
     }
 
+    // MARK: - Selectors
+
+    @objc
+    func tappedPaymentNext() {
+        checkMarkButton.isActive.toggle()
+    }
+
     // MARK: - Helpers
 
     func configureUI() {
         self.backgroundColor = .white
 
-        [paymentCollectionView].forEach {
+        [paymentCollectionView, nextPaymentView].forEach {
             self.addSubview($0)
         }
 
@@ -56,7 +89,13 @@ class MethodsOfPayMentCell: UITableViewCell {
         paymentCollectionView.snp.makeConstraints {
             $0.top.leading.trailing.equalToSuperview()
             $0.height.equalTo(height)
+        }
+
+        nextPaymentView.snp.makeConstraints {
+            $0.top.equalTo(paymentCollectionView.snp.bottom)
+            $0.leading.trailing.equalToSuperview().inset(orderVCSideInsetValue)
             $0.bottom.equalToSuperview()
+            $0.height.equalTo(60)
         }
     }
 

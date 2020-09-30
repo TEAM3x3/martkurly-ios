@@ -258,4 +258,40 @@ struct CurlyService {
             completion(cartList)
         }
     }
-}
+    
+    // MARK: - 로그인
+    func signIn(username: String, password: String, completionHandler: @escaping (Bool, String?) -> Void) {
+        let value = [
+            "username": username,
+            "password": password
+        ]
+
+        let signInURL = URL(string: REF_SIGNIN)!
+        var request = URLRequest(url: signInURL)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpBody = try! JSONSerialization.data(withJSONObject: value)
+
+        AF.request(request).responseString { (response) in
+            switch response.result {
+            case .success(let json):
+                print("Success: ", json)
+                guard let jsonData = response.data else { return }
+
+                struct TokenData: Decodable {
+                    let token: String
+                }
+
+                do {
+                    let tokenData = try self.decoder.decode(TokenData.self, from: jsonData)
+                    completionHandler(true, tokenData.token)
+                } catch {
+                    completionHandler(false, nil)
+                }
+
+            case .failure(let error):
+                print("Error: ", error)
+            }
+        }
+    }
+
