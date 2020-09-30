@@ -106,7 +106,9 @@ class ProductOrderVC: UIViewController {
             self.navigationController?.pushViewController(controller, animated: true)
         case .orderReceiveSpace:
             let controller = ReceiveSpaceSettingVC()
-            self.navigationController?.pushViewController(controller, animated: true)
+            let naviVC = UINavigationController(rootViewController: controller)
+            naviVC.modalPresentationStyle = .fullScreen
+            self.present(naviVC, animated: true)
         case .methodsOfPayMent:
             isShowPaymentList.toggle()
             methodsOfPaymentHeaderView.isShowPaymentList = isShowPaymentList
