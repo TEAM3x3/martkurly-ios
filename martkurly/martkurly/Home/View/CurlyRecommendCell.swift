@@ -24,9 +24,8 @@ class CurlyRecommendCell: UICollectionViewCell {
 
     var tappedEvent: ((Int) -> Void)?
 
-    var mainEventList = [MainEvent]() {
-        didSet { recommendTableView.reloadData() }
-    }
+    private var mainEventList = [MainEvent]()
+    private var recommendProducts = [ProductDetail]()
 
     // MARK: - LifeCycle
 
@@ -74,6 +73,14 @@ class CurlyRecommendCell: UICollectionViewCell {
                                     forCellReuseIdentifier: MainCurlyRecipeCell.identifier)
         recommendTableView.register(MainCurlyInfomationCell.self,
                                     forCellReuseIdentifier: MainCurlyInfomationCell.identifier)
+    }
+
+    func configure(mainEventList: [MainEvent],
+                   recommendProducts: [ProductDetail]) {
+        self.mainEventList = mainEventList
+        self.recommendProducts = recommendProducts
+
+        self.recommendTableView.reloadData()
     }
 }
 
@@ -125,6 +132,7 @@ extension CurlyRecommendCell: UITableViewDataSource {
                            titleType: .none,
                            backgroundColor: .white,
                            titleText: "이 상품 어때요?")
+            cell.productsDetailDatas = recommendProducts
             return cell
         case .eventNewsCell:
             let cell = tableView.dequeueReusableCell(

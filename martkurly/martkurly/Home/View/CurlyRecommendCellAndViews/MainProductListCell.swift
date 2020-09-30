@@ -14,6 +14,10 @@ class MainProductListCell: UITableViewCell {
 
     static let identifier = "MainProductListCell"
 
+    var productsDetailDatas = [ProductDetail]() {
+        didSet { productCollectionView.reloadData() }
+    }
+
     enum ProductListTitleType {
         case none
         case rightAllow
@@ -169,7 +173,7 @@ class MainProductListCell: UITableViewCell {
 extension MainProductListCell: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         switch directionType {
-        case .horizontal: return 5
+        case .horizontal: return productsDetailDatas.count
         case .vertical: return 3
         }
     }
@@ -180,6 +184,7 @@ extension MainProductListCell: UICollectionViewDataSource {
             let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: MainEachHProductCell.identifier,
                 for: indexPath) as! MainEachHProductCell
+            cell.productDetailData = productsDetailDatas[indexPath.item]
             return cell
         case .vertical:
             let cell = collectionView.dequeueReusableCell(

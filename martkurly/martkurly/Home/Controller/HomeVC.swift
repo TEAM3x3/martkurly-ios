@@ -12,17 +12,10 @@ class HomeVC: UIViewController {
 
     // MARK: - Properties
 
-    private var cheapProducts = [Product]() {
-        didSet { categoryMenuCollectionView.reloadData() }
-    }
-
-    private var eventList = [EventModel]() {
-        didSet { categoryMenuCollectionView.reloadData() }
-    }
-
-    private var mainEventList = [MainEvent]() {
-        didSet { categoryMenuCollectionView.reloadData() }
-    }
+    private var cheapProducts = [Product]()
+    private var eventList = [EventModel]()
+    private var mainEventList = [MainEvent]()
+    private var recommendProducts = [ProductDetail]()
 
     private lazy var menuCategory = CategoryMenuView(categoryType: .fixInsetStyle).then {
         $0.menuTitles = ["컬리추천", "신상품", "베스트", "알뜰쇼핑", "이벤트"]
@@ -59,20 +52,27 @@ class HomeVC: UIViewController {
     func requestMainData() {
         self.showIndicate()
 
-        fetchMainEvent()
+        fetchMainDatas()
         fetchCheapProducts()
         fetchEventList()
 
         group.notify(queue: queue) {
             self.stopIndicate()
+            self.categoryMenuCollectionView.reloadData()
         }
     }
 
-    func fetchMainEvent() {
+    func fetchMainDatas() {
         group.enter()
         CurlyService.shared.fetchMainEventList { mainEventList in
             self.group.leave()
             self.mainEventList = mainEventList
+        }
+
+        group.enter()
+        CurlyService.shared.fetchRecommendProducts { products in
+            self.group.leave()
+            self.recommendProducts = products
         }
     }
 
@@ -189,8 +189,9 @@ extension HomeVC: UICollectionViewDataSource {
             let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: CurlyRecommendCell.identifier,
                 for: indexPath) as! CurlyRecommendCell
-            cell.mainEventList = mainEventList
             cell.tappedEvent = tappedEvent
+            cell.configure(mainEventList: mainEventList,
+                           recommendProducts: recommendProducts)
             return cell
         case .newProduct:
             let cell = collectionView.dequeueReusableCell(

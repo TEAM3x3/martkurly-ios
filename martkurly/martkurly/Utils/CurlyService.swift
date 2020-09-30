@@ -15,6 +15,23 @@ struct CurlyService {
 
     private let decoder = JSONDecoder()
 
+    // MARK: - 메인화면 - 이 상품 어때요? 데이터 가져오기
+
+    func fetchRecommendProducts(completion: @escaping([ProductDetail]) -> Void) {
+        var recommendProducts = [ProductDetail]()
+
+        AF.request(REF_RECOMMEND_PRODUCTS, method: .get).responseJSON { response in
+            guard let jsonData = response.data else { return completion(recommendProducts) }
+
+            do {
+                recommendProducts = try self.decoder.decode([ProductDetail].self, from: jsonData)
+            } catch {
+                print("DEBUG: Recommend List Fetch Error, ", error.localizedDescription)
+            }
+            completion(recommendProducts)
+        }
+    }
+
     // MARK: - 타입 상품 목록 가져오기
 
     func requestTypeProdcuts(type: String, completion: @escaping([Product]) -> Void) {

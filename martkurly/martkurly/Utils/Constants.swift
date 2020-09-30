@@ -14,6 +14,7 @@ let CURLY_GOODS_REF = CURLY_REF + "/goods"
 let REF_GOODS = CURLY_GOODS_REF + "/"
 let REF_CHEAP = CURLY_GOODS_REF + "/sale"
 let REF_SEARCH_PRODUCTS = CURLY_GOODS_REF + "/goods_search"
+let REF_RECOMMEND_PRODUCTS = CURLY_GOODS_REF + "/main_page_recommend"
 
 let CURLY_EVENT_REF = CURLY_REF + "/event"
 let REF_EVENT_GOODS = CURLY_EVENT_REF + "/"
