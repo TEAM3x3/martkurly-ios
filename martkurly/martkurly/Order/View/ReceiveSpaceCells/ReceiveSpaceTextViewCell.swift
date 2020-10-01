@@ -14,6 +14,10 @@ class ReceiveSpaceTextViewCell: UITableViewCell {
 
     static let identifier = "ReceiveSpaceTextViewCell"
 
+    var textData: String? {
+        return spaceTextView.text
+    }
+
     private let placeHolderLabel = UILabel().then {
         $0.text = "테스트"
         $0.textColor = .lightGray

@@ -16,6 +16,8 @@ class SpaceConfirmButtonCell: UITableViewCell {
 
     private let confirmButton = KurlyButton(title: "확인", style: .purple)
 
+    var tappedConfirmButton: (() -> Void)?
+
     // MARK: - LifeCycle
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -25,6 +27,13 @@ class SpaceConfirmButtonCell: UITableViewCell {
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    // MARK: - Selectors
+
+    @objc
+    func handleConfirmButton() {
+        tappedConfirmButton?()
     }
 
     // MARK: - Helpers
@@ -37,5 +46,9 @@ class SpaceConfirmButtonCell: UITableViewCell {
             $0.edges.equalToSuperview().inset(orderVCSideInsetValue)
             $0.height.equalTo(52)
         }
+
+        confirmButton.addTarget(self,
+                                action: #selector(handleConfirmButton),
+                                for: .touchUpInside)
     }
 }

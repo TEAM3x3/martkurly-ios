@@ -14,7 +14,7 @@ class CompleteMessageCell: UITableViewCell {
 
     static let identifier = "CompleteMessageCell"
 
-    private var selectedLeft: Bool = true {
+    var selectedLeft: Bool = true {
         didSet {
             deliveryAfterCheckButton.isActive = selectedLeft
             sevenAMCheckButton.isActive = !selectedLeft

@@ -8,9 +8,20 @@
 
 import UIKit
 
+protocol ReceiveSpaceSettingVCDelegate: class {
+    func receiveSpaceData(receiving_place: ReceiveSpaceType,
+                          entrance_password: String?,
+                          free_pass: Bool,
+                          etc: String?,
+                          message: Bool?,
+                          extra_message: String?)
+}
+
 class ReceiveSpaceSettingVC: UIViewController {
 
     // MARK: - Properties
+
+    weak var delegate: ReceiveSpaceSettingVCDelegate?
 
     private let receiveSpaceTableView = UITableView(frame: .zero, style: .grouped)
 
@@ -34,6 +45,71 @@ class ReceiveSpaceSettingVC: UIViewController {
                                     isShowCart: false,
                                     leftBarbuttonStyle: .dismiss,
                                     titleText: "받으실 장소 입력")
+    }
+
+    // MARK: - Actions
+
+    func tappedConfirmButton() {
+        var entrance_password: String?
+        var free_pass: Bool = false
+        var etc: String?
+        var message: Bool?
+        var extra_message: String?
+
+        if selectedReceiveSpace == .doorFront && selectedDoorFrontUsage == .commonDoor {
+            let indexPath = IndexPath(row: DoorFrontUsage.commonDoor.rawValue,
+                                      section: ReceiveSettingType.attachedExplain.rawValue)
+            if let cell = receiveSpaceTableView.cellForRow(at: indexPath) as? DoorFrontUsageCell {
+                entrance_password = cell.inputTextData.isEmpty ? nil : cell.inputTextData
+            }
+        }
+
+        if selectedReceiveSpace == .doorFront && selectedDoorFrontUsage == .enterFree {
+            free_pass = true
+        }
+
+        if selectedReceiveSpace == .doorFront && selectedDoorFrontUsage == .theOthers {
+            let indexPath = IndexPath(row: DoorFrontUsage.theOthers.rawValue,
+                                      section: ReceiveSettingType.attachedExplain.rawValue)
+            if let cell = receiveSpaceTableView.cellForRow(at: indexPath) as? DoorFrontUsageCell {
+                etc = cell.inputTextData.isEmpty ? nil : cell.inputTextData
+            }
+        }
+
+        let indexPath = IndexPath(row: 0,
+                                  section: ReceiveSettingType.completeMessage.rawValue)
+        if let cell = receiveSpaceTableView.cellForRow(at: indexPath) as? CompleteMessageCell {
+            message = cell.selectedLeft ? true : false
+        }
+
+        if selectedReceiveSpace == .securityOffice ||
+            selectedReceiveSpace == .parcelBox ||
+            selectedReceiveSpace == .anotherPlace {
+            switch selectedReceiveSpace {
+            case .securityOffice: fallthrough
+            case .anotherPlace:
+                let indexPath = IndexPath(row: 0,
+                                          section: ReceiveSettingType.attachedExplain.rawValue)
+                if let cell = receiveSpaceTableView.cellForRow(at: indexPath) as? ReceiveSpaceTextViewCell {
+                    extra_message = cell.textData
+                }
+            case .parcelBox:
+                let indexPath = IndexPath(row: 0,
+                                          section: ReceiveSettingType.attachedExplain.rawValue)
+                if let cell = receiveSpaceTableView.cellForRow(at: indexPath) as? ReceiveSpaceTextFieldCell {
+                    extra_message = cell.textData
+                }
+            default: break
+            }
+        }
+
+        delegate?.receiveSpaceData(receiving_place: selectedReceiveSpace,
+                                   entrance_password: entrance_password,
+                                   free_pass: free_pass,
+                                   etc: etc,
+                                   message: message,
+                                   extra_message: extra_message)
+        self.dismiss(animated: true, completion: nil)
     }
 
     // MARK: - Helpers
@@ -150,6 +226,7 @@ extension ReceiveSpaceSettingVC: UITableViewDataSource {
             return cell
         case .confirmButton:
             let cell = SpaceConfirmButtonCell()
+            cell.tappedConfirmButton = tappedConfirmButton
             return cell
         }
     }

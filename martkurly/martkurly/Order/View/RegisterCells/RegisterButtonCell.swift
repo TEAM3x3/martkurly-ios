@@ -92,8 +92,9 @@ class RegisterButtonCell: UITableViewCell {
             self.addSubview($0)
         }
 
-        inputTextField.snp.makeConstraints {
-            $0.edges.equalToSuperview().inset(orderVCSideInsetValue)
+        titleLabel.snp.makeConstraints {
+            $0.top.equalToSuperview()
+            $0.leading.equalToSuperview().offset(orderVCSideInsetValue)
         }
 
         inputCustomView.snp.makeConstraints {
@@ -147,5 +148,9 @@ class RegisterButtonCell: UITableViewCell {
             $0.leading.bottom.equalToSuperview().inset(orderVCSideInsetValue)
             $0.trailing.equalTo(cellImageView.snp.leading).offset(-4)
         }
+    }
+
+    func configureReceiveSpace(titleText: String) {
+        inputTextField.text = titleText
     }
 }

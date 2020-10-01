@@ -15,6 +15,8 @@ class RegisterDeliveryVC: UIViewController {
 
     private let registerTableView = UITableView()
 
+    private var deliverySpaceData: DeliverySpaceModel?
+
     // 카카오 주소 찾기 서비스
 
     private var deliveryStatusType: DeliveryStatusType = .basicArea
@@ -85,9 +87,50 @@ class RegisterDeliveryVC: UIViewController {
             webView.load(request)
             indicator.startAnimating()
         case .receivePlace:
-            print("receivePlace")
+            let controller = ReceiveSpaceSettingVC()
+            controller.delegate = self
+            let naviVC = UINavigationController(rootViewController: controller)
+            naviVC.modalPresentationStyle = .fullScreen
+            self.present(naviVC, animated: true)
         default: break
         }
+    }
+
+    func tappedSaveButton() {
+        print(#function)
+        guard var deliverySpaceData = deliverySpaceData else { return }
+
+        let basicAddress = "\(findAddress) [\(zipCode)]"
+//        var name: String?
+//        var phone: String?
+        var detailAddress: String?
+        var isDefaultAddress: Bool = false
+
+//        let nameIndexPath = IndexPath(row: 0, section: RegisterDeliveryType.receiverName.rawValue)
+//        if let cell = registerTableView.cellForRow(at: nameIndexPath) as? RegisterInputCell {
+//            name = cell.inputTextData
+//        }
+//
+//        let phoneIndexPath = IndexPath(row: 0, section: RegisterDeliveryType.receiverPhone.rawValue)
+//        if let cell = registerTableView.cellForRow(at: phoneIndexPath) as? RegisterInputCell {
+//            phone = cell.inputTextData
+//        }
+
+        let detailIndexPath = IndexPath(row: 0, section: RegisterDeliveryType.detailAddress.rawValue)
+        if let cell = registerTableView.cellForRow(at: detailIndexPath) as? RegisterInputCell {
+            detailAddress = cell.inputTextData
+        }
+
+        let DefaultAddressIndexPath = IndexPath(row: 0, section: RegisterDeliveryType.defaultPlaceSet.rawValue)
+        if let cell = registerTableView.cellForRow(at: DefaultAddressIndexPath) as? CheckDeliveryStatusCell {
+            isDefaultAddress = cell.isActive
+        }
+
+        deliverySpaceData.address = basicAddress
+        deliverySpaceData.detail_address = detailAddress ?? ""
+        deliverySpaceData.status = isDefaultAddress ? "T" : "F"
+
+        print(deliverySpaceData)
     }
 
     // MARK: - Helpers
@@ -150,8 +193,8 @@ class RegisterDeliveryVC: UIViewController {
         registerTableView.dataSource = self
         registerTableView.delegate = self
 
-        registerTableView.register(SameOrdererCell.self,
-                                   forCellReuseIdentifier: SameOrdererCell.identifier)
+        registerTableView.register(CheckDeliveryStatusCell.self,
+                                   forCellReuseIdentifier: CheckDeliveryStatusCell.identifier)
         registerTableView.register(RegisterInputCell.self,
                                    forCellReuseIdentifier: RegisterInputCell.identifier)
         registerTableView.register(RegisterButtonCell.self,
@@ -199,8 +242,8 @@ extension RegisterDeliveryVC: UITableViewDataSource {
         switch type {
         case .sameOrderer, .defaultPlaceSet:
             let cell = tableView.dequeueReusableCell(
-                withIdentifier: SameOrdererCell.identifier,
-                for: indexPath) as! SameOrdererCell
+                withIdentifier: CheckDeliveryStatusCell.identifier,
+                for: indexPath) as! CheckDeliveryStatusCell
             cell.configure(titleText: type.titleText)
             return cell
         case .receiverName, .receiverPhone, .detailAddress:
@@ -237,6 +280,7 @@ extension RegisterDeliveryVC: UITableViewDataSource {
             return cell
         case .saveButton:
             let cell = DeliverySaveButtonCell()
+            cell.tappedSaveButton = tappedSaveButton
             return cell
         }
     }
@@ -291,5 +335,34 @@ extension RegisterDeliveryVC: WKNavigationDelegate {
 
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         indicator.stopAnimating()
+    }
+}
+
+// MARK: - ReceiveSpaceSettingVCDelegate
+
+extension RegisterDeliveryVC: ReceiveSpaceSettingVCDelegate {
+    func receiveSpaceData(receiving_place: ReceiveSpaceType, entrance_password: String?, free_pass: Bool, etc: String?, message: Bool?, extra_message: String?) {
+        deliverySpaceData = DeliverySpaceModel(address: "",
+                                               detail_address: "",
+                                               status: "",
+                                               receiving_place: receiving_place.description,
+                                               entrance_password: entrance_password,
+                                               free_pass: free_pass,
+                                               etc: etc,
+                                               message: message,
+                                               extra_message: extra_message)
+
+        let indexPath = IndexPath(row: 0, section: RegisterDeliveryType.receivePlace.rawValue)
+        if let cell = registerTableView.cellForRow(at: indexPath) as? RegisterButtonCell {
+            switch receiving_place {
+            case .doorFront:
+                let root = entrance_password != nil ? "공동현관 비밀번호" :
+                    free_pass != false ? "자유 출입 가능" : "기타"
+                let text = "\(receiving_place.description) (출입방법: \(root))"
+                cell.configureReceiveSpace(titleText: text)
+            default:
+                cell.configureReceiveSpace(titleText: receiving_place.description)
+            }
+        }
     }
 }

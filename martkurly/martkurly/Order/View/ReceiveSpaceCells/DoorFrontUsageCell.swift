@@ -14,6 +14,10 @@ class DoorFrontUsageCell: UITableViewCell {
 
     static let identifier = "DoorFrontUsageCell"
 
+    var inputTextData: String {
+        return inputTextField.text ?? ""
+    }
+
     private let checkButton = KurlyChecker()
     private let spaceTitleLabel = UILabel().then {
         $0.text = "테스트"

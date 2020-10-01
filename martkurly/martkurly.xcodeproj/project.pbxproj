@@ -190,7 +190,7 @@
 		AF9C3C7E24ED8CCE0055E7C5 /* NavigationBarType.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF9C3C7D24ED8CCE0055E7C5 /* NavigationBarType.swift */; };
 		AF9EB56A2516709E00E30F27 /* ReviewsInfomationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF9EB5692516709E00E30F27 /* ReviewsInfomationCell.swift */; };
 		AF9EB56D2516754600E30F27 /* ReviewsHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF9EB56C2516754600E30F27 /* ReviewsHeaderView.swift */; };
-		AF9FFF84252256DC0003DB76 /* SameOrdererCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF9FFF83252256DC0003DB76 /* SameOrdererCell.swift */; };
+		AF9FFF84252256DC0003DB76 /* CheckDeliveryStatusCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF9FFF83252256DC0003DB76 /* CheckDeliveryStatusCell.swift */; };
 		AF9FFF8825226A8E0003DB76 /* RegisterInputCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF9FFF8725226A8E0003DB76 /* RegisterInputCell.swift */; };
 		AF9FFF8B25226AA30003DB76 /* RegisterButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF9FFF8A25226AA30003DB76 /* RegisterButtonCell.swift */; };
 		AF9FFF8E25226CFD0003DB76 /* DeliverySaveButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF9FFF8D25226CFD0003DB76 /* DeliverySaveButtonCell.swift */; };
@@ -207,6 +207,7 @@
 		AFADDEBD25251242000D1876 /* ReceiveSpaceTextFieldCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFADDEBC25251242000D1876 /* ReceiveSpaceTextFieldCell.swift */; };
 		AFADDEC0252516EA000D1876 /* CompleteMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFADDEBF252516EA000D1876 /* CompleteMessageCell.swift */; };
 		AFADDEC325251850000D1876 /* SpaceConfirmButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFADDEC225251850000D1876 /* SpaceConfirmButtonCell.swift */; };
+		AFADDEC825251B39000D1876 /* DeliverySpaceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFADDEC725251B39000D1876 /* DeliverySpaceModel.swift */; };
 		AFB791E7251E313700541DA1 /* OrderDeliveryHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFB791E6251E313700541DA1 /* OrderDeliveryHeaderView.swift */; };
 		AFB791EA251E330100541DA1 /* UserDeliverySettingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFB791E9251E330100541DA1 /* UserDeliverySettingVC.swift */; };
 		AFB791ED251E696800541DA1 /* OrderDeliveryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFB791EC251E696800541DA1 /* OrderDeliveryCell.swift */; };
@@ -415,7 +416,7 @@
 		AF9C3C7D24ED8CCE0055E7C5 /* NavigationBarType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBarType.swift; sourceTree = "<group>"; };
 		AF9EB5692516709E00E30F27 /* ReviewsInfomationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewsInfomationCell.swift; sourceTree = "<group>"; };
 		AF9EB56C2516754600E30F27 /* ReviewsHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewsHeaderView.swift; sourceTree = "<group>"; };
-		AF9FFF83252256DC0003DB76 /* SameOrdererCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SameOrdererCell.swift; sourceTree = "<group>"; };
+		AF9FFF83252256DC0003DB76 /* CheckDeliveryStatusCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckDeliveryStatusCell.swift; sourceTree = "<group>"; };
 		AF9FFF8725226A8E0003DB76 /* RegisterInputCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterInputCell.swift; sourceTree = "<group>"; };
 		AF9FFF8A25226AA30003DB76 /* RegisterButtonCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterButtonCell.swift; sourceTree = "<group>"; };
 		AF9FFF8D25226CFD0003DB76 /* DeliverySaveButtonCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeliverySaveButtonCell.swift; sourceTree = "<group>"; };
@@ -432,6 +433,7 @@
 		AFADDEBC25251242000D1876 /* ReceiveSpaceTextFieldCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiveSpaceTextFieldCell.swift; sourceTree = "<group>"; };
 		AFADDEBF252516EA000D1876 /* CompleteMessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteMessageCell.swift; sourceTree = "<group>"; };
 		AFADDEC225251850000D1876 /* SpaceConfirmButtonCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceConfirmButtonCell.swift; sourceTree = "<group>"; };
+		AFADDEC725251B39000D1876 /* DeliverySpaceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeliverySpaceModel.swift; sourceTree = "<group>"; };
 		AFB791E6251E313700541DA1 /* OrderDeliveryHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderDeliveryHeaderView.swift; sourceTree = "<group>"; };
 		AFB791E9251E330100541DA1 /* UserDeliverySettingVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDeliverySettingVC.swift; sourceTree = "<group>"; };
 		AFB791EC251E696800541DA1 /* OrderDeliveryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderDeliveryCell.swift; sourceTree = "<group>"; };
@@ -967,7 +969,7 @@
 		AF9FFF82252256CD0003DB76 /* RegisterCells */ = {
 			isa = PBXGroup;
 			children = (
-				AF9FFF83252256DC0003DB76 /* SameOrdererCell.swift */,
+				AF9FFF83252256DC0003DB76 /* CheckDeliveryStatusCell.swift */,
 				AF9FFF8725226A8E0003DB76 /* RegisterInputCell.swift */,
 				AF9FFF8A25226AA30003DB76 /* RegisterButtonCell.swift */,
 				AF9FFF8D25226CFD0003DB76 /* DeliverySaveButtonCell.swift */,
@@ -1028,6 +1030,7 @@
 				AF7482942521C20A006E8434 /* UnDeliveryActionType.swift */,
 				AF2F2F9A252332500088A36E /* RegisterDeliveryType.swift */,
 				AFADDEB32524E167000D1876 /* ReceiveSettingType.swift */,
+				AFADDEC725251B39000D1876 /* DeliverySpaceModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1371,6 +1374,7 @@
 				AFADDEB725250C5A000D1876 /* DoorFrontUsageCell.swift in Sources */,
 				AF92F959251108A000C12965 /* ReviewsProductCell.swift in Sources */,
 				42E086F52521A7350050EF89 /* KurlyChecker.swift in Sources */,
+				AFADDEC825251B39000D1876 /* DeliverySpaceModel.swift in Sources */,
 				AF8D2F0924F427D900AE177D /* ProductListHeaderView.swift in Sources */,
 				AFC8E08925095E640018DC20 /* ProductDetailViewModel.swift in Sources */,
 				0EB631E524EDA46A006AA976 /* DetailOrderView.swift in Sources */,
@@ -1414,7 +1418,7 @@
 				4246D14024F4DDEA0001F9E8 /* SignUpAddressView.swift in Sources */,
 				42F44E7424F91303001B9294 /* MyKurlyCustomerServiceVC.swift in Sources */,
 				AF7F62C42520D8CE00A14D7A /* MethodsOfPaymentHeaderView.swift in Sources */,
-				AF9FFF84252256DC0003DB76 /* SameOrdererCell.swift in Sources */,
+				AF9FFF84252256DC0003DB76 /* CheckDeliveryStatusCell.swift in Sources */,
 				4208FD5F250A0EF2006BA461 /* MyKurlyOrderHistoryDetailTableViewOrderNumberCell.swift in Sources */,
 				42C69B5E24EE6D6800A18B4C /* SignError.swift in Sources */,
 				0EFD8E6D24EECE680078652E /* CategoryVC.swift in Sources */,

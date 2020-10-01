@@ -14,6 +14,10 @@ class ReceiveSpaceTextFieldCell: UITableViewCell {
 
     static let identifier = "ReceiveSpaceTextFieldCell"
 
+    var textData: String? {
+        return inputTextField.text
+    }
+
     private let inputTextField = UITextField().then {
         $0.placeholder = "택배함 위치 / 택배함 번호, 비밀번호"
         $0.font = .systemFont(ofSize: 16)
