@@ -55,7 +55,7 @@ struct KurlyService {
         var typeProducts = [Product]()
 
         let parameters = ["type": type]
-        AF.request(CURLY_GOODS_REF, method: .get, parameters: parameters).responseJSON { response in
+        AF.request(KURLY_GOODS_REF, method: .get, parameters: parameters).responseJSON { response in
             guard let jsonData = response.data else { return completion(typeProducts) }
 
             do {
@@ -73,7 +73,7 @@ struct KurlyService {
         var categoryProducts = [Product]()
 
         let parameters = ["category": category]
-        AF.request(CURLY_GOODS_REF, method: .get, parameters: parameters).responseJSON { response in
+        AF.request(KURLY_GOODS_REF, method: .get, parameters: parameters).responseJSON { response in
             guard let jsonData = response.data else { return completion(categoryProducts) }
 
             do {
@@ -109,7 +109,7 @@ struct KurlyService {
         let parameter = ["word": searchKeyword]
         var products = [Product]()
 
-        AF.request(REF_SEARCH_PRODUCTS, method: .get, parameters: parameter, headers: headers).responseJSON { response in
+        AF.request(REF_SEARCH_WORD_PRODUCTS, method: .get, parameters: parameter, headers: headers).responseJSON { response in
             print(response)
             guard let jsonData = response.data else { return completion(products) }
 
@@ -127,7 +127,7 @@ struct KurlyService {
     func fetchMainEventList(completion: @escaping([MainEvent]) -> Void) {
         var mainEventList = [MainEvent]()
 
-        AF.request(CURLY_MAIN_EVENT_REF, method: .get).responseJSON { response in
+        AF.request(KURLY_MAIN_EVENT_REF, method: .get).responseJSON { response in
             guard let jsonData = response.data else { return completion(mainEventList) }
 
             do {
@@ -159,7 +159,7 @@ struct KurlyService {
     func fetchEventList(completion: @escaping([EventModel]) -> Void) {
         var events = [EventModel]()
 
-        AF.request(CURLY_EVENT_REF, method: .get).responseJSON { response in
+        AF.request(KURLY_EVENT_REF, method: .get).responseJSON { response in
             guard let jsonData = response.data else { return completion(events) }
 
             do {
@@ -191,7 +191,7 @@ struct KurlyService {
     func fetchCheapProducts(completion: @escaping([Product]) -> Void) {
         var cheapProducts = [Product]()
 
-        AF.request(REF_CHEAP, method: .get).responseJSON { response in
+        AF.request(REF_CHEAP_PRODUCTS, method: .get).responseJSON { response in
             guard let jsonData = response.data else { completion(cheapProducts); return }
             do {
                 let products = try self.decoder.decode([Product].self, from: jsonData)
@@ -340,7 +340,7 @@ struct KurlyService {
             }
         }
     }
-    
+
     func deleteCartData(goods: [Int]) {
         let value = [
             "goods": [goods]

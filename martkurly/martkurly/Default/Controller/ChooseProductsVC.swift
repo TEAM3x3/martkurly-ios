@@ -287,7 +287,7 @@ class ChooseProductsVC: UIViewController {
         let goods = data.id
         let quantity = stepper.productCounts
         let cart = 1
-        CurlyService.shared.pushCartData(goods: goods, quantity: quantity, cart: cart)
+        KurlyService.shared.pushCartData(goods: goods, quantity: quantity, cart: cart)
         print(#function)
     }
 }
