@@ -15,6 +15,10 @@ class MainEachHProductCell: UICollectionViewCell {
 
     static let identifier = "MainEachHProductCell"
 
+    var productDetailData: ProductDetail? {
+        didSet { configure() }
+    }
+
     private let productImageView = UIImageView().then {
         $0.image = UIImage(named: "TestImage")
         $0.contentMode = .scaleAspectFill
@@ -101,10 +105,6 @@ class MainEachHProductCell: UICollectionViewCell {
     }
 
     private let productBasicPriceLabel = UILabel().then {
-        $0.text = "36,900원"
-        $0.textColor = .black
-        $0.font = .systemFont(ofSize: 12)
-
         $0.attributedText = NSAttributedString(
             string: "36,900원",
             attributes: [NSAttributedString.Key.strikethroughStyle: NSUnderlineStyle.single.rawValue,
@@ -164,8 +164,8 @@ class MainEachHProductCell: UICollectionViewCell {
         cartButton.layer.cornerRadius = 32 / 2
 
         let infoStack = UIStackView(arrangedSubviews: [productTitleLabel,
-                                                       productSalePriceLabel,
-                                                       productBasicPriceLabel])
+                                                       productBasicPriceLabel,
+                                                       productSalePriceLabel])
         infoStack.axis = .vertical
         infoStack.spacing = 4
         infoStack.alignment = .leading
@@ -181,5 +181,17 @@ class MainEachHProductCell: UICollectionViewCell {
     func configure(isShowRanking: Bool, isShowBasket: Bool) {
         numberingTextLabel.isHidden = !isShowRanking
         cartButton.isHidden = !isShowBasket
+    }
+
+    func configure() {
+        guard let product = productDetailData else { return }
+        let viewModel = ProductDetailListViewModel(product: product)
+
+        productImageView.kf.setImage(with: viewModel.imageURL)
+        productTitleLabel.text = product.title
+        productBasicPriceLabel.attributedText = viewModel.primeCostDisplayText
+        productSalePriceLabel.attributedText = viewModel.saleCostDisplayText
+        saleDisplayView.isHidden = viewModel.isShowSaleView
+        saleDisplayLabel.attributedText = viewModel.saleDisplayText
     }
 }

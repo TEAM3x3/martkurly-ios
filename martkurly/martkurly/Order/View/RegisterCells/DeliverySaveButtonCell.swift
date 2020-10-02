@@ -23,6 +23,8 @@ class DeliverySaveButtonCell: UITableViewCell {
     private let saveButton = KurlyButton(title: "저장",
                                          style: .purple)
 
+    var tappedSaveButton: (() -> Void)?
+
     // MARK: - LifeCycle
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -32,6 +34,12 @@ class DeliverySaveButtonCell: UITableViewCell {
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    // MARK: - Selectors
+
+    @objc func handleButton() {
+        tappedSaveButton?()
     }
 
     // MARK: - Helpers
@@ -52,5 +60,7 @@ class DeliverySaveButtonCell: UITableViewCell {
             $0.leading.bottom.trailing.equalToSuperview().inset(orderVCSideInsetValue)
             $0.height.equalTo(44)
         }
+
+        saveButton.addTarget(self, action: #selector(handleButton), for: .touchUpInside)
     }
 }

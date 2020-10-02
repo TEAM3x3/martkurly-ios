@@ -12,17 +12,10 @@ class HomeVC: UIViewController {
 
     // MARK: - Properties
 
-    private var cheapProducts = [Product]() {
-        didSet { categoryMenuCollectionView.reloadData() }
-    }
-
-    private var eventList = [EventModel]() {
-        didSet { categoryMenuCollectionView.reloadData() }
-    }
-
-    private var mainEventList = [MainEvent]() {
-        didSet { categoryMenuCollectionView.reloadData() }
-    }
+    private var cheapProducts = [Product]()
+    private var eventList = [EventModel]()
+    private var mainEventList = [MainEvent]()
+    private var recommendProducts = [ProductDetail]()
 
     private lazy var menuCategory = CategoryMenuView(categoryType: .fixInsetStyle).then {
         $0.menuTitles = ["컬리추천", "신상품", "베스트", "알뜰쇼핑", "이벤트"]
@@ -59,20 +52,27 @@ class HomeVC: UIViewController {
     func requestMainData() {
         self.showIndicate()
 
-        fetchMainEvent()
+        fetchMainDatas()
         fetchCheapProducts()
         fetchEventList()
 
         group.notify(queue: queue) {
             self.stopIndicate()
+            self.categoryMenuCollectionView.reloadData()
         }
     }
 
-    func fetchMainEvent() {
+    func fetchMainDatas() {
         group.enter()
         CurlyService.shared.fetchMainEventList { mainEventList in
             self.group.leave()
             self.mainEventList = mainEventList
+        }
+
+        group.enter()
+        CurlyService.shared.fetchRecommendProducts { products in
+            self.group.leave()
+            self.recommendProducts = products
         }
     }
 
@@ -90,6 +90,14 @@ class HomeVC: UIViewController {
             self.group.leave()
             self.eventList = eventList
         }
+    }
+
+    // MARK: - Selectors
+
+    @objc
+    func moveProductDetailView(_ noti: Notification) {
+        guard let productID = noti.object as? Int else { return }
+        detailViewProduct(productID: productID)
     }
 
     // MARK: - Actions
@@ -129,6 +137,14 @@ class HomeVC: UIViewController {
 
     // MARK: - Helpers
 
+    func configureAttributes() {
+        NotificationCenter.default
+            .addObserver(self,
+                         selector: #selector(moveProductDetailView),
+                         name: .init(PRODUCT_DETAILVIEW_EVENT),
+                         object: nil)
+    }
+
     func configureNavigationBar() {
         // 이미지 이상함...ㅋㅋㅋ 한번 확인 필요
         let titleImageView = UIImageView(image: .martcurlyMainTitleWhiteImage)
@@ -137,6 +153,7 @@ class HomeVC: UIViewController {
     }
 
     func configureUI() {
+        configureAttributes()
         view.backgroundColor = .white
 
         configureNavigationBar()
@@ -189,8 +206,9 @@ extension HomeVC: UICollectionViewDataSource {
             let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: CurlyRecommendCell.identifier,
                 for: indexPath) as! CurlyRecommendCell
-            cell.mainEventList = mainEventList
             cell.tappedEvent = tappedEvent
+            cell.configure(mainEventList: mainEventList,
+                           recommendProducts: recommendProducts)
             return cell
         case .newProduct:
             let cell = collectionView.dequeueReusableCell(
@@ -258,8 +276,8 @@ extension HomeVC: UICollectionViewDelegateFlowLayout {
 //        naviVC.modalPresentationStyle = .fullScreen
 //        self.present(naviVC, animated: true)
 
-//        let controller = ProductOrderVC()
-//        controller.hidesBottomBarWhenPushed = true
-//        self.navigationController?.pushViewController(controller, animated: true)
+        let controller = ProductOrderVC()
+        controller.hidesBottomBarWhenPushed = true
+        self.navigationController?.pushViewController(controller, animated: true)
     }
 }

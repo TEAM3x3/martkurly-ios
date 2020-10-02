@@ -8,11 +8,15 @@
 
 import UIKit
 
-class SameOrdererCell: UITableViewCell {
+class CheckDeliveryStatusCell: UITableViewCell {
 
     // MARK: - Properties
 
     static let identifier = "SameOrdererCell"
+
+    var isActive: Bool {
+        return sameChecker.isActive
+    }
 
     private let sameChecker = AgreementCheckMarkView()
     private let sameTitleLabel = UILabel().then {

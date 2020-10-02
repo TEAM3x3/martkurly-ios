@@ -14,6 +14,10 @@ class RegisterInputCell: UITableViewCell {
 
     static let identifier = "RegisterInputCell"
 
+    var inputTextData: String? {
+        return inputTextField.text
+    }
+
     private let titleLabel = UILabel().then {
         $0.text = "받는 분 이름*"
         $0.textColor = .black
