@@ -26,7 +26,7 @@ class EventProductDetailListVC: UIViewController {
     // MARK: - Actions
 
     func tappedProduct(productID: Int) {
-        CurlyService.shared.requestProductDetailData(productID: productID) { productDetailData in
+        KurlyService.shared.requestProductDetailData(productID: productID) { productDetailData in
             let controller = ProductDetailVC()
             controller.productDetailData = productDetailData
             controller.hidesBottomBarWhenPushed = true

@@ -13,6 +13,7 @@ class HomeVC: UIViewController {
     // MARK: - Properties
 
     private var cheapProducts = [Product]()
+    private var bestProducts = [Product]()
     private var eventList = [EventModel]()
     private var mainEventList = [MainEvent]()
     private var recommendProducts = [ProductDetail]()
@@ -53,7 +54,7 @@ class HomeVC: UIViewController {
         self.showIndicate()
 
         fetchMainDatas()
-        fetchCheapProducts()
+        fetchMainCategoryProducts()
         fetchEventList()
 
         group.notify(queue: queue) {
@@ -64,29 +65,35 @@ class HomeVC: UIViewController {
 
     func fetchMainDatas() {
         group.enter()
-        CurlyService.shared.fetchMainEventList { mainEventList in
+        KurlyService.shared.fetchMainEventList { mainEventList in
             self.group.leave()
             self.mainEventList = mainEventList
         }
 
         group.enter()
-        CurlyService.shared.fetchRecommendProducts { products in
+        KurlyService.shared.fetchRecommendProducts { products in
             self.group.leave()
             self.recommendProducts = products
         }
     }
 
-    func fetchCheapProducts() {
+    func fetchMainCategoryProducts() {
         group.enter()
-        CurlyService.shared.fetchCheapProducts { products in
+        KurlyService.shared.fetchCheapProducts { products in
             self.group.leave()
             self.cheapProducts = products
+        }
+
+        group.enter()
+        KurlyService.shared.fetchBestProducts { products in
+            self.group.leave()
+            self.bestProducts = products
         }
     }
 
     func fetchEventList() {
         group.enter()
-        CurlyService.shared.fetchEventList { eventList in
+        KurlyService.shared.fetchEventList { eventList in
             self.group.leave()
             self.eventList = eventList
         }
@@ -104,7 +111,7 @@ class HomeVC: UIViewController {
 
     func detailViewProduct(productID: Int) {
         self.showIndicate()
-        CurlyService.shared.requestProductDetailData(productID: productID) { reponseData in
+        KurlyService.shared.requestProductDetailData(productID: productID) { reponseData in
             self.stopIndicate()
             let controller = ProductDetailVC()
             controller.hidesBottomBarWhenPushed = true
@@ -115,7 +122,7 @@ class HomeVC: UIViewController {
 
     func tappedEventItem(section: Int) {
         self.showIndicate()
-        CurlyService.shared.fetchEventProducts(eventID: eventList[section].id) { eventProducts in
+        KurlyService.shared.fetchEventProducts(eventID: eventList[section].id) { eventProducts in
             self.stopIndicate()
             guard let eventProducts = eventProducts else { return }
             let controller = EventProductDetailListVC()
@@ -127,7 +134,7 @@ class HomeVC: UIViewController {
 
     func tappedEvent(eventID: Int) {
         self.showIndicate()
-        CurlyService.shared.fetchMainEventProducts(eventID: eventID) { eventProducts in
+        KurlyService.shared.fetchMainEventProducts(eventID: eventID) { eventProducts in
             self.stopIndicate()
             let controller = CategoryProductsVC()
             controller.eventProducts = eventProducts
@@ -221,6 +228,8 @@ extension HomeVC: UICollectionViewDataSource {
                 withReuseIdentifier: ProductListCell.identifier,
                 for: indexPath) as! ProductListCell
                 cell.configure(headerType: .fastAreaAndCondition, products: [])
+            cell.configure(headerType: .fastAreaAndCondition, products: bestProducts)
+            cell.detailViewProduct = detailViewProduct(productID:)
             return cell
         case .cheapProduct:
             let cell = collectionView.dequeueReusableCell(
@@ -276,8 +285,8 @@ extension HomeVC: UICollectionViewDelegateFlowLayout {
 //        naviVC.modalPresentationStyle = .fullScreen
 //        self.present(naviVC, animated: true)
 
-        let controller = ProductOrderVC()
-        controller.hidesBottomBarWhenPushed = true
-        self.navigationController?.pushViewController(controller, animated: true)
+//        let controller = ProductOrderVC()
+//        controller.hidesBottomBarWhenPushed = true
+//        self.navigationController?.pushViewController(controller, animated: true)
     }
 }

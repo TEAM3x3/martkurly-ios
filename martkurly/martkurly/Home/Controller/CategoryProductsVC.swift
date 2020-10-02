@@ -46,7 +46,7 @@ class CategoryProductsVC: UIViewController {
     // MARK: - Actions
 
     func detailViewProduct(productID: Int) {
-        CurlyService.shared.requestProductDetailData(productID: productID) { reponseData in
+        KurlyService.shared.requestProductDetailData(productID: productID) { reponseData in
             let controller = ProductDetailVC()
             controller.hidesBottomBarWhenPushed = true
             controller.productDetailData = reponseData

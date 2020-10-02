@@ -309,7 +309,7 @@ final class SignUpVC: UIViewController {
             generateAlert(title: "6자 이상의 영문 혹은 영문과 숫자를 조합으로 입력해 주세요")
             return
         }
-        CurlyService.shared.checkUsername(username: username, completionHandler: { title in
+        KurlyService.shared.checkUsername(username: username, completionHandler: { title in
             self.generateAlert(title: title)
         })
         isValidID = true
@@ -402,7 +402,7 @@ final class SignUpVC: UIViewController {
         checkValidity(isValid: &isValid)
         guard isValid == true else { return }
 
-        CurlyService.shared.signUp(
+        KurlyService.shared.signUp(
             username: username,
             password: password,
             nickname: nickname,

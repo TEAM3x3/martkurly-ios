@@ -13,6 +13,7 @@ let CURLY_REF = "http://13.209.33.72/api"
 let CURLY_GOODS_REF = CURLY_REF + "/goods"
 let REF_GOODS = CURLY_GOODS_REF + "/"
 let REF_CHEAP = CURLY_GOODS_REF + "/sale"
+let REF_BEST_PRODUCTS = CURLY_GOODS_REF + "/best"
 let REF_SEARCH_PRODUCTS = CURLY_GOODS_REF + "/goods_search"
 let REF_RECOMMEND_PRODUCTS = CURLY_GOODS_REF + "/main_page_recommend"
 

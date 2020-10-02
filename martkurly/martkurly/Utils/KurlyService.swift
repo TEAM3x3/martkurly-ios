@@ -9,11 +9,28 @@
 import Alamofire
 import Foundation
 
-struct CurlyService {
-    static let shared = CurlyService()
+struct KurlyService {
+    static let shared = KurlyService()
     private init() { }
 
     private let decoder = JSONDecoder()
+
+    // MARK: - 베스트 상품 가져오기
+
+    func fetchBestProducts(completion: @escaping([Product]) -> Void) {
+        var bestProducts = [Product]()
+
+        AF.request(REF_BEST_PRODUCTS, method: .get).responseJSON { response in
+            guard let jsonData = response.data else { completion(bestProducts); return }
+            do {
+                let products = try self.decoder.decode([Product].self, from: jsonData)
+                bestProducts = products
+            } catch {
+                print("DEBUG: Cheap Products Request Error, ", error.localizedDescription)
+            }
+            completion(bestProducts)
+        }
+    }
 
     // MARK: - 메인화면 - 이 상품 어때요? 데이터 가져오기
 
