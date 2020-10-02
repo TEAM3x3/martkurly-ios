@@ -15,7 +15,7 @@ class MainEachHProductCell: UICollectionViewCell {
 
     static let identifier = "MainEachHProductCell"
 
-    var productDetailData: ProductDetail? {
+    var product: Product? {
         didSet { configure() }
     }
 
@@ -184,8 +184,8 @@ class MainEachHProductCell: UICollectionViewCell {
     }
 
     func configure() {
-        guard let product = productDetailData else { return }
-        let viewModel = ProductDetailListViewModel(product: product)
+        guard let product = product else { return }
+        let viewModel = ProductListViewModel(product: product)
 
         productImageView.kf.setImage(with: viewModel.imageURL)
         productTitleLabel.text = product.title

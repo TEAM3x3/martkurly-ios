@@ -19,6 +19,8 @@ let REF_BEST_PRODUCTS = KURLY_GOODS_REF + "/best"   // [홈] - [베스트]
 let REF_SEARCH_WORD_PRODUCTS = KURLY_GOODS_REF + "/goods_search"        // 최근 검색어에 포함
 let REF_SEARCH_TYPING_PRODUCTS = KURLY_GOODS_REF + "/word_search"       // 타이핑 단어에 포함
 let REF_RECOMMEND_PRODUCTS = KURLY_GOODS_REF + "/main_page_recommend"   // [홈] - [컬리추천] - [이 상품 어때요?]
+let REF_SALES_PRODUCTS = KURLY_GOODS_REF + "/sales_goods"               // [홈] - [컬리추천] - [알뜰 상품]
+let REF_HEALTH_PRODUCTS = KURLY_GOODS_REF + "/main_page_health"         // [홈] - [컬리추천] - [건강식품]
 
 let KURLY_EVENT_REF = KURLY_REF + "/event"      // [홈] - [이벤트]
 let REF_EVENT_GOODS = KURLY_EVENT_REF + "/"     // [홈] - [이벤트] 상세
@@ -34,6 +36,9 @@ let REF_CATEGORY = KURLY_REF + "/category"
 let REF_CART = KURLY_REF + "/cart/1"
 let REF_CART_PUSH = KURLY_REF + "/cart/1/item"
 let REF_CART_DELETE = KURLY_REF + "/cart/1/item/goods_delete"
+
+let REF_USER_REVIEW_LIST = KURLY_REF + "/review"   // 유저가 작성한 리뷰 리스트 반환(Token Needs)
+let REF_PRODUCT_REVIEW_LIST = "/reviews"        // 해당 상품에 대한 리뷰 리스트 반환
 
 // Notification
 

@@ -15,8 +15,11 @@ class HomeVC: UIViewController {
     private var cheapProducts = [Product]()
     private var bestProducts = [Product]()
     private var eventList = [EventModel]()
+
     private var mainEventList = [MainEvent]()
-    private var recommendProducts = [ProductDetail]()
+    private var recommendProducts = [Product]()
+    private var salesProducts = [Product]()
+    private var healthProducts = [Product]()
 
     private lazy var menuCategory = CategoryMenuView(categoryType: .fixInsetStyle).then {
         $0.menuTitles = ["컬리추천", "신상품", "베스트", "알뜰쇼핑", "이벤트"]
@@ -89,6 +92,18 @@ class HomeVC: UIViewController {
             self.group.leave()
             self.bestProducts = products
         }
+
+        group.enter()
+        KurlyService.shared.fetchProducts(requestURL: REF_SALES_PRODUCTS) { products in
+            self.group.leave()
+            self.salesProducts = products
+        }
+
+        group.enter()
+        KurlyService.shared.fetchProducts(requestURL: REF_HEALTH_PRODUCTS) { products in
+            self.group.leave()
+            self.healthProducts = products
+        }
     }
 
     func fetchEventList() {
@@ -120,9 +135,9 @@ class HomeVC: UIViewController {
         }
     }
 
-    func tappedEventItem(section: Int) {
+    func tappedEventItem(eventID: Int) {
         self.showIndicate()
-        KurlyService.shared.fetchEventProducts(eventID: eventList[section].id) { eventProducts in
+        KurlyService.shared.fetchEventProducts(eventID: eventID) { eventProducts in
             self.stopIndicate()
             guard let eventProducts = eventProducts else { return }
             let controller = EventProductDetailListVC()
@@ -132,7 +147,7 @@ class HomeVC: UIViewController {
         }
     }
 
-    func tappedEvent(eventID: Int) {
+    func tappedMainEvent(eventID: Int) {
         self.showIndicate()
         KurlyService.shared.fetchMainEventProducts(eventID: eventID) { eventProducts in
             self.stopIndicate()
@@ -213,9 +228,13 @@ extension HomeVC: UICollectionViewDataSource {
             let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: CurlyRecommendCell.identifier,
                 for: indexPath) as! CurlyRecommendCell
-            cell.tappedEvent = tappedEvent
+            cell.tappedMainEvent = tappedMainEvent
+            cell.tappedBannerEvent = tappedEventItem(eventID:)
             cell.configure(mainEventList: mainEventList,
-                           recommendProducts: recommendProducts)
+                           recommendProducts: recommendProducts,
+                           salesProducts: salesProducts,
+                           bannerEvent: eventList,
+                           healthProducts: healthProducts)
             return cell
         case .newProduct:
             let cell = collectionView.dequeueReusableCell(
@@ -242,7 +261,7 @@ extension HomeVC: UICollectionViewDataSource {
             let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: EventListCell.identifier,
                 for: indexPath) as! EventListCell
-            cell.tappedEventItem = tappedEventItem(section:)
+            cell.tappedEventItem = tappedEventItem(eventID:)
             cell.eventList = eventList
             return cell
         }

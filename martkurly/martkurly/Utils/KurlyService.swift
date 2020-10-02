@@ -15,6 +15,23 @@ struct KurlyService {
 
     private let decoder = JSONDecoder()
 
+    // MARK: - 상품들의 정보 가져오기
+
+    func fetchProducts(requestURL: String, completion: @escaping([Product]) -> Void) {
+        var products = [Product]()
+
+        AF.request(requestURL, method: .get).responseJSON { response in
+            guard let jsonData = response.data else { return completion(products) }
+
+            do {
+                products = try self.decoder.decode([Product].self, from: jsonData)
+            } catch {
+                print("DEBUG: Recommend List Fetch Error, ", error.localizedDescription)
+            }
+            completion(products)
+        }
+    }
+
     // MARK: - 베스트 상품 가져오기
 
     func fetchBestProducts(completion: @escaping([Product]) -> Void) {
@@ -32,16 +49,16 @@ struct KurlyService {
         }
     }
 
-    // MARK: - 메인화면 - 이 상품 어때요? 데이터 가져오기
+    // MARK: - [홈] > [컬리추천] > [이 상품 어때요?]
 
-    func fetchRecommendProducts(completion: @escaping([ProductDetail]) -> Void) {
-        var recommendProducts = [ProductDetail]()
+    func fetchRecommendProducts(completion: @escaping([Product]) -> Void) {
+        var recommendProducts = [Product]()
 
         AF.request(REF_RECOMMEND_PRODUCTS, method: .get).responseJSON { response in
             guard let jsonData = response.data else { return completion(recommendProducts) }
 
             do {
-                recommendProducts = try self.decoder.decode([ProductDetail].self, from: jsonData)
+                recommendProducts = try self.decoder.decode([Product].self, from: jsonData)
             } catch {
                 print("DEBUG: Recommend List Fetch Error, ", error.localizedDescription)
             }

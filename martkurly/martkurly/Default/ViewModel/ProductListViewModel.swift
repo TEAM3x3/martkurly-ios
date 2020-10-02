@@ -8,8 +8,8 @@
 
 import UIKit
 
-struct ProductDetailListViewModel {
-    let product: ProductDetail
+struct ProductListViewModel {
+    let product: Product
 
     // MARK: - Formatter
     let formatter = NumberFormatter().then {
