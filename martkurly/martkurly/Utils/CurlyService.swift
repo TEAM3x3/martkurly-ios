@@ -258,7 +258,7 @@ struct CurlyService {
             completion(cartList)
         }
     }
-    
+
     // MARK: - 로그인
     func signIn(username: String, password: String, completionHandler: @escaping (Bool, String?) -> Void) {
         let value = [
@@ -294,4 +294,4 @@ struct CurlyService {
             }
         }
     }
-
+}

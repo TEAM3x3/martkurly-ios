@@ -12,6 +12,14 @@ import Then
 class CartProductView: UITableViewCell {
 
     // MARK: - Properties
+    static let identifier = "CartProductView"
+
+    var cartItems: Cart.Items? {
+        didSet {
+            configure()
+        }
+    }
+
     private let inView = UIView().then {
         $0.backgroundColor = .white
     }
@@ -30,7 +38,12 @@ class CartProductView: UITableViewCell {
 
     var condition = UILabel()
 
-    var discount = 0
+    var discount: Int? {
+        didSet {
+            setConstraints()
+        }
+    }
+
     private lazy var discountMoney = UILabel().then {
         let discountAttributes: [NSAttributedString.Key: Any] = [
                     .font: UIFont.systemFont(ofSize: 13),
@@ -40,7 +53,7 @@ class CartProductView: UITableViewCell {
                 ]
 
         let attributeString = NSAttributedString(
-                    string: "\(discount)",
+                    string: "\(discount ?? 0)",
                     attributes: discountAttributes)
 
         $0.attributedText = attributeString
@@ -48,7 +61,7 @@ class CartProductView: UITableViewCell {
 
     var product = 0 {
         didSet {
-
+            setConstraints()
         }
     }
 
@@ -143,8 +156,6 @@ class CartProductView: UITableViewCell {
             $0.leading.equalTo(checkBtn.snp.trailing).offset(8)
         }
 
-        title.text = "퍼플 삼겹살"
-
         productImage.snp.makeConstraints {
             $0.top.equalTo(title.snp.bottom).offset(8)
             $0.leading.equalTo(title.snp.leading)
@@ -182,5 +193,11 @@ class CartProductView: UITableViewCell {
     @objc
     func xmark(_ sender: UIButton) {
         print("hey")
+    }
+
+    // MARK: - configure
+    func configure() {
+        guard let cartItems = cartItems else { return }
+        let cartViewModel 
     }
 }

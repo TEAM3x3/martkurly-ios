@@ -14,11 +14,22 @@ class CartVC: UIViewController {
     // MARK: - Properties
     private var cartProduct = [Cart]() {
         didSet {
-            tableV.reloadData()
+            if cartProduct.isEmpty == false {
+                tableV.reloadData()
+                for i in 1...cartProduct[0].items.count {
+                    tapBtnCnt.insert(i)
+                }
+            }
         }
     }
 
-    private var buttonStr: String?
+    private var buttonStr: String? {
+        didSet {
+            view.addSubview(button)
+        }
+    }
+
+    lazy var button = KurlyButton(title: buttonStr ?? "주문하기", style: .purple)
 
     private let navi = CartNaviView().then {
         $0.dismissBtn.addTarget(self, action: #selector(dismissing(_:)), for: .touchUpInside)
@@ -28,9 +39,26 @@ class CartVC: UIViewController {
         $0.backgroundColor = ColorManager.General.backGray.rawValue
     }
 
-    lazy var button = KurlyButton(title: buttonStr ?? "주문하기", style: .purple)
+    private var allCheckingButton = [Cart.Items]() { // 전체선택 버튼
+        didSet {
+            tableV.reloadData()
+        }
+    }
+    private var cartAllProduct = [Int]()
+    private var tapBtnCnt = Set<Int>() {        // cell 셀 버튼 액션
+        didSet {
+            tableV.reloadData()
+            cartAllProduct.append(contentsOf: tapBtnCnt)
+        }
+    }
 
-    private var checkingButton = true {
+    private var checkingButton = true { // 각각의 셀 버튼
+        didSet {
+            tableV.reloadData()
+        }
+    }
+
+    private var selectBtnCount = [Cart.Goods]() {
         didSet {
             tableV.reloadData()
         }
@@ -116,6 +144,7 @@ class CartVC: UIViewController {
         tableV.delegate = self
         tableV.backgroundColor = ColorManager.General.backGray.rawValue
         tableV.separatorStyle = .none
+        tableV.register(CartProductView.self, forCellReuseIdentifier: CartProductView.identifier)
 
         button.snp.makeConstraints {
             $0.bottom.equalToSuperview().inset(48)
@@ -132,28 +161,76 @@ class CartVC: UIViewController {
     }
 }
 
+// MARK: - DataSource / Delegate
 extension CartVC: UITableViewDataSource, UITableViewDelegate {
+
     func numberOfSections(in tableView: UITableView) -> Int {
         cartProduct.count + 1
 
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch section {
-        case 0:
-            return 2
-        default:
-            return 1
+
+        if cartProduct.count >= 1 {
+            switch section {
+            case 0:
+                return cartProduct[section].items.count + 1
+            default:
+                return 1
+            }
+        } else {
+            switch section {
+            case 0:
+                return 2
+            default:
+                return 1
+            }
         }
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+
         switch cartProduct.count {
         case 1:
             switch indexPath.section {
             case 0:
-                let cell = AllSelectView()
-                return cell
+                if indexPath.row == 0 {
+                    let cell = AllSelectView()
+                    cell.check.addTarget(self, action: #selector(allCartTapBtn), for: .touchUpInside)
+//                    if cartProduct.count >= 1, allCheckingButton, checkingButton {
+                    if cartProduct[indexPath.section].items.count == tapBtnCnt.count {
+                        cell.check.setImage(UIImage(systemName: "checkmark.circle.fill"), for: .normal)
+                        cell.check.tintColor = ColorManager.General.mainPurple.rawValue
+                        cell.check.isSelected = true
+                    } else {
+                        cell.check.setImage(UIImage(systemName: "checkmark.circle"), for: .normal)
+                        cell.check.tintColor = .lightGray
+                        cell.check.isSelected = false
+                    }
+                    cell.configure(count: "(\(tapBtnCnt.count)/\(cartProduct[indexPath.section].items.count))")
+                    return cell
+                } else {
+                    let cell = tableView.dequeueReusableCell(withIdentifier: CartProductView.identifier, for: indexPath) as! CartProductView
+                    cell.checkBtn.tag = indexPath.row
+                    for i in 0...(cartProduct[indexPath.section].items.count - 1) {
+                        cell.cartItems = cartProduct[indexPath.section].items[i]
+                    }
+//                    print(cartProduct[0].items[0].goods.discount_price!)
+//                        cell.configure(
+//                            title: cartProduct[0].items[0].goods.title,
+//                            discount: cartProduct[0].items[0].goods.discount_price!,
+//                            product: cartProduct[0].items[0].goods.price,
+//                            condition: cartProduct[0].items[0].goods.packing_status)
+                    cell.checkBtn.addTarget(self, action: #selector(cellTapBtn), for: .touchUpInside)
+                    if cell.checkBtn.isSelected == false, tapBtnCnt.isEmpty == false {
+                        cell.checkBtn.setImage(UIImage(systemName: "checkmark.circle.fill"), for: .normal)
+                        cell.checkBtn.tintColor = ColorManager.General.mainPurple.rawValue
+                    } else {
+                        cell.checkBtn.setImage(UIImage(systemName: "checkmark.circle"), for: .normal)
+                        cell.checkBtn.tintColor = .lightGray
+                    }
+                    return cell
+                }
             default:
                 let cell = PriceView()
                 return cell
@@ -164,12 +241,46 @@ extension CartVC: UITableViewDataSource, UITableViewDelegate {
                 let cell = AllSelectView()
                 cell.check.setImage(UIImage(systemName: "checkmark.circle"), for: .normal)
                 cell.check.tintColor = .lightGray
-                cell.configure(data: cartProduct)
                 return cell
             default:
                 let cell = PriceView()
+
                 return cell
             }
+        }
+    }
+
+    // MARK: - 전체선택 버튼
+    @objc
+    func allCartTapBtn(_ sender: UIButton) {
+        sender.isSelected = !sender.isSelected
+
+        if sender.isSelected {
+            sender.setImage(UIImage(systemName: "checkmark.circle.fill"), for: .normal)
+            sender.tintColor = ColorManager.General.mainPurple.rawValue
+            for i in 1...cartProduct[0].items.count {
+                tapBtnCnt.insert(i)
+            }
+        } else {
+            sender.setImage(UIImage(systemName: "checkmark.circle"), for: .normal)
+            sender.tintColor = .lightGray
+            tapBtnCnt.removeAll()
+        }
+    }
+
+    // MARK: - 상품만 선택 버튼
+    @objc
+    func cellTapBtn(_ sender: UIButton) {
+        let tag = sender.tag
+        sender.isSelected = !sender.isSelected
+        if sender.isSelected {
+            sender.setImage(UIImage(systemName: "checkmark.circle"), for: .normal)
+            sender.tintColor = .lightGray
+            tapBtnCnt.remove(tag)
+        } else {
+            sender.setImage(UIImage(systemName: "checkmark.circle.fill"), for: .normal)
+            sender.tintColor = ColorManager.General.mainPurple.rawValue
+            tapBtnCnt.insert(tag)
         }
     }
 
@@ -189,20 +300,20 @@ extension CartVC: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         switch cartProduct.count {
-        case 0:
+        case 1:
+            let view = CartHeaderView()
+            view.configure(txt: "\(cartProduct[0].items[1].goods.packing_status) 박스로 배송됩니다 ")
+            return view
+        default:
             let cell = UIView()
             return cell
-        default:
-            let view = CartHeaderView()
-            view.configure(txt: "\(cartProduct[0].items[0].goods.packing_status) 박스로 배송됩니다 ")
-            return view
         }
     }
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         switch section {
         case 0:
-            if checkingButton {
+            if tapBtnCnt.count >= 1 {
                 return 35
             } else {
                 return 0
