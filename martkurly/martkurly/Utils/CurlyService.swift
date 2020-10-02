@@ -15,6 +15,23 @@ struct CurlyService {
 
     private let decoder = JSONDecoder()
 
+    // MARK: - 메인화면 - 이 상품 어때요? 데이터 가져오기
+
+    func fetchRecommendProducts(completion: @escaping([ProductDetail]) -> Void) {
+        var recommendProducts = [ProductDetail]()
+
+        AF.request(REF_RECOMMEND_PRODUCTS, method: .get).responseJSON { response in
+            guard let jsonData = response.data else { return completion(recommendProducts) }
+
+            do {
+                recommendProducts = try self.decoder.decode([ProductDetail].self, from: jsonData)
+            } catch {
+                print("DEBUG: Recommend List Fetch Error, ", error.localizedDescription)
+            }
+            completion(recommendProducts)
+        }
+    }
+
     // MARK: - 타입 상품 목록 가져오기
 
     func requestTypeProdcuts(type: String, completion: @escaping([Product]) -> Void) {
@@ -272,6 +289,36 @@ struct CurlyService {
 
             case .failure(let error):
                 print("Error: ", error)
+            }
+        }
+    }
+
+    // MARK: - 장바구나
+
+    private func fetchData() {
+        let cartURL = URL(string: REF_CART)!
+        let request = URLRequest(url: cartURL)
+    }
+
+    private func pushData(goods: Int, quantity: Int, cart: Int) {
+        let value = [
+            "goods": goods,
+            "quantity": quantity,
+            "cart": cart
+        ]
+
+        let cartURL = URL(string: REF_CART_PUSH)!
+        var request = URLRequest(url: cartURL)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpBody = try! JSONSerialization.data(withJSONObject: value)
+
+        AF.request(request).responseString { (response) in
+            switch response.result {
+            case .success(let data):
+                print("Success", data)
+            case .failure(let error):
+                print("Faulure", error)
             }
         }
     }

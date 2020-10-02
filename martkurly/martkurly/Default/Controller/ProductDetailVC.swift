@@ -46,6 +46,16 @@ class ProductDetailVC: UIViewController {
                                     titleText: productDetailData?.title)
     }
 
+    // MARK: - Selectors
+
+    @objc
+    func tappedProductBuyButton(_ sender: UIButton) {
+        let controller = ChooseProductsVC()
+        controller.productDetailData = productDetailData
+        let naviVC = UINavigationController(rootViewController: controller)
+        self.present(naviVC, animated: true)
+    }
+
     // MARK: - Actions
 
     func productReviewWrite() {
@@ -60,6 +70,7 @@ class ProductDetailVC: UIViewController {
     func configureUI() {
         view.backgroundColor = .white
         configureLayout()
+        configureAttributes()
         configureCollectionView()
     }
 
@@ -85,6 +96,12 @@ class ProductDetailVC: UIViewController {
             $0.bottom.equalTo(view.safeAreaLayoutGuide).offset(-sideInsetValue)
             $0.height.equalTo(52)
         }
+    }
+
+    func configureAttributes() {
+        productBuyButton.addTarget(self,
+                                   action: #selector(tappedProductBuyButton(_:)),
+                                   for: .touchUpInside)
     }
 
     func configureCollectionView() {

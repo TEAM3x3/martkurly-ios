@@ -14,6 +14,7 @@ let CURLY_GOODS_REF = CURLY_REF + "/goods"
 let REF_GOODS = CURLY_GOODS_REF + "/"
 let REF_CHEAP = CURLY_GOODS_REF + "/sale"
 let REF_SEARCH_PRODUCTS = CURLY_GOODS_REF + "/goods_search"
+let REF_RECOMMEND_PRODUCTS = CURLY_GOODS_REF + "/main_page_recommend"
 
 let CURLY_EVENT_REF = CURLY_REF + "/event"
 let REF_EVENT_GOODS = CURLY_EVENT_REF + "/"
@@ -25,3 +26,11 @@ let REF_SIGNUP = CURLY_REF + "/users"
 let REF_SIGNIN = CURLY_REF + "/users/login"
 
 let REF_CATEGORY = CURLY_REF + "/category"
+
+let REF_CART = CURLY_REF + "/cart/1"
+let REF_CART_PUSH = CURLY_REF + "/cart/1/item"
+let REF_CART_DELETE = CURLY_REF + "/cart/1/item/goods_delete"
+
+// Notification
+
+let PRODUCT_DETAILVIEW_EVENT = "PRODUCT_DETAILVIEW_EVENT"

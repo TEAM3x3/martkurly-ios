@@ -26,8 +26,8 @@ class OrderDeliveryActionHeaderView: UIView {
         $0.font = .boldSystemFont(ofSize: 16)
     }
 
-    private let actionContentsLabel = UILabel().then {
-        $0.text = "결제수단으로 환불"
+    let actionContentsLabel = UILabel().then {
+        $0.text = UnDeliveryActionType.paymentRefund.description
         $0.textColor = .black
         $0.textAlignment = .right
         $0.font = .systemFont(ofSize: 16)

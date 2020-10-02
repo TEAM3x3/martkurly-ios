@@ -14,6 +14,10 @@ class MainProductListCell: UITableViewCell {
 
     static let identifier = "MainProductListCell"
 
+    var productsDetailDatas = [ProductDetail]() {
+        didSet { productCollectionView.reloadData() }
+    }
+
     enum ProductListTitleType {
         case none
         case rightAllow
@@ -169,7 +173,7 @@ class MainProductListCell: UITableViewCell {
 extension MainProductListCell: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         switch directionType {
-        case .horizontal: return 5
+        case .horizontal: return productsDetailDatas.count
         case .vertical: return 3
         }
     }
@@ -180,6 +184,7 @@ extension MainProductListCell: UICollectionViewDataSource {
             let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: MainEachHProductCell.identifier,
                 for: indexPath) as! MainEachHProductCell
+            cell.productDetailData = productsDetailDatas[indexPath.item]
             return cell
         case .vertical:
             let cell = collectionView.dequeueReusableCell(
@@ -188,7 +193,11 @@ extension MainProductListCell: UICollectionViewDataSource {
             return cell
         }
     }
+}
 
+// MARK: - UICollectionViewDelegateFlowLayout
+
+extension MainProductListCell: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         switch directionType {
         case .horizontal:
@@ -221,10 +230,15 @@ extension MainProductListCell: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return sidePaddingValue
     }
-}
 
-// MARK: - UICollectionViewDelegateFlowLayout
-
-extension MainProductListCell: UICollectionViewDelegateFlowLayout {
-
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        switch directionType {
+        case .horizontal:
+            NotificationCenter.default
+                .post(name: .init(PRODUCT_DETAILVIEW_EVENT),
+                      object: productsDetailDatas[indexPath.item].id)
+        case .vertical:
+            break
+        }
+    }
 }
