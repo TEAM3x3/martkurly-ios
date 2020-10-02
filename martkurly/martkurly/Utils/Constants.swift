@@ -27,6 +27,10 @@ let REF_SIGNIN = CURLY_REF + "/users/login"
 
 let REF_CATEGORY = CURLY_REF + "/category"
 
+let REF_CART = CURLY_REF + "/cart/1"
+let REF_CART_PUSH = CURLY_REF + "/cart/1/item"
+let REF_CART_DELETE = CURLY_REF + "/cart/1/item/goods_delete"
+
 // Notification
 
 let PRODUCT_DETAILVIEW_EVENT = "PRODUCT_DETAILVIEW_EVENT"
