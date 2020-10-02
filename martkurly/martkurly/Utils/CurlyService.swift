@@ -292,4 +292,34 @@ struct CurlyService {
             }
         }
     }
+
+    // MARK: - 장바구나
+
+    private func fetchData() {
+        let cartURL = URL(string: REF_CART)!
+        let request = URLRequest(url: cartURL)
+    }
+
+    private func pushData(goods: Int, quantity: Int, cart: Int) {
+        let value = [
+            "goods": goods,
+            "quantity": quantity,
+            "cart": cart
+        ]
+
+        let cartURL = URL(string: REF_CART_PUSH)!
+        var request = URLRequest(url: cartURL)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpBody = try! JSONSerialization.data(withJSONObject: value)
+
+        AF.request(request).responseString { (response) in
+            switch response.result {
+            case .success(let data):
+                print("Success", data)
+            case .failure(let error):
+                print("Faulure", error)
+            }
+        }
+    }
 }
