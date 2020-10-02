@@ -33,7 +33,7 @@ struct CartViewModel {
             return nil }
 
         let discountAttributes: [NSAttributedString.Key: Any] = [
-                    .font: UIFont.systemFont(ofSize: 13),
+                    .font: UIFont.systemFont(ofSize: 10),
                     .foregroundColor: UIColor.lightGray,
                     .strikethroughStyle: NSUnderlineStyle.single.rawValue,
                     .strikethroughColor: UIColor.lightGray
@@ -72,30 +72,29 @@ struct CartViewModel {
             attributes: subTotalPriceAttributes
         )
     }
-    
+
     var title: NSAttributedString {
         let title: [NSAttributedString.Key: Any] = [
             .font: UIFont.systemFont(ofSize: 12),
             .foregroundColor: UIColor.black
         ]
-        
+
         return NSAttributedString(
             string: cartItems.goods.title,
             attributes: title
         )
     }
-    
+
     var status: NSAttributedString {
         let statusText: [NSAttributedString.Key: Any] = [
             .font: UIFont.systemFont(ofSize: 10),
             .foregroundColor: UIColor.black
         ]
-        
+
         return NSAttributedString(
             string: cartItems.goods.packing_status,
             attributes: statusText
         )
     }
-    
-    
+
 }

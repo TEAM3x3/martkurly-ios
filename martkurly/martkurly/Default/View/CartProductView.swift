@@ -19,6 +19,13 @@ class CartProductView: UITableViewCell {
             configure()
         }
     }
+    
+    private let formatter = NumberFormatter().then {
+        $0.numberStyle = .decimal    // 천 단위로 콤마(,)
+
+        $0.minimumFractionDigits = 0    // 최소 소수점 단위
+        $0.maximumFractionDigits = 0    // 최대 소수점 단위
+    }
 
     private let inView = UIView().then {
         $0.backgroundColor = .white
@@ -38,25 +45,23 @@ class CartProductView: UITableViewCell {
 
     var condition = UILabel()
 
-    var discount: Int? {
-        didSet {
-            setConstraints()
-        }
+    private let discountLabel = UILabel().then {_ in
+        let attributes: [NSAttributedString.Key: Any] = [
+            .font: UIFont.systemFont(ofSize: 10),
+            .foregroundColor: UIColor.lightGray,
+            .strikethroughStyle: NSUnderlineStyle.single.rawValue,
+            .strikethroughColor: UIColor.lightGray
+        ]
+        
+
     }
-
-    private lazy var discountMoney = UILabel().then {
-        let discountAttributes: [NSAttributedString.Key: Any] = [
-                    .font: UIFont.systemFont(ofSize: 13),
-                    .foregroundColor: UIColor.lightGray,
-                    .strikethroughStyle: NSUnderlineStyle.single.rawValue,
-                    .strikethroughColor: UIColor.lightGray
-                ]
-
-        let attributeString = NSAttributedString(
-                    string: "\(discount ?? 0)",
-                    attributes: discountAttributes)
-
-        $0.attributedText = attributeString
+    private lazy var discountMoney = UIView().then {
+        $0.backgroundColor = .clear
+        $0.addSubview(discountLabel)
+        
+        discountLabel.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
     }
 
     var product = 0 {
@@ -149,8 +154,6 @@ class CartProductView: UITableViewCell {
             $0.leading.equalToSuperview().offset(8)
         }
 
-//        check.addTarget(self, action: #selector(btnTap(_:)), for: .touchUpInside)
-
         title.snp.makeConstraints {
             $0.centerY.equalTo(checkBtn.snp.centerY)
             $0.leading.equalTo(checkBtn.snp.trailing).offset(8)
@@ -198,6 +201,7 @@ class CartProductView: UITableViewCell {
     // MARK: - configure
     func configure() {
         guard let cartItems = cartItems else { return }
-        let cartViewModel 
+        let cartViewModel = CartViewModel(cartItems: cartItems)
+
     }
 }
