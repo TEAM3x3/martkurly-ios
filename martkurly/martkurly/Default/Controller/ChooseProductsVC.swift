@@ -282,6 +282,12 @@ class ChooseProductsVC: UIViewController {
 
     @objc
     private func handlePurchaseButton(_ sender: UIButton) {
+        guard let data = productDetailData else { return }
+        let stepper = productViews[sender.tag].stepper
+        let goods = data.id
+        let quantity = stepper.productCounts
+        let cart = 1
+        CurlyService.shared.pushCartData(goods: goods, quantity: quantity, cart: cart)
         print(#function)
     }
 }
