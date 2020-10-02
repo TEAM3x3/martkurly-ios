@@ -309,4 +309,62 @@ struct KurlyService {
             }
         }
     }
+
+    // MARK: - 장바구니
+
+    func pushCartData(goods: Int, quantity: Int, cart: Int) {
+        let value = [
+            "goods": goods,
+            "quantity": quantity,
+            "cart": cart
+        ]
+
+        let cartURL = URL(string: REF_CART_PUSH)!
+        let token = UserDefaults.standard.string(forKey: "token")!
+        print(token)
+
+        var request = URLRequest(url: cartURL)
+        let headers: HTTPHeaders = ["Authorization": "token " + token]
+
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpBody = try! JSONSerialization.data(withJSONObject: value)
+        request.headers = headers
+
+        AF.request(request).responseString { (response) in
+            switch response.result {
+            case .success(let data):
+                print("Success", data)
+            case .failure(let error):
+                print("Faulure", error)
+            }
+        }
+    }
+    
+    func deleteCartData(goods: [Int]) {
+        let value = [
+            "goods": [goods]
+        ]
+
+        let cartURL = URL(string: REF_CART_DELETE)!
+        let token = UserDefaults.standard.string(forKey: "token")!
+
+        var request = URLRequest(url: cartURL)
+//        let headers: HTTPHeaders = ["Authorization": "token " + token]
+        let headers: HTTPHeaders = ["Authorization": "token 88f0566e6db5ebaa0e46eae16f5a092610f46345"]
+
+        request.httpMethod = "DELETE"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpBody = try! JSONSerialization.data(withJSONObject: value)
+        request.headers = headers
+
+        AF.request(request).responseString { (response) in
+            switch response.result {
+            case .success(let data):
+                print("Success", data)
+            case .failure(let error):
+                print("Faulure", error)
+            }
+        }
+    }
 }

@@ -11,9 +11,7 @@ import UIKit
 class ChooseProductsVC: UIViewController {
 
     // MARK: - Properties
-    var productDetailData: ProductDetail? { // 상품 정보
-        didSet { print(productDetailData) }
-    }
+    var productDetailData: ProductDetail? /* { didSet { print(productDetailData) } } */ // 상품 정보
 
     private let separator = UIView().then {
         $0.backgroundColor = .separatorGray
@@ -54,7 +52,7 @@ class ChooseProductsVC: UIViewController {
 
     // MARK: - UI
     private func configureUI() {
-        checkIsOfferingVariousProducts()
+//        checkIsOfferingVariousProducts()
         setAttributes()
         setContraints()
     }
@@ -94,26 +92,34 @@ class ChooseProductsVC: UIViewController {
         }
     }
 
-    private func generateProductViews() {
-        print(#function)
-        let title = products[0]["title"] ?? ""
-        let currentPriceInInt = Int(products[0]["discountPrice"] ?? "0") ?? 0
-        let currentPrice = convertToWon(int: currentPriceInInt)
-        let priorPriceInInt = Int(products[0]["originalPrice"] ?? "0") ?? 0
+    private func generateProductViews() { // 품목이 하나일 경우의 뷰 생성
+        guard let data = productDetailData else { return }
+        let title = data.title
+        var currentPriceInInt = data.discount_price ?? 0
+        var currentPrice = convertToWon(int: currentPriceInInt)
+        let priorPriceInInt = data.price
         let priorPrice = convertToWon(int: priorPriceInInt)
         var isOnSale = true
-        if priorPrice == "" {
+        if currentPriceInInt == 0 {
             print("It's not on sale")
+            currentPriceInInt = priorPriceInInt
+            currentPrice = priorPrice
             isOnSale = false
         }
-        let price = isOnSale ? Int(products[0]["discountPrice"] ?? "0") : Int(products[0]["originalPrice"] ?? "0")
-        let productView = ChooseProductsDetailView(title: title, currentPrice: currentPrice, priorPrice: priorPrice, price: price!, isOnSale: isOnSale)
+        let price = currentPriceInInt
+        let productView = ChooseProductsDetailView(title: title, currentPrice: currentPrice, priorPrice: priorPrice, price: price, isOnSale: isOnSale).then {
+            $0.tag = 0
+            $0.stepper.subtractButton.tag = 0
+            $0.stepper.subtractButton.addTarget(self, action: #selector(handleSteppers(_:)), for: .touchUpInside)
+            $0.stepper.addButton.tag = 0
+            $0.stepper.addButton.addTarget(self, action: #selector(handleSteppers(_:)), for: .touchUpInside)
+        }
         let separator = UIView().then {
             $0.backgroundColor = .separatorGray
         }
 
         [productView, separator, sumTitleLabel, sumLabel].forEach {
-            view.addSubview($0)
+            contentView.addSubview($0)
         }
         productView.snp.makeConstraints {
             $0.top.equalToSuperview().inset(10)
@@ -122,6 +128,7 @@ class ChooseProductsVC: UIViewController {
         separator.snp.makeConstraints {
             $0.top.equalTo(productView.snp.bottom).offset(10)
             $0.leading.trailing.equalTo(productView)
+            $0.height.equalTo(1)
         }
         sumTitleLabel.snp.makeConstraints {
             $0.top.equalTo(separator.snp.bottom).offset(10)
@@ -133,9 +140,10 @@ class ChooseProductsVC: UIViewController {
             $0.trailing.equalTo(productView)
         }
         productViews.append(productView)
+        setFirstItem(view: productViews.first!, price: price)
     }
 
-    private func generateVariousProductsViews() {
+    private func generateVariousProductsViews() { // 품목이 여러개 있을 경우의 뷰 생성
         let categoryTitle = UILabel().then {
             $0.text = products[0]["category"] ?? ""
             $0.textColor = .textMainGray
@@ -243,6 +251,12 @@ class ChooseProductsVC: UIViewController {
         return result
     }
 
+    private func setFirstItem(view: ChooseProductsDetailView, price: Int) {
+        view.stepper.productCounts = 1
+        total = price
+        sumLabel.text = convertToWon(int: total)
+    }
+
     // MARK: - Selectors
     @objc
     private func handleSteppers(_ sender: UIButton) {
@@ -250,7 +264,11 @@ class ChooseProductsVC: UIViewController {
         let price = productViews[sender.tag].price
         switch sender {
         case stepper.subtractButton:
-            guard stepper.productCounts >= 1 else { return }
+            if isOfferingVariousProducts {
+                guard stepper.productCounts >= 1 else { return }
+            } else {
+                guard stepper.productCounts >= 2 else { return }
+            }
             stepper.productCounts -= 1
             total -= price
         case stepper.addButton:
@@ -264,6 +282,12 @@ class ChooseProductsVC: UIViewController {
 
     @objc
     private func handlePurchaseButton(_ sender: UIButton) {
+        guard let data = productDetailData else { return }
+        let stepper = productViews[sender.tag].stepper
+        let goods = data.id
+        let quantity = stepper.productCounts
+        let cart = 1
+        CurlyService.shared.pushCartData(goods: goods, quantity: quantity, cart: cart)
         print(#function)
     }
 }

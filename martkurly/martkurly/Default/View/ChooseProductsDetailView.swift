@@ -24,7 +24,7 @@ class ChooseProductsDetailView: UIView {
         $0.textColor = .textLightGray
     }
     private let strikethrough = UIView().then {
-        $0.backgroundColor = .backgroundGray
+        $0.backgroundColor = .textLightGray
     }
     var price = 0
     let stepper = KurlyStepper()
