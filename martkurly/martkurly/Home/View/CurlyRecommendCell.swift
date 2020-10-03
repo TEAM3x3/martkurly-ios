@@ -22,10 +22,14 @@ class CurlyRecommendCell: UICollectionViewCell {
 
     private let recommendTableView = UITableView()
 
-    var tappedEvent: ((Int) -> Void)?
+    var tappedMainEvent: ((Int) -> Void)?
+    var tappedBannerEvent: ((Int) -> Void)?
 
     private var mainEventList = [MainEvent]()
-    private var recommendProducts = [ProductDetail]()
+    private var recommendProducts = [Product]()
+    private var salesProducts = [Product]()
+    private var bannerEvent = [EventModel]()
+    private var healthProducts = [Product]()
 
     // MARK: - LifeCycle
 
@@ -37,6 +41,12 @@ class CurlyRecommendCell: UICollectionViewCell {
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    // MARK: - Actions
+
+    func tappedBannerEvent(eventID: Int) {
+        tappedBannerEvent?(eventID)
     }
 
     // MARK: - Helpers
@@ -76,9 +86,15 @@ class CurlyRecommendCell: UICollectionViewCell {
     }
 
     func configure(mainEventList: [MainEvent],
-                   recommendProducts: [ProductDetail]) {
+                   recommendProducts: [Product],
+                   salesProducts: [Product],
+                   bannerEvent: [EventModel],
+                   healthProducts: [Product]) {
         self.mainEventList = mainEventList
         self.recommendProducts = recommendProducts
+        self.salesProducts = salesProducts
+        self.bannerEvent = bannerEvent
+        self.healthProducts = healthProducts
 
         self.recommendTableView.reloadData()
     }
@@ -95,11 +111,11 @@ extension CurlyRecommendCell: UITableViewDataSource {
         case firstBannerCell
         case mdRecommendCell
         case secondBannerCell
-        case todayNewerCell
-        case hotProductsCell
-        case deadlineSaleCell
-        case immunityProductsCell
-        case curlyRecipeCell
+        case healthCell
+//        case hotProductsCell
+//        case deadlineSaleCell
+//        case immunityProductsCell
+//        case curlyRecipeCell
         case deliveryInfoCell
         case curlyInfomationCell
     }
@@ -132,7 +148,7 @@ extension CurlyRecommendCell: UITableViewDataSource {
                            titleType: .none,
                            backgroundColor: .white,
                            titleText: "이 상품 어때요?")
-            cell.productsDetailDatas = recommendProducts
+            cell.products = recommendProducts
             return cell
         case .eventNewsCell:
             let cell = tableView.dequeueReusableCell(
@@ -151,12 +167,14 @@ extension CurlyRecommendCell: UITableViewDataSource {
                            titleType: .rightAllow,
                            backgroundColor: .white,
                            titleText: "알뜰 상품")
+            cell.products = salesProducts
             return cell
         case .firstBannerCell:
             let cell = tableView.dequeueReusableCell(
                 withIdentifier: MainBannerViewCell.identifier,
                 for: indexPath) as! MainBannerViewCell
-            cell.backgroundColor = .systemRed
+            cell.eventModel = bannerEvent[0]
+            cell.tappedBannerEvent = tappedBannerEvent(eventID:)
             return cell
         case .mdRecommendCell:
             let cell = tableView.dequeueReusableCell(
@@ -167,56 +185,59 @@ extension CurlyRecommendCell: UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(
                 withIdentifier: MainBannerViewCell.identifier,
                 for: indexPath) as! MainBannerViewCell
-            cell.backgroundColor = .systemBlue
+            cell.eventModel = bannerEvent[1]
+            cell.tappedBannerEvent = tappedBannerEvent(eventID:)
             return cell
-        case .todayNewerCell:
+        case .healthCell:
             let cell = tableView.dequeueReusableCell(
                 withIdentifier: MainProductListCell.identifier,
                 for: indexPath) as! MainProductListCell
             cell.configure(directionType: .horizontal,
                            titleType: .rightAllowAndSubTitle,
                            backgroundColor: .white,
-                           titleText: "오늘의 신상품",
-                           subTitleText: "매일 정오, 컬리의 새로운 상품을 만나보세요")
+                           titleText: "건강 식품",
+                           subTitleText: "컬리의 건강 식품들을 만나보세요")
+            cell.products = healthProducts
             return cell
-        case .hotProductsCell:
-            let cell = tableView.dequeueReusableCell(
-                withIdentifier: MainProductListCell.identifier,
-                for: indexPath) as! MainProductListCell
-            cell.configure(directionType: .horizontal,
-                           titleType: .rightAllow,
-                           backgroundColor: ColorManager.General.backGray.rawValue,
-                           titleText: "지금 가장 핫한 상품")
-            return cell
-        case .deadlineSaleCell:
-            let cell = tableView.dequeueReusableCell(
-                withIdentifier: MainProductListCell.identifier,
-                for: indexPath) as! MainProductListCell
-            cell.configure(directionType: .horizontal,
-                           titleType: .rightAllow,
-                           backgroundColor: .white,
-                           titleText: "마감세일")
-            return cell
-        case .immunityProductsCell:
-            let cell = tableView.dequeueReusableCell(
-                withIdentifier: MainProductListCell.identifier,
-                for: indexPath) as! MainProductListCell
-            cell.configure(directionType: .horizontal,
-                           titleType: .rightAllow,
-                           backgroundColor: .white,
-                           titleText: "면역력 증진",
-                           isTopPadding: false)
-            return cell
-        case .curlyRecipeCell:
-            let cell = tableView.dequeueReusableCell(
-                withIdentifier: MainCurlyRecipeCell.identifier,
-                for: indexPath) as! MainCurlyRecipeCell
-            return cell
+//        case .hotProductsCell:
+//            let cell = tableView.dequeueReusableCell(
+//                withIdentifier: MainProductListCell.identifier,
+//                for: indexPath) as! MainProductListCell
+//            cell.configure(directionType: .horizontal,
+//                           titleType: .rightAllow,
+//                           backgroundColor: ColorManager.General.backGray.rawValue,
+//                           titleText: "지금 가장 핫한 상품")
+//            return cell
+//        case .deadlineSaleCell:
+//            let cell = tableView.dequeueReusableCell(
+//                withIdentifier: MainProductListCell.identifier,
+//                for: indexPath) as! MainProductListCell
+//            cell.configure(directionType: .horizontal,
+//                           titleType: .rightAllow,
+//                           backgroundColor: .white,
+//                           titleText: "마감세일")
+//            return cell
+//        case .immunityProductsCell:
+//            let cell = tableView.dequeueReusableCell(
+//                withIdentifier: MainProductListCell.identifier,
+//                for: indexPath) as! MainProductListCell
+//            cell.configure(directionType: .horizontal,
+//                           titleType: .rightAllow,
+//                           backgroundColor: .white,
+//                           titleText: "면역력 증진",
+//                           isTopPadding: false)
+//            return cell
+//        case .curlyRecipeCell:
+//            let cell = tableView.dequeueReusableCell(
+//                withIdentifier: MainCurlyRecipeCell.identifier,
+//                for: indexPath) as! MainCurlyRecipeCell
+//            return cell
         case .deliveryInfoCell:
             let cell = tableView.dequeueReusableCell(
                 withIdentifier: MainBannerViewCell.identifier,
                 for: indexPath) as! MainBannerViewCell
-            cell.backgroundColor = .systemPurple
+            cell.eventModel = bannerEvent[2]
+            cell.tappedBannerEvent = tappedBannerEvent(eventID:)
             return cell
         case .curlyInfomationCell:
             let cell = tableView.dequeueReusableCell(
@@ -232,7 +253,7 @@ extension CurlyRecommendCell: UITableViewDataSource {
 
 extension CurlyRecommendCell: CurlyRecommendDelegate {
     func tappedItem(selectedID: Int) {
-        tappedEvent?(selectedID)
+        tappedMainEvent?(selectedID)
     }
 }
 
@@ -245,7 +266,8 @@ extension CurlyRecommendCell: UITableViewDelegate {
             let screenWidth = UIScreen.main.bounds.width
             return screenWidth * 0.92
         case .firstBannerCell, .secondBannerCell, .deliveryInfoCell:
-            return bannerHeightValue
+            let width = UIScreen.main.bounds.width
+            return width * 0.22
         case .curlyInfomationCell:
             let cellType = InfoCellType(rawValue: indexPath.row)!
             switch cellType.cellStyle {

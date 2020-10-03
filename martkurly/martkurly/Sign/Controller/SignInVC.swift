@@ -165,7 +165,7 @@ class SignInVC: UIViewController {
             let username = idTextField.text!
             let password = pwTextField.text!
 
-            CurlyService.shared.signIn(username: username, password: password, completionHandler: loginProcessHandler(result:token:))
+            KurlyService.shared.signIn(username: username, password: password, completionHandler: loginProcessHandler(result:token:))
         case forgotIDButton:
             let nextVC = ForgotIDVC()
             navigationController?.pushViewController(nextVC, animated: true)

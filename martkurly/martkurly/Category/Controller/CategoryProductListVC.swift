@@ -44,7 +44,7 @@ class CategoryProductListVC: UIViewController {
     func tappedProductDetail(productID: Int) {
         self.showIndicate()
 
-        CurlyService.shared.requestProductDetailData(productID: productID) { productDetailData in
+        KurlyService.shared.requestProductDetailData(productID: productID) { productDetailData in
             self.stopIndicate()
             let controller = ProductDetailVC()
             controller.hidesBottomBarWhenPushed = true

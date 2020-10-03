@@ -9,22 +9,56 @@
 import Alamofire
 import Foundation
 
-struct CurlyService {
-    static let shared = CurlyService()
+struct KurlyService {
+    static let shared = KurlyService()
     private init() { }
 
     private let decoder = JSONDecoder()
 
-    // MARK: - 메인화면 - 이 상품 어때요? 데이터 가져오기
+    // MARK: - 상품들의 정보 가져오기
 
-    func fetchRecommendProducts(completion: @escaping([ProductDetail]) -> Void) {
-        var recommendProducts = [ProductDetail]()
+    func fetchProducts(requestURL: String, completion: @escaping([Product]) -> Void) {
+        var products = [Product]()
+
+        AF.request(requestURL, method: .get).responseJSON { response in
+            guard let jsonData = response.data else { return completion(products) }
+
+            do {
+                products = try self.decoder.decode([Product].self, from: jsonData)
+            } catch {
+                print("DEBUG: Recommend List Fetch Error, ", error.localizedDescription)
+            }
+            completion(products)
+        }
+    }
+
+    // MARK: - 베스트 상품 가져오기
+
+    func fetchBestProducts(completion: @escaping([Product]) -> Void) {
+        var bestProducts = [Product]()
+
+        AF.request(REF_BEST_PRODUCTS, method: .get).responseJSON { response in
+            guard let jsonData = response.data else { completion(bestProducts); return }
+            do {
+                let products = try self.decoder.decode([Product].self, from: jsonData)
+                bestProducts = products
+            } catch {
+                print("DEBUG: Cheap Products Request Error, ", error.localizedDescription)
+            }
+            completion(bestProducts)
+        }
+    }
+
+    // MARK: - [홈] > [컬리추천] > [이 상품 어때요?]
+
+    func fetchRecommendProducts(completion: @escaping([Product]) -> Void) {
+        var recommendProducts = [Product]()
 
         AF.request(REF_RECOMMEND_PRODUCTS, method: .get).responseJSON { response in
             guard let jsonData = response.data else { return completion(recommendProducts) }
 
             do {
-                recommendProducts = try self.decoder.decode([ProductDetail].self, from: jsonData)
+                recommendProducts = try self.decoder.decode([Product].self, from: jsonData)
             } catch {
                 print("DEBUG: Recommend List Fetch Error, ", error.localizedDescription)
             }
@@ -38,7 +72,7 @@ struct CurlyService {
         var typeProducts = [Product]()
 
         let parameters = ["type": type]
-        AF.request(CURLY_GOODS_REF, method: .get, parameters: parameters).responseJSON { response in
+        AF.request(KURLY_GOODS_REF, method: .get, parameters: parameters).responseJSON { response in
             guard let jsonData = response.data else { return completion(typeProducts) }
 
             do {
@@ -56,7 +90,7 @@ struct CurlyService {
         var categoryProducts = [Product]()
 
         let parameters = ["category": category]
-        AF.request(CURLY_GOODS_REF, method: .get, parameters: parameters).responseJSON { response in
+        AF.request(KURLY_GOODS_REF, method: .get, parameters: parameters).responseJSON { response in
             guard let jsonData = response.data else { return completion(categoryProducts) }
 
             do {
@@ -92,7 +126,7 @@ struct CurlyService {
         let parameter = ["word": searchKeyword]
         var products = [Product]()
 
-        AF.request(REF_SEARCH_PRODUCTS, method: .get, parameters: parameter, headers: headers).responseJSON { response in
+        AF.request(REF_SEARCH_WORD_PRODUCTS, method: .get, parameters: parameter, headers: headers).responseJSON { response in
             print(response)
             guard let jsonData = response.data else { return completion(products) }
 
@@ -110,7 +144,7 @@ struct CurlyService {
     func fetchMainEventList(completion: @escaping([MainEvent]) -> Void) {
         var mainEventList = [MainEvent]()
 
-        AF.request(CURLY_MAIN_EVENT_REF, method: .get).responseJSON { response in
+        AF.request(KURLY_MAIN_EVENT_REF, method: .get).responseJSON { response in
             guard let jsonData = response.data else { return completion(mainEventList) }
 
             do {
@@ -142,7 +176,7 @@ struct CurlyService {
     func fetchEventList(completion: @escaping([EventModel]) -> Void) {
         var events = [EventModel]()
 
-        AF.request(CURLY_EVENT_REF, method: .get).responseJSON { response in
+        AF.request(KURLY_EVENT_REF, method: .get).responseJSON { response in
             guard let jsonData = response.data else { return completion(events) }
 
             do {
@@ -174,7 +208,7 @@ struct CurlyService {
     func fetchCheapProducts(completion: @escaping([Product]) -> Void) {
         var cheapProducts = [Product]()
 
-        AF.request(REF_CHEAP, method: .get).responseJSON { response in
+        AF.request(REF_CHEAP_PRODUCTS, method: .get).responseJSON { response in
             guard let jsonData = response.data else { completion(cheapProducts); return }
             do {
                 let products = try self.decoder.decode([Product].self, from: jsonData)

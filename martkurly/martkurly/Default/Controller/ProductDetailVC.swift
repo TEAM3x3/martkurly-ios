@@ -36,6 +36,7 @@ class ProductDetailVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
+        requestProductReviews()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -44,6 +45,17 @@ class ProductDetailVC: UIViewController {
                                     isShowCart: true,
                                     leftBarbuttonStyle: .pop,
                                     titleText: productDetailData?.title)
+    }
+
+    // MARK: - API
+
+    func requestProductReviews() {
+        guard let productDetailData = productDetailData else { return }
+
+        self.showIndicate()
+        ReviewService.shared.requestProductReviews(productID: productDetailData.id) {
+            self.stopIndicate()
+        }
     }
 
     // MARK: - Selectors

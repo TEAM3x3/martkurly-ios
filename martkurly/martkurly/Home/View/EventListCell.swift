@@ -90,6 +90,6 @@ extension EventListCell: UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tappedEventItem?(indexPath.section)
+        tappedEventItem?(eventList[indexPath.section].id)
     }
 }
