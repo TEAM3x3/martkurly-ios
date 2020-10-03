@@ -15,10 +15,12 @@ struct Product: Decodable {
     let short_desc: String      // 상품 설명
     let img: String             // 상품 이미지
     let price: Int              // 상품 원가
+    let transfer: String?       // 상품 배송 상태
     let discount_price: Int?    // 상품 할인가
     let packing_status: String? // 상품 포장 상태
     let sales: Sales?           // 상품 할인(%)
     let tagging: [Tagging]      // 상품 Tag
+    let stock: ProductStock     // 상품 정보(판매수량, 입고날짜)
 
     struct Tagging: Decodable {
         let name: String        // 태그명
@@ -38,6 +40,12 @@ struct Product: Decodable {
                 forKey: .tag)
             name = try tagContainer.decode(String.self, forKey: .name)
         }
+    }
+
+    struct ProductStock: Decodable {
+        let id: Int
+        let count: Int
+        let updated_at: String
     }
 }
 

@@ -91,6 +91,7 @@ class HomeVC: UIViewController {
         KurlyService.shared.fetchBestProducts { products in
             self.group.leave()
             self.bestProducts = products
+            print(self.bestProducts)
         }
 
         group.enter()
