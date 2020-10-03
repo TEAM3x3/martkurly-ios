@@ -165,7 +165,7 @@ class SignInVC: UIViewController {
             let username = idTextField.text!
             let password = pwTextField.text!
 
-            KurlyService.shared.signIn(username: username, password: password, completionHandler: loginProcessHandler(result:token:))
+            KurlyService.shared.signIn(username: username, password: password, completionHandler: loginProcessHandler(result:data:))
         case forgotIDButton:
             let nextVC = ForgotIDVC()
             navigationController?.pushViewController(nextVC, animated: true)
@@ -181,12 +181,32 @@ class SignInVC: UIViewController {
     }
 
     // MARK: - Helpers
-    private func loginProcessHandler(result: Bool, token: String?) {
+    private func loginProcessHandler(result: Bool, data: LoginData?) {
         switch result {
         case true:
-            guard let token = token else { return }
+            guard let data = data else { return }
+            let token = data.token
+            let user = data.user
+
+            let username = user.username
+            let email = user.email
+            let phone = user.phone
+            let nickname = user.nickname
+            let gender = user.gender
+
             UserDefaults.standard.set(token, forKey: "token")
+            UserDefaults.standard.set(username, forKey: "username")
+            UserDefaults.standard.set(email, forKey: "email")
+            UserDefaults.standard.set(phone, forKey: "phone")
+            UserDefaults.standard.set(nickname, forKey: "nickname")
+            UserDefaults.standard.set(gender, forKey: "gender")
+
             print("UserDefaults", UserDefaults.standard.string(forKey: "token"))
+            print("UserDefaults", UserDefaults.standard.string(forKey: "username"))
+            print("UserDefaults", UserDefaults.standard.string(forKey: "email"))
+            print("UserDefaults", UserDefaults.standard.string(forKey: "phone"))
+            print("UserDefaults", UserDefaults.standard.string(forKey: "nickname"))
+            print("UserDefaults", UserDefaults.standard.string(forKey: "gedner"))
             print("Login Success")
             self.dismiss(animated: true, completion: nil)
         case false:

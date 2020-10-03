@@ -20,7 +20,7 @@ class MyKurlyInfoView: UIView {
         $0.layer.borderColor = UIColor.martkurlyMainPurpleColor.cgColor
         $0.layer.borderWidth = 0.8
     }
-    private let userNameLabel = UILabel().then {
+    let userNameLabel = UILabel().then {
         $0.text = "송도영님"
         $0.textColor = .black
         $0.font = UIFont.systemFont(ofSize: 18.5)
