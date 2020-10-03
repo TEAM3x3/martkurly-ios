@@ -23,10 +23,13 @@ class MyKurlyVC: UIViewController {
     private let bottomBarView = UIView().then {
         $0.backgroundColor = .backgroundGray
     }
+
     private var isSignedIn = false
     private var price = "0" // 적립금
     private var coupon = "0" // 쿠폰
     private var nextVC = UIViewController()
+
+    private let nickname = UserDefaults.standard.string(forKey: "nickname")
 
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -62,6 +65,11 @@ class MyKurlyVC: UIViewController {
         tableView.rowHeight = 40
         tableView.isScrollEnabled = false
         tableView.separatorStyle = .none
+
+        if isSignedIn {
+            guard let nickname = nickname else { return }
+            infoView.userNameLabel.text = nickname
+        }
     }
 
     private func setContstraints() {
@@ -210,6 +218,12 @@ class MyKurlyVC: UIViewController {
     private func logout() {
         print(#function)
         UserDefaults.standard.removeObject(forKey: "token")
+        UserDefaults.standard.removeObject(forKey: "username")
+        UserDefaults.standard.removeObject(forKey: "email")
+        UserDefaults.standard.removeObject(forKey: "phone")
+        UserDefaults.standard.removeObject(forKey: "nickname")
+        UserDefaults.standard.removeObject(forKey: "gender")
+
         checkSignInStatus()
         updateViews(newValue: isSignedIn)
         scrollView.contentOffset = CGPoint(x: 0, y: 0)
