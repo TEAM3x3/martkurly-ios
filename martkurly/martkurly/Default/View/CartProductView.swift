@@ -19,7 +19,7 @@ class CartProductView: UITableViewCell {
             configure()
         }
     }
-    
+
     private let formatter = NumberFormatter().then {
         $0.numberStyle = .decimal    // 천 단위로 콤마(,)
 
@@ -45,20 +45,32 @@ class CartProductView: UITableViewCell {
 
     var condition = UILabel()
 
-    private let discountLabel = UILabel().then {_ in
+    private let discountLabel = UILabel().then {
         let attributes: [NSAttributedString.Key: Any] = [
             .font: UIFont.systemFont(ofSize: 10),
             .foregroundColor: UIColor.lightGray,
             .strikethroughStyle: NSUnderlineStyle.single.rawValue,
             .strikethroughColor: UIColor.lightGray
         ]
-        
 
+        let formatter = NumberFormatter().then {
+            $0.numberStyle = .decimal    // 천 단위로 콤마(,)
+
+            $0.minimumFractionDigits = 0    // 최소 소수점 단위
+            $0.maximumFractionDigits = 0    // 최대 소수점 단위
+        }
+
+        var attribute = NSMutableAttributedString(
+            string: (formatter.string(for: "0") ?? "" + "원"),
+            attributes: attributes)
+
+        $0.attributedText = attribute
     }
+
     private lazy var discountMoney = UIView().then {
         $0.backgroundColor = .clear
         $0.addSubview(discountLabel)
-        
+
         discountLabel.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
@@ -84,7 +96,7 @@ class CartProductView: UITableViewCell {
         $0.attributedText = attributeString
     }
 
-    private let dismissBtn = UIButton().then {
+    let dismissBtn = UIButton().then {
         $0.setImage(UIImage(systemName: "xmark"), for: .normal)
         $0.tintColor = .gray
     }
@@ -102,6 +114,20 @@ class CartProductView: UITableViewCell {
     private let totalWon = UILabel().then {
         $0.text = "원"
     }
+
+    var isActive = true {
+        willSet {
+            if newValue {
+                checkBtn.setImage(UIImage(systemName: "checkmark.circle.fill"), for: .normal)
+                checkBtn.tintColor = ColorManager.General.mainPurple.rawValue
+            } else {
+                checkBtn.setImage(UIImage(systemName: "checkmark.circle"), for: .normal)
+                checkBtn.tintColor = .lightGray
+            }
+        }
+    }
+
+    var customTag = 0
 
     // MARK: - Lifecycle
 
@@ -187,15 +213,9 @@ class CartProductView: UITableViewCell {
             $0.centerY.equalTo(title.snp.centerY)
             $0.trailing.equalToSuperview().inset(8)
         }
-        dismissBtn.addTarget(self, action: #selector(xmark), for: .touchUpInside)
+//        dismissBtn.addTarget(self, action: #selector(xmark), for: .touchUpInside)
         dismissBtn.clipsToBounds = true
         dismissBtn.sizeToFit()
-    }
-
-    // MARK: - Action
-    @objc
-    func xmark(_ sender: UIButton) {
-        print("hey")
     }
 
     // MARK: - configure

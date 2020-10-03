@@ -16,7 +16,7 @@ class CartVC: UIViewController {
         didSet {
             if cartProduct.isEmpty == false {
                 tableV.reloadData()
-                for i in 1...cartProduct[0].items.count {
+                for i in 0...cartProduct[0].items.count - 1 {
                     tapBtnCnt.insert(i)
                 }
             }
@@ -25,11 +25,11 @@ class CartVC: UIViewController {
 
     private var buttonStr: String? {
         didSet {
-            view.addSubview(button)
+
         }
     }
 
-    lazy var button = KurlyButton(title: buttonStr ?? "주문하기", style: .purple)
+    var button = KurlyButton(title: "주문하기", style: .purple)
 
     private let navi = CartNaviView().then {
         $0.dismissBtn.addTarget(self, action: #selector(dismissing(_:)), for: .touchUpInside)
@@ -46,9 +46,10 @@ class CartVC: UIViewController {
     }
     private var cartAllProduct = [Int]()
     private var tapBtnCnt = Set<Int>() {        // cell 셀 버튼 액션
-        didSet {
+        willSet {
             tableV.reloadData()
             cartAllProduct.append(contentsOf: tapBtnCnt)
+            print(newValue.sorted())
         }
     }
 
@@ -71,6 +72,10 @@ class CartVC: UIViewController {
             tableV.reloadData()
         }
     }
+
+    private var headerCell = AllSelectView()
+    private var cells = [CartProductView]()
+    private var itemNumber = [Int]()
 
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -197,37 +202,58 @@ extension CartVC: UITableViewDataSource, UITableViewDelegate {
                 if indexPath.row == 0 {
                     let cell = AllSelectView()
                     cell.check.addTarget(self, action: #selector(allCartTapBtn), for: .touchUpInside)
-//                    if cartProduct.count >= 1, allCheckingButton, checkingButton {
-                    if cartProduct[indexPath.section].items.count == tapBtnCnt.count {
+                    cell.deleteBtn.addTarget(self, action: #selector(handlerSelectDeleteBtn), for: .touchUpInside)
+                    if cartProduct[indexPath.section].items.count == tapBtnCnt.count { // 전체선택 활성화
                         cell.check.setImage(UIImage(systemName: "checkmark.circle.fill"), for: .normal)
                         cell.check.tintColor = ColorManager.General.mainPurple.rawValue
-                        cell.check.isSelected = true
+                        cell.isActive = false
+                        for cell in cells {
+//                            cell.isActive = true
+//                            cell.checkBtn.setImage(UIImage(systemName: "checkmark.circle.fill"), for: .normal)
+//                            cell.checkBtn.tintColor = ColorManager.General.mainPurple.rawValue
+                        }
                     } else {
                         cell.check.setImage(UIImage(systemName: "checkmark.circle"), for: .normal)
                         cell.check.tintColor = .lightGray
-                        cell.check.isSelected = false
+                        cell.isActive = true
+                        for cell in cells {
+//                            cell.isActive = false
+//                            cell.checkBtn.setImage(UIImage(systemName: "checkmark.circle"), for: .normal)
+//                            cell.checkBtn.tintColor = .lightGray
+                        }
                     }
                     cell.configure(count: "(\(tapBtnCnt.count)/\(cartProduct[indexPath.section].items.count))")
+                    headerCell = cell
                     return cell
                 } else {
                     let cell = tableView.dequeueReusableCell(withIdentifier: CartProductView.identifier, for: indexPath) as! CartProductView
-                    cell.checkBtn.tag = indexPath.row
+                    cell.tag = indexPath.row - 1
+                    cell.checkBtn.tag = indexPath.row - 1
+                    cell.customTag = indexPath.row - 1
+                    cell.dismissBtn.addTarget(self, action: #selector(deleteBtn), for: .touchUpInside)
+                    itemNumber.append(cartProduct[indexPath.section].items[indexPath.row - 1].id)
                     for i in 0...(cartProduct[indexPath.section].items.count - 1) {
                         cell.cartItems = cartProduct[indexPath.section].items[i]
                     }
-//                    print(cartProduct[0].items[0].goods.discount_price!)
-//                        cell.configure(
-//                            title: cartProduct[0].items[0].goods.title,
-//                            discount: cartProduct[0].items[0].goods.discount_price!,
-//                            product: cartProduct[0].items[0].goods.price,
-//                            condition: cartProduct[0].items[0].goods.packing_status)
                     cell.checkBtn.addTarget(self, action: #selector(cellTapBtn), for: .touchUpInside)
-                    if cell.checkBtn.isSelected == false, tapBtnCnt.isEmpty == false {
-                        cell.checkBtn.setImage(UIImage(systemName: "checkmark.circle.fill"), for: .normal)
-                        cell.checkBtn.tintColor = ColorManager.General.mainPurple.rawValue
+
+                    if tapBtnCnt.contains(indexPath.row - 1) {
+                        cell.isActive = true
                     } else {
-                        cell.checkBtn.setImage(UIImage(systemName: "checkmark.circle"), for: .normal)
-                        cell.checkBtn.tintColor = .lightGray
+                        cell.isActive = false
+                    }
+
+//                    if cell.isActive == true /*tapBtnCnt.isEmpty == false*/ { // 유저가 셀을 활성화하면...
+//                        cell.checkBtn.setImage(UIImage(systemName: "checkmark.circle.fill"), for: .normal)
+//                        cell.checkBtn.tintColor = ColorManager.General.mainPurple.rawValue
+//                        print(#function, "True")
+//                    } else {
+//                        cell.checkBtn.setImage(UIImage(systemName: "checkmark.circle"), for: .normal)
+//                        cell.checkBtn.tintColor = .lightGray
+//                     }
+                    if cells.count < cartProduct[indexPath.section].items.count {
+                        cells.append(cell)
+
                     }
                     return cell
                 }
@@ -250,38 +276,67 @@ extension CartVC: UITableViewDataSource, UITableViewDelegate {
         }
     }
 
+    @objc
+    func handlerSelectDeleteBtn(_ sender: UIButton) {
+        var result = [Int]()
+        for index in tapBtnCnt.sorted() {
+            let item = itemNumber[index]
+            result.append(item)
+            print(result)
+            CurlyService.shared.deleteCartData(goods: result)
+        }
+    }
+
+    @objc
+    func deleteBtn(_ sender: UIButton) {
+        guard let cell = sender.superview?.superview as? CartProductView else { print(#function, "Guard"); return }
+//        let index = cells[sender.tag].product
+//        let result = itemNumber[index]
+//        CurlyService.shared.deleteCartData(goods: [result])
+    }
+
     // MARK: - 전체선택 버튼
     @objc
     func allCartTapBtn(_ sender: UIButton) {
-        sender.isSelected = !sender.isSelected
 
-        if sender.isSelected {
-            sender.setImage(UIImage(systemName: "checkmark.circle.fill"), for: .normal)
-            sender.tintColor = ColorManager.General.mainPurple.rawValue
-            for i in 1...cartProduct[0].items.count {
+        if headerCell.isActive {
+            headerCell.check.setImage(UIImage(systemName: "checkmark.circle.fill"), for: .normal)
+            headerCell.check.tintColor = ColorManager.General.mainPurple.rawValue
+
+            for i in 0...(cartProduct[0].items.count - 1) {
                 tapBtnCnt.insert(i)
             }
         } else {
-            sender.setImage(UIImage(systemName: "checkmark.circle"), for: .normal)
-            sender.tintColor = .lightGray
+            headerCell.check.setImage(UIImage(systemName: "checkmark.circle"), for: .normal)
+            headerCell.check.tintColor = .lightGray
             tapBtnCnt.removeAll()
         }
+        print(tapBtnCnt)
     }
 
     // MARK: - 상품만 선택 버튼
     @objc
     func cellTapBtn(_ sender: UIButton) {
-        let tag = sender.tag
-        sender.isSelected = !sender.isSelected
-        if sender.isSelected {
-            sender.setImage(UIImage(systemName: "checkmark.circle"), for: .normal)
-            sender.tintColor = .lightGray
+        var tag = sender.tag
+        print("tag: ", tag, cells[tag].isActive)
+        tag = cells[tag].tag
+        if cells[tag].isActive {
             tapBtnCnt.remove(tag)
+            cells[tag].isActive = false
+            print(#function, "if", "tag: ", tag, tapBtnCnt, "Cell tag: ", cells[tag].tag)
         } else {
-            sender.setImage(UIImage(systemName: "checkmark.circle.fill"), for: .normal)
-            sender.tintColor = ColorManager.General.mainPurple.rawValue
             tapBtnCnt.insert(tag)
+            cells[tag].isActive = true
+            print(cells[tag], cells[tag].isActive)
+            print(#function, "else", "tag: ", tag, tapBtnCnt, "Cell tag: ", cells[tag].tag)
         }
+//        cells[tag].isActive.toggle()
+//        print(cells[tag].isActive)
+//        if cells[tag].isActive {
+//            self.tapBtnCnt.remove(tag)
+//        } else {
+//            self.tapBtnCnt.insert(tag)
+//        }
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

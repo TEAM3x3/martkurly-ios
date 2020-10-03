@@ -342,14 +342,14 @@ struct CurlyService {
             }
         }
     }
-    
+
     func deleteCartData(goods: [Int]) {
         let value = [
             "goods": [goods]
         ]
 
         let cartURL = URL(string: REF_CART_DELETE)!
-        let token = UserDefaults.standard.string(forKey: "token")!
+//        let token = UserDefaults.standard.string(forKey: "token")!
 
         var request = URLRequest(url: cartURL)
 //        let headers: HTTPHeaders = ["Authorization": "token " + token]

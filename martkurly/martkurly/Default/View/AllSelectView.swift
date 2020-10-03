@@ -38,6 +38,8 @@ class AllSelectView: UITableViewCell {
         $0.textAlignment = .center
     }
 
+    var isActive = true
+
     // MARK: - Lifecycle
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -89,13 +91,8 @@ class AllSelectView: UITableViewCell {
             $0.top.leading.trailing.bottom.equalToSuperview()
         }
 
-        deleteBtn.addTarget(self, action: #selector(deleteAction(_:)), for: .touchUpInside)
+//        deleteBtn.addTarget(self, action: #selector(deleteAction(_:)), for: .touchUpInside)
 
-    }
-
-    @objc
-    func deleteAction(_ sender: UIButton) {
-        print("A")
     }
 
     func configure(count: String) {
