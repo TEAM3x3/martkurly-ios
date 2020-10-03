@@ -531,7 +531,6 @@
 				AFBA2C0A24EEF1170065DD29 /* CategoryType.swift */,
 				AF4759D224F2792600FE617A /* Product.swift */,
 				0E69041C251DD29400164167 /* Cart.swift */,
-				0E036B0F2525D1D1000A893B /* CartViewModel.swift */,
 				AF8E45A6250A738B009942F2 /* ExplainTableViewCase.swift */,
 			);
 			path = Model;
@@ -746,6 +745,7 @@
 				AFC8E08825095E640018DC20 /* ProductDetailViewModel.swift */,
 				AFADDEA8252438C7000D1876 /* ProductListViewModel.swift */,
 				AF8E45A4250A735F009942F2 /* ExplainInfoViewModel.swift */,
+				0E036B0F2525D1D1000A893B /* CartViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";

@@ -16,16 +16,7 @@ class CartVC: UIViewController {
         didSet {
             if cartProduct.isEmpty == false {
                 tableV.reloadData()
-                for i in 0...cartProduct[0].items.count - 1 {
-                    tapBtnCnt.insert(i)
-                }
             }
-        }
-    }
-
-    private var buttonStr: String? {
-        didSet {
-
         }
     }
 
@@ -111,9 +102,12 @@ class CartVC: UIViewController {
 
     func cartListProduct() {
         group.enter()
-        CurlyService.shared.setListCart { cartProduct in
+        KurlyService.shared.setListCart { cartProduct in
             self.group.leave()
             self.cartProduct = cartProduct
+            for i in 0...cartProduct[0].items.count - 1 {
+                self.tapBtnCnt.insert(i)
+            }
         }
     }
 
@@ -171,11 +165,9 @@ extension CartVC: UITableViewDataSource, UITableViewDelegate {
 
     func numberOfSections(in tableView: UITableView) -> Int {
         cartProduct.count + 1
-
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-
         if cartProduct.count >= 1 {
             switch section {
             case 0:
@@ -207,23 +199,14 @@ extension CartVC: UITableViewDataSource, UITableViewDelegate {
                         cell.check.setImage(UIImage(systemName: "checkmark.circle.fill"), for: .normal)
                         cell.check.tintColor = ColorManager.General.mainPurple.rawValue
                         cell.isActive = false
-                        for cell in cells {
-//                            cell.isActive = true
-//                            cell.checkBtn.setImage(UIImage(systemName: "checkmark.circle.fill"), for: .normal)
-//                            cell.checkBtn.tintColor = ColorManager.General.mainPurple.rawValue
-                        }
                     } else {
                         cell.check.setImage(UIImage(systemName: "checkmark.circle"), for: .normal)
                         cell.check.tintColor = .lightGray
                         cell.isActive = true
-                        for cell in cells {
-//                            cell.isActive = false
-//                            cell.checkBtn.setImage(UIImage(systemName: "checkmark.circle"), for: .normal)
-//                            cell.checkBtn.tintColor = .lightGray
-                        }
                     }
                     cell.configure(count: "(\(tapBtnCnt.count)/\(cartProduct[indexPath.section].items.count))")
                     headerCell = cell
+
                     return cell
                 } else {
                     let cell = tableView.dequeueReusableCell(withIdentifier: CartProductView.identifier, for: indexPath) as! CartProductView
@@ -232,34 +215,43 @@ extension CartVC: UITableViewDataSource, UITableViewDelegate {
                     cell.customTag = indexPath.row - 1
                     cell.dismissBtn.addTarget(self, action: #selector(deleteBtn), for: .touchUpInside)
                     itemNumber.append(cartProduct[indexPath.section].items[indexPath.row - 1].id)
-                    for i in 0...(cartProduct[indexPath.section].items.count - 1) {
-                        cell.cartItems = cartProduct[indexPath.section].items[i]
-                    }
+                    cell.cartItems = cartProduct[indexPath.section].items[indexPath.row - 1]
+
                     cell.checkBtn.addTarget(self, action: #selector(cellTapBtn), for: .touchUpInside)
+
+                    cell.stepper.addButton.tag = indexPath.row
+                    cell.stepper.subtractButton.tag = indexPath.row
+
+                    cell.stepper.addButton.addTarget(self, action: #selector(handlerAddBtn), for: .touchUpInside)
+                    cell.stepper.subtractButton.addTarget(self, action: #selector(handlerMinusBtn), for: .touchUpInside)
 
                     if tapBtnCnt.contains(indexPath.row - 1) {
                         cell.isActive = true
                     } else {
                         cell.isActive = false
                     }
-
-//                    if cell.isActive == true /*tapBtnCnt.isEmpty == false*/ { // 유저가 셀을 활성화하면...
-//                        cell.checkBtn.setImage(UIImage(systemName: "checkmark.circle.fill"), for: .normal)
-//                        cell.checkBtn.tintColor = ColorManager.General.mainPurple.rawValue
-//                        print(#function, "True")
-//                    } else {
-//                        cell.checkBtn.setImage(UIImage(systemName: "checkmark.circle"), for: .normal)
-//                        cell.checkBtn.tintColor = .lightGray
-//                     }
-                    if cells.count < cartProduct[indexPath.section].items.count {
-                        cells.append(cell)
-
-                    }
                     return cell
                 }
             default:
-                let cell = PriceView()
-                return cell
+                if tapBtnCnt.isEmpty != true {
+                    let cell = PriceView()
+                    var sumTotalPrice: Int = 0 // 상품금액
+                    var disCountPrice: Int = 0 // 상품할인금액
+                    var shipPrice: Int = 0 //배송비
+                    tapBtnCnt.forEach {
+                        sumTotalPrice += cartProduct[0].items[$0].discount_payment
+                        if cartProduct[0].items[$0].goods.discount_price != nil,
+                           let salePrice = cartProduct[0].items[$0].goods.discount_price {
+                            disCountPrice += (cartProduct[0].items[$0].quantity * (cartProduct[0].items[$0].goods.price - salePrice))
+                        }
+                        shipPrice = sumTotalPrice - disCountPrice
+                    }
+                    cell.configure(sumCount: sumTotalPrice, allSale: disCountPrice, ship: shipPrice)
+                    return cell
+                } else {
+                    let cell = PriceView()
+                    return cell
+                }
             }
         default:
             switch indexPath.section {
@@ -269,13 +261,54 @@ extension CartVC: UITableViewDataSource, UITableViewDelegate {
                 cell.check.tintColor = .lightGray
                 return cell
             default:
-                let cell = PriceView()
-
+                let cell = UITableViewCell()
                 return cell
             }
         }
     }
 
+    // MARK: - Stepper 빼기 버튼
+    @objc
+    func handlerMinusBtn(_ sender: UIButton) {
+        let tag = sender.tag
+        let indexPath = IndexPath(row: tag, section: 0)
+
+        if let cell = tableV.cellForRow(at: indexPath) as? CartProductView {
+            let count = Int(cell.stepper.countLabel.text!)!
+
+            guard count > 1 else {
+                return
+            }
+
+            cartProduct[0].items[tag - 1].quantity = count - 1
+
+            let total = cell.productTotal
+            let productPrice = cell.product
+            cell.totalPrice.text = "\(total + productPrice)"
+            cartProduct[0].items[tag - 1].discount_payment = total - productPrice
+        }
+    }
+
+    // MARK: - Stepper 더하기 버튼
+    @objc
+    func handlerAddBtn(_ sender: UIButton) {
+        let tag = sender.tag
+        let indexPath = IndexPath(row: tag, section: 0)
+
+        if let cell = tableV.cellForRow(at: indexPath) as? CartProductView {
+
+            let count = Int(cell.stepper.countLabel.text!)!
+            cartProduct[0].items[tag - 1].quantity = count + 1
+
+            let total = cell.productTotal
+            let productPrice = cell.product
+            cell.totalPrice.text = "\(total + productPrice)"
+            cartProduct[0].items[tag - 1].discount_payment = total + productPrice
+
+        }
+    }
+
+    // MARK: - 선택 삭제 버튼
     @objc
     func handlerSelectDeleteBtn(_ sender: UIButton) {
         var result = [Int]()
@@ -283,16 +316,17 @@ extension CartVC: UITableViewDataSource, UITableViewDelegate {
             let item = itemNumber[index]
             result.append(item)
             print(result)
-            CurlyService.shared.deleteCartData(goods: result)
+            KurlyService.shared.deleteCartData(goods: result)
         }
     }
 
+    // MARK: - xMARK 삭제 버튼
     @objc
     func deleteBtn(_ sender: UIButton) {
-        guard let cell = sender.superview?.superview as? CartProductView else { print(#function, "Guard"); return }
+
 //        let index = cells[sender.tag].product
 //        let result = itemNumber[index]
-//        CurlyService.shared.deleteCartData(goods: [result])
+//        KurlyService.shared.deleteCartData(goods: [result])
     }
 
     // MARK: - 전체선택 버튼
@@ -317,26 +351,19 @@ extension CartVC: UITableViewDataSource, UITableViewDelegate {
     // MARK: - 상품만 선택 버튼
     @objc
     func cellTapBtn(_ sender: UIButton) {
-        var tag = sender.tag
-        print("tag: ", tag, cells[tag].isActive)
-        tag = cells[tag].tag
-        if cells[tag].isActive {
-            tapBtnCnt.remove(tag)
-            cells[tag].isActive = false
-            print(#function, "if", "tag: ", tag, tapBtnCnt, "Cell tag: ", cells[tag].tag)
-        } else {
-            tapBtnCnt.insert(tag)
-            cells[tag].isActive = true
-            print(cells[tag], cells[tag].isActive)
-            print(#function, "else", "tag: ", tag, tapBtnCnt, "Cell tag: ", cells[tag].tag)
+        let tag = sender.tag // [0, 1] [0, 2] => [0, 0] [0, 1]
+
+        let indexPath = IndexPath(row: tag + 1, section: 0)
+
+        if let cell = tableV.cellForRow(at: indexPath) as? CartProductView {
+            cell.isActive.toggle()
+
+            if cell.isActive {
+                tapBtnCnt.insert(tag)
+            } else {
+                tapBtnCnt.remove(tag)
+            }
         }
-//        cells[tag].isActive.toggle()
-//        print(cells[tag].isActive)
-//        if cells[tag].isActive {
-//            self.tapBtnCnt.remove(tag)
-//        } else {
-//            self.tapBtnCnt.insert(tag)
-//        }
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -376,5 +403,9 @@ extension CartVC: UITableViewDataSource, UITableViewDelegate {
         default:
             return 0
         }
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//        print(indexPath)
     }
 }

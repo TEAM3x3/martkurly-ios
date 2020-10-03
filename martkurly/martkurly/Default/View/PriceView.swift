@@ -12,14 +12,38 @@ import Then
 class PriceView: UITableViewCell {
 
     // MARK: - Propertise
-    private var data = [Cart]()
+    let formatter = NumberFormatter().then {
+        $0.numberStyle = .decimal    // 천 단위로 콤마(,)
+
+        $0.minimumFractionDigits = 0    // 최소 소수점 단위
+        $0.maximumFractionDigits = 0    // 최대 소수점 단위
+    }
 
     private let sumLabel = UILabel().then {
         $0.text = "상품금액"
     }
-    var sumCount = UILabel().then {
-        $0.text = "0"
+
+    // MARK: - 상품금액
+    private let sumCount = UILabel().then { // 상품금액
+        let attributes: [NSAttributedString.Key: Any] = [
+            .font: UIFont.systemFont(ofSize: 12),
+            .foregroundColor: UIColor.black
+        ]
+
+        let formatter = NumberFormatter().then {
+            $0.numberStyle = .decimal    // 천 단위로 콤마(,)
+
+            $0.minimumFractionDigits = 0    // 최소 소수점 단위
+            $0.maximumFractionDigits = 0    // 최대 소수점 단위
+        }
+
+        var attribute = NSMutableAttributedString(
+            string: (formatter.string(for: "0") ?? "0"),
+            attributes: attributes)
+
+        $0.attributedText = attribute
     }
+
     private let sumWon = UILabel().then {
         $0.text = "원"
     }
@@ -27,8 +51,26 @@ class PriceView: UITableViewCell {
     private let discountLabel = UILabel().then {
         $0.text = "상품할인금액"
     }
-    var discountCount = UILabel().then {
-        $0.text = "0"
+
+    // MARK: - 상품할인금액
+    private var discountCount = UILabel().then { // 상품할인금액
+        let attributes: [NSAttributedString.Key: Any] = [
+            .font: UIFont.systemFont(ofSize: 12),
+            .foregroundColor: UIColor.black
+        ]
+
+        let formatter = NumberFormatter().then {
+            $0.numberStyle = .decimal    // 천 단위로 콤마(,)
+
+            $0.minimumFractionDigits = 0    // 최소 소수점 단위
+            $0.maximumFractionDigits = 0    // 최대 소수점 단위
+        }
+
+        var attribute = NSMutableAttributedString(
+            string: (formatter.string(for: "0") ?? "0"),
+            attributes: attributes)
+
+        $0.attributedText = attribute
     }
     private let discountWon = UILabel().then {
         $0.text = "원"
@@ -37,35 +79,61 @@ class PriceView: UITableViewCell {
     private let shipLabel = UILabel().then {
         $0.text = "배송비"
     }
-    var shipCount = UILabel().then {
-        $0.text = "0"
+
+    // MARK: - 배송비
+    private var shipCount = UILabel().then { // 배송비
+        let attributes: [NSAttributedString.Key: Any] = [
+            .font: UIFont.systemFont(ofSize: 12),
+            .foregroundColor: UIColor.black
+        ]
+
+        let formatter = NumberFormatter().then {
+            $0.numberStyle = .decimal    // 천 단위로 콤마(,)
+
+            $0.minimumFractionDigits = 0    // 최소 소수점 단위
+            $0.maximumFractionDigits = 0    // 최대 소수점 단위
+        }
+
+        var attribute = NSMutableAttributedString(
+            string: (formatter.string(for: "0") ?? "0"),
+            attributes: attributes)
+
+        $0.attributedText = attribute
     }
+
     private let shipWon = UILabel().then {
         $0.text = "원"
     }
 
-    var shippingMoney = 0
-    private lazy var freeShipMoney = UILabel().then {
+    // MARK: - 배송비 기준 알려주기
+    private var freeShipMoney1 = UILabel().then {
         let shippingMoneyAttribute: [NSAttributedString.Key: Any] = [
             .font: UIFont.systemFont(ofSize: 12),
             .foregroundColor: ColorManager.General.mainPurple.rawValue
         ]
 
+        let formatter = NumberFormatter().then {
+            $0.numberStyle = .decimal    // 천 단위로 콤마(,)
+
+            $0.minimumFractionDigits = 0    // 최소 소수점 단위
+            $0.maximumFractionDigits = 0    // 최대 소수점 단위
+        }
+
         let attributeString = NSAttributedString(
-            string: "\(shippingMoney) 원",
+            string: (formatter.string(for: "0") ?? "0"),
             attributes: shippingMoneyAttribute
         )
 
         $0.attributedText = attributeString
     }
 
-    let shipMoney = UILabel().then {
+    private let freeShipMoney2 = UILabel().then {
         $0.textColor = ColorManager.General.mainPurple.rawValue
         $0.text = "원 추가주문 시,"
         $0.font = .systemFont(ofSize: 12)
     }
 
-    let freeShip = UILabel().then {
+    private let freeShipMoney3 = UILabel().then {
         $0.text = "무료배송"
         $0.textColor = ColorManager.General.mainPurple.rawValue
         $0.font = .boldSystemFont(ofSize: 12)
@@ -78,36 +146,32 @@ class PriceView: UITableViewCell {
     private let estimateSumLabel = UILabel().then {
         $0.text = "결제예정금액"
     }
-    var estimateSumCount = UILabel().then {
-        $0.text = "0"
-        $0.font = UIFont.boldSystemFont(ofSize: 24)
+
+    private var estimate: Int = 0
+    // MARK: - 결제예정금액
+    private var estimateSumCount = UILabel().then {
+        let estimateMoneyAttribute: [NSAttributedString.Key: Any] = [
+            .font: UIFont.boldSystemFont(ofSize: 24),
+            .foregroundColor: UIColor.black
+        ]
+
+        let formatter = NumberFormatter().then {
+            $0.numberStyle = .decimal    // 천 단위로 콤마(,)
+
+            $0.minimumFractionDigits = 0    // 최소 소수점 단위
+            $0.maximumFractionDigits = 0    // 최대 소수점 단위
+        }
+
+        let attributeString = NSAttributedString(
+            string: (formatter.string(for: "0") ?? "0"),
+            attributes: estimateMoneyAttribute
+        )
+
+        $0.attributedText = attributeString
     }
 
     private let estimateWon = UILabel().then {
         $0.text = "원"
-    }
-
-    let savingButton = UIButton().then {
-        $0.setTitle("적립", for: .normal)
-        $0.titleLabel?.font = .systemFont(ofSize: 10)
-        $0.backgroundColor = .orange
-        $0.layer.borderWidth = 1
-    }
-
-    let saving1 = UILabel().then {
-        $0.text = "구매 시"
-        $0.textColor = .gray
-        $0.font = .systemFont(ofSize: 12)
-    }
-
-    var savingPrice = UILabel().then {
-        $0.text = "0"
-        $0.font = UIFont.boldSystemFont(ofSize: 12)
-    }
-
-    let saving2 = UILabel().then {
-        $0.text = "원 적립"
-        $0.font = UIFont.boldSystemFont(ofSize: 12)
     }
 
     private let cupon = UILabel().then {
@@ -123,10 +187,6 @@ class PriceView: UITableViewCell {
     }
 
     // MARK: - Lifecycle
-//    override init(frame: CGRect) {
-//        super.init(frame: frame)
-//        setConfigure()
-//    }
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -151,32 +211,14 @@ class PriceView: UITableViewCell {
             $0.textColor = .black
         }
 
-        [freeShipMoney, shipMoney, freeShip].forEach {
+        [freeShipMoney1, freeShipMoney2, freeShipMoney3].forEach {
             contentView.addSubview($0)
             $0.textColor = ColorManager.General.mainPurple.rawValue
             $0.snp.makeConstraints {
                 $0.top.equalTo(shipWon.snp.bottom).offset(8)
             }
+            $0.isHidden = true
         }
-
-        [saving1, saving2, savingPrice].forEach {
-            contentView.addSubview($0)
-            $0.snp.makeConstraints {
-                $0.top.equalTo(estimateWon.snp.bottom).offset(4)
-            }
-        }
-
-//        if hide {
-//            [freeShipMoney, shipMoney, freeShip, saving1, saving2, savingPrice, savingButton].forEach {
-//                $0.isHidden = false
-//            }
-//        } else {
-//            [freeShipMoney, shipMoney, freeShip, saving1, saving2, savingPrice, savingButton].forEach {
-//                $0.isHidden = true
-//            }
-//        }
-
-        addSubview(savingButton)
 
         sumLabel.snp.makeConstraints {
             $0.top.equalToSuperview().offset(32)
@@ -223,20 +265,20 @@ class PriceView: UITableViewCell {
             $0.trailing.equalToSuperview().inset(16)
         }
 
-        freeShipMoney.snp.makeConstraints {
-            $0.trailing.equalTo(shipMoney.snp.leading).offset(-4)
+        freeShipMoney1.snp.makeConstraints {
+            $0.trailing.equalTo(freeShipMoney2.snp.leading).offset(-4)
         }
 
-        freeShip.snp.makeConstraints {
+        freeShipMoney3.snp.makeConstraints {
             $0.trailing.equalToSuperview().inset(16)
         }
 
-        shipMoney.snp.makeConstraints {
-            $0.trailing.equalTo(freeShip.snp.leading).offset(-4)
+        freeShipMoney2.snp.makeConstraints {
+            $0.trailing.equalTo(freeShipMoney3.snp.leading).offset(-4)
         }
 
         line.snp.makeConstraints {
-            $0.top.equalTo(shipMoney.snp.bottom).offset(4)
+            $0.top.equalTo(freeShipMoney3.snp.bottom).offset(8)
             $0.leading.trailing.equalToSuperview().offset(16).inset(16)
             $0.height.equalTo(1)
         }
@@ -255,35 +297,96 @@ class PriceView: UITableViewCell {
             $0.bottom.equalTo(estimateSumCount.snp.bottom)
             $0.trailing.equalToSuperview().inset(16)
         }
-
-        saving2.snp.makeConstraints {
-            $0.trailing.equalToSuperview().inset(16)
-        }
-
-        savingPrice.snp.makeConstraints {
-            $0.trailing.equalTo(saving2.snp.leading).offset(-4)
-        }
-
-        saving1.snp.makeConstraints {
-            $0.trailing.equalTo(savingPrice.snp.leading).offset(-4)
-        }
-
-        savingButton.snp.makeConstraints {
-            $0.trailing.equalTo(saving1.snp.leading).offset(-8)
-            $0.centerY.equalTo(saving2.snp.centerY)
-            $0.height.equalTo(20)
-        }
-        savingButton.layer.cornerRadius = 10
-
         cupon.snp.makeConstraints {
-            $0.top.equalTo(saving2.snp.bottom).offset(8)
+            $0.top.equalTo(estimateWon.snp.bottom).offset(8)
             $0.trailing.equalToSuperview().inset(16)
         }
 
     }
 
-    func configure(money: Int, data: [Cart]) {
-        shippingMoney = money
-        self.data = data
+    func configure(sumCount: Int, allSale: Int, ship: Int) {
+        var sum: NSAttributedString {
+            let sumTotalPriceAttributes: [NSAttributedString.Key: Any] = [
+                .font: UIFont.systemFont(ofSize: 12),
+                .foregroundColor: UIColor.black
+            ]
+
+            return NSMutableAttributedString(
+                string: (formatter.string(for: sumCount as NSNumber) ?? "0"),
+                attributes: sumTotalPriceAttributes
+            )
+        }
+
+        var sale: NSAttributedString {
+            let saleAttributes: [NSAttributedString.Key: Any] = [
+                .font: UIFont.systemFont(ofSize: 12),
+                .foregroundColor: UIColor.black
+            ]
+
+            return NSMutableAttributedString(
+                string: "-" + (formatter.string(for: allSale as NSNumber) ?? "0"),
+                attributes: saleAttributes)
+
+        }
+
+        var shipPrice: NSAttributedString {
+            let saleAttributes: [NSAttributedString.Key: Any] = [
+                .font: UIFont.systemFont(ofSize: 12),
+                .foregroundColor: UIColor.black
+            ]
+
+            if ship < 40000 {
+                return NSMutableAttributedString(
+                    string: "+" + (formatter.string(for: 3000 as NSNumber) ?? "0"),
+                    attributes: saleAttributes)
+            } else {
+                return NSMutableAttributedString(
+                    string: (formatter.string(for: "0") ?? "0"),
+                    attributes: saleAttributes)
+            }
+        }
+
+        self.sumCount.attributedText = sum
+        self.discountCount.attributedText = sale
+        self.shipCount.attributedText = shipPrice
+
+        if ship > 40000 {
+            [freeShipMoney1, freeShipMoney2, freeShipMoney3].forEach {
+                $0.isHidden = true
+            }
+        } else {
+            var freeShip: NSAttributedString {
+                let saleAttributes: [NSAttributedString.Key: Any] = [
+                    .font: UIFont.systemFont(ofSize: 12),
+                    .foregroundColor: ColorManager.General.mainPurple.rawValue
+                ]
+
+                return NSMutableAttributedString(
+                    string: (formatter.string(for: (40000 - ship) as NSNumber) ?? "0"),
+                    attributes: saleAttributes)
+            }
+
+            self.freeShipMoney1.attributedText = freeShip
+        }
+
+        estimate = sumCount - allSale
+        if freeShipMoney1.isHidden {
+            estimate += 0
+        } else {
+            estimate += 3000
+        }
+
+        var estimateCount: NSAttributedString {
+            let estimateAttributes: [NSAttributedString.Key: Any] = [
+                .font: UIFont.boldSystemFont(ofSize: 24),
+                .foregroundColor: UIColor.black
+            ]
+
+            return NSMutableAttributedString(
+                string: (formatter.string(for: estimate as NSNumber) ?? "0"),
+                attributes: estimateAttributes)
+        }
+
+        self.estimateSumCount.attributedText = estimateCount
     }
 }

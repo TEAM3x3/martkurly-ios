@@ -19,6 +19,24 @@ class CartHeaderView: UIView {
     var storage = ""
 
     var shipping = UILabel().then {
+        let estimateMoneyAttribute: [NSAttributedString.Key: Any] = [
+            .font: UIFont.boldSystemFont(ofSize: 24),
+            .foregroundColor: UIColor.black
+        ]
+
+        let formatter = NumberFormatter().then {
+            $0.numberStyle = .decimal    // 천 단위로 콤마(,)
+
+            $0.minimumFractionDigits = 0    // 최소 소수점 단위
+            $0.maximumFractionDigits = 0    // 최대 소수점 단위
+        }
+
+        let attributeString = NSAttributedString(
+            string: (formatter.string(for: "0") ?? "0"),
+            attributes: estimateMoneyAttribute
+        )
+
+        $0.attributedText = attributeString
         $0.text = " 박스로 배송됩니다"
         $0.textColor = .black
     }

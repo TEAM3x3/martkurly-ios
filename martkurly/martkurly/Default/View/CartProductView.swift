@@ -76,13 +76,9 @@ class CartProductView: UITableViewCell {
         }
     }
 
-    var product = 0 {
-        didSet {
-            setConstraints()
-        }
-    }
+    var product = 0
+    lazy var productPrice = UILabel().then {
 
-    private lazy var productPrice = UILabel().then {
         let productPriceAttributes: [NSAttributedString.Key: Any] = [
             .font: UIFont.systemFont(ofSize: 15),
             .foregroundColor: UIColor.black
@@ -101,16 +97,19 @@ class CartProductView: UITableViewCell {
         $0.tintColor = .gray
     }
 
-    private let stepper = KurlyStepper()
+    let stepper = KurlyStepper()
 
     private let total = UILabel().then {
         $0.text = "합계"
     }
 
+    var productTotal = 0
+
     var totalPrice = UILabel().then {
         $0.text = "0"
         $0.font = UIFont.boldSystemFont(ofSize: 15)
     }
+
     private let totalWon = UILabel().then {
         $0.text = "원"
     }
@@ -223,5 +222,23 @@ class CartProductView: UITableViewCell {
         guard let cartItems = cartItems else { return }
         let cartViewModel = CartViewModel(cartItems: cartItems)
 
+        discountMoney.isHidden = cartViewModel.isShowDiscountPrice
+        discountLabel.attributedText = cartViewModel.discountText
+
+        title.attributedText = cartViewModel.title
+        productImage.kf.setImage(with: cartViewModel.imageURL)
+        productPrice.attributedText = cartViewModel.priceText
+        if cartItems.goods.discount_price != nil,
+           let sale = cartItems.goods.discount_price {
+            product = sale
+        } else {
+            product = cartItems.goods.price
+        }
+
+        totalPrice.attributedText = cartViewModel.subTotalPrice
+        productTotal = cartItems.discount_payment
+
+        condition.attributedText = cartViewModel.status
+        stepper.countLabel.attributedText = cartViewModel.productCount
     }
 }

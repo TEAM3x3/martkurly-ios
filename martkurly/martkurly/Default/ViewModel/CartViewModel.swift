@@ -38,11 +38,11 @@ struct CartViewModel {
                     .strikethroughStyle: NSUnderlineStyle.single.rawValue,
                     .strikethroughColor: UIColor.lightGray
                 ]
-
+        let salePrice = cartItems.goods.price
         if cartItems.goods.discount_price != nil,
-           let discount = cartItems.goods.discount_price {
+           let _ = cartItems.goods.discount_price {
             let discountText = NSMutableAttributedString(
-                string: (formatter.string(for: discount as NSNumber) ?? "0") + "원",
+                string: (formatter.string(for: salePrice as NSNumber) ?? "0") + "원",
                 attributes: discountAttributes)
 
             return discountText
@@ -56,26 +56,33 @@ struct CartViewModel {
             .foregroundColor: UIColor.black
         ]
 
-        return NSMutableAttributedString(
-            string: (formatter.string(for: cartItems.goods.price as NSNumber) ?? "0") + "원",
-            attributes: priceAttributes)
+        if cartItems.goods.discount_price != nil,
+           let price = cartItems.goods.discount_price {
+            return NSMutableAttributedString(
+                string: (formatter.string(for: price as NSNumber) ?? "0") + "원",
+                attributes: priceAttributes)
+        } else {
+            return NSMutableAttributedString(
+                string: (formatter.string(for: cartItems.goods.price as NSNumber) ?? "0") + "원",
+                attributes: priceAttributes)
+        }
     }
 
     var subTotalPrice: NSAttributedString {
         let subTotalPriceAttributes: [NSAttributedString.Key: Any] = [
-            .font: UIFont.boldSystemFont(ofSize: 12),
+            .font: UIFont.boldSystemFont(ofSize: 14),
             .foregroundColor: UIColor.black
         ]
 
         return NSMutableAttributedString(
-            string: (formatter.string(for: cartItems.sub_total as NSNumber) ?? "0") + "원",
+            string: (formatter.string(for: cartItems.discount_payment as NSNumber) ?? "0"),
             attributes: subTotalPriceAttributes
         )
     }
 
     var title: NSAttributedString {
         let title: [NSAttributedString.Key: Any] = [
-            .font: UIFont.systemFont(ofSize: 12),
+            .font: UIFont.systemFont(ofSize: 14),
             .foregroundColor: UIColor.black
         ]
 
@@ -94,6 +101,18 @@ struct CartViewModel {
         return NSAttributedString(
             string: cartItems.goods.packing_status,
             attributes: statusText
+        )
+    }
+
+    var productCount: NSAttributedString {
+        let countText: [NSAttributedString.Key: Any] = [
+            .font: UIFont.systemFont(ofSize: 12),
+            .foregroundColor: UIColor.black
+        ]
+
+        return NSAttributedString(
+            string: "\(cartItems.quantity)",
+            attributes: countText
         )
     }
 

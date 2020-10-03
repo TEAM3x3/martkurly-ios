@@ -11,18 +11,18 @@ import Foundation
 struct Cart: Decodable {
     let id: Int
     let quantity_of_goods: Int
-    let items: [Items]
+    var items: [Items]
     let total_pay: Int
     let discount_total_pay: Int
-    let discount_price: Int
+    var discount_price: Int
 
     struct Items: Decodable {
         let id: Int
         let cart: Int
         let goods: Goods
-        let quantity: Int
-        let sub_total: Int
-        let discount_payment: Int
+        var quantity: Int
+        var sub_total: Int
+        var discount_payment: Int
     }
 
     struct Goods: Decodable {
@@ -32,7 +32,7 @@ struct Cart: Decodable {
         let price: Int
         let img: String
         let sales: Sales?
-        let discount_price: Int?
+        var discount_price: Int?
     }
 }
 
