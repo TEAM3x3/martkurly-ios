@@ -125,10 +125,11 @@ class SignInVC: UIViewController {
     private func checkTextFieldValidity() {
         if idTextField.text?.isEmpty == true {
             warning.setText(text: SignError.idFieldEmpty.rawValue)
+            animateWarning()
         } else if pwTextField.text?.isEmpty == true {
             warning.setText(text: SignError.pwFieldEmpty.rawValue)
+            animateWarning()
         }
-        animateWarning()
     }
 
     private func animateWarning() {
@@ -201,12 +202,12 @@ class SignInVC: UIViewController {
             UserDefaults.standard.set(nickname, forKey: "nickname")
             UserDefaults.standard.set(gender, forKey: "gender")
 
-            print("UserDefaults", UserDefaults.standard.string(forKey: "token"))
-            print("UserDefaults", UserDefaults.standard.string(forKey: "username"))
-            print("UserDefaults", UserDefaults.standard.string(forKey: "email"))
-            print("UserDefaults", UserDefaults.standard.string(forKey: "phone"))
-            print("UserDefaults", UserDefaults.standard.string(forKey: "nickname"))
-            print("UserDefaults", UserDefaults.standard.string(forKey: "gedner"))
+//            print("UserDefaults token: ", UserDefaults.standard.string(forKey: "token"))
+//            print("UserDefaults username: ", UserDefaults.standard.string(forKey: "username"))
+//            print("UserDefaults email: ", UserDefaults.standard.string(forKey: "email"))
+//            print("UserDefaults phone: ", UserDefaults.standard.string(forKey: "phone"))
+//            print("UserDefaults nickname: ", UserDefaults.standard.string(forKey: "nickname"))
+//            print("UserDefaults gender: ", UserDefaults.standard.string(forKey: "gender"))
             print("Login Success")
             self.dismiss(animated: true, completion: nil)
         case false:
