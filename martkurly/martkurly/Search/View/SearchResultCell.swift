@@ -15,6 +15,7 @@ class SearchResultCell: UITableViewCell {
     static let identifier = "SearchResultCell"
 
     var isEmptyRecentArray: Bool = false
+    var isEmptySearchArray: Bool = false
     var searchType: SearchType = .popular {
         didSet { configure() }
     }
@@ -64,7 +65,7 @@ class SearchResultCell: UITableViewCell {
         case .recent:
             resultLabel.textColor = isEmptyRecentArray ? .lightGray : .black
         case .fileShort:
-            resultLabel.textColor = .black
+            resultLabel.textColor = isEmptySearchArray ? .lightGray : .black
         }
     }
 }

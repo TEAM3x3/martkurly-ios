@@ -7,12 +7,17 @@
 //
 
 import UIKit
+import Kingfisher
 
 class ProductCell: UICollectionViewCell {
 
     // MARK: - Properties
 
     static let identifier = "ProductCell"
+
+    var product: Product? {
+        didSet { configure() }
+    }
 
     private let productImageView = UIImageView().then {
         $0.image = UIImage(named: "TestImage")
@@ -41,10 +46,10 @@ class ProductCell: UICollectionViewCell {
     }
 
     private lazy var saleDisplayView = UIView().then {
-        $0.backgroundColor = UIColor(red: 151/255,
-                                     green: 87/255,
-                                     blue: 187/255,
-                                     alpha: 1)
+        $0.backgroundColor = UIColor(red: 147/255,
+                                     green: 83/255,
+                                     blue: 185/255,
+                                     alpha: 0.8)
 
         $0.addSubview(saleDisplayLabel)
         saleDisplayLabel.snp.makeConstraints {
@@ -85,14 +90,22 @@ class ProductCell: UICollectionViewCell {
         $0.font = UIFont.boldSystemFont(ofSize: 16)
     }
 
-    private let productNoticeLabel = UILabel().then {
+    private let productStatsLeftLabel = UILabel().then {
         let mainColor = ColorManager.General.mainPurple.rawValue
         $0.text = "  Kurly only  "
         $0.textColor = mainColor
-        $0.font = UIFont.boldSystemFont(ofSize: 14)
+        $0.font = UIFont.boldSystemFont(ofSize: 12)
         $0.layer.borderColor = mainColor.cgColor
         $0.layer.borderWidth = 1
-        $0.layoutMargins = UIEdgeInsets(top: 1, left: 10, bottom: 1, right: 2)
+    }
+
+    private let productStatsRightLabel = UILabel().then {
+        let mainColor = ColorManager.General.mainPurple.rawValue
+        $0.text = "  한정수량  "
+        $0.textColor = mainColor
+        $0.font = UIFont.systemFont(ofSize: 12)
+        $0.layer.borderColor = mainColor.cgColor
+        $0.layer.borderWidth = 1
     }
 
     private lazy var infoView = UIView().then {
@@ -105,13 +118,19 @@ class ProductCell: UICollectionViewCell {
         stack.spacing = 4
 
         $0.addSubview(stack)
-        $0.addSubview(productNoticeLabel)
 
         stack.snp.makeConstraints {
             $0.top.leading.trailing.equalToSuperview()
         }
 
-        productNoticeLabel.snp.makeConstraints {
+        let statsStack = UIStackView(arrangedSubviews: [
+            productStatsLeftLabel, productStatsRightLabel
+        ])
+        statsStack.spacing = 2
+        statsStack.axis = .horizontal
+
+        $0.addSubview(statsStack)
+        statsStack.snp.makeConstraints {
             $0.leading.bottom.equalToSuperview()
         }
     }
@@ -149,8 +168,8 @@ class ProductCell: UICollectionViewCell {
 
         saleDisplayView.snp.makeConstraints {
             $0.top.leading.equalToSuperview()
-            $0.height.equalTo(52)
-            $0.width.equalTo(64)
+            $0.height.equalTo(48)
+            $0.width.equalTo(56)
         }
 
         cartButton.snp.makeConstraints {
@@ -164,5 +183,22 @@ class ProductCell: UICollectionViewCell {
             $0.bottom.trailing.equalToSuperview().offset(-16)
             $0.height.equalTo(88)
         }
+    }
+
+    func configure() {
+        guard let product = product else { return }
+        let viewModel = ProductViewModel(product: product)
+
+        saleDisplayView.isHidden = viewModel.isShowSaleView
+        saleDisplayLabel.attributedText = viewModel.saleDisplayText
+
+        productTitleLabel.text = product.title
+        productImageView.kf.setImage(with: viewModel.imageURL)
+        productPriceLabel.attributedText = viewModel.priceDisplayText
+
+        productStatsLeftLabel.isHidden = viewModel.isShowleftTag
+        productStatsLeftLabel.text = viewModel.leftTagText
+        productStatsRightLabel.isHidden = viewModel.isShowRightTag
+        productStatsRightLabel.text = viewModel.rightTagText
     }
 }

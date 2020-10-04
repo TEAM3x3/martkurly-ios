@@ -14,6 +14,8 @@ class EventProductDetailListVC: UIViewController {
 
     private let productListView = ProductListView(headerType: .fastAreaAndCondition)
 
+    var eventProducts: EventProducts?
+
     // MARK: - LifeCycle
 
     override func viewDidLoad() {
@@ -21,20 +23,15 @@ class EventProductDetailListVC: UIViewController {
         configureUI()
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-
-        self.setNavigationBarStatus(type: .whiteType,
-                                    isShowCart: true,
-                                    leftBarbuttonStyle: .pop,
-                                    titleText: "테스트")
-    }
-
     // MARK: - Actions
 
-    func tappedProduct() {
-        let controller = ProductDetailVC()
-        self.navigationController?.pushViewController(controller, animated: true)
+    func tappedProduct(productID: Int) {
+        KurlyService.shared.requestProductDetailData(productID: productID) { productDetailData in
+            let controller = ProductDetailVC()
+            controller.productDetailData = productDetailData
+            controller.hidesBottomBarWhenPushed = true
+            self.navigationController?.pushViewController(controller, animated: true)
+        }
     }
 
     // MARK: - Helpers
@@ -43,6 +40,17 @@ class EventProductDetailListVC: UIViewController {
         view.backgroundColor = .white
         configureLayout()
         configureAttributes()
+        configureNavigationBar()
+    }
+
+    func configureNavigationBar() {
+        guard let eventProducts = eventProducts else { return }
+        productListView.products = eventProducts.goods
+
+        self.setNavigationBarStatus(type: .whiteType,
+                                    isShowCart: true,
+                                    leftBarbuttonStyle: .pop,
+                                    titleText: eventProducts.title)
     }
 
     func configureLayout() {
@@ -56,6 +64,6 @@ class EventProductDetailListVC: UIViewController {
     }
 
     func configureAttributes() {
-        productListView.tappedProduct = tappedProduct
+        productListView.tappedProduct = tappedProduct(productID:)
     }
 }

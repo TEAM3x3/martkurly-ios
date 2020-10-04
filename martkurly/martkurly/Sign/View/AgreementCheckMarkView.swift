@@ -34,12 +34,7 @@ class AgreementCheckMarkView: UIView {
 
     // MARK: - UI
     private func configureUI() {
-        setPropertyAttributes()
         setConstraints()
-    }
-
-    private func setPropertyAttributes() {
-
     }
 
     private func setConstraints() {

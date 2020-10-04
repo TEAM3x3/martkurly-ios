@@ -29,8 +29,11 @@ extension UIColor {
 
     static let martkurlyMainPurpleColor = UIColor(red: 85, green: 0, blue: 114)
     static let separatorGray = UIColor(red: 244, green: 244, blue: 244)
+    static let textLightGray = UIColor(red: 213, green: 214, blue: 215)
     static let textDarkGray = UIColor(red: 82, green: 82, blue: 82) // WhyKurly 진한 회색
     static let backgroundGray = UIColor(red: 243, green: 244, blue: 245) // 배경회색
+    static let stepperBorderGray = UIColor(red: 227, green: 228, blue: 229)
+    static let buttonGray = UIColor(red: 241, green: 242, blue: 243)
     static let chevronGray = UIColor(red: 136, green: 137, blue: 138) // chevronGray
     static let textMainGray = UIColor(red: 102, green: 102, blue: 102)
     static let textBlack = UIColor(red: 50, green: 51, blue: 52)
@@ -39,6 +42,8 @@ extension UIColor {
     static let checkmarkGray = UIColor(red: 220, green: 221, blue: 222)
     static let chevronForwardGray = UIColor(red: 143, green: 144, blue: 145)
     static let agreementInfoGray = UIColor(red: 151, green: 152, blue: 153)
+    static let inactiveButtonColor = UIColor(red: 220, green: 221, blue: 222)
+    static let rateTextOrange = UIColor(red: 224, green: 68, blue: 32)
 }
 
 // MARK: - UIImage
@@ -50,6 +55,37 @@ extension UIImage {
 // MARK: - UIViewController
 
 extension UIViewController {
+    static let indicate = UIActivityIndicatorView()
+    static let indicateView = UIView().then {
+        let indicate = UIViewController.indicate
+        indicate.hidesWhenStopped = true
+        indicate.style = .large
+        indicate.color = .white
+
+        $0.addSubview(indicate)
+        indicate.snp.makeConstraints {
+            $0.width.height.equalTo(60)
+            $0.center.equalToSuperview()
+        }
+
+        $0.isHidden = true
+        $0.backgroundColor = UIColor(white: 0, alpha: 0.3)
+    }
+
+    func showIndicate() {
+        self.view.addSubview(UIViewController.indicateView)
+        UIViewController.indicateView.isHidden = false
+        UIViewController.indicateView.snp.remakeConstraints {
+            $0.edges.equalToSuperview()
+        }
+        UIViewController.indicate.startAnimating()
+    }
+
+    func stopIndicate() {
+        UIViewController.indicateView.isHidden = true
+        UIViewController.indicate.stopAnimating()
+    }
+
     // 네비게이션바의 배경색이 보라색이면 .purpleType이고, 카트아이콘이 보이고 싶으면 isShowCart => true
     // titleText는 기본값이 nil 이므로 넣어줘도 되고 안넣어줘도 됨
     // BackButton이 필요한 경우 isShowBack => true
@@ -93,7 +129,7 @@ extension UIViewController {
             backPopBarButton.tintColor = .white
             backDismissBarButton.tintColor = .white
         case .whiteType:
-        navigationController?.navigationBar.barStyle = .default
+            navigationController?.navigationBar.barStyle = .default
             navigationController?.navigationBar.titleTextAttributes =
                 [NSAttributedString.Key.foregroundColor: UIColor.black]
             navigationController?.navigationBar.barTintColor = .white
@@ -101,6 +137,10 @@ extension UIViewController {
             backPopBarButton.tintColor = .black
             backDismissBarButton.tintColor = .black
         }
+    }
+
+    func configureTitleText(titleText: String? = nil) {
+        navigationItem.title = titleText
     }
 
     @objc
@@ -111,5 +151,65 @@ extension UIViewController {
     @objc
     func tappedDismissButton() {
         self.dismiss(animated: true, completion: nil)
+    }
+
+    func hideKeyboardWhenTappedAround() {
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIViewController.dismissKeyboard))
+        tap.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
+    }
+
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
+    }
+}
+
+extension UILabel {
+
+    // 줄간격 세팅
+    func setLineSpacing(lineSpacing: CGFloat = 0.0, lineHeightMultiple: CGFloat = 0.0) {
+        guard let labelText = self.text else { return }
+
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineSpacing = lineSpacing
+        paragraphStyle.lineHeightMultiple = lineHeightMultiple
+        paragraphStyle.alignment = .left
+
+        let attributedString: NSMutableAttributedString
+        if let labelattributedText = self.attributedText {
+            attributedString = NSMutableAttributedString(attributedString: labelattributedText)
+        } else {
+            attributedString = NSMutableAttributedString(string: labelText)
+        }
+
+        // (Swift 4.2 and above) Line spacing attribute
+        attributedString.addAttribute(NSAttributedString.Key.paragraphStyle, value: paragraphStyle, range: NSRange(location: 0, length: attributedString.length))
+
+        // (Swift 4.1 and 4.0) Line spacing attribute
+        attributedString.addAttribute(NSAttributedString.Key.paragraphStyle, value: paragraphStyle, range: NSRange(location: 0, length: attributedString.length))
+
+        self.attributedText = attributedString
+    }
+}
+
+extension UIStackView {
+    func addBackground(color: UIColor) {
+        let subView = UIView(frame: bounds)
+        subView.backgroundColor = color
+        subView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        insertSubview(subView, at: 0)
+    }
+}
+
+extension UIView {
+    var parentViewController: UIViewController? {
+        var responder: UIResponder? = self
+        while let nextResponder = responder?.next {
+            responder = nextResponder
+            if let vc = nextResponder as? UIViewController {
+                return vc
+            }
+        }
+        return nil
     }
 }

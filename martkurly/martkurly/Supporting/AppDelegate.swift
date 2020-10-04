@@ -19,6 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let controller = MainTBC()
         window?.rootViewController = controller
         window?.makeKeyAndVisible()
+        UserService.shared.loadData()
         return true
     }
 }

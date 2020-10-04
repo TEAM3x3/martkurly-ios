@@ -13,6 +13,8 @@ class DetailOrderView: UIView {
     // MARK: - Properties
     private let tableV = UITableView()
 
+    var changedTableViewHeight: ((CGFloat) -> Void)?
+
     // MARK: - ButtonOpenIdentify
     var moreLookButton = false
     var productErrorButton = false
@@ -47,6 +49,7 @@ class DetailOrderView: UIView {
         tableV.dataSource = self
         tableV.delegate = self
         tableV.separatorStyle = .none
+        tableV.isScrollEnabled = false
         tableV.snp.makeConstraints {
             $0.top.leading.trailing.bottom.equalToSuperview()
         }
@@ -203,7 +206,6 @@ extension DetailOrderView: UITableViewDataSource {
 
 extension DetailOrderView: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print(indexPath.section)
         switch indexPath.section {
         case 1:
             moreLookButton.toggle()
@@ -216,6 +218,28 @@ extension DetailOrderView: UITableViewDelegate {
         default:
             break
         }
-        tableV.reloadData()
+        tableView.reloadData()
+
+        let maxYValue = tableView.scrollToBottom()
+        self.changedTableViewHeight?(maxYValue)
+    }
+}
+extension UITableView {
+    func scrollToBottom() -> CGFloat {
+        let lastSectionIndex = self.numberOfSections - 1
+        if lastSectionIndex < 0 { //if invalid section
+            return 0
+        }
+
+        let lastRowIndex = self.numberOfRows(inSection: lastSectionIndex) - 1
+        if lastRowIndex < 0 { //if invalid row
+            return 0
+        }
+
+        let pathToLastRow = IndexPath(row: lastRowIndex, section: lastSectionIndex)
+        self.scrollToRow(at: pathToLastRow, at: .bottom, animated: false)
+
+        let maxYValue = self.cellForRow(at: pathToLastRow)?.frame.maxY
+        return maxYValue ?? 0
     }
 }

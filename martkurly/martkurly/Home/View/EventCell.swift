@@ -1,6 +1,6 @@
 //
 //  EventCell.swift
-//  
+//
 //
 //  Created by 천지운 on 2020/08/25.
 //
@@ -10,10 +10,9 @@ import UIKit
 class EventCell: UITableViewCell {
 
     // MARK: - Properties
-
     static let identifier = "EventCell"
 
-    private let eventImageView = UIImageView().then {
+    let eventImageView = UIImageView().then {
         $0.backgroundColor = .white
         $0.contentMode = .scaleAspectFill
         $0.clipsToBounds = true
@@ -22,7 +21,6 @@ class EventCell: UITableViewCell {
     }
 
     // MARK: - LifeCycle
-
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         configureUI()
@@ -33,7 +31,6 @@ class EventCell: UITableViewCell {
     }
 
     // MARK: - Helpers
-
     func configureUI() {
         self.addSubview(eventImageView)
         eventImageView.snp.makeConstraints {

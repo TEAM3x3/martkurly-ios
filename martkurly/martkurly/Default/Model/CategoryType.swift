@@ -64,15 +64,19 @@ enum ProductCategoryType: Int, CaseIterable {
 enum CategoryType {
     case fixInsetStyle
     case fixNonInsetStyle
+    case fixNonInsetTBLineStyle
     case fixNonInsetsmallBarStyle
     case infinityStyle
+    case infinityTBLineStyle
 
     var sideInset: CGFloat {
         switch self {
         case .fixInsetStyle: return 12
         case .fixNonInsetsmallBarStyle: fallthrough
+        case .fixNonInsetTBLineStyle: fallthrough
         case .fixNonInsetStyle: return 0
         case .infinityStyle: return 8
+        case .infinityTBLineStyle: return 20
         }
     }
 
@@ -81,7 +85,9 @@ enum CategoryType {
         case .fixNonInsetsmallBarStyle: fallthrough
         case .fixInsetStyle: return UIFont.systemFont(ofSize: 18)
         case .fixNonInsetStyle: fallthrough
+        case .fixNonInsetTBLineStyle: fallthrough
         case .infinityStyle: return UIFont.systemFont(ofSize: 16)
+        case .infinityTBLineStyle: return UIFont.systemFont(ofSize: 14)
         }
     }
 
@@ -90,43 +96,54 @@ enum CategoryType {
         case .fixNonInsetsmallBarStyle: return UIFont.systemFont(ofSize: 18)
         case .fixInsetStyle: return UIFont.boldSystemFont(ofSize: 18)
         case .fixNonInsetStyle: fallthrough
+        case .fixNonInsetTBLineStyle: fallthrough
         case .infinityStyle: return UIFont.boldSystemFont(ofSize: 16)
+        case .infinityTBLineStyle: return UIFont.boldSystemFont(ofSize: 14)
         }
     }
 
     var topLineHeight: CGFloat {
         switch self {
+        case .infinityTBLineStyle: fallthrough
+        case .fixNonInsetTBLineStyle: fallthrough
         case .fixNonInsetsmallBarStyle: return 0.3
-        case .fixInsetStyle: fallthrough
-        case .fixNonInsetStyle: fallthrough
-        case .infinityStyle: return 0
+        default: return 0
+        }
+    }
+
+    var topLineInsetValue: CGFloat {
+        switch self {
+        case .infinityTBLineStyle: return 20
+        default: return 0
         }
     }
 
     var bottomLineHeight: CGFloat {
         switch self {
         case .fixNonInsetsmallBarStyle: return 0
-        case .fixInsetStyle: fallthrough
-        case .fixNonInsetStyle: fallthrough
-        case .infinityStyle: return 0.3
+        default: return 0.3
+        }
+    }
+
+    var bottomLineInsetValue: CGFloat {
+        switch self {
+        case .infinityTBLineStyle: return 20
+        default: return 0
         }
     }
 
     var underMoveLineHeight: CGFloat {
         switch self {
+        case .infinityTBLineStyle: return 2
         case .fixNonInsetsmallBarStyle: return 3
-        case .fixInsetStyle: fallthrough
-        case .fixNonInsetStyle: fallthrough
-        case .infinityStyle: return 4
+        default: return 4
         }
     }
 
     var underMoveLineWidth: CGFloat {
         switch self {
         case .fixNonInsetsmallBarStyle: return 20
-        case .fixInsetStyle: fallthrough
-        case .fixNonInsetStyle: fallthrough
-        case .infinityStyle: return 0
+        default: return 0
         }
     }
 }

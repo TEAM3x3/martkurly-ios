@@ -16,8 +16,11 @@ class EventListCell: UICollectionViewCell {
 
     var tappedEventItem: ((Int) -> Void)?
 
+    var eventList = [EventModel]() {
+        didSet { eventTableView.reloadData() }
+    }
+
     private lazy var eventTableView = UITableView().then {
-        $0.rowHeight = 160
         $0.backgroundColor = .white
 
         $0.dataSource = self
@@ -54,7 +57,7 @@ class EventListCell: UICollectionViewCell {
 
 extension EventListCell: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 5
+        return eventList.count
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -63,11 +66,19 @@ extension EventListCell: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: EventCell.identifier, for: indexPath) as! EventCell
+
+        let imageURL = URL(string: eventList[indexPath.section].image)
+        cell.eventImageView.kf.setImage(with: imageURL)
         return cell
     }
 
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 28
+        return 16
+    }
+
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        let width = UIScreen.main.bounds.width
+        return width * 0.25
     }
 }
 
@@ -79,7 +90,6 @@ extension EventListCell: UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        let cell = tableView.cellForRow(at: indexPath) as! EventCell
-        tappedEventItem?(indexPath.section)
+        tappedEventItem?(eventList[indexPath.section].id)
     }
 }

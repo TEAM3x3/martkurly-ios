@@ -142,6 +142,116 @@ struct StringManager {
         case signUp = "회원가입"
     }
 
+    let categoryTitle = ["추석 선물세트", "채소", "과일∙견과∙쌀", "수산∙해산∙건어물", "정육∙계란", "국∙반찬∙메인요리", "샐러드∙간편식", "면∙양념∙오일", "음료∙우유∙떡∙간식", "베이커리∙치즈∙델리", "건강식품", "생활용품∙리빙", "뷰티∙바디케어", "주방용품", "가전제품", "베이비∙키즈", "반려동물"]
+
+    let category0 = ["3만원 미만", "3~5만원", "5~10만원", "10~20만원", "20만원 이상"]
+    let category1 = ["전체보기", "기본채소", "쌈∙샐러드∙간편채소", "브로콜리∙특수채소", "콩나물∙버섯류", "시금치∙부추∙나물", "양파∙마늘∙생강∙파", "파프리카∙피망∙고추"]
+    let category2 = ["전체보기", "제철과일", "국산과일", "수입과일", "냉동∙건과일", "견과류", "쌀∙잡곡"]
+    let category3 = ["전체보기", "생선류", "오징어∙낙지∙문어", "새우∙게∙랍스터", "해산물∙조개류", "수산가공품", "김∙미역∙해조류", "건어물∙다시팩"]
+    let category4 = ["전체보기", "소고기", "돼지고기", "계란류", "닭∙오리고기", "양념육∙돈까스", "양고기"]
+    let category5 = ["전체보기", "국∙탕∙찌개", "밑반찬", "김치∙장아찌∙젓갈", "두부∙어물∙부침개", "햄∙소시지∙통조림", "메인요리"]
+    let category6 = ["전체보기", "샐러드∙도시락", "간편식∙냉동식품", "밥류∙면식품∙즉석식품", "선식∙시리얼∙그래놀라", "만두∙튀김∙떡볶이", "죽∙스프"]
+    let category7 = ["전체보기", "파스타∙면류", "밀가루∙가루∙믹스", "향신료∙소스∙드레싱", "양념∙액젓∙장류", "소금∙설탕∙식초∙꿀", "식용류∙참기름∙오일"]
+    let category8 = ["전체보기", "생수∙음료∙주스", "커피∙차", "우유∙두유∙요거트", "아이스크림", "떡∙한과", "간식∙과자∙쿠키", "초콜릿∙젤리∙캔디"]
+    let category9 = ["전체보기", "식빵∙빵류", "잼∙버터∙스프레드", "케이크∙파이∙디저트", "치즈", "건조육", "올리브∙피클∙델리"]
+    let category10 = ["전체보기", "건강즙∙건강음료", "홍삼∙인삼∙꿀", "영양제", "유산균", "건강분말∙건강환", "유아동"]
+    let category11 = ["전체보기", "휴지∙티슈∙위생용품", "세제∙청소용품", "화훼∙인테리어소품", "의약외품∙마스크", "생활잡화∙문구"]
+    let category12 = ["전체보기", "스킨케어", "구강∙면도", "바디∙제모", "헤어케어", "미용기기∙소품"]
+    let category13 = ["전체보기", "주방소모품", "주방∙조리도구", "냄비∙팬류", "식기류", "컴∙와인잔∙사케잔", "차∙커피도구"]
+    let category14 = ["전체보기", "주방가전", "생활가전"]
+    let category15 = ["전체보기", "분유∙간편 이유식", "이유식 재료", "유아∙어린이 음식", "간식∙음료∙건강식품", "유아용품∙젖병∙식기류", "기저귀∙물티슈", "목욕∙세제∙위생용품", "유아스킨∙구강케어"]
+    let category16 = ["전체보기", "강아지 간식", "강아지 주식", "고양이 간식", "고양이 주식", "반려동물 용품"]
+
+    let kurlyRecommend = ["Kurly Fresh 365", "간편한 아침식사", "Kurly Only", "1인 가구", "재구매 BEST", "반찬가게", "시원한 여름", "컬리가 만든 상품", "식단관리", "학한 트렌드", "뚝딱! 간편식", "오프라인 맛집", "3천원의 행복", "지속가능한 상품", "Vegan", "키토제닉"]
+
+    let categoryTitleData = [
+        [
+            "title": "추석 선물세트",
+            "inData": ["3만원 미만", "3~5만원", "5~10만원", "10~20만원", "20만원 이상"],
+            "imageName": "category0"
+        ],
+        [
+            "title": "채소",
+            "inData": ["전체보기", "기본채소", "쌈∙샐러드∙간편채소", "브로콜리∙특수채소", "콩나물∙버섯류", "시금치∙부추∙나물", "양파∙마늘∙생강∙파", "파프리카∙피망∙고추"],
+            "imageName": "category1"
+        ],
+        [
+            "title": "과일∙견과∙쌀",
+            "inData": ["전체보기", "제철과일", "국산과일", "수입과일", "냉동∙건과일", "견과류", "쌀∙잡곡"],
+            "imageName": "category2"
+        ],
+        [
+            "title": "수산∙해산∙건어물",
+            "inData": ["전체보기", "생선류", "오징어∙낙지∙문어", "새우∙게∙랍스터", "해산물∙조개류", "수산가공품", "김∙미역∙해조류", "건어물∙다시팩"],
+            "imageName": "category3"
+        ],
+        [
+            "title": "정육∙계란",
+            "inData": ["전체보기", "소고기", "돼지고기", "계란류", "닭∙오리고기", "양념육∙돈까스", "양고기"],
+            "imageName": "category4"
+        ],
+        [
+            "title": "국∙반찬∙메인요리",
+            "inData": ["전체보기", "국∙탕∙찌개", "밑반찬", "김치∙장아찌∙젓갈", "두부∙어물∙부침개", "햄∙소시지∙통조림", "메인요리"],
+            "imageName": "category5"
+        ],
+        [
+            "title": "샐러드∙간편식",
+            "inData": ["전체보기", "샐러드∙도시락", "간편식∙냉동식품", "밥류∙면식품∙즉석식품", "선식∙시리얼∙그래놀라", "만두∙튀김∙떡볶이", "죽∙스프"],
+            "imageName": "category6"
+        ],
+        [
+            "title": "면∙양념∙오일",
+            "inData": ["전체보기", "파스타∙면류", "밀가루∙가루∙믹스", "향신료∙소스∙드레싱", "양념∙액젓∙장류", "소금∙설탕∙식초∙꿀", "식용류∙참기름∙오일"],
+            "imageName": "category7"
+        ],
+        [
+            "title": "음료∙우유∙떡∙간식",
+            "inData": ["전체보기", "생수∙음료∙주스", "커피∙차", "우유∙두유∙요거트", "아이스크림", "떡∙한과", "간식∙과자∙쿠키", "초콜릿∙젤리∙캔디"],
+            "imageName": "category8"
+        ],
+        [
+            "title": "베이커리∙치즈∙델리",
+            "inData": ["전체보기", "식빵∙빵류", "잼∙버터∙스프레드", "케이크∙파이∙디저트", "치즈", "건조육", "올리브∙피클∙델리"],
+            "imageName": "category9"
+        ],
+        [
+            "title": "건강식품",
+            "inData": ["전체보기", "건강즙∙건강음료", "홍삼∙인삼∙꿀", "영양제", "유산균", "건강분말∙건강환", "유아동"],
+            "imageName": "category10"
+        ],
+        [
+            "title": "생활용품∙리빙",
+            "inData": ["전체보기", "휴지∙티슈∙위생용품", "세제∙청소용품", "화훼∙인테리어소품", "의약외품∙마스크", "생활잡화∙문구"],
+            "imageName": "category11"
+        ],
+        [
+            "title": "뷰티∙바디케어",
+            "inData": ["전체보기", "스킨케어", "구강∙면도", "바디∙제모", "헤어케어", "미용기기∙소품"],
+            "imageName": "category12"
+        ],
+        [
+            "title": "주방용품",
+            "inData": ["전체보기", "주방소모품", "주방∙조리도구", "냄비∙팬류", "식기류", "컴∙와인잔∙사케잔", "차∙커피도구"],
+            "imageName": "category13"
+        ],
+        [
+            "title": "가전제품",
+            "inData": ["전체보기", "주방가전", "생활가전"],
+            "imageName": "category14"
+        ],
+        [
+            "title": "베이비∙키즈",
+            "inData": ["전체보기", "분유∙간편 이유식", "이유식 재료", "유아∙어린이 음식", "간식∙음료∙건강식품", "유아용품∙젖병∙식기류", "기저귀∙물티슈", "목욕∙세제∙위생용품", "유아스킨∙구강케어"],
+            "imageName": "category15"
+        ],
+        [
+            "title": "반려동물",
+            "inData": ["전체보기", "강아지 간식", "강아지 주식", "고양이 간식", "고양이 주식", "반려동물 용품"],
+            "imageName": "category16"
+        ]
+    ]
+
     enum SignUpError: String {
         case id1 = "6자 이상의 영문 혹은 영문과 숫자를 조합"
         case id2 = "아이디 중복확인"
@@ -154,22 +264,31 @@ struct StringManager {
 
     let signUpTextFieldsInfo = [
         [
-            "아이디": "예: martkurly12"
+            "title": "아이디",
+            "placeholder": "예: martkurly12",
+            "subtitles": ["· 6자 이상의 영문 혹은 영문과 숫자를 조합", "· 아이디 중복확인"]
         ],
         [
-            "비밀번호": "비밀번호를 입력해주세요"
+            "title": "비밀번호",
+            "placeholder": "비밀번호를 입력해주세요",
+            "subtitles": ["· 10자 이상 입력", "· 영문/숫자/특수문자(공백 제외)만 허용하며, 2개 이상 조합", "· 동일한 숫자가 3개 이상 연속 사용 불가"]
         ],
         [
-            "비밀번호 확인": "비밀번호를 한번 더 입력해주세요"
+            "title": "비밀번호 확인",
+            "placeholder": "비밀번호를 한번 더 입력해주세요",
+            "subtitles": ["· 동일한 비밀번호를 입력해주세요"]
         ],
         [
-            "이름": "이름을 입력해주세요"
+            "title": "이름",
+            "placeholder": "이름을 입력해주세요"
         ],
         [
-            "이메일": "예: martkurly@kurly.com"
+            "title": "이메일",
+            "placeholder": "예: martkurly@kurly.com"
         ],
         [
-            "휴대폰": "숫자만 입력해주세요"
+            "title": "휴대폰",
+            "placeholder": "숫자만 입력해주세요"
         ]
     ]
 
@@ -188,7 +307,12 @@ struct StringManager {
         case additionalInfoSubtitle = "추천인 아이디와 참여 이벤트명 중 하나만 선택 가능합니다"
         case recommender = "추천인"
         case eventName = "참여 이벤트 명"
+        case agreement = "이용약관동의"
+        case signUp = "가입하기"
     }
+
+    let signUpGenderList = ["남자", "여자", "선택안함"]
+    let additionalInfoList = ["추천인 아이디", "참여 이벤트명"]
 
     let agreement = [
         [
@@ -219,6 +343,12 @@ struct StringManager {
             "title": "무료배송, 할인쿠폰 등 혜택/정보 수신 동의",
             "subtitle": "(선택)",
             "info": "",
+            "type": "normal"
+        ],
+        [
+            "title": "",
+            "subtitle": "",
+            "info": "",
             "type": "choice"
         ],
         [
@@ -230,5 +360,158 @@ struct StringManager {
     ]
 
     let agreementPromotion = ["동의 시 한 달 간 [5% 적립] + [무제한 무료배송]", "(첫 주문 후 적용)"]
+
+    enum MyKurly: String {
+        case title = "마이컬리"
+        case welcome = "회원 가입하고 \n다양한 혜택을 받아보세요!"
+        case promotion = "가입 혜택 보기 >"
+        case sign = "로그인/회원가입"
+        case noSignInOrders = "비회원 주문 조회"
+        case deliveryInfo = "배송 안내"
+        case notice = "공지사항"
+        case faq = "자주하는 질문"
+        case customerService = "고객센터"
+        case aboutKurly = "컬리소개"
+        case notificationSetting = "알림 설정"
+        case checkOrderStatus = "주문 확인"
+        case nameOfOrderer = "주문자명"
+        case orderNumber = "주문번호"
+    }
+
+    enum MyKurlyOrderHistory: String {
+        case title = "주문 내역"
+        case title2 = "주문 내역 상세"
+        case menu2 = "자주 사는 상품"
+        case orderNumber = "주문번호"
+        case productName = "상품명"
+        case paymentDate = "결제일시"
+        case paymentMethod = "결제 방법"
+        case paymentAmount = "결제 금액"
+        case orderStatus = "주문 상테"
+    }
+
+    let myKurlyOrderHistoryDetailCellData = [
+        [
+            "주문번호"
+        ],
+        [
+            "1. 결제 정보",
+            "상품금액",
+            "배송비",
+            "상품할인금액",
+            "쿠폰할인",
+            "적립금사용",
+            "결제금액",
+            "적립금액"
+        ],
+        [
+            "2. 주문 정보",
+            "주문번호",
+            "주문자명",
+            "보내는 분",
+            "결제일시"
+        ],
+        [
+            "3. 배송지 정보",
+            "받는 분",
+            "받는 분 핸드폰",
+            "배송방법",
+            "우편번호",
+            "주소"
+        ],
+        [
+            "4. 받으실 장소",
+            "받으실 장소",
+            "공동현관 출입 방법"
+        ],
+        [
+            "5. 추가 정보",
+            "메세지 전송시점",
+            "미출시 조치방법"
+        ]
+    ]
+
+    let myKurlyOrderHistoryDetailProductData = [
+        [
+            "image": "TestImage",
+            "category": "",
+            "title": "[인텔리젠시아] 블랫캣 클래식 콜드브루",
+            "price": "12,750",
+            "detail": "/ 1개 구매",
+            "deliveryStatus": "배송완료"
+        ],
+        [
+            "image": "TestImage",
+            "category": "",
+            "title": "[샐러딩] 트러플 머쉬룸 믹스 샐러드 217g",
+            "price": "6,900",
+            "detail": "/ 1개 구매",
+            "deliveryStatus": "배송완료"
+        ],
+        [
+            "image": "TestImage",
+            "category": "[어게인리프레쉬]샐러드 5종",
+            "title": "[어게인리프레쉬] 새우 샐러드",
+            "price": "5,900",
+            "detail": "/ 1개 구매",
+            "deliveryStatus": "배송완료"
+        ],
+        [
+            "image": "TestImage",
+            "category": "[샐러드판다] 병 샐러드 9 종",
+            "title": "[샐러드판다]판다는 불고기랑 연애중(소불고기&메추리알)",
+            "price": "6,900",
+            "detail": "/ 1개 구매",
+            "deliveryStatus": "배송완료"
+        ]
+    ]
+
+    enum MyKurlyOrderHistoryDetail {
+
+    }
+
+    struct HappinessCenterText {
+        static let title = "고객행복센터"
+        static let titleUsage = """
+        궁금하신 점이나 서비스 이용에 불편한 점이 있으신가요?
+        문제가 되는 부분을 사진으로 찍어
+        아래 중 편하신 방법으로 접수해 주시면
+        빠르게 도와드리겠습니다.
+        """
+        static let inquiryCallTitle = "전화 문의 1644-1107"
+        static let inquiryCallTime = "오전 7시~오후 7시 (연중무휴)"
+
+        static let inquiryKakaotalkTitle = "카카오톡 문의"
+        static let inquiryKakaotalkTime = "오전 7시~오후 7시 (연중무휴)"
+        static let inquiryKakaotalkButton = "카카오톡 상담 받기"
+        static let inquiryKakaotalkUsage = """
+        ※카카오톡에서 '마켓컬리'를 검색 후
+        대화창에 문의 및 불편사항을 남겨주세요.
+        """
+
+        static let inquiryHomepageTitle = "홈페이지 문의"
+        static let inquiryHomepageTime = """
+        24시간 접수 가능
+        로그인 > 마이컬리 > 1:1 문의
+        """
+        static let inquiryHomepageButton = "문의 작성하기"
+        static let inquiryHomepageUsage = "※고객센터 운영 시간에 순차적으로 답변해드리겠습니다."
+    }
+
+    let ChooseProductsVCMockData = [
+        [
+            "category": "[허쉬] 후퍼스 블럭통 2종"
+        ],
+        [
+            "title": "[허쉬] 후퍼스 연 보라색 블럭통 210g",
+            "originalPrice": "9000",
+            "discountPrice": "8910"
+        ],
+        [
+            "title": "[허쉬] 후퍼스 보라색 블럭통 210g",
+            "originalPrice": "9000",
+            "discountPrice": "8910"
+        ]
+    ]
 
 }

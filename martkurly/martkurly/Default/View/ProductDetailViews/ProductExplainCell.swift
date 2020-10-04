@@ -13,8 +13,17 @@ class ProductExplainCell: UICollectionViewCell {
     // MARK: - Properties
 
     static let identifier = "ProductExplainCell"
+    private let sideInsetValue: CGFloat = 12
+    private var infoViewModel = ExplainInfoViewModel()
 
     private let explainTableView = UITableView()
+
+    var productDetailData: ProductDetail? {
+        didSet {
+            infoViewModel.productDetailData = productDetailData
+            explainTableView.reloadData()
+        }
+    }
 
     // MARK: - LifeCycle
 
@@ -32,7 +41,6 @@ class ProductExplainCell: UICollectionViewCell {
 
     func configureUI() {
         self.backgroundColor = ColorManager.General.backGray.rawValue
-
         configureLayout()
     }
 
@@ -44,57 +52,31 @@ class ProductExplainCell: UICollectionViewCell {
     }
 
     func configureTableView() {
-        explainTableView.backgroundColor = .white
+        explainTableView.backgroundColor = ColorManager.General.backGray.rawValue
         explainTableView.allowsSelection = false
         explainTableView.separatorStyle = .none
 
         explainTableView.dataSource = self
         explainTableView.delegate = self
 
-        explainTableView.register(ProductExplainCellInBasicCell.self,
-                                  forCellReuseIdentifier: ProductExplainCellInBasicCell.identifier)
-        explainTableView.register(ProductExplainInInfoCell.self,
-                                  forCellReuseIdentifier: ProductExplainInInfoCell.identifier)
+        explainTableView.register(ProductExplainBasicCell.self,
+                                  forCellReuseIdentifier: ProductExplainBasicCell.identifier)
+        explainTableView.register(ProductExplainInfoCell.self,
+                                  forCellReuseIdentifier: ProductExplainInfoCell.identifier)
+        explainTableView.register(ProductExplainDeliveryInfoCell.self,
+                                  forCellReuseIdentifier: ProductExplainDeliveryInfoCell.identifier)
+        explainTableView.register(ProductDetailCell.self,
+                                  forCellReuseIdentifier: ProductDetailCell.identifier)
+        explainTableView.register(ProductExplainWhyCurlyCell.self,
+                                  forCellReuseIdentifier: ProductExplainWhyCurlyCell.identifier)
+        explainTableView.register(ProductExplainImageCell.self,
+                                  forCellReuseIdentifier: ProductExplainImageCell.identifier)
     }
 }
 
 // MARK: - UITableViewDataSource
 
 extension ProductExplainCell: UITableViewDataSource {
-    enum ExplainTableViewCase: Int, CaseIterable {
-        case productTitleImage
-        case productInfo
-    }
-
-    enum ExplainTableInfoCase: Int, CaseIterable {
-        case unit
-        case weight
-        case delivery
-        case countryOfOrigin
-        case packing
-        case allergy
-        case expiration
-
-        var description: String {
-            switch self {
-            case .unit: return "판매단위"
-            case .weight: return "중량/용량"
-            case .delivery: return "배송구분"
-            case .countryOfOrigin: return "원산지"
-            case .packing: return "포장타입"
-            case .allergy: return "알레르기정보"
-            case .expiration: return "유통기한"
-            }
-        }
-
-        var subContent: String? {
-            switch self {
-            case .packing: return "택배배송은 에코포장이 스티로폼으로 대체됩니다."
-            default: return nil
-            }
-        }
-    }
-
     func numberOfSections(in tableView: UITableView) -> Int {
         return ExplainTableViewCase.allCases.count
     }
@@ -102,7 +84,7 @@ extension ProductExplainCell: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch ExplainTableViewCase(rawValue: section)! {
         case .productInfo:
-            return ExplainTableInfoCase.allCases.count
+            return infoViewModel.infomations.count
         default:
             return 1
         }
@@ -110,21 +92,47 @@ extension ProductExplainCell: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch ExplainTableViewCase(rawValue: indexPath.section)! {
-        case .productTitleImage:
+        case .productBasic:
             let cell = tableView.dequeueReusableCell(
-                withIdentifier: ProductExplainCellInBasicCell.identifier,
-                for: indexPath) as! ProductExplainCellInBasicCell
+                withIdentifier: ProductExplainBasicCell.identifier,
+                for: indexPath) as! ProductExplainBasicCell
+            cell.productDetailData = productDetailData
             return cell
         case .productInfo:
             let cell = tableView.dequeueReusableCell(
-                withIdentifier: ProductExplainInInfoCell.identifier,
-                for: indexPath) as! ProductExplainInInfoCell
-            cell.configure(
-                titleText: ExplainTableInfoCase(rawValue: indexPath.row)!.description,
-                subContent: ExplainTableInfoCase(rawValue: indexPath.row)?.subContent)
+                withIdentifier: ProductExplainInfoCell.identifier,
+                for: indexPath) as! ProductExplainInfoCell
+
+            let infomationType = infoViewModel.infomations[indexPath.row]
+            cell.configure(infoTitleText: infomationType.description,
+                           infoContentText: infoViewModel.requestInfoContent(type: infomationType),
+                           infoSubContentText: infoViewModel.requestInfoSubContent(type: infomationType))
+
+            return cell
+        case .productDelivery:
+            let cell = tableView.dequeueReusableCell(
+                withIdentifier: ProductExplainDeliveryInfoCell.identifier,
+                for: indexPath) as! ProductExplainDeliveryInfoCell
+            return cell
+        case .productDetail:
+            let cell = tableView.dequeueReusableCell(
+                withIdentifier: ProductDetailCell.identifier,
+                for: indexPath) as! ProductDetailCell
+            cell.productDetailData = productDetailData
+            return cell
+        case .productImage:
+            let cell = tableView.dequeueReusableCell(
+                withIdentifier: ProductExplainImageCell.identifier,
+                for: indexPath) as! ProductExplainImageCell
+            let imageURL = URL(string: productDetailData?.info_img ?? "")
+            cell.productImageView.kf.setImage(with: imageURL)
+            return cell
+        case .productWhyKurly:
+            let cell = tableView.dequeueReusableCell(
+                withIdentifier: ProductExplainWhyCurlyCell.identifier,
+                for: indexPath) as! ProductExplainWhyCurlyCell
             return cell
         }
-
     }
 }
 
@@ -138,95 +146,20 @@ extension ProductExplainCell: UITableViewDelegate {
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         return 200
     }
-}
 
-import UIKit
-
-class ProductExplainInInfoCell: UITableViewCell {
-
-    // MARK: - Properties
-
-    static let identifier = "ProductExplainInInfoCell"
-
-    private let sideInsetValue: CGFloat = 20
-    private let lineSpacingValue: CGFloat = 8
-    private let widthValue: CGFloat = 88
-
-    private let infoTitleLabel = UILabel().then {
-        $0.text = "알레르기정보"
-        $0.textColor = ColorManager.General.mainGray.rawValue
-        $0.font = .systemFont(ofSize: 16)
-    }
-
-    private let infoContent = UILabel().then {
-        $0.text = "Content Text"
-        $0.textColor = .black
-        $0.font = .systemFont(ofSize: 16)
-        $0.numberOfLines = 0
-    }
-
-    private let infoSubContent = UILabel().then {
-        $0.text = "Sub Content Text"
-        $0.textColor = ColorManager.General.mainGray.rawValue
-        $0.font = .systemFont(ofSize: 14)
-        $0.numberOfLines = 0
-    }
-
-    // MARK: - LifeCycle
-
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        configureUI()
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    // MARK: - Helpers
-
-    func configureUI() {
-        self.backgroundColor = .white
-        configureLayout()
-    }
-
-    func configureLayout() {
-        [infoTitleLabel].forEach {
-            self.addSubview($0)
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        if ExplainTableViewCase.allCases.count - 1 == section {
+            return 80
         }
-
-        infoTitleLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(lineSpacingValue)
-            $0.leading.equalToSuperview().offset(sideInsetValue)
-            $0.width.equalTo(widthValue)
-        }
+        return .zero
     }
 
-    func configure(titleText: String, subContent: String? = nil) {
-        infoTitleLabel.text = titleText
-
-        guard let subContentText = subContent else {
-            viewAddAndSetupLayout(view: infoContent)
-            infoSubContent.text = subContent
-            return
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        if ExplainTableViewCase.allCases.count - 1 == section {
+            let view = UIView()
+            view.backgroundColor = .clear
+            return view
         }
-
-        infoSubContent.text = subContentText
-
-        let stack = UIStackView(arrangedSubviews: [infoContent, infoSubContent])
-        stack.axis = .vertical
-        stack.spacing = 4
-
-        viewAddAndSetupLayout(view: stack)
-    }
-
-    func viewAddAndSetupLayout(view: UIView) {
-        self.addSubview(view)
-        view.snp.makeConstraints {
-            $0.top.equalTo(infoTitleLabel)
-            $0.leading.equalTo(infoTitleLabel.snp.trailing).offset(12)
-            $0.trailing.equalToSuperview().offset(-sideInsetValue)
-            $0.bottom.equalToSuperview().offset(-lineSpacingValue)
-        }
+        return nil
     }
 }

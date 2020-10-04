@@ -43,7 +43,7 @@ class MainTBC: UITabBarController {
             image: UIImage(systemName: "star"),
             selectedImage: UIImage(systemName: "star.fill"))
 
-        let categoryVC = UIViewController()
+        let categoryVC = CategoryVC()
         let naviCategoryVC = UINavigationController(rootViewController: categoryVC)
         naviCategoryVC.tabBarItem = UITabBarItem(
             title: "카테고리",
@@ -57,24 +57,14 @@ class MainTBC: UITabBarController {
             image: UIImage(systemName: "magnifyingglass"),
             selectedImage: nil)
 
-        let mykurlyVC = UIViewController()
-        let naviMykurlyVC = UINavigationController(rootViewController: mykurlyVC)
+        let myCurlyVC = MyKurlyVC()
+        let naviMykurlyVC = UINavigationController(rootViewController: myCurlyVC)
         naviMykurlyVC.tabBarItem = UITabBarItem(
             title: "마이컬리",
             image: UIImage(systemName: "person"),
             selectedImage: UIImage(systemName: "person.fill"))
 
         self.viewControllers = [naviHomeVC, naviRecommendVC, naviCategoryVC, naviSearchVC, naviMykurlyVC]
-
-        // 이하 테스트용
-//        let testVC = SignUpVC()
-//        let naviTestVC = UINavigationController(rootViewController: testVC)
-//        naviTestVC.tabBarItem = UITabBarItem(
-//            title: "홈",
-//            image: UIImage(systemName: "house"),
-//            selectedImage: UIImage(systemName: "house.fill"))
-//
-//        self.viewControllers = [naviTestVC, naviRecommendVC, naviCategoryVC, naviSearchVC, naviMykurlyVC]
     }
 
     func configureTabbarAppearance() {
