@@ -169,10 +169,10 @@
 		AF92F957251080C800C12965 /* RecommendReviewsProductCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF92F956251080C800C12965 /* RecommendReviewsProductCell.swift */; };
 		AF92F959251108A000C12965 /* ReviewsProductCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF92F958251108A000C12965 /* ReviewsProductCell.swift */; };
 		AF92F95B2511175A00C12965 /* TimerSingleton.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF92F95A2511175A00C12965 /* TimerSingleton.swift */; };
-		AF9799A924E6A9EF0067C611 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = AF9799A824E6A9EF0067C611 /* SnapKit */; };
-		AF9799AC24E6AA260067C611 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = AF9799AB24E6AA260067C611 /* Then */; };
-		AF9799AF24E6AAB80067C611 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = AF9799AE24E6AAB80067C611 /* Kingfisher */; };
-		AF9799B524E6AC650067C611 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = AF9799B424E6AC650067C611 /* Alamofire */; };
+		AF9799A924E6A9EF0067C611 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = AF9799A824E6A9EF0067C611 /* SwiftPackageProductDependency */; };
+		AF9799AC24E6AA260067C611 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = AF9799AB24E6AA260067C611 /* SwiftPackageProductDependency */; };
+		AF9799AF24E6AAB80067C611 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = AF9799AE24E6AAB80067C611 /* SwiftPackageProductDependency */; };
+		AF9799B524E6AC650067C611 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = AF9799B424E6AC650067C611 /* SwiftPackageProductDependency */; };
 		AF97A399250685F700BD49CA /* KurlyService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF97A398250685F700BD49CA /* KurlyService.swift */; };
 		AF97A39D2506866500BD49CA /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF97A39C2506866500BD49CA /* Constants.swift */; };
 		AF97A3A02506ABE600BD49CA /* ProductViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF97A39F2506ABE600BD49CA /* ProductViewModel.swift */; };
@@ -225,7 +225,7 @@
 		AFF16758251D2F4A00C7696D /* ProductInfomationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFF16754251D2F4A00C7696D /* ProductInfomationCell.swift */; };
 		AFF16759251D2F4A00C7696D /* OrderProductInfomationHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFF16755251D2F4A00C7696D /* OrderProductInfomationHeaderView.swift */; };
 		AFF1675A251D2F4A00C7696D /* OrdererInfomationHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFF16756251D2F4A00C7696D /* OrdererInfomationHeaderView.swift */; };
-		AFF488C72519CBCC005CF3E8 /* BSImagePicker in Frameworks */ = {isa = PBXBuildFile; productRef = AFF488C62519CBCC005CF3E8 /* BSImagePicker */; };
+		AFF488C72519CBCC005CF3E8 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = AFF488C62519CBCC005CF3E8 /* SwiftPackageProductDependency */; };
 		AFF8597F2511EA4F0085066F /* MainEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFF8597E2511EA4F0085066F /* MainEvent.swift */; };
 		AFF859812512279C0085066F /* MainCurlyInfomationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFF859802512279C0085066F /* MainCurlyInfomationCell.swift */; };
 		AFF85983251268240085066F /* CategoryProductsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFF85982251268240085066F /* CategoryProductsVC.swift */; };
@@ -466,11 +466,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AF9799B524E6AC650067C611 /* Alamofire in Frameworks */,
-				AFF488C72519CBCC005CF3E8 /* BSImagePicker in Frameworks */,
-				AF9799AF24E6AAB80067C611 /* Kingfisher in Frameworks */,
-				AF9799A924E6A9EF0067C611 /* SnapKit in Frameworks */,
-				AF9799AC24E6AA260067C611 /* Then in Frameworks */,
+				AF9799B524E6AC650067C611 /* BuildFile in Frameworks */,
+				AFF488C72519CBCC005CF3E8 /* BuildFile in Frameworks */,
+				AF9799AF24E6AAB80067C611 /* BuildFile in Frameworks */,
+				AF9799A924E6A9EF0067C611 /* BuildFile in Frameworks */,
+				AF9799AC24E6AA260067C611 /* BuildFile in Frameworks */,
 				E29ADD5322183B344DF43AE3 /* Pods_martkurly.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1136,11 +1136,11 @@
 			);
 			name = martkurly;
 			packageProductDependencies = (
-				AF9799A824E6A9EF0067C611 /* SnapKit */,
-				AF9799AB24E6AA260067C611 /* Then */,
-				AF9799AE24E6AAB80067C611 /* Kingfisher */,
-				AF9799B424E6AC650067C611 /* Alamofire */,
-				AFF488C62519CBCC005CF3E8 /* BSImagePicker */,
+				AF9799A824E6A9EF0067C611 /* SwiftPackageProductDependency */,
+				AF9799AB24E6AA260067C611 /* SwiftPackageProductDependency */,
+				AF9799AE24E6AAB80067C611 /* SwiftPackageProductDependency */,
+				AF9799B424E6AC650067C611 /* SwiftPackageProductDependency */,
+				AFF488C62519CBCC005CF3E8 /* SwiftPackageProductDependency */,
 			);
 			productName = martkurly;
 			productReference = AF564AAE24E56DEA00989F82 /* martkurly.app */;
@@ -1171,11 +1171,11 @@
 			);
 			mainGroup = AF564AA524E56DEA00989F82;
 			packageReferences = (
-				AF9799A724E6A9EF0067C611 /* XCRemoteSwiftPackageReference "SnapKit" */,
-				AF9799AA24E6AA260067C611 /* XCRemoteSwiftPackageReference "Then" */,
-				AF9799AD24E6AAB80067C611 /* XCRemoteSwiftPackageReference "Kingfisher" */,
-				AF9799B324E6AC650067C611 /* XCRemoteSwiftPackageReference "Alamofire" */,
-				AFF488C52519CBCC005CF3E8 /* XCRemoteSwiftPackageReference "BSImagePicker" */,
+				AF9799A724E6A9EF0067C611 /* RemoteSwiftPackageReference */,
+				AF9799AA24E6AA260067C611 /* RemoteSwiftPackageReference */,
+				AF9799AD24E6AAB80067C611 /* RemoteSwiftPackageReference */,
+				AF9799B324E6AC650067C611 /* RemoteSwiftPackageReference */,
+				AFF488C52519CBCC005CF3E8 /* RemoteSwiftPackageReference */,
 			);
 			productRefGroup = AF564AAF24E56DEA00989F82 /* Products */;
 			projectDirPath = "";
@@ -1663,7 +1663,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		AF9799A724E6A9EF0067C611 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+		AF9799A724E6A9EF0067C611 /* RemoteSwiftPackageReference */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
 			requirement = {
@@ -1671,7 +1671,7 @@
 				minimumVersion = 5.0.1;
 			};
 		};
-		AF9799AA24E6AA260067C611 /* XCRemoteSwiftPackageReference "Then" */ = {
+		AF9799AA24E6AA260067C611 /* RemoteSwiftPackageReference */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/devxoul/Then.git";
 			requirement = {
@@ -1679,7 +1679,7 @@
 				minimumVersion = 2.7.0;
 			};
 		};
-		AF9799AD24E6AAB80067C611 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+		AF9799AD24E6AAB80067C611 /* RemoteSwiftPackageReference */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
 			requirement = {
@@ -1687,7 +1687,7 @@
 				minimumVersion = 5.14.1;
 			};
 		};
-		AF9799B324E6AC650067C611 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+		AF9799B324E6AC650067C611 /* RemoteSwiftPackageReference */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
 			requirement = {
@@ -1695,7 +1695,7 @@
 				minimumVersion = 5.2.2;
 			};
 		};
-		AFF488C52519CBCC005CF3E8 /* XCRemoteSwiftPackageReference "BSImagePicker" */ = {
+		AFF488C52519CBCC005CF3E8 /* RemoteSwiftPackageReference */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mikaoj/BSImagePicker.git";
 			requirement = {
@@ -1706,29 +1706,29 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		AF9799A824E6A9EF0067C611 /* SnapKit */ = {
+		AF9799A824E6A9EF0067C611 /* SwiftPackageProductDependency */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = AF9799A724E6A9EF0067C611 /* XCRemoteSwiftPackageReference "SnapKit" */;
+			package = AF9799A724E6A9EF0067C611 /* RemoteSwiftPackageReference */;
 			productName = SnapKit;
 		};
-		AF9799AB24E6AA260067C611 /* Then */ = {
+		AF9799AB24E6AA260067C611 /* SwiftPackageProductDependency */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = AF9799AA24E6AA260067C611 /* XCRemoteSwiftPackageReference "Then" */;
+			package = AF9799AA24E6AA260067C611 /* RemoteSwiftPackageReference */;
 			productName = Then;
 		};
-		AF9799AE24E6AAB80067C611 /* Kingfisher */ = {
+		AF9799AE24E6AAB80067C611 /* SwiftPackageProductDependency */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = AF9799AD24E6AAB80067C611 /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			package = AF9799AD24E6AAB80067C611 /* RemoteSwiftPackageReference */;
 			productName = Kingfisher;
 		};
-		AF9799B424E6AC650067C611 /* Alamofire */ = {
+		AF9799B424E6AC650067C611 /* SwiftPackageProductDependency */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = AF9799B324E6AC650067C611 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			package = AF9799B324E6AC650067C611 /* RemoteSwiftPackageReference */;
 			productName = Alamofire;
 		};
-		AFF488C62519CBCC005CF3E8 /* BSImagePicker */ = {
+		AFF488C62519CBCC005CF3E8 /* SwiftPackageProductDependency */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = AFF488C52519CBCC005CF3E8 /* XCRemoteSwiftPackageReference "BSImagePicker" */;
+			package = AFF488C52519CBCC005CF3E8 /* RemoteSwiftPackageReference */;
 			productName = BSImagePicker;
 		};
 /* End XCSwiftPackageProductDependency section */
