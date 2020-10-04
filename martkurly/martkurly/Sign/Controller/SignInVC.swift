@@ -191,19 +191,23 @@ class SignInVC: UIViewController {
             let token = data.token
             let userData = data.user
 
+            let id = userData.id
             let username = userData.username
             let email = userData.email
             let phone = userData.phone
             let nickname = userData.nickname
             let gender = userData.gender
 
-            let user = [
+            let user: [String: Any] = [
+                "id": id,
                 "username": username,
                 "email": email,
                 "phone": phone,
                 "nickname": nickname,
                 "gender": gender
             ]
+
+            print("Debug: ", user)
 
             UserDefaults.standard.set(token, forKey: "token")
             UserDefaults.standard.set(user, forKey: "user")
