@@ -95,7 +95,9 @@ class CategoryVC: UIViewController {
     @objc
     func reLoadData() {
         tableV.refreshControl?.endRefreshing()
+        selectedCell = []
         tableV.reloadData()
+
     }
 }
 
