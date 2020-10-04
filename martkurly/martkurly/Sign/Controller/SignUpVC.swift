@@ -11,7 +11,7 @@ import UIKit
 final class SignUpVC: UIViewController {
 
     // MARK: - Properties
-    private let separtor = UIView().then {
+    private let separator = UIView().then {
         $0.backgroundColor = .separatorGray
     }
     private let scrollView = UIScrollView().then {
@@ -26,20 +26,18 @@ final class SignUpVC: UIViewController {
     private let phoneNumberCheckButton = KurlyButton(title: StringManager.SignUp.checkPhoneNumber.rawValue, style: .white)
     private let addressView = SignUpAddressView()
     var address: String {
-        get { addressView.addressLabel.addressLabel.text! }
-        set { addressView.addressLabel.addressLabel.text = newValue }
+        get { addressView.address }
+        set { addressView.mainAddressView.addressLabel.text = newValue }
     }
-    var isAddressFilled = false {
+    var isMainAddressFilled = false { // KakaoAddressVC 에서 값을 변경해 줌
         willSet {
             addressView.snp.updateConstraints { $0.height.equalTo(150) }
             birthdayTitleView.snp.updateConstraints { $0.top.equalTo(addressView.snp.bottom).offset(50) }
             addressView.quickDeliveryAvailable = true
-            DispatchQueue.main.async {
-                self.contentView.snp.updateConstraints { $0.height.equalTo(self.newAddtionalInfoView.frame.maxY + 1000) }
-                print(self.newAddtionalInfoView.frame.maxY)
-            }
         }
     }
+    var isSubAddressFilled: Bool { get { !self.addressView.specificAddressView.isEmpty } } // 상세주소정보가 입력되었는지 확인
+
     private let birthdayTitleView = SignUpTextFieldTitleView(title: StringManager.SignUp.birthday.rawValue, mendatory: false)
     private let birthdayTextFields = SignUpBirthdayView() // YYYY, MM, DD 3개의 TextFields 로 구성되어 있다.
     private let genderChoice = SignUpGenderView()
@@ -57,11 +55,12 @@ final class SignUpVC: UIViewController {
     private let agreementView = AgreementView()
     private lazy var agreementTableView = agreementView.tableView
     private var agreementCells = [AgreementTableViewCell]()
-    private var agreementSelectedCells: Set<Int> = [] // 유저가 선택한 이용약관동의에 대한 정보
+    private var agreementSelectedCells: Set<Int> = [] { willSet { checkAgreementStatus(newValue: newValue) } } // 유저가 선택한 이용약관동의에 대한 정보
     private var selectedPromotion: Set<Int> = [] // 유저가 선택한 혜택정보 수신에 대한 정보
     private let signUpButton = KurlyButton(title: StringManager.SignUp.signUp.rawValue, style: .purple)
 
     private var isValidID = false
+    private var isAgreed = false
 
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -82,9 +81,16 @@ final class SignUpVC: UIViewController {
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+
         contentView.snp.updateConstraints {
             $0.height.equalTo(newAddtionalInfoView.frame.maxY)
         }
+
+//        if isMainAddressFilled {
+//            contentView.snp.updateConstraints {
+//                $0.height.equalTo(newAddtionalInfoView.frame.maxY + 90)
+//            }
+//        }
 
         contentView2.snp.updateConstraints {
             $0.height.equalTo(signUpButton.frame.maxY + 20)
@@ -169,16 +175,16 @@ final class SignUpVC: UIViewController {
     }
 
     private func setScrollView() {
-        [separtor, scrollView].forEach {
+        [separator, scrollView].forEach {
             view.addSubview($0)
         }
-        separtor.snp.makeConstraints {
+        separator.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide)
             $0.leading.trailing.equalToSuperview()
             $0.height.equalTo(1)
         }
         scrollView.snp.makeConstraints {
-            $0.top.equalTo(separtor.snp.bottom)
+            $0.top.equalTo(separator.snp.bottom)
             $0.leading.trailing.equalToSuperview()
             $0.bottom.equalToSuperview()
             $0.width.equalTo(view.frame.width)
@@ -401,6 +407,7 @@ final class SignUpVC: UIViewController {
 
         checkValidity(isValid: &isValid)
         guard isValid == true else { return }
+        guard isAgreed == true else { presentAlert(title: "이용약관동의를 체크해 주세요"); return }
 
         KurlyService.shared.signUp(
             username: username,
@@ -630,13 +637,23 @@ final class SignUpVC: UIViewController {
             presentAlert(title: "비밀번호를 한번 더 입력해 주세요")
         } else if name == "" {
             presentAlert(title: "이름을 입력해 주세요")
-        } else if email == "" {
+        } else if email == "" || email?.contains("@") == false || email?.contains(".") == false {
             presentAlert(title: "이메일 형식을 확인해 주세요")
         } else if phone == "" {
             presentAlert(title: "휴대폰 인증을 완료 해 주세요")
         } else {
+            guard isMainAddressFilled == true else { presentAlert(title: "주소를 입력해 주세요"); return }
+            guard isSubAddressFilled == true else { presentAlert(title: "상세주소를 입력해 주세요"); return }
             isValid = true
         }
+    }
+
+    private func checkAgreementStatus(newValue: Set<Int>) {
+        isAgreed = false
+        if newValue.contains(1), newValue.contains(2), newValue.contains(6) {
+            isAgreed = true
+        }
+        print(isAgreed)
     }
 
     private func resetIDValidity() {
