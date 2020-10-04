@@ -26,10 +26,10 @@ final class SignUpVC: UIViewController {
     private let phoneNumberCheckButton = KurlyButton(title: StringManager.SignUp.checkPhoneNumber.rawValue, style: .white)
     private let addressView = SignUpAddressView()
     var address: String {
-        get { addressView.addressLabel.addressLabel.text! }
-        set { addressView.addressLabel.addressLabel.text = newValue }
+        get { addressView.address }
+        set { addressView.mainAddressView.addressLabel.text = newValue }
     }
-    var isAddressFilled = false {
+    var isMainAddressFilled = false { // KakaoAddressVC 에서 값을 변경해 줌
         willSet {
             addressView.snp.updateConstraints { $0.height.equalTo(150) }
             birthdayTitleView.snp.updateConstraints { $0.top.equalTo(addressView.snp.bottom).offset(50) }
@@ -38,8 +38,11 @@ final class SignUpVC: UIViewController {
                 self.contentView.snp.updateConstraints { $0.height.equalTo(self.newAddtionalInfoView.frame.maxY + 1000) }
                 print(self.newAddtionalInfoView.frame.maxY)
             }
+            print("isAddressFilled: ", newValue)
         }
     }
+    var isSubAddressFilled: Bool { get { self.addressView.specificAddressView.isEmpty } } // 상세주소정보가 입력되었는지 확인
+
     private let birthdayTitleView = SignUpTextFieldTitleView(title: StringManager.SignUp.birthday.rawValue, mendatory: false)
     private let birthdayTextFields = SignUpBirthdayView() // YYYY, MM, DD 3개의 TextFields 로 구성되어 있다.
     private let genderChoice = SignUpGenderView()
@@ -402,6 +405,8 @@ final class SignUpVC: UIViewController {
 
         checkValidity(isValid: &isValid)
         guard isValid == true else { return }
+        guard isMainAddressFilled == true else { presentAlert(title: "주소를 입력해 주세요"); return }
+        guard isSubAddressFilled == true else { presentAlert(title: "상세주소를 입력해 주세요"); return }
         guard isAgreed == true else { presentAlert(title: "이용약관동의를 체크해 주세요"); return }
 
         KurlyService.shared.signUp(

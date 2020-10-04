@@ -117,7 +117,7 @@ extension KakaoAddressVC: WKScriptMessageHandler {
         for viewController in navigationControllers {
             if let signUpVC = viewController as? SignUpVC {
                 signUpVC.address = address
-                signUpVC.isAddressFilled = true
+                signUpVC.isMainAddressFilled = true
             }
         }
         self.dismiss(animated: true, completion: nil)
