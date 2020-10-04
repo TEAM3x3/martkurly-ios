@@ -34,14 +34,9 @@ final class SignUpVC: UIViewController {
             addressView.snp.updateConstraints { $0.height.equalTo(150) }
             birthdayTitleView.snp.updateConstraints { $0.top.equalTo(addressView.snp.bottom).offset(50) }
             addressView.quickDeliveryAvailable = true
-            DispatchQueue.main.async {
-                self.contentView.snp.updateConstraints { $0.height.equalTo(self.newAddtionalInfoView.frame.maxY + 1000) }
-                print(self.newAddtionalInfoView.frame.maxY)
-            }
-            print("isAddressFilled: ", newValue)
         }
     }
-    var isSubAddressFilled: Bool { get { self.addressView.specificAddressView.isEmpty } } // 상세주소정보가 입력되었는지 확인
+    var isSubAddressFilled: Bool { get { !self.addressView.specificAddressView.isEmpty } } // 상세주소정보가 입력되었는지 확인
 
     private let birthdayTitleView = SignUpTextFieldTitleView(title: StringManager.SignUp.birthday.rawValue, mendatory: false)
     private let birthdayTextFields = SignUpBirthdayView() // YYYY, MM, DD 3개의 TextFields 로 구성되어 있다.
@@ -86,9 +81,16 @@ final class SignUpVC: UIViewController {
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+
         contentView.snp.updateConstraints {
             $0.height.equalTo(newAddtionalInfoView.frame.maxY)
         }
+
+//        if isMainAddressFilled {
+//            contentView.snp.updateConstraints {
+//                $0.height.equalTo(newAddtionalInfoView.frame.maxY + 90)
+//            }
+//        }
 
         contentView2.snp.updateConstraints {
             $0.height.equalTo(signUpButton.frame.maxY + 20)
@@ -405,8 +407,6 @@ final class SignUpVC: UIViewController {
 
         checkValidity(isValid: &isValid)
         guard isValid == true else { return }
-        guard isMainAddressFilled == true else { presentAlert(title: "주소를 입력해 주세요"); return }
-        guard isSubAddressFilled == true else { presentAlert(title: "상세주소를 입력해 주세요"); return }
         guard isAgreed == true else { presentAlert(title: "이용약관동의를 체크해 주세요"); return }
 
         KurlyService.shared.signUp(
@@ -637,11 +637,13 @@ final class SignUpVC: UIViewController {
             presentAlert(title: "비밀번호를 한번 더 입력해 주세요")
         } else if name == "" {
             presentAlert(title: "이름을 입력해 주세요")
-        } else if email == "" {
+        } else if email == "" || email?.contains("@") == false || email?.contains(".") == false {
             presentAlert(title: "이메일 형식을 확인해 주세요")
         } else if phone == "" {
             presentAlert(title: "휴대폰 인증을 완료 해 주세요")
         } else {
+            guard isMainAddressFilled == true else { presentAlert(title: "주소를 입력해 주세요"); return }
+            guard isSubAddressFilled == true else { presentAlert(title: "상세주소를 입력해 주세요"); return }
             isValid = true
         }
     }
