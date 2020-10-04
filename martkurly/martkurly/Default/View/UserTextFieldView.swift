@@ -28,6 +28,7 @@ class UserTextFieldView: UIView {
     private var viewSizeHandler: ( () -> Void )?
     private var completionHandler: ( () -> Void )?
     private var subtitleLabels: [UILabel] = []
+    var isEmpty = true
     var isEditing = false
 
     // MARK: - Lifecycle
@@ -144,6 +145,7 @@ class UserTextFieldView: UIView {
 extension UserTextFieldView: UITextFieldDelegate {
 
     func textFieldDidChangeSelection(_ textField: UITextField) {
+        self.isEmpty = text?.isEmpty == true ? true : false
         self.isActive = text?.isEmpty == true ? false : true
         guard let completionHandler = self.completionHandler else { return }
         completionHandler()

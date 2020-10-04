@@ -292,7 +292,7 @@ struct KurlyService {
     }
 
     // MARK: - 로그인
-    func signIn(username: String, password: String, completionHandler: @escaping (Bool, String?) -> Void) {
+    func signIn(username: String, password: String, completionHandler: @escaping (Bool, LoginData?) -> Void) {
         let value = [
             "username": username,
             "password": password
@@ -310,13 +310,9 @@ struct KurlyService {
                 print("Success: ", json)
                 guard let jsonData = response.data else { return }
 
-                struct TokenData: Decodable {
-                    let token: String
-                }
-
                 do {
-                    let tokenData = try self.decoder.decode(TokenData.self, from: jsonData)
-                    completionHandler(true, tokenData.token)
+                    let loginData = try self.decoder.decode(LoginData.self, from: jsonData)
+                    completionHandler(true, loginData)
                 } catch {
                     completionHandler(false, nil)
                 }

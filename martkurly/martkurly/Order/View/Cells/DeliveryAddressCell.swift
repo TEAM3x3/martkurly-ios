@@ -16,7 +16,11 @@ class DeliveryAddressCell: UITableViewCell {
 
     let selectButton = KurlyChecker()
 
-    private let starsDeliveryTextView = HalfCircleTextView().then {
+    var userAddress: AddressModel? {
+        didSet { configure() }
+    }
+
+    private let deliveryStatusTextView = HalfCircleTextView().then {
         $0.configure(text: "샛별배송",
                      textColor: ColorManager.General.mainPurple.rawValue,
                      backgroundColor: .white,
@@ -66,7 +70,7 @@ class DeliveryAddressCell: UITableViewCell {
     func configureUI() {
         self.backgroundColor = .white
 
-        [selectButton, starsDeliveryTextView, defaultDeliveryTextView, addressTextLabel].forEach {
+        [selectButton, deliveryStatusTextView, defaultDeliveryTextView, addressTextLabel].forEach {
             self.addSubview($0)
         }
 
@@ -74,19 +78,19 @@ class DeliveryAddressCell: UITableViewCell {
             $0.top.leading.equalToSuperview().offset(orderVCSideInsetValue)
         }
 
-        starsDeliveryTextView.snp.makeConstraints {
+        deliveryStatusTextView.snp.makeConstraints {
             $0.centerY.equalTo(selectButton)
             $0.leading.equalTo(selectButton.snp.trailing).offset(12)
         }
 
         defaultDeliveryTextView.snp.makeConstraints {
             $0.centerY.equalTo(selectButton)
-            $0.leading.equalTo(starsDeliveryTextView.snp.trailing).offset(4)
+            $0.leading.equalTo(deliveryStatusTextView.snp.trailing).offset(4)
         }
 
         addressTextLabel.snp.makeConstraints {
             $0.top.equalTo(selectButton.snp.bottom).offset(12)
-            $0.leading.equalTo(starsDeliveryTextView)
+            $0.leading.equalTo(deliveryStatusTextView)
             $0.trailing.equalToSuperview().inset(28)
         }
 
@@ -100,9 +104,33 @@ class DeliveryAddressCell: UITableViewCell {
         self.addSubview(stack)
         stack.snp.makeConstraints {
             $0.top.equalTo(addressTextLabel.snp.bottom).offset(12)
-            $0.leading.equalTo(starsDeliveryTextView)
+            $0.leading.equalTo(deliveryStatusTextView)
             $0.trailing.equalToSuperview().inset(28)
             $0.bottom.equalToSuperview().offset(-12)
         }
+    }
+
+    func configure() {
+        guard let userAddress = userAddress else { return }
+        let viewModel = AddressViewModel(address: userAddress)
+
+        addressTextLabel.text = viewModel.totalAddressText
+        if viewModel.isStarsDelivery {
+            deliveryStatusTextView.configure(
+                text: "샛별배송",
+                textColor: ColorManager.General.mainPurple.rawValue,
+                backgroundColor: .white,
+                borderColor: ColorManager.General.mainPurple.rawValue)
+        } else {
+            deliveryStatusTextView.configure(
+                text: "택배배송",
+                textColor: UIColor.lightGray,
+                backgroundColor: .white,
+                borderColor: UIColor.lightGray)
+        }
+
+        defaultDeliveryTextView.isHidden = !viewModel.isDefaultDelivery
+        ordererInfoLabel.text = viewModel.userDataText
+        receivePlaceLabel.text = viewModel.receiveSpace
     }
 }

@@ -99,17 +99,18 @@ class MainEachHProductCell: UICollectionViewCell {
     }
 
     private let productSalePriceLabel = UILabel().then {
-        $0.text = "29,520원"
-        $0.textColor = .black
-        $0.font = .boldSystemFont(ofSize: 14)
-    }
-
-    private let productBasicPriceLabel = UILabel().then {
         $0.attributedText = NSAttributedString(
             string: "36,900원",
             attributes: [NSAttributedString.Key.strikethroughStyle: NSUnderlineStyle.single.rawValue,
                          NSAttributedString.Key.strikethroughColor: ColorManager.General.mainGray.rawValue,
-                         NSAttributedString.Key.foregroundColor: ColorManager.General.mainGray.rawValue])
+                         NSAttributedString.Key.foregroundColor: ColorManager.General.mainGray.rawValue,
+                         NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12)])
+    }
+
+    private let productBasicPriceLabel = UILabel().then {
+        $0.text = "29,520원"
+        $0.textColor = .black
+        $0.font = .boldSystemFont(ofSize: 14)
     }
 
     // MARK: - LifeCycle

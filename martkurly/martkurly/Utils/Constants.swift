@@ -44,6 +44,8 @@ let REF_CART_DELETE_LOCAL = LOCAL_REF + "/cart/1/item"
 let REF_USER_REVIEW_LIST = KURLY_REF + "/review"   // 유저가 작성한 리뷰 리스트 반환(Token Needs)
 let REF_PRODUCT_REVIEW_LIST = "/reviews"        // 해당 상품에 대한 리뷰 리스트 반환
 
+let REF_ADDRESS = KURLY_REF + "/users"
+
 // Notification
 
 let PRODUCT_DETAILVIEW_EVENT = "PRODUCT_DETAILVIEW_EVENT"

@@ -13,7 +13,9 @@ class SignInVC: UIViewController {
     // MARK: - Properties
     private lazy var topBar = CustomNavigationBarView(title: StringManager.Sign.login.rawValue, viewController: self)
     private let idTextField = UserTextFieldView(placeholder: StringManager.Sign.idTextField.rawValue, fontSize: 15)
-    private let pwTextField = UserTextFieldView(placeholder: StringManager.Sign.pwTextField.rawValue, fontSize: 15)
+    private let pwTextField = UserTextFieldView(placeholder: StringManager.Sign.pwTextField.rawValue, fontSize: 15).then {
+        $0.textField.isSecureTextEntry = true
+    }
     private let loginButton = KurlyButton(title: StringManager.Sign.login.rawValue, style: .purple)
 
     private let forgotIDButton = UIButton().then {
@@ -125,10 +127,11 @@ class SignInVC: UIViewController {
     private func checkTextFieldValidity() {
         if idTextField.text?.isEmpty == true {
             warning.setText(text: SignError.idFieldEmpty.rawValue)
+            animateWarning()
         } else if pwTextField.text?.isEmpty == true {
             warning.setText(text: SignError.pwFieldEmpty.rawValue)
+            animateWarning()
         }
-        animateWarning()
     }
 
     private func animateWarning() {
@@ -165,7 +168,7 @@ class SignInVC: UIViewController {
             let username = idTextField.text!
             let password = pwTextField.text!
 
-            KurlyService.shared.signIn(username: username, password: password, completionHandler: loginProcessHandler(result:token:))
+            KurlyService.shared.signIn(username: username, password: password, completionHandler: loginProcessHandler(result:data:))
         case forgotIDButton:
             let nextVC = ForgotIDVC()
             navigationController?.pushViewController(nextVC, animated: true)
@@ -181,12 +184,34 @@ class SignInVC: UIViewController {
     }
 
     // MARK: - Helpers
-    private func loginProcessHandler(result: Bool, token: String?) {
+    private func loginProcessHandler(result: Bool, data: LoginData?) {
         switch result {
         case true:
-            guard let token = token else { return }
+            guard let data = data else { return }
+            let token = data.token
+            let userData = data.user
+
+            let id = userData.id
+            let username = userData.username
+            let email = userData.email
+            let phone = userData.phone
+            let nickname = userData.nickname
+            let gender = userData.gender
+
+            let user: [String: Any] = [
+                "id": id,
+                "username": username,
+                "email": email,
+                "phone": phone,
+                "nickname": nickname,
+                "gender": gender
+            ]
+
+            print("Debug: ", user)
+
             UserDefaults.standard.set(token, forKey: "token")
-            print("UserDefaults", UserDefaults.standard.string(forKey: "token"))
+            UserDefaults.standard.set(user, forKey: "user")
+            UserService.shared.loadData()
             print("Login Success")
             self.dismiss(animated: true, completion: nil)
         case false:
