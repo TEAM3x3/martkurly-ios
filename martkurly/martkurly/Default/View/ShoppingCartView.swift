@@ -104,9 +104,10 @@ class ShoppingCartView: UIView {
                 presentVC = presentedViewController
             }
             let cart = CartVC()
-            cart.modalPresentationStyle = .overFullScreen
+            let navi = UINavigationController(rootViewController: cart)
+            navi.modalPresentationStyle = .fullScreen
 //            presentVC.present(cart, animated: true, completion: nil)
-            presentVC.present(cart, animated: true)
+            presentVC.present(navi, animated: true)
         }
     }
 

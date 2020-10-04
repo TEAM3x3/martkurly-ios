@@ -19,7 +19,7 @@ class CartNaviView: UIView {
     private let title = UILabel().then {
         $0.text = "장바구니"
         $0.textColor = .black
-        $0.font = UIFont.boldSystemFont(ofSize: 18)
+        $0.font = .boldSystemFont(ofSize: 16)
         $0.sizeToFit()
     }
 
@@ -46,8 +46,12 @@ class CartNaviView: UIView {
     }
 
     private func setConstraints() {
-        [bar, dismissBtn, title].forEach {
+        [bar].forEach {
             addSubview($0)
+        }
+
+        [dismissBtn, title].forEach {
+            bar.addSubview($0)
         }
 
         bar.snp.makeConstraints {
@@ -59,10 +63,13 @@ class CartNaviView: UIView {
             $0.leading.equalTo(bar.snp.leading).offset(16)
             $0.bottom.equalTo(bar.snp.bottom).inset(16)
         }
+//        dismissBtn.contentVerticalAlignment = .bottom
+//        dismissBtn.contentHorizontalAlignment = .left
 
         title.snp.makeConstraints {
             $0.centerX.equalTo(bar.snp.centerX)
             $0.bottom.equalTo(bar.snp.bottom).inset(16)
         }
+        title.contentMode = .bottom
     }
 }

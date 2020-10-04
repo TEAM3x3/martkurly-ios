@@ -9,34 +9,21 @@
 import UIKit
 import Then
 
-class AllSelectButtonLineView: UIView {
+class AllSelectButtonLineView: UITableViewCell {
 
     // MARK: - Properties
-    private let check = UIButton().then {
-//        $0.setImage(UIImage(systemName: "checkmark.circle"), for: .normal)
-        $0.tintColor = .systemGray5
+    private let emptyView = UIView().then {
+        $0.backgroundColor = .white
     }
 
-    private let allSelectLabel = UILabel().then {
-        $0.text = "전체선택 (0/0)"
-        $0.adjustsFontSizeToFitWidth = true
-        $0.textColor = ColorManager.General.mainGray.rawValue
-    }
-
-    private let deleteBtn = UIButton().then {
-//        $0.titleEdgeInsets = UIEdgeInsets(top: 1, left: 1, bottom: 1, right: 1)
-        $0.clipsToBounds = true
-        $0.sizeToFit()
-        $0.setTitle("선택삭제", for: .normal)
-        $0.setTitleColor(.black, for: .normal)
-        $0.layer.borderWidth = 1
-        $0.layer.cornerRadius = 2
-        $0.layer.borderColor = ColorManager.General.mainGray.rawValue.cgColor
+    private let emptyLabel = UILabel().then {
+        $0.text = "장바구니에 담긴 상품이 없습니다."
+        $0.textColor = .black
     }
 
     // MARK: - Lifecycle
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
         setConfigure()
     }
 
@@ -51,30 +38,31 @@ class AllSelectButtonLineView: UIView {
     }
 
     private func setConstraints() {
-        [check, allSelectLabel, deleteBtn].forEach {
+        [emptyView, emptyLabel].forEach {
             addSubview($0)
         }
 
-        check.setImage(UIImage(systemName: "checkmark.circle"), for: .normal)
-        check.sizeToFit()
-        check.clipsToBounds = true
-        check.snp.makeConstraints {
-            $0.centerY.equalToSuperview()
-            $0.leading.equalToSuperview().offset(16)
-//            $0.width.height.equalTo(40)
+        emptyView.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview().offset(8).inset(8)
         }
+        emptyView.backgroundColor = .white
 
-        allSelectLabel.snp.makeConstraints {
-            $0.centerY.equalToSuperview()
-            $0.leading.equalTo(check.snp.trailing).offset(8)
+        emptyLabel.snp.makeConstraints {
+            $0.centerY.equalTo(emptyView.snp.centerY)
+            $0.centerX.equalTo(emptyView.snp.centerX)
         }
+    }
 
-        deleteBtn.sizeToFit()
-        deleteBtn.snp.makeConstraints {
-            $0.centerY.equalToSuperview()
-            $0.trailing.equalToSuperview().inset(16)
-            $0.height.equalTo(20)
-        }
-
+    @objc
+    func btnTap(_ sender: UIButton) {
+        sender.isSelected.toggle()
+        print("toggle")
+//        if sender.isSelected {
+//            checkImg.image = UIImage(systemName: "checkmark.circle.fill")
+//            checkImg.tintColor = ColorManager.General.mainPurple.rawValue
+//        } else {
+//            checkImg.image = UIImage(systemName: "checkmark.circle")
+//            checkImg.tintColor = .lightGray
+//        }
     }
 }
