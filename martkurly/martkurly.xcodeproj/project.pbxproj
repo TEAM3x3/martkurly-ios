@@ -760,10 +760,10 @@
 			children = (
 				AF97A39C2506866500BD49CA /* Constants.swift */,
 				AF9C3C5E24ECE2050055E7C5 /* Extensions.swift */,
-				AF9C3C7924ED58660055E7C5 /* ShoppingCartSingleton.swift */,
 				AF97A398250685F700BD49CA /* KurlyService.swift */,
 				AF85EC51252799A900A75D3A /* ReviewService.swift */,
 				AF85EC5425279E3700A75D3A /* AddressService.swift */,
+				AF9C3C7924ED58660055E7C5 /* ShoppingCartSingleton.swift */,
 				AF92F95A2511175A00C12965 /* TimerSingleton.swift */,
 			);
 			path = Utils;
