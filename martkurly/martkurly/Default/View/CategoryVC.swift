@@ -47,7 +47,7 @@ class CategoryVC: UIViewController {
     func requestCategoryList() {
         // 카테고리 목록 가져오기
         self.showIndicate()
-        CurlyService.shared.requestCurlyCategoryList { categories in
+        KurlyService.shared.requestCurlyCategoryList { categories in
             self.stopIndicate()
             self.categoryList = categories
         }
@@ -220,7 +220,7 @@ extension CategoryVC: CustomCellDelegate {
 
             group.enter()
             queue.async {
-                CurlyService.shared.requestTypeProdcuts(type: type) { products in
+                KurlyService.shared.requestTypeProdcuts(type: type) { products in
                     self.categoryList[categoryNumbering].types[index].products = products
                     group.leave()
                 }

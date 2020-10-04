@@ -23,10 +23,13 @@ class MyKurlyVC: UIViewController {
     private let bottomBarView = UIView().then {
         $0.backgroundColor = .backgroundGray
     }
+
     private var isSignedIn = false
     private var price = "0" // 적립금
     private var coupon = "0" // 쿠폰
     private var nextVC = UIViewController()
+
+    private var nickname = UserDefaults.standard.string(forKey: "nickname")
 
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -39,6 +42,7 @@ class MyKurlyVC: UIViewController {
         setNavigationBarStatus(type: .purpleType, isShowCart: true, leftBarbuttonStyle: .none, titleText: StringManager.MyKurly.title.rawValue)
         checkSignInStatus()
         updateViews(newValue: isSignedIn)
+        setNickname()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -143,7 +147,6 @@ class MyKurlyVC: UIViewController {
     }
 
     private func updateViews(newValue: Bool) {
-        print(#function, newValue)
         removeConstrains()
         switch newValue {
         case true:
@@ -182,11 +185,6 @@ class MyKurlyVC: UIViewController {
             }
         }
         tableView.reloadData()
-//        contentView.snp.updateConstraints {
-//            $0.height.equalTo(bottomBarView.frame.maxY)
-//        }
-        print("TableView Height: ", tableView.frame.maxY)
-        print(bottomBarView.frame.maxY)
     }
 
     private func checkSignInStatus() {
@@ -209,10 +207,20 @@ class MyKurlyVC: UIViewController {
     // MARK: - Helpers
     private func logout() {
         print(#function)
-        UserDefaults.standard.removeObject(forKey: "token")
+        ["token", "user"].forEach {
+            UserDefaults.standard.removeObject(forKey: $0)
+        }
         checkSignInStatus()
         updateViews(newValue: isSignedIn)
         scrollView.contentOffset = CGPoint(x: 0, y: 0)
+    }
+
+    private func setNickname() {
+        if isSignedIn {
+            nickname = User.shared.nickname
+            guard let nickname = nickname else { return }
+            infoView.userNameLabel.text = nickname
+        }
     }
 
     private func configureNextVCWhenSignedOut(indexPath: IndexPath) {

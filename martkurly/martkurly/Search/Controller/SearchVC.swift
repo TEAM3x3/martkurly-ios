@@ -59,7 +59,7 @@ class SearchVC: UIViewController {
 
     func fetchSearchProducts(keyword: String) {
         self.searchProducts.removeAll()
-        CurlyService.shared.requestSearchProducts(searchKeyword: keyword) { products in
+        KurlyService.shared.requestSearchProducts(searchKeyword: keyword) { products in
             if self.isEmptySearchText { return }
             self.searchType = .fileShort
             self.searchProducts = products
@@ -70,7 +70,7 @@ class SearchVC: UIViewController {
     // MARK: - Actions
 
     func tappedProduct(productID: Int) {
-        CurlyService.shared.requestProductDetailData(productID: productID) { productDetailData in
+        KurlyService.shared.requestProductDetailData(productID: productID) { productDetailData in
             let controller = ProductDetailVC()
             controller.productDetailData = productDetailData
             controller.hidesBottomBarWhenPushed = true
@@ -223,7 +223,7 @@ extension SearchVC: UITableViewDelegate {
             self.view.endEditing(true)
         case .fileShort:
             if searchProducts.isEmpty { break }
-            CurlyService.shared.requestProductDetailData(
+            KurlyService.shared.requestProductDetailData(
             productID: searchProducts[indexPath.row].id) { productDetailData in
                 let controller = ProductDetailVC()
                 controller.productDetailData = productDetailData

@@ -39,6 +39,10 @@ class ProductListView: UIView {
 
     var tappedProduct: ((Int) -> Void)?
     var products = [Product]() {
+        didSet { productDataSet() }
+    }
+
+    var filterProducts = [Product]() {
         didSet { productListCollectionView.reloadData() }
     }
 
@@ -55,6 +59,16 @@ class ProductListView: UIView {
     }
 
     // MARK: - Helpers
+
+    func productDataSet() {
+        switch headerType {
+        case .fastAreaAndNot: venusSortProducts()
+        case .fastAreaAndCondition: newerSortProducts()
+        case .fastAreaAndBenefit: benefitSortProducts()
+        case .fastAreaAndRecommend: popularSortProducts()
+        case .notSort: break
+        }
+    }
 
     func configureUI() {
         self.backgroundColor = ColorManager.General.backGray.rawValue
@@ -114,14 +128,14 @@ class ProductListView: UIView {
 
 extension ProductListView: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return products.count
+        return filterProducts.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: ProductCell.identifier,
             for: indexPath) as! ProductCell
-        cell.product = products[indexPath.item]
+        cell.product = filterProducts[indexPath.item]
         return cell
     }
 
@@ -143,7 +157,7 @@ extension ProductListView: UICollectionViewDataSource {
 
 extension ProductListView: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let productID = products[indexPath.item].id
+        let productID = filterProducts[indexPath.item].id
         tappedProduct?(productID)
     }
 
@@ -207,13 +221,80 @@ extension ProductListView: UITableViewDelegate {
         switch seletedType {
         case .fastArea:
             fastAreaSelectType = FastAreaType(rawValue: sortKey)!
+
+            switch fastAreaSelectType {
+            case .샛별지역상품: venusSortProducts()
+            case .택배지역상품: basicSortProducts()
+            }
         case .condition:
             conditionSelectType = ConditionType(rawValue: sortKey)!
+
+            switch conditionSelectType {
+            case .신상품순: newerSortProducts()
+            case .인기상품순: popularSortProducts()
+            case .낮은가격순: priceSortProducts(isAscending: true)
+            case .높은가격순: priceSortProducts(isAscending: false)
+            }
         case .benefit:
             benefitSelectType = BenefitType(rawValue: sortKey)!
+
+            switch benefitSelectType {
+            case .혜택순: benefitSortProducts()
+            case .신상품순: newerSortProducts()
+            case .인기상품순: popularSortProducts()
+            case .낮은가격순: priceSortProducts(isAscending: true)
+            case .높은가격순: priceSortProducts(isAscending: false)
+            }
         case .recommend:
             recommendSelectType = RecommendType(rawValue: sortKey)!
+
+            switch recommendSelectType {
+            case .추천순: popularSortProducts()
+            case .신상품순: newerSortProducts()
+            case .인기상품순: popularSortProducts()
+            case .낮은가격순: priceSortProducts(isAscending: true)
+            case .높은가격순: priceSortProducts(isAscending: false)
+            }
         }
+    }
+
+    func venusSortProducts() {
+        filterProducts = products.filter {
+            return $0.transfer?.contains("샛별배송") ?? false
+        }
+    }
+
+    func basicSortProducts() {
+        filterProducts = products.filter {
+            return $0.transfer?.contains("택배배송") ?? false
+        }
+    }
+
+    func benefitSortProducts() {
+        filterProducts = products.sorted(by: { (lhs, rhs) in
+            return lhs.tagging.count > rhs.tagging.count
+        })
+    }
+
+    func priceSortProducts(isAscending: Bool) {
+        filterProducts = products.sorted(by: { (lhs, rhs) in
+            let leftPrice = lhs.discount_price != nil ? lhs.discount_price! : lhs.price
+            let rightPrice = rhs.discount_price != nil ? rhs.discount_price! : rhs.price
+
+            return isAscending ? leftPrice < rightPrice : leftPrice > rightPrice
+        })
+    }
+
+    func popularSortProducts() {
+        filterProducts = products.sorted(by: { (lhs, rhs) in
+            return lhs.stock.count > rhs.stock.count
+        })
+    }
+
+    func newerSortProducts() {
+        filterProducts = products.sorted(by: { (lhs, rhs) in
+            return lhs.stock.updated_at > rhs.stock.updated_at
+        })
     }
 }
 

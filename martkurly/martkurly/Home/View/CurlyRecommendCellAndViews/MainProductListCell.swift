@@ -14,7 +14,7 @@ class MainProductListCell: UITableViewCell {
 
     static let identifier = "MainProductListCell"
 
-    var productsDetailDatas = [ProductDetail]() {
+    var products = [Product]() {
         didSet { productCollectionView.reloadData() }
     }
 
@@ -173,7 +173,7 @@ class MainProductListCell: UITableViewCell {
 extension MainProductListCell: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         switch directionType {
-        case .horizontal: return productsDetailDatas.count
+        case .horizontal: return products.count
         case .vertical: return 3
         }
     }
@@ -184,7 +184,7 @@ extension MainProductListCell: UICollectionViewDataSource {
             let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: MainEachHProductCell.identifier,
                 for: indexPath) as! MainEachHProductCell
-            cell.productDetailData = productsDetailDatas[indexPath.item]
+            cell.product = products[indexPath.item]
             return cell
         case .vertical:
             let cell = collectionView.dequeueReusableCell(
@@ -236,7 +236,7 @@ extension MainProductListCell: UICollectionViewDelegateFlowLayout {
         case .horizontal:
             NotificationCenter.default
                 .post(name: .init(PRODUCT_DETAILVIEW_EVENT),
-                      object: productsDetailDatas[indexPath.item].id)
+                      object: products[indexPath.item].id)
         case .vertical:
             break
         }

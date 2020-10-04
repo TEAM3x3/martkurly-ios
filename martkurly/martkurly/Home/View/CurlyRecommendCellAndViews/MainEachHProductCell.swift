@@ -15,7 +15,7 @@ class MainEachHProductCell: UICollectionViewCell {
 
     static let identifier = "MainEachHProductCell"
 
-    var productDetailData: ProductDetail? {
+    var product: Product? {
         didSet { configure() }
     }
 
@@ -99,17 +99,18 @@ class MainEachHProductCell: UICollectionViewCell {
     }
 
     private let productSalePriceLabel = UILabel().then {
-        $0.text = "29,520원"
-        $0.textColor = .black
-        $0.font = .boldSystemFont(ofSize: 14)
-    }
-
-    private let productBasicPriceLabel = UILabel().then {
         $0.attributedText = NSAttributedString(
             string: "36,900원",
             attributes: [NSAttributedString.Key.strikethroughStyle: NSUnderlineStyle.single.rawValue,
                          NSAttributedString.Key.strikethroughColor: ColorManager.General.mainGray.rawValue,
-                         NSAttributedString.Key.foregroundColor: ColorManager.General.mainGray.rawValue])
+                         NSAttributedString.Key.foregroundColor: ColorManager.General.mainGray.rawValue,
+                         NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12)])
+    }
+
+    private let productBasicPriceLabel = UILabel().then {
+        $0.text = "29,520원"
+        $0.textColor = .black
+        $0.font = .boldSystemFont(ofSize: 14)
     }
 
     // MARK: - LifeCycle
@@ -184,8 +185,8 @@ class MainEachHProductCell: UICollectionViewCell {
     }
 
     func configure() {
-        guard let product = productDetailData else { return }
-        let viewModel = ProductDetailListViewModel(product: product)
+        guard let product = product else { return }
+        let viewModel = ProductListViewModel(product: product)
 
         productImageView.kf.setImage(with: viewModel.imageURL)
         productTitleLabel.text = product.title
