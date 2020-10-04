@@ -21,12 +21,11 @@ class MyKurlyDeliveryInfoVC: UIViewController {
     private lazy var deliveryAddressSearchView = imageViews[3]
     private lazy var deliveryTypeSelectionView = imageViews[4]
     private lazy var deliveryInfoView = imageViews[5]
+    private let deliverySelection = UIView()
     private let leftSelection = UIView()
     private let rightSelection = UIView()
     private var isDefault: Bool = true {
-        willSet {
-            changeImages(newValue: newValue)
-        }
+        willSet { changeImages(newValue: newValue) }
     }
 
     // MARK: - Lifecycle
@@ -54,6 +53,7 @@ class MyKurlyDeliveryInfoVC: UIViewController {
         setContraints()
         generateFixedImageViews()
         generateInteractionImageViews()
+        generateDeliverySelectionView()
         generateDeliveryTypeInterationViews()
         addUserInteractions()
     }
@@ -129,6 +129,15 @@ class MyKurlyDeliveryInfoVC: UIViewController {
                 $0.height.equalTo(height)
             }
             imageViews.append(imageView)
+        }
+    }
+
+    private func generateDeliverySelectionView() {
+        [deliverySelection].forEach {
+            imageViews[3].addSubview($0)
+        }
+        deliverySelection.snp.makeConstraints {
+            $0.edges.equalToSuperview()
         }
     }
 
