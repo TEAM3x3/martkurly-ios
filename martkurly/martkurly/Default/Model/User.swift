@@ -13,6 +13,7 @@ class User {
     static let shared = User()
     private init() {}
 
+    var id: Int? = 0
     var username: String? = ""
     var email: String? = ""
     var phone: String? = ""
@@ -21,10 +22,19 @@ class User {
 
     func loadData() {
         guard UserDefaults.standard.string(forKey: "token") != nil else { return }
-        username = (UserDefaults.standard.dictionary(forKey: "user")! as! [String: String])["username"]!
-        email = (UserDefaults.standard.dictionary(forKey: "user")! as! [String: String])["email"]!
-        phone = (UserDefaults.standard.dictionary(forKey: "user")! as! [String: String])["phone"]!
-        nickname = (UserDefaults.standard.dictionary(forKey: "user")! as! [String: String])["nickname"]!
-        gender = (UserDefaults.standard.dictionary(forKey: "user")! as! [String: String])["gender"]!
+        guard
+            let id = (UserDefaults.standard.dictionary(forKey: "user")!)["id"]! as? Int,
+            let username = (UserDefaults.standard.dictionary(forKey: "user")!)["username"]! as? String,
+            let email = (UserDefaults.standard.dictionary(forKey: "user")!)["email"]! as? String,
+            let phone = (UserDefaults.standard.dictionary(forKey: "user")!)["phone"]! as? String,
+            let nickname = (UserDefaults.standard.dictionary(forKey: "user")!)["nickname"]! as? String,
+            let gender = (UserDefaults.standard.dictionary(forKey: "user")!)["gender"]! as? String
+        else { print("DEBUG: Incorrect User Info"); return }
+        self.id = id
+        self.username = username
+        self.email = email
+        self.phone = phone
+        self.nickname = nickname
+        self.gender = gender
     }
 }
