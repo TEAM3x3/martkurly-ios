@@ -207,7 +207,7 @@ class SignInVC: UIViewController {
 
             UserDefaults.standard.set(token, forKey: "token")
             UserDefaults.standard.set(user, forKey: "user")
-            User.shared.loadData()
+            UserService.shared.loadData()
             print("Login Success")
             self.dismiss(animated: true, completion: nil)
         case false:

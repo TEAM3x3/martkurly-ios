@@ -97,7 +97,9 @@ class ShoppingCartView: UIView {
     }
 
     @objc func presentCart(_ gestureRecognizer: UITapGestureRecognizer) {
-        if var presentVC = UIApplication.shared.keyWindow?.rootViewController {
+
+//        UIApplication.shared.keyWindow?.rootViewController
+        if var presentVC = UIApplication.shared.windows[0].rootViewController {
             while let presentedViewController = presentVC.presentedViewController {
                 presentVC = presentedViewController
             }

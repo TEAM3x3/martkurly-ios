@@ -18,18 +18,19 @@ class DeliveryEditFooterView: UITableViewHeaderFooterView {
         $0.backgroundColor = .white
     }
 
-    private let deleteButton = UIButton(type: .system).then {
+    let deleteButton = UIButton(type: .system).then {
         $0.setTitle("삭제", for: .normal)
         $0.setTitleColor(.black, for: .normal)
         $0.setTitleColor(.lightGray, for: .disabled)
         $0.titleLabel?.font = .boldSystemFont(ofSize: 14)
     }
 
-    private let editButton = UIButton(type: .system).then {
+    let editButton = UIButton(type: .system).then {
         $0.setTitle("수정", for: .normal)
         $0.setTitleColor(.black, for: .normal)
         $0.setTitleColor(.lightGray, for: .disabled)
         $0.titleLabel?.font = .boldSystemFont(ofSize: 14)
+        $0.isEnabled = false
     }
 
     private let lineView = UIView().then {

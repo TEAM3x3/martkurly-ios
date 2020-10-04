@@ -22,11 +22,16 @@ class UserDeliverySettingVC: UIViewController {
         didSet { deliveryAddressTableView.reloadData() }
     }
 
+    private var userAddressList = [AddressModel]() {
+        didSet { deliveryAddressTableView.reloadData() }
+    }
+
     // MARK: - LifeCycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
+        requestUserAddressList()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -37,6 +42,16 @@ class UserDeliverySettingVC: UIViewController {
                                     titleText: "배송지 선택")
     }
 
+    // MARK: - API
+
+    func requestUserAddressList() {
+        self.showIndicate()
+        AddressService.shared.requestAddressList(userPK: 1) { addressList in
+            self.userAddressList = addressList
+            self.stopIndicate()
+        }
+    }
+
     // MARK: - Selectors
 
     @objc
@@ -45,6 +60,11 @@ class UserDeliverySettingVC: UIViewController {
         let naviVC =  UINavigationController(rootViewController: controller)
         naviVC.modalPresentationStyle = .fullScreen
         self.present(naviVC, animated: true)
+    }
+
+    @objc
+    func tappedDeliveryDelete(_ sender: UIButton) {
+        print(sender.tag)
     }
 
     // MARK: - Helpers
@@ -105,7 +125,7 @@ class UserDeliverySettingVC: UIViewController {
 
 extension UserDeliverySettingVC: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 5
+        return userAddressList.count
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -117,6 +137,7 @@ extension UserDeliverySettingVC: UITableViewDataSource {
             withIdentifier: DeliveryAddressCell.identifier,
             for: indexPath) as! DeliveryAddressCell
         cell.selectButton.isActive = selectAddressIndex == indexPath.section
+        cell.userAddress = userAddressList[indexPath.section]
         return cell
     }
 }
@@ -135,6 +156,10 @@ extension UserDeliverySettingVC: UITableViewDelegate {
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         let footerView = tableView.dequeueReusableHeaderFooterView(
             withIdentifier: DeliveryEditFooterView.identifier) as! DeliveryEditFooterView
+        footerView.deleteButton.tag = section
+        footerView.deleteButton.addTarget(self,
+                                          action: #selector(tappedDeliveryDelete(_:)),
+                                          for: .touchUpInside)
         return footerView
     }
 
