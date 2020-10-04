@@ -272,7 +272,7 @@ extension ProductListView: UITableViewDelegate {
 
     func benefitSortProducts() {
         filterProducts = products.sorted(by: { (lhs, rhs) in
-            return lhs.tagging.count > rhs.tagging.count
+            return lhs.sales?.discount_rate ?? 0 > rhs.sales?.discount_rate ?? 0
         })
     }
 

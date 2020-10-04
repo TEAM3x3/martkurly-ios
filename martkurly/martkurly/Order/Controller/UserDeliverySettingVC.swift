@@ -64,7 +64,10 @@ class UserDeliverySettingVC: UIViewController {
 
     @objc
     func tappedDeliveryDelete(_ sender: UIButton) {
-        print(sender.tag)
+        self.showIndicate()
+        AddressService.shared.deleteAddress(addressID: sender.tag) {
+            self.requestUserAddressList()
+        }
     }
 
     // MARK: - Helpers
@@ -156,7 +159,7 @@ extension UserDeliverySettingVC: UITableViewDelegate {
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         let footerView = tableView.dequeueReusableHeaderFooterView(
             withIdentifier: DeliveryEditFooterView.identifier) as! DeliveryEditFooterView
-        footerView.deleteButton.tag = section
+        footerView.deleteButton.tag = section + 1
         footerView.deleteButton.addTarget(self,
                                           action: #selector(tappedDeliveryDelete(_:)),
                                           for: .touchUpInside)

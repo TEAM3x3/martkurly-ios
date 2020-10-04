@@ -142,7 +142,7 @@ class MainImageCell: UICollectionViewCell {
 
     let imageView = UIImageView().then {
         $0.image = UIImage(named: "TestImage")
-        $0.contentMode = .scaleToFill
+        $0.contentMode = .scaleAspectFit
         $0.clipsToBounds = true
     }
 

@@ -130,7 +130,10 @@ class RegisterDeliveryVC: UIViewController {
         deliverySpaceData.detail_address = detailAddress ?? ""
         deliverySpaceData.status = isDefaultAddress ? "T" : "F"
 
-        print(deliverySpaceData)
+        self.showIndicate()
+        AddressService.shared.registerAddress(delivery: deliverySpaceData) {
+            self.stopIndicate()
+        }
     }
 
     // MARK: - Helpers

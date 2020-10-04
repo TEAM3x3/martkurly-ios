@@ -9,6 +9,7 @@
 import Foundation
 
 struct UserModel {
+    let token: String
     let username: String
     let email: String
     let phone: String
@@ -22,16 +23,11 @@ class UserService {
 
     var currentUser: UserModel?
 
-    var username: String? = ""
-    var email: String? = ""
-    var phone: String? = ""
-    var nickname: String? = ""
-    var gender: String? = ""
-
     func loadData() {
-        guard UserDefaults.standard.string(forKey: "token") != nil,
+        guard let token = UserDefaults.standard.string(forKey: "token"),
               let userData = UserDefaults.standard.dictionary(forKey: "user") as? [String: String] else { return }
-        currentUser = UserModel(username: userData["username"] ?? "",
+        currentUser = UserModel(token: token,
+                                username: userData["username"] ?? "",
                                 email: userData["email"] ?? "",
                                 phone: userData["phone"] ?? "",
                                 nickname: userData["nickname"] ?? "",
