@@ -305,6 +305,7 @@ class PriceView: UITableViewCell {
     }
 
     func configure(sumCount: Int, allSale: Int, ship: Int) {
+
         var sum: NSAttributedString {
             let sumTotalPriceAttributes: [NSAttributedString.Key: Any] = [
                 .font: UIFont.systemFont(ofSize: 12),
@@ -323,9 +324,15 @@ class PriceView: UITableViewCell {
                 .foregroundColor: UIColor.black
             ]
 
-            return NSMutableAttributedString(
-                string: "-" + (formatter.string(for: allSale as NSNumber) ?? "0"),
-                attributes: saleAttributes)
+            if allSale > 0 {
+                return NSMutableAttributedString(
+                    string: "-" + (formatter.string(for: allSale as NSNumber) ?? "0"),
+                    attributes: saleAttributes)
+            } else {
+                return NSMutableAttributedString(
+                    string: (formatter.string(for: allSale as NSNumber) ?? "0"),
+                    attributes: saleAttributes)
+            }
 
         }
 
@@ -355,6 +362,9 @@ class PriceView: UITableViewCell {
                 $0.isHidden = true
             }
         } else {
+            [freeShipMoney1, freeShipMoney2, freeShipMoney3].forEach {
+                $0.isHidden = false
+            }
             var freeShip: NSAttributedString {
                 let saleAttributes: [NSAttributedString.Key: Any] = [
                     .font: UIFont.systemFont(ofSize: 12),

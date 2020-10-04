@@ -28,7 +28,7 @@ struct Cart: Decodable {
     struct Goods: Decodable {
         let id: Int
         let title: String
-        let packing_status: String
+        let packing_status: String?
         let price: Int
         let img: String
         let sales: Sales?
