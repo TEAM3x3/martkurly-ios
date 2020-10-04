@@ -1,5 +1,5 @@
 PODS:
-  - SwiftLint (0.40.0)
+  - SwiftLint (0.40.3)
 
 DEPENDENCIES:
   - SwiftLint
@@ -9,7 +9,7 @@ SPEC REPOS:
     - SwiftLint
 
 SPEC CHECKSUMS:
-  SwiftLint: 4154893c73a4c52d6240195507eb7a3e3c64087e
+  SwiftLint: dfd554ff0dff17288ee574814ccdd5cea85d76f7
 
 PODFILE CHECKSUM: 81be15034d2d19d5743d64ade6ce5c2bd374322b
 
