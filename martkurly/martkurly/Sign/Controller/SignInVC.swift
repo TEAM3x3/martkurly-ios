@@ -13,7 +13,9 @@ class SignInVC: UIViewController {
     // MARK: - Properties
     private lazy var topBar = CustomNavigationBarView(title: StringManager.Sign.login.rawValue, viewController: self)
     private let idTextField = UserTextFieldView(placeholder: StringManager.Sign.idTextField.rawValue, fontSize: 15)
-    private let pwTextField = UserTextFieldView(placeholder: StringManager.Sign.pwTextField.rawValue, fontSize: 15)
+    private let pwTextField = UserTextFieldView(placeholder: StringManager.Sign.pwTextField.rawValue, fontSize: 15).then {
+        $0.textField.isSecureTextEntry = true
+    }
     private let loginButton = KurlyButton(title: StringManager.Sign.login.rawValue, style: .purple)
 
     private let forgotIDButton = UIButton().then {
