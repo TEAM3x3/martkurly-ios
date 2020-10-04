@@ -189,27 +189,25 @@ class SignInVC: UIViewController {
         case true:
             guard let data = data else { return }
             let token = data.token
-            let user = data.user
+            let userData = data.user
 
-            let username = user.username
-            let email = user.email
-            let phone = user.phone
-            let nickname = user.nickname
-            let gender = user.gender
+            let username = userData.username
+            let email = userData.email
+            let phone = userData.phone
+            let nickname = userData.nickname
+            let gender = userData.gender
+
+            let user = [
+                "username": username,
+                "email": email,
+                "phone": phone,
+                "nickname": nickname,
+                "gender": gender
+            ]
 
             UserDefaults.standard.set(token, forKey: "token")
-            UserDefaults.standard.set(username, forKey: "username")
-            UserDefaults.standard.set(email, forKey: "email")
-            UserDefaults.standard.set(phone, forKey: "phone")
-            UserDefaults.standard.set(nickname, forKey: "nickname")
-            UserDefaults.standard.set(gender, forKey: "gender")
-
-//            print("UserDefaults token: ", UserDefaults.standard.string(forKey: "token"))
-//            print("UserDefaults username: ", UserDefaults.standard.string(forKey: "username"))
-//            print("UserDefaults email: ", UserDefaults.standard.string(forKey: "email"))
-//            print("UserDefaults phone: ", UserDefaults.standard.string(forKey: "phone"))
-//            print("UserDefaults nickname: ", UserDefaults.standard.string(forKey: "nickname"))
-//            print("UserDefaults gender: ", UserDefaults.standard.string(forKey: "gender"))
+            UserDefaults.standard.set(user, forKey: "user")
+            User.shared.loadData()
             print("Login Success")
             self.dismiss(animated: true, completion: nil)
         case false:

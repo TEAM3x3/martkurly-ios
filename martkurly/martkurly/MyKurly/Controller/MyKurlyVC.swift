@@ -207,7 +207,7 @@ class MyKurlyVC: UIViewController {
     // MARK: - Helpers
     private func logout() {
         print(#function)
-        ["token", "username", "email", "phone", "nickname", "gender"].forEach {
+        ["token", "user"].forEach {
             UserDefaults.standard.removeObject(forKey: $0)
         }
         checkSignInStatus()
@@ -217,7 +217,7 @@ class MyKurlyVC: UIViewController {
 
     private func setNickname() {
         if isSignedIn {
-            nickname = UserDefaults.standard.string(forKey: "nickname")
+            nickname = User.shared.nickname
             guard let nickname = nickname else { return }
             infoView.userNameLabel.text = nickname
         }
