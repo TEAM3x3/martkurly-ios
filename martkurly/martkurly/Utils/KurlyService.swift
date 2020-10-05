@@ -119,15 +119,46 @@ struct KurlyService {
         }
     }
 
-    // MARK: - 상품 검색 목록 가져오기
+    // MARK: - 최근 검색어 가져오기
 
-    func requestSearchProducts(searchKeyword: String, completion: @escaping([Product]) -> Void) {
-        let headers: HTTPHeaders = ["Authorization": "token 88f0566e6db5ebaa0e46eae16f5a092610f46345"]
-        let parameter = ["word": searchKeyword]
+    func fetchRecentSearchWords() {
+        guard let currentUser = UserService.shared.currentUser else { return }
+        let requestURL = REF_USER + "/\(currentUser.id)" + "/search_word"
+
+        AF.request(requestURL, method: .get).responseJSON { response in
+            print(response)
+        }
+    }
+
+    // MARK: - 상품 검색 상품 목록 가져오기(저장)
+
+    func requestSaveSearchProducts(searchKeyword: String, completion: @escaping([Product]) -> Void) {
         var products = [Product]()
+        guard let currentUser = UserService.shared.currentUser else { return completion(products) }
+        let headers: HTTPHeaders = ["Authorization": currentUser.token]
+        let parameter = ["word": searchKeyword]
 
         AF.request(REF_SEARCH_WORD_PRODUCTS, method: .get, parameters: parameter, headers: headers).responseJSON { response in
-            print(response)
+            guard let jsonData = response.data else { return completion(products) }
+
+            do {
+                products = try self.decoder.decode([Product].self, from: jsonData)
+            } catch {
+                print("DEBUG: Search Products Request Error, ", error.localizedDescription)
+            }
+            completion(products)
+        }
+    }
+
+    // MARK: - 상품 검색 상품 목록 가져오기(타이핑)
+
+    func requestTypingSearchProducts(searchKeyword: String, completion: @escaping([Product]) -> Void) {
+        var products = [Product]()
+        guard let currentUser = UserService.shared.currentUser else { return completion(products) }
+        let headers: HTTPHeaders = ["Authorization": currentUser.token]
+        let parameter = ["word": searchKeyword]
+
+        AF.request(REF_SEARCH_TYPING_PRODUCTS, method: .get, parameters: parameter, headers: headers).responseJSON { response in
             guard let jsonData = response.data else { return completion(products) }
 
             do {
@@ -248,7 +279,7 @@ struct KurlyService {
             "address": address
         ]
 
-        let urlString = REF_SIGNUP
+        let urlString = REF_USER
         var request = URLRequest(url: URL(string: urlString)!)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -267,7 +298,7 @@ struct KurlyService {
 
     // MARK: - 아이디 중복확인
     func checkUsername(username: String, completionHandler: @escaping (String) -> Void) {
-        let urlString = REF_SIGNUP + "/check_username?username=" + username
+        let urlString = REF_USER + "/check_username?username=" + username
         print(urlString)
         let request = URLRequest(url: URL(string: urlString)!)
         AF.request(request).responseJSON { (response) in

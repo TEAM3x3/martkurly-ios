@@ -39,6 +39,7 @@ class SearchVC: UIViewController {
         super.viewDidLoad()
         configureUI()
         configureTableView()
+        fetchRecentSearchWords()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -57,9 +58,23 @@ class SearchVC: UIViewController {
 
     // MARK: - API
 
-    func fetchSearchProducts(keyword: String) {
+    func fetchRecentSearchWords() {
+        KurlyService.shared.fetchRecentSearchWords()
+    }
+
+    func fetchTypingSearchProducts(keyword: String) {
         self.searchProducts.removeAll()
-        KurlyService.shared.requestSearchProducts(searchKeyword: keyword) { products in
+        KurlyService.shared.requestTypingSearchProducts(searchKeyword: keyword) { products in
+            if self.isEmptySearchText { return }
+            self.searchType = .fileShort
+            self.searchProducts = products
+            self.productListView.products = products
+        }
+    }
+
+    func fetchWordSearchProducts(keyword: String) {
+        self.searchProducts.removeAll()
+        KurlyService.shared.requestSaveSearchProducts(searchKeyword: keyword) { products in
             if self.isEmptySearchText { return }
             self.searchType = .fileShort
             self.searchProducts = products
@@ -89,7 +104,7 @@ class SearchVC: UIViewController {
             productListView.isHidden = true
             return
         }
-        fetchSearchProducts(keyword: text)
+        fetchTypingSearchProducts(keyword: text)
         searchBar.cancelButton.isEnabled = true
     }
 
@@ -218,7 +233,7 @@ extension SearchVC: UITableViewDelegate {
 
             searchBar.searchTextField.text = searchKeyword
             searchBar.cancelButton.isEnabled = true
-            fetchSearchProducts(keyword: searchKeyword)
+            fetchTypingSearchProducts(keyword: searchKeyword)
             productListView.isHidden = false
             self.view.endEditing(true)
         case .fileShort:
@@ -252,6 +267,10 @@ extension SearchVC: UITextFieldDelegate {
         if isEmptySearchText { return false }
         productListView.isHidden = false
         self.view.endEditing(true)
+
+        if (textField.text ?? "").isEmpty {
+            fetchWordSearchProducts(keyword: textField.text!)
+        }
         return true
     }
 }

@@ -29,3 +29,16 @@ enum SearchType {
         }
     }
 }
+
+struct SearchModel: Decodable {
+    let id: Int
+    let user: Int
+    let keyword: Keyword
+
+    struct Keyword: Decodable {
+        let id: Int
+        let name: String
+        let count: Int
+        let updated_at: String
+    }
+}
