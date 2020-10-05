@@ -14,7 +14,7 @@ class CartProductView: UITableViewCell {
     // MARK: - Properties
     static let identifier = "CartProductView"
 
-    var cartItems: Cart.Items? {
+    var cartItems: CartItem? {
         didSet {
             configure()
         }

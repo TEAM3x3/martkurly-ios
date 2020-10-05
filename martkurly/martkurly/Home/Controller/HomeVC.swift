@@ -293,8 +293,7 @@ extension HomeVC: UICollectionViewDelegateFlowLayout {
     func categorySelected(item: Int) {
         let indexPath = IndexPath(item: item, section: 0)
         categoryMenuCollectionView.selectItem(at: indexPath,
-                                              animated: true,
-                                              scrollPosition: .centeredHorizontally)
+                                              animated: true, scrollPosition: .centeredHorizontally)
         categoryMenuCollectionView.selectItem(at: nil,
                                               animated: false,
                                               scrollPosition: .centeredHorizontally)
@@ -304,8 +303,8 @@ extension HomeVC: UICollectionViewDelegateFlowLayout {
 //        naviVC.modalPresentationStyle = .fullScreen
 //        self.present(naviVC, animated: true)
 
-        let controller = ProductOrderVC()
-        controller.hidesBottomBarWhenPushed = true
-        self.navigationController?.pushViewController(controller, animated: true)
+//        let controller = ProductOrderVC()
+//        controller.hidesBottomBarWhenPushed = true
+//        self.navigationController?.pushViewController(controller, animated: true)
     }
 }

@@ -50,7 +50,7 @@ class CartVC: UIViewController {
             print(newValue.sorted())
         }
     }
-
+    
     private var headerCell = AllSelectView()
     private var cells = [CartProductView]()
     private var itemNumber = [Int]()

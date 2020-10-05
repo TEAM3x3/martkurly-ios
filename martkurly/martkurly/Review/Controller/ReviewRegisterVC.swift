@@ -17,6 +17,10 @@ class ReviewRegisterVC: UIViewController {
     private let sideInsetValue: CGFloat = 12
     private let lineInsetValue: CGFloat = 24
 
+    var reviewItem: CartItem? {
+        didSet { configure() }
+    }
+
     private let reviewRegisterScrollView = UIScrollView().then {
         $0.backgroundColor = .clear
     }
@@ -42,6 +46,24 @@ class ReviewRegisterVC: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         configureNavigationBar()
+    }
+
+    // MARK: - Selectors
+
+    @objc
+    func tappedRegisterButton() {
+        guard let reviewItem = reviewItem else { return }
+        let titleText = reviewRegisterView.reviewTitleText
+        let contentsText = reviewRegisterView.reviewContentsText
+
+        self.showIndicate()
+        ReviewService.shared.writeProductReivew(
+            reviewTitle: titleText,
+            reviewContents: contentsText,
+            reviewItem: reviewItem) {
+            self.stopIndicate()
+            self.dismiss(animated: true, completion: nil)
+        }
     }
 
     // MARK: - Actions
@@ -114,15 +136,25 @@ class ReviewRegisterVC: UIViewController {
                                     leftBarbuttonStyle: .dismiss,
                                     titleText: "후기 쓰기")
 
+        reviewRegisterView.reviewRegisterButton.addTarget(
+            self,
+            action: #selector(tappedRegisterButton),
+            for: .touchUpInside)
+
         let registerButton = UIBarButtonItem(
             title: "등록",
             style: .plain,
-            target: nil,
-            action: nil)
+            target: self,
+            action: #selector(tappedRegisterButton))
         registerButton.tintColor = .black
         registerButton.isEnabled = false
 
         self.navigationItem.rightBarButtonItem = registerButton
+    }
+
+    func configure() {
+        guard let reviewItem = reviewItem else { return }
+        reviewRegisterView.productTitleLabel.text = reviewItem.goods.title
     }
 }
 

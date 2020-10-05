@@ -326,10 +326,9 @@ struct KurlyService {
     // MARK: - 장바구니
 
     func setListCart(completion: @escaping([Cart]) -> Void) {
+        guard let token = UserDefaults.standard.string(forKey: "token") else { return }
+
         var cartList = [Cart]()
-
-        let token = UserDefaults.standard.string(forKey: "token")!
-
         let headers: HTTPHeaders = ["Authorization": "token " + token]
 
         AF.request(REF_CART_LOCAL, method: .get, headers: headers).responseJSON { response in
