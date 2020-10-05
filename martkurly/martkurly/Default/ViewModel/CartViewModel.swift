@@ -9,7 +9,7 @@
 import UIKit
 
 struct CartViewModel {
-    let cartItems: Cart.Items
+    let cartItems: CartItem
 
     // MARK: - 천단위
     let formatter = NumberFormatter().then {

@@ -14,13 +14,13 @@ enum ReviewsCategoryType: Int, CaseIterable {
 
     var description: String {
         switch self {
-        case .possibleReviews: return "작성가능 후기 (0)"
-        case .completeReviews: return "작성완료 후기 (0)"
+        case .possibleReviews: return "작성가능 후기"
+        case .completeReviews: return "작성완료 후기"
         }
     }
 
     static var categoryTitles: [String] {
-        return ["작성가능 후기 (0)", "작성완료 후기 (0)"]
+        return ["작성가능 후기", "작성완료 후기"]
     }
 }
 

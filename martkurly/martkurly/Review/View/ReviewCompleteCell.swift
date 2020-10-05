@@ -17,6 +17,10 @@ class ReviewCompleteCell: UITableViewCell {
     private let defaultInsetValue: CGFloat = 12
     private let lineInsetValue: CGFloat = 6
 
+    var reviewItem: ReviewModel? {
+        didSet { configure() }
+    }
+
     private let completeView = UIView().then {
         $0.backgroundColor = .white
     }
@@ -55,6 +59,7 @@ class ReviewCompleteCell: UITableViewCell {
         $0.textAlignment = .center
         $0.backgroundColor = .black
         $0.font = .boldSystemFont(ofSize: 14)
+        $0.isHidden = true
     }
 
     private lazy var reviewImageView = UIImageView().then {
@@ -143,5 +148,15 @@ class ReviewCompleteCell: UITableViewCell {
             $0.width.equalTo(64)
             $0.height.equalTo(52)
         }
+    }
+
+    func configure() {
+        guard let reviewItem = reviewItem else { return }
+        productTitleLabel.text = reviewItem.goods.title
+        reviewTitleLabel.text = reviewItem.title
+        reviewContentsLabel.text = reviewItem.content
+
+        let imageURL = URL(string: reviewItem.goods.img)
+        reviewImageView.kf.setImage(with: imageURL)
     }
 }
