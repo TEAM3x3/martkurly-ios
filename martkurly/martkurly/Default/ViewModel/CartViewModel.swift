@@ -99,7 +99,7 @@ struct CartViewModel {
         ]
 
         return NSAttributedString(
-            string: cartItems.goods.packing_status ?? "없음",
+            string: cartItems.goods.packing_status ?? "상온",
             attributes: statusText
         )
     }

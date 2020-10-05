@@ -25,12 +25,12 @@ class CartHeaderView: UIView {
     ]
 
     private let freezeAttributes: [NSAttributedString.Key: Any] = [
-        .font: UIFont.systemFont(ofSize: 10),
+        .font: UIFont.systemFont(ofSize: 12),
         .foregroundColor: UIColor.init(red: 107, green: 170, blue: 245)
     ]
 
     private let roomTemperatureAttributes: [NSAttributedString.Key: Any] = [
-        .font: UIFont.systemFont(ofSize: 10),
+        .font: UIFont.systemFont(ofSize: 12),
         .foregroundColor: UIColor.init(red: 220, green: 123, blue: 85)
     ]
 
@@ -77,7 +77,7 @@ class CartHeaderView: UIView {
         truckImg.snp.makeConstraints {
             $0.centerY.equalToSuperview()
             $0.leading.equalToSuperview().offset(16)
-            $0.width.height.equalTo(24)
+            $0.width.height.equalTo(20)
         }
 
         shipping.snp.makeConstraints {

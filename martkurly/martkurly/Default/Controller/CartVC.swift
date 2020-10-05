@@ -42,38 +42,12 @@ class CartVC: UIViewController {
         $0.backgroundColor = ColorManager.General.backGray.rawValue
     }
 
-//    private var allCheckingButton = [Cart.Items]() { // 전체선택 버튼
-//        didSet {
-//            tableV.reloadData()
-//        }
-//    }
-
     private var cartAllProduct = [Int]()
     private var tapBtnCnt = Set<Int>() {        // cell 셀 버튼 액션
         willSet {
             tableV.reloadData()
             cartAllProduct.append(contentsOf: tapBtnCnt)
             print(newValue.sorted())
-        }
-    }
-
-    private var checkingButton = true { // 각각의 셀 버튼
-        didSet {
-            tableV.reloadData()
-        }
-    }
-
-    private var selectBtnCount = [Cart.Goods]() {
-        didSet {
-            tableV.reloadData()
-        }
-    }
-
-    private var productBtn: IndexPath?
-
-    private var selectCount: Int = 0 {
-        didSet {
-            tableV.reloadData()
         }
     }
 
@@ -86,7 +60,6 @@ class CartVC: UIViewController {
         super.viewDidLoad()
         setConfigure()
         requestMainData()
-
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -100,7 +73,6 @@ class CartVC: UIViewController {
     }
 
     // MARK: - API
-
     private let group = DispatchGroup.init()
     private let queue = DispatchQueue.main
 
@@ -120,8 +92,12 @@ class CartVC: UIViewController {
         KurlyService.shared.setListCart { cartProduct in
             self.group.leave()
             self.cartProduct = cartProduct
-            for i in 0...cartProduct[0].items.count - 1 {
-                self.tapBtnCnt.insert(i)
+            if cartProduct.isEmpty == true {
+
+            } else {
+                for i in 0...cartProduct[0].items.count - 1 {
+                    self.tapBtnCnt.insert(i)
+                }
             }
         }
     }
@@ -165,8 +141,8 @@ class CartVC: UIViewController {
             $0.leading.trailing.equalToSuperview().offset(8).inset(8)
             $0.height.equalTo(55)
         }
-        button.addTarget(self, action: #selector(emptyBtnTap), for: .touchUpInside)
 
+        button.addTarget(self, action: #selector(emptyBtnTap), for: .touchUpInside)
     }
 
     @objc
@@ -177,7 +153,6 @@ class CartVC: UIViewController {
 
 // MARK: - DataSource / Delegate
 extension CartVC: UITableViewDataSource, UITableViewDelegate {
-
     func numberOfSections(in tableView: UITableView) -> Int {
         cartProduct.count + 1
     }
@@ -186,7 +161,6 @@ extension CartVC: UITableViewDataSource, UITableViewDelegate {
         if cartProduct.count >= 1 {
             switch section {
             case 0:
-
                 return cartProduct[section].items.count + 1
             default:
                 return 1
@@ -203,129 +177,126 @@ extension CartVC: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
-        switch cartProduct.count {
-        case 1:
-            switch indexPath.section {
-            case 0:
-                if indexPath.row == 0 {
-                    let cell = AllSelectView()
-                    cell.check.addTarget(self, action: #selector(allCartTapBtn), for: .touchUpInside)
-
-                    if cartProduct[indexPath.section].items.count == tapBtnCnt.count { // 전체선택 활성화
-                        cell.check.setImage(UIImage(systemName: "checkmark.circle.fill"), for: .normal)
-                        cell.check.tintColor = ColorManager.General.mainPurple.rawValue
-                        cell.isActive = false
-                    } else {
-                        cell.check.setImage(UIImage(systemName: "checkmark.circle"), for: .normal)
-                        cell.check.tintColor = .lightGray
-                        cell.isActive = true
-                    }
-
-                    if tapBtnCnt.isEmpty == true {
-                        cell.deleteBtn.addTarget(self, action: #selector(handlerSelectDeleteBtn), for: .touchCancel)
-                    } else {
-                        cell.deleteBtn.addTarget(self, action: #selector(handlerSelectDeleteBtn), for: .touchUpInside)
-                    }
-
-                    cell.configure(count: "(\(tapBtnCnt.count)/\(cartProduct[indexPath.section].items.count))")
-                    headerCell = cell
-                    return cell
-                } else {
-                    let cell = tableView.dequeueReusableCell(withIdentifier: CartProductView.identifier, for: indexPath) as! CartProductView
-                    cell.tag = indexPath.row - 1
-                    cell.checkBtn.tag = indexPath.row - 1
-                    cell.customTag = indexPath.row - 1
-
-                    cell.dismissBtn.tag = indexPath.row - 1
-                    cell.dismissBtn.addTarget(self, action: #selector(deleteBtn), for: .touchUpInside)
-
-                    itemNumber.append(cartProduct[indexPath.section].items[indexPath.row - 1].id)
-                    cell.cartItems = cartProduct[indexPath.section].items[indexPath.row - 1]
-
-                    cell.checkBtn.addTarget(self, action: #selector(cellTapBtn), for: .touchUpInside)
-
-                    cell.stepper.addButton.tag = indexPath.row
-                    cell.stepper.subtractButton.tag = indexPath.row
-
-                    cell.stepper.addButton.addTarget(self, action: #selector(handlerAddBtn), for: .touchUpInside)
-                    cell.stepper.subtractButton.addTarget(self, action: #selector(handlerMinusBtn), for: .touchUpInside)
-
-                    if tapBtnCnt.contains(indexPath.row - 1) {
-                        cell.isActive = true
-                    } else {
-                        cell.isActive = false
-                    }
-                    return cell
-                }
-            default:
-                if tapBtnCnt.isEmpty != true {
-                    let cell = PriceView()
-                    var sumTotalPrice: Int = 0 // 상품금액
-                    var disCountPrice: Int = 0 // 상품할인금액
-                    var shipPrice: Int = 0 //배송비
-                    var freeShipping: Int = 0 // 3000원 일지? 0원 일지?
-                    var orderBtnPrice: Int = 0 // 주문하기 버튼 가격
-
-                    for i in 0...tapBtnCnt.count - 1 {
-                        sumTotalPrice += cartProduct[0].items[i].discount_payment
-                        if cartProduct[0].items[i].goods.discount_price != nil,
-                           let salePrice = cartProduct[0].items[i].goods.discount_price {
-                            disCountPrice += (cartProduct[0].items[i].quantity * (cartProduct[0].items[i].goods.price - salePrice))
-                        }
-
-                        shipPrice = sumTotalPrice - disCountPrice
-                        if shipPrice > 40000 {
-                            freeShipping = 0
+            switch cartProduct.count {
+            case 1:
+                switch indexPath.section {
+                case 0:
+                    if indexPath.row == 0 {
+                        let cell = AllSelectView()
+                        if cartProduct[indexPath.section].items.count == tapBtnCnt.count, cartProduct[indexPath.section].items.isEmpty == false { // 전체선택 활성화
+                            cell.check.setImage(UIImage(systemName: "checkmark.circle.fill"), for: .normal)
+                            cell.check.tintColor = ColorManager.General.mainPurple.rawValue
+                            cell.isActive = false
                         } else {
-                            freeShipping = 3000
+                            cell.check.setImage(UIImage(systemName: "checkmark.circle"), for: .normal)
+                            cell.check.tintColor = .lightGray
+                            cell.isActive = true
+                        }
+
+                        if cartProduct[indexPath.section].items.isEmpty == false {
+                            cell.check.addTarget(self, action: #selector(allCartTapBtn), for: .touchUpInside)
+                        } else {
+                            cell.check.addTarget(self, action: #selector(allCartTapBtn), for: .touchCancel)
+                        }
+
+                        if tapBtnCnt.isEmpty == true {
+                            cell.deleteBtn.addTarget(self, action: #selector(handlerSelectDeleteBtn), for: .touchCancel)
+                        } else {
+                            cell.deleteBtn.addTarget(self, action: #selector(handlerSelectDeleteBtn), for: .touchUpInside)
+                        }
+
+                        cell.configure(count: "(\(tapBtnCnt.count)/\(cartProduct[indexPath.section].items.count))")
+                        headerCell = cell
+                        return cell
+                    } else {
+                        if cartProduct[indexPath.section].items.isEmpty == true {
+                            let cell = CartEmptyView()
+                            return cell
+                        } else {
+                            let cell = tableView.dequeueReusableCell(withIdentifier: CartProductView.identifier, for: indexPath) as! CartProductView
+                            cell.tag = indexPath.row - 1
+                            cell.checkBtn.tag = indexPath.row - 1
+                            cell.customTag = indexPath.row - 1
+
+                            cell.dismissBtn.tag = indexPath.row - 1
+                            cell.dismissBtn.addTarget(self, action: #selector(deleteBtn), for: .touchUpInside)
+
+                            itemNumber.append(cartProduct[indexPath.section].items[indexPath.row - 1].id)
+                            cell.cartItems = cartProduct[indexPath.section].items[indexPath.row - 1]
+
+                            cell.checkBtn.addTarget(self, action: #selector(cellTapBtn), for: .touchUpInside)
+
+                            cell.stepper.addButton.tag = indexPath.row
+                            cell.stepper.subtractButton.tag = indexPath.row
+
+                            cell.stepper.addButton.addTarget(self, action: #selector(handlerAddBtn), for: .touchUpInside)
+                            cell.stepper.subtractButton.addTarget(self, action: #selector(handlerMinusBtn), for: .touchUpInside)
+
+                            if tapBtnCnt.contains(indexPath.row - 1) {
+                                cell.isActive = true
+                            } else {
+                                cell.isActive = false
+                            }
+                            return cell
                         }
                     }
-//                    tapBtnCnt.forEach {
-//                        sumTotalPrice += cartProduct[0].items[$0].discount_payment
-//                        if cartProduct[0].items[$0].goods.discount_price != nil,
-//                           let salePrice = cartProduct[0].items[$0].goods.discount_price {
-//                            disCountPrice += (cartProduct[0].items[$0].quantity * (cartProduct[0].items[$0].goods.price - salePrice))
-//                        }
-//
-//                        shipPrice = sumTotalPrice - disCountPrice
-//                        if shipPrice > 40000 {
-//                            freeShipping = 0
-//                        } else {
-//                            freeShipping = 3000
-//                        }
-//                    }
-                    orderBtnPrice = sumTotalPrice - disCountPrice + freeShipping
+                default:
+                    if tapBtnCnt.isEmpty != true {
+                        let cell = PriceView()
+                        var sumTotalPrice: Int = 0 // 상품금액
+                        var disCountPrice: Int = 0 // 상품할인금액
+                        var shipPrice: Int = 0 //배송비
+                        var freeShipping: Int = 0 // 3000원 일지? 0원 일지?
+                        var orderBtnPrice: Int = 0 // 주문하기 버튼 가격
 
-                    let priceStr = NSMutableAttributedString(
-                        string: (formatter.string(for: orderBtnPrice as NSNumber) ?? "0" ),
-                        attributes: btnTotalAttributes)
+                        for i in 0...tapBtnCnt.count - 1 {
+                            sumTotalPrice += cartProduct[0].items[i].discount_payment
+                            if cartProduct[0].items[i].goods.discount_price != nil,
+                               let salePrice = cartProduct[0].items[i].goods.discount_price {
+                                disCountPrice += (cartProduct[0].items[i].quantity * (cartProduct[0].items[i].goods.price - salePrice))
+                            }
 
-                    let priceLabel = UILabel().then {
-                        $0.attributedText = priceStr
+                            shipPrice = sumTotalPrice - disCountPrice
+                            if shipPrice > 40000 {
+                                freeShipping = 0
+                            } else {
+                                freeShipping = 3000
+                            }
+                        }
+
+                        orderBtnPrice = sumTotalPrice - disCountPrice + freeShipping
+
+                        let priceStr = NSMutableAttributedString(
+                            string: (formatter.string(for: orderBtnPrice as NSNumber) ?? "0" ),
+                            attributes: btnTotalAttributes)
+
+                        let priceLabel = UILabel().then {
+                            $0.attributedText = priceStr
+                        }
+
+                        button.setTitle("\(priceLabel.text!)원" + " 주문하기", for: .normal)
+
+                        cell.configure(sumCount: sumTotalPrice, allSale: disCountPrice, ship: shipPrice)
+                        return cell
+                    } else {
+                        let cell = PriceView()
+                        button.setTitle("주문하기", for: .normal)
+                        return cell
                     }
-
-                    button.setTitle("\(priceLabel.text!)원" + " 주문하기", for: .normal)
-
-                    cell.configure(sumCount: sumTotalPrice, allSale: disCountPrice, ship: shipPrice)
+                }
+            default:
+                switch indexPath.section {
+                case 0:
+                    let cell = AllSelectView()
+                    cell.check.setImage(UIImage(systemName: "checkmark.circle"), for: .normal)
+                    cell.check.tintColor = .lightGray
                     return cell
-                } else {
-                    let cell = PriceView()
-                    button.setTitle("주문하기", for: .normal)
+                default:
+                    let cell = UITableViewCell()
                     return cell
                 }
             }
-        default:
-            switch indexPath.section {
-            case 0:
-                let cell = AllSelectView()
-                cell.check.setImage(UIImage(systemName: "checkmark.circle"), for: .normal)
-                cell.check.tintColor = .lightGray
-                return cell
-            default:
-                let cell = UITableViewCell()
-                return cell
-            }
-        }
+
     }
 
     // MARK: - Stepper 빼기 버튼
@@ -379,21 +350,30 @@ extension CartVC: UITableViewDataSource, UITableViewDelegate {
             for i in self.tapBtnCnt {
                 inArr.append(self.cartProduct[0].items[i].id)
             }
-            print(inArr)
+            print("inArr", inArr)
             KurlyService.shared.deleteCartData(goods: inArr)
-            print(self.cartProduct[0].items.count)
-            print(self.tapBtnCnt)
+            print("self.cartProduct[0].items.count", self.cartProduct[0].items.count)
+//            self.tapBtnCnt.sorted()
+            print("self.tapBtnCnt", self.tapBtnCnt)
+            if self.tapBtnCnt.count == self.cartProduct[0].items.count {
+                self.cartProduct[0].items.removeAll()
+                self.tapBtnCnt.removeAll()
+            } else {
 
-            for i in self.tapBtnCnt.reversed() {
-                self.cartProduct[0].items.remove(at: i)
+                for i in self.tapBtnCnt.reversed() {
+                    self.cartProduct[0].items.remove(at: i)
+                }
+
+                self.tapBtnCnt.removeAll()
+
+                for i in 0...self.cartProduct[0].items.count - 1 {
+                    self.tapBtnCnt.insert(i)
+                }
+
             }
 
-            self.tapBtnCnt.removeAll()
-
-            for i in 0...self.cartProduct[0].items.count - 1 {
-                self.tapBtnCnt.insert(i)
-            }
             self.tableV.reloadData()
+
         })
         let cancel = UIAlertAction(title: "취소", style: .cancel, handler: nil)
         alert.addAction(delete)
@@ -441,7 +421,6 @@ extension CartVC: UITableViewDataSource, UITableViewDelegate {
             headerCell.check.tintColor = .lightGray
             tapBtnCnt.removeAll()
         }
-        print(tapBtnCnt)
     }
 
     // MARK: - 상품만 선택 버튼
@@ -481,7 +460,7 @@ extension CartVC: UITableViewDataSource, UITableViewDelegate {
         case 1:
             let view = CartHeaderView()
             tapBtnCnt.forEach {
-                view.configure(text: cartProduct[0].items[$0].goods.packing_status ?? "없음")
+                view.configure(text: cartProduct[0].items[$0].goods.packing_status ?? "상온")
             }
             return view
         default:

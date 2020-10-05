@@ -346,7 +346,7 @@ struct KurlyService {
         }
     }
 
-    // MARK: - 장바구니 추가 및 삭제
+    // MARK: - 장바구니 상품 추가
 
     func pushCartData(goods: Int, quantity: Int, cart: Int) {
         let value = [
@@ -377,6 +377,38 @@ struct KurlyService {
         }
     }
 
+    // MARK: - 장바구니 상품 업데이트
+
+    func cartUpdata(goods: Int, quantity: Int, cart: Int) {
+        let value = [
+            "goods": goods,
+            "quantity": quantity,
+            "cart": cart
+        ]
+
+        let cartURL = URL(string: REF_CART_PUSH_LOCAL)!
+        let token = UserDefaults.standard.string(forKey: "token")!
+        print(token)
+
+        var request = URLRequest(url: cartURL)
+        let headers: HTTPHeaders = ["Authorization": "token " + token]
+
+        request.httpMethod = "PATCH"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpBody = try! JSONSerialization.data(withJSONObject: value)
+        request.headers = headers
+
+        AF.request(request).responseString { (response) in
+            switch response.result {
+            case .success(let data):
+                print("Success", data)
+            case .failure(let error):
+                print("Faulure", error)
+            }
+        }
+    }
+
+    // MARK: - 장바구니 상품 삭제
     func deleteCartData(goods: [Int]) {
         let value = [
             "id": [goods]
@@ -389,7 +421,8 @@ struct KurlyService {
         urlResult.removeLast(1)
         print(urlResult)
 
-        let cartURL = URL(string: REF_CART_DELETE_LOCAL + "/\(urlResult)")!
+//        let cartURL = URL(string: REF_CART_DELETE_LOCAL + "/\(urlResult)")!
+        let cartURL = URL(string: REF_CART_DELETE_LOCAL + "/goods_delete")!
         let token = UserDefaults.standard.string(forKey: "token")!
 
         var request = URLRequest(url: cartURL)
@@ -408,26 +441,6 @@ struct KurlyService {
             case .failure(let error):
                 print("Faulure", error)
             }
-        }
-    }
-
-    // MARK: - 장바구니
-
-    func cartUpdate(completion: @escaping([Cart]) -> Void) {
-        let headers: HTTPHeaders = ["Authorization": "token 88f0566e6db5ebaa0e46eae16f5a092610f46345"]
-        var cartList = [Cart]()
-
-        AF.request(REF_CART, method: .get, headers: headers).responseJSON { response in
-            guard let jsonData = response.data else { print("Guard"); return completion(cartList) }
-            print(jsonData)
-            do {
-                let cartUpList = try self.decoder.decode(Cart.self, from: jsonData)
-                print(cartUpList)
-                cartList = [cartUpList]
-            } catch {
-                print("DEBUG: Cart List Request Error, ", error)
-            }
-            completion(cartList)
         }
     }
 }
