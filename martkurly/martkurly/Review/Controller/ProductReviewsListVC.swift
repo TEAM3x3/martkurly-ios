@@ -12,6 +12,9 @@ class ProductReviewsListVC: UIViewController {
 
     // MARK: - Properties
 
+    private var userPossibleReviews = [CartItem]()
+    private var userCompleteReviews = [ReviewModel]()
+
     private lazy var categoryMenuBar = CategoryMenuView(categoryType: .fixNonInsetTBLineStyle).then {
         $0.menuTitles = ReviewsCategoryType.categoryTitles
         $0.categorySelected = categorySelected(item:)
@@ -29,6 +32,9 @@ class ProductReviewsListVC: UIViewController {
         super.viewDidLoad()
         configureUI()
         configureCollectionView()
+        requestReviewsAPI()
+        requestPossibleReviews()
+        requestCompleteReviews()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -39,10 +45,68 @@ class ProductReviewsListVC: UIViewController {
                                     titleText: "상품 후기")
     }
 
+    // MARK: - API
+
+    private let group = DispatchGroup.init()
+    private let queue = DispatchQueue.main
+
+    func requestReviewsAPI() {
+        self.showIndicate()
+
+        requestPossibleReviews()
+        requestCompleteReviews()
+
+        group.notify(queue: queue) {
+            self.stopIndicate()
+            self.categoryMenuBar.menuTitles = [
+                "\(ReviewsCategoryType.possibleReviews.description) (\(self.userPossibleReviews.count))",
+                "\(ReviewsCategoryType.completeReviews.description) (\(self.userCompleteReviews.count))"
+            ]
+            self.categoryMenuBar.moveCategoryIndex = 0
+            self.categoryMenuCollectionView.reloadData()
+        }
+    }
+
+    func requestPossibleReviews() {
+        self.group.enter()
+        ReviewService.shared.requestUserPossibleReviews { cartItems in
+            self.group.leave()
+            self.userPossibleReviews = cartItems
+        }
+    }
+
+    func requestCompleteReviews() {
+        self.group.enter()
+        ReviewService.shared.requestUserCompleteReviews { reviews in
+            self.group.leave()
+            self.userCompleteReviews = reviews
+        }
+    }
+
     // MARK: - Actions
 
-    func reviewWriteEvent() {
-        print(#function)
+    func reviewWriteEvent(reviewItem: CartItem) {
+        let controller = ReviewRegisterVC()
+        controller.reviewItem = reviewItem
+        let naviVC = UINavigationController(rootViewController: controller)
+        naviVC.modalPresentationStyle = .fullScreen
+        self.present(naviVC, animated: true)
+    }
+
+    func moveProductDetailPage(productID: Int) {
+        self.showIndicate()
+        KurlyService.shared.requestProductDetailData(productID: productID) { productDetailData in
+            let controller = ProductDetailVC()
+            controller.productDetailData = productDetailData
+            controller.isNaviDismiss = true
+            let naviVC = UINavigationController(rootViewController: controller)
+            naviVC.modalPresentationStyle = .fullScreen
+            self.present(naviVC, animated: true, completion: nil)
+        }
+    }
+
+    func moveReviewDetailPage(reviewModel: ReviewModel) {
+        print(reviewModel)
     }
 
     // MARK: - Helpers
@@ -100,11 +164,16 @@ extension ProductReviewsListVC: UICollectionViewDataSource {
             let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: ReviewsWritePossibleCell.identifier,
                 for: indexPath) as! ReviewsWritePossibleCell
+            cell.reviewRegisterExecute = reviewWriteEvent
+            cell.moveProductDetailPage = moveProductDetailPage(productID:)
+            cell.reviewItems = userPossibleReviews
             return cell
         case .completeReviews:
             let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: ReviewsWriteCompleteCell.identifier,
                 for: indexPath) as! ReviewsWriteCompleteCell
+            cell.reviewItems = userCompleteReviews
+            cell.moveReviewDetailPage = moveReviewDetailPage(reviewModel:)
             return cell
         }
     }

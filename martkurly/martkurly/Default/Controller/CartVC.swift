@@ -63,7 +63,7 @@ class CartVC: UIViewController {
         }
     }
 
-    private var selectBtnCount = [Cart.Goods]() {
+    private var selectBtnCount = [Product]() {
         didSet {
             tableV.reloadData()
         }

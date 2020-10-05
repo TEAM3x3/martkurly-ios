@@ -27,15 +27,18 @@ struct AddressService {
             "detail_address": delivery.detail_address,
             "status": delivery.status,
             "receiving_place": delivery.receiving_place,
-            "entrance_password": delivery.entrance_password ?? "",
+            "entrance_password": delivery.entrance_password ?? "False",
             "free_pass": delivery.free_pass,
-            "etc": delivery.etc ?? "",
+            "etc": delivery.etc ?? "False",
             "message": delivery.message ?? true,
-            "extra_message": delivery.extra_message ?? ""
+            "extra_message": delivery.extra_message ?? "False"
         ] as [String: Any]
         print(parameters)
 
-        AF.request(registerRef, method: .post, parameters: parameters, headers: headers).responseJSON { response in
+        AF.request(registerRef, method: .post,
+                   parameters: parameters,
+                   encoding: JSONEncoding.default,
+                   headers: headers).responseJSON { response in
             print(response)
             completion()
         }

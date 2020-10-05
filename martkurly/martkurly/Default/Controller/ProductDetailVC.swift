@@ -31,6 +31,8 @@ class ProductDetailVC: UIViewController {
         didSet { categoryMenuCollectionView.reloadData() }
     }
 
+    var isNaviDismiss: Bool = false
+
     // MARK: - LifeCycle
 
     override func viewDidLoad() {
@@ -43,7 +45,7 @@ class ProductDetailVC: UIViewController {
         super.viewWillAppear(animated)
         self.setNavigationBarStatus(type: .whiteType,
                                     isShowCart: true,
-                                    leftBarbuttonStyle: .pop,
+                                    leftBarbuttonStyle: isNaviDismiss ? .dismiss : .pop,
                                     titleText: productDetailData?.title)
     }
 
@@ -53,7 +55,8 @@ class ProductDetailVC: UIViewController {
         guard let productDetailData = productDetailData else { return }
 
         self.showIndicate()
-        ReviewService.shared.requestProductReviews(productID: productDetailData.id) {
+        ReviewService.shared.requestProductReviews(productID: productDetailData.id) { reviews in
+            print(reviews)
             self.stopIndicate()
         }
     }
