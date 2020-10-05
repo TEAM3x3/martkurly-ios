@@ -30,7 +30,7 @@ enum SearchType {
     }
 }
 
-struct SearchModel: Decodable {
+struct RecentSearchModel: Decodable {
     let id: Int
     let user: Int
     let keyword: Keyword
@@ -41,4 +41,10 @@ struct SearchModel: Decodable {
         let count: Int
         let updated_at: String
     }
+}
+
+struct PopularSearchModel: Decodable {
+    let id: Int
+    let name: String
+    let count: Int
 }

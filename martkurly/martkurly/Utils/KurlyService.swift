@@ -119,14 +119,41 @@ struct KurlyService {
         }
     }
 
+    // MARK: - 인기 검색어 가져오기
+
+    func fetchPopularSearchWords(completion: @escaping([PopularSearchModel]) -> Void) {
+        var searchWords = [PopularSearchModel]()
+        guard let currentUser = UserService.shared.currentUser else { return completion(searchWords) }
+        let requestURL = REF_USER + "/\(currentUser.id)" + "/search_word/popular_word"
+
+        AF.request(requestURL, method: .get).responseJSON { response in
+            guard let jsonData = response.data else { return completion(searchWords) }
+
+            do {
+                searchWords = try self.decoder.decode([PopularSearchModel].self, from: jsonData)
+            } catch {
+                print("DEBUG: Popular Search Request Error, ", error.localizedDescription)
+            }
+            completion(searchWords)
+        }
+    }
+
     // MARK: - 최근 검색어 가져오기
 
-    func fetchRecentSearchWords() {
-        guard let currentUser = UserService.shared.currentUser else { return }
+    func fetchRecentSearchWords(completion: @escaping([RecentSearchModel]) -> Void) {
+        var searchWords = [RecentSearchModel]()
+        guard let currentUser = UserService.shared.currentUser else { return completion(searchWords) }
         let requestURL = REF_USER + "/\(currentUser.id)" + "/search_word"
 
         AF.request(requestURL, method: .get).responseJSON { response in
-            print(response)
+            guard let jsonData = response.data else { return completion(searchWords) }
+
+            do {
+                searchWords = try self.decoder.decode([RecentSearchModel].self, from: jsonData)
+            } catch {
+                print("DEBUG: Recent Search Request Error, ", error.localizedDescription)
+            }
+            completion(searchWords)
         }
     }
 

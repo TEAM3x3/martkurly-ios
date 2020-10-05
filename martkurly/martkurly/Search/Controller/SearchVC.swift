@@ -22,11 +22,12 @@ class SearchVC: UIViewController {
         didSet { resultTableView.reloadData() }
     }
 
+    private let refeshControl = UIRefreshControl()
     private let resultTableView = UITableView()
     private let productListView = ProductListView(headerType: .fastAreaAndNot)
 
-    private var recentArray: [String] = ["바나나", "애호박"]
-    private let popularArray: [String] = ["마스크팩", "햅쌀", "마스크"]
+    private var recentArray = [RecentSearchModel]()
+    private var popularArray = [PopularSearchModel]()
 
     var isEmptySearchText: Bool {
         guard let text = searchBar.searchTextField.text else { return true }
@@ -39,7 +40,7 @@ class SearchVC: UIViewController {
         super.viewDidLoad()
         configureUI()
         configureTableView()
-        fetchRecentSearchWords()
+        fetchSearchWords()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -58,8 +59,36 @@ class SearchVC: UIViewController {
 
     // MARK: - API
 
+    private let group = DispatchGroup.init()
+    private let queue = DispatchQueue.main
+
+    func fetchSearchWords() {
+        self.showIndicate()
+        fetchRecentSearchWords()
+        fetchPopularSearchWords()
+
+        group.notify(queue: queue) {
+            self.stopIndicate()
+            self.resultTableView.reloadData()
+        }
+    }
+
     func fetchRecentSearchWords() {
-        KurlyService.shared.fetchRecentSearchWords()
+        self.group.enter()
+        KurlyService.shared.fetchRecentSearchWords { searchWords in
+            self.group.leave()
+            self.recentArray = searchWords.sorted(by: { (lhs, rhs) -> Bool in
+                return lhs.keyword.updated_at > rhs.keyword.updated_at
+            })
+        }
+    }
+
+    func fetchPopularSearchWords() {
+        self.group.enter()
+        KurlyService.shared.fetchPopularSearchWords { searchWords in
+            self.group.leave()
+            self.popularArray = searchWords
+        }
     }
 
     func fetchTypingSearchProducts(keyword: String) {
@@ -117,6 +146,12 @@ class SearchVC: UIViewController {
         self.view.endEditing(true)
     }
 
+    @objc
+    func refreshTableView() {
+        fetchSearchWords()
+        resultTableView.refreshControl?.endRefreshing()
+    }
+
     // MARK: - Helpers
 
     func configureUI() {
@@ -167,6 +202,12 @@ class SearchVC: UIViewController {
         resultTableView.separatorStyle = .none
         resultTableView.rowHeight = 52
         resultTableView.isScrollEnabled = true
+        resultTableView.keyboardDismissMode = .interactive
+        resultTableView.refreshControl = refeshControl
+
+        refeshControl.addTarget(self,
+                                action: #selector(refreshTableView),
+                                for: .valueChanged)
 
         resultTableView.dataSource = self
         resultTableView.delegate = self
@@ -197,11 +238,11 @@ extension SearchVC: UITableViewDataSource {
 
         switch searchType {
         case .popular:
-            cell.resultLabel.text = popularArray[indexPath.row]
+            cell.resultLabel.text = popularArray[indexPath.row].name
         case .recent:
             cell.isEmptyRecentArray = recentArray.isEmpty ? true : false
             cell.resultLabel.text = recentArray.isEmpty ?
-                searchType.emptySentence : recentArray[indexPath.row]
+                searchType.emptySentence : recentArray[indexPath.row].keyword.name
         case .fileShort:
             cell.isEmptySearchArray = searchProducts.isEmpty ? true : false
             cell.resultLabel.text = searchProducts.isEmpty ?
@@ -229,7 +270,7 @@ extension SearchVC: UITableViewDelegate {
         switch searchType {
         case .popular, .recent:
             let searchKeyword = searchType == .popular ?
-                popularArray[indexPath.row] : recentArray[indexPath.row]
+                popularArray[indexPath.row].name : recentArray[indexPath.row].keyword.name
 
             searchBar.searchTextField.text = searchKeyword
             searchBar.cancelButton.isEnabled = true
@@ -268,7 +309,7 @@ extension SearchVC: UITextFieldDelegate {
         productListView.isHidden = false
         self.view.endEditing(true)
 
-        if (textField.text ?? "").isEmpty {
+        if !(textField.text ?? "").isEmpty {
             fetchWordSearchProducts(keyword: textField.text!)
         }
         return true
