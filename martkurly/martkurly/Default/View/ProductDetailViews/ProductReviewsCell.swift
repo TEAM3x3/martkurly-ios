@@ -16,10 +16,15 @@ class ProductReviewsCell: UICollectionViewCell {
 
     private let sideInsetValue: CGFloat = 12
 
+    var productReviews = [ReviewModel]() {
+        didSet { reviewsTableView.reloadData() }
+    }
+
     private let reviewWriteButton = KurlyButton(title: "후기 쓰기", style: .white)
     private let reviewsTableView = UITableView()
 
     var tappedWriteReviewEvent: (() -> Void)?
+    var tappedReviewDetail: ((ReviewModel) -> Void)?
 
     // MARK: - LifeCycle
 
@@ -89,12 +94,13 @@ class ProductReviewsCell: UICollectionViewCell {
 
 extension ProductReviewsCell: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 7
+        return productReviews.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(
             withIdentifier: ReviewCell.identifier, for: indexPath) as! ReviewCell
+        cell.productReview = productReviews[indexPath.row]
         return cell
     }
 
@@ -112,31 +118,8 @@ extension ProductReviewsCell: UITableViewDataSource {
 // MARK: - UITableViewDelegate
 
 extension ProductReviewsCell: UITableViewDelegate {
-
-}
-
-import UIKit
-
-class ReviewCell: UITableViewCell {
-
-    // MARK: - Properties
-
-    static let identifier = "ReviewCell"
-
-    // MARK: - LifeCycle
-
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        configureUI()
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    // MARK: - Helpers
-
-    func configureUI() {
-        self.backgroundColor = .systemRed
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.selectRow(at: nil, animated: true, scrollPosition: .none)
+        tappedReviewDetail?(productReviews[indexPath.row])
     }
 }

@@ -33,8 +33,6 @@ class ProductReviewsListVC: UIViewController {
         configureUI()
         configureCollectionView()
         requestReviewsAPI()
-        requestPossibleReviews()
-        requestCompleteReviews()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -105,8 +103,10 @@ class ProductReviewsListVC: UIViewController {
         }
     }
 
-    func moveReviewDetailPage(reviewModel: ReviewModel) {
-        print(reviewModel)
+    func moveReviewDetailPage(reviewData: ReviewModel) {
+        let controller = ReviewDetailVC()
+        controller.reviewData = reviewData
+        self.navigationController?.pushViewController(controller, animated: true)
     }
 
     // MARK: - Helpers
@@ -173,7 +173,7 @@ extension ProductReviewsListVC: UICollectionViewDataSource {
                 withReuseIdentifier: ReviewsWriteCompleteCell.identifier,
                 for: indexPath) as! ReviewsWriteCompleteCell
             cell.reviewItems = userCompleteReviews
-            cell.moveReviewDetailPage = moveReviewDetailPage(reviewModel:)
+            cell.moveReviewDetailPage = moveReviewDetailPage(reviewData:)
             return cell
         }
     }

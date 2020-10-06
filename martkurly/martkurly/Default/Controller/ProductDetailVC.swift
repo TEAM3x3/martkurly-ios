@@ -31,6 +31,10 @@ class ProductDetailVC: UIViewController {
         didSet { categoryMenuCollectionView.reloadData() }
     }
 
+    var productReviews = [ReviewModel]() {
+        didSet { categoryMenuCollectionView.reloadData() }
+    }
+
     var isNaviDismiss: Bool = false
 
     // MARK: - LifeCycle
@@ -56,7 +60,7 @@ class ProductDetailVC: UIViewController {
 
         self.showIndicate()
         ReviewService.shared.requestProductReviews(productID: productDetailData.id) { reviews in
-            print(reviews)
+            self.productReviews = reviews
             self.stopIndicate()
         }
     }
@@ -78,6 +82,12 @@ class ProductDetailVC: UIViewController {
         let naviVC = UINavigationController(rootViewController: controller)
         naviVC.modalPresentationStyle = .fullScreen
         self.present(naviVC, animated: true)
+    }
+
+    func moveReviewDetailPage(review: ReviewModel) {
+        let controller = ReviewDetailVC()
+        controller.reviewData = review
+        self.navigationController?.pushViewController(controller, animated: true)
     }
 
     // MARK: - Helpers
@@ -171,6 +181,8 @@ extension ProductDetailVC: UICollectionViewDataSource {
                 withReuseIdentifier: ProductReviewsCell.identifier,
                 for: indexPath) as! ProductReviewsCell
             cell.tappedWriteReviewEvent = productReviewWrite
+            cell.tappedReviewDetail = moveReviewDetailPage(review:)
+            cell.productReviews = productReviews
             return cell
         case .productInquiry:
             let cell = collectionView.dequeueReusableCell(

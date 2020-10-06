@@ -29,7 +29,7 @@ let REF_EVENT_GOODS = KURLY_EVENT_REF + "/"     // [홈] - [이벤트] 상세
 let KURLY_MAIN_EVENT_REF = KURLY_REF + "/mainEvent" // [홈] - [컬리추천] - [최 상단 이벤트]
 let REF_MAIN_EVENT = KURLY_MAIN_EVENT_REF + "/"     // [홈] - [컬리추천] - [최 상단 이벤트] 상세
 
-let REF_SIGNUP = KURLY_REF + "/users"
+let REF_USER = KURLY_REF + "/users"
 let REF_SIGNIN = KURLY_REF + "/users/login"
 
 let REF_CATEGORY = KURLY_REF + "/category"
