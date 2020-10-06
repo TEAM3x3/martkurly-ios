@@ -50,7 +50,7 @@ class CartVC: UIViewController {
             print(newValue.sorted())
         }
     }
-    
+
     private var headerCell = AllSelectView()
     private var cells = [CartProductView]()
     private var itemNumber = [Int]()
@@ -209,36 +209,31 @@ extension CartVC: UITableViewDataSource, UITableViewDelegate {
                         headerCell = cell
                         return cell
                     } else {
-                        if cartProduct[indexPath.section].items.isEmpty == true {
-                            let cell = CartEmptyView()
-                            return cell
+                        let cell = tableView.dequeueReusableCell(withIdentifier: CartProductView.identifier, for: indexPath) as! CartProductView
+                        cell.tag = indexPath.row - 1
+                        cell.checkBtn.tag = indexPath.row - 1
+                        cell.customTag = indexPath.row - 1
+
+                        cell.dismissBtn.tag = indexPath.row - 1
+                        cell.dismissBtn.addTarget(self, action: #selector(deleteBtn), for: .touchUpInside)
+
+                        itemNumber.append(cartProduct[indexPath.section].items[indexPath.row - 1].id)
+                        cell.cartItems = cartProduct[indexPath.section].items[indexPath.row - 1]
+
+                        cell.checkBtn.addTarget(self, action: #selector(cellTapBtn), for: .touchUpInside)
+
+                        cell.stepper.addButton.tag = indexPath.row
+                        cell.stepper.subtractButton.tag = indexPath.row
+
+                        cell.stepper.addButton.addTarget(self, action: #selector(handlerAddBtn), for: .touchUpInside)
+                        cell.stepper.subtractButton.addTarget(self, action: #selector(handlerMinusBtn), for: .touchUpInside)
+
+                        if tapBtnCnt.contains(indexPath.row - 1) {
+                            cell.isActive = true
                         } else {
-                            let cell = tableView.dequeueReusableCell(withIdentifier: CartProductView.identifier, for: indexPath) as! CartProductView
-                            cell.tag = indexPath.row - 1
-                            cell.checkBtn.tag = indexPath.row - 1
-                            cell.customTag = indexPath.row - 1
-
-                            cell.dismissBtn.tag = indexPath.row - 1
-                            cell.dismissBtn.addTarget(self, action: #selector(deleteBtn), for: .touchUpInside)
-
-                            itemNumber.append(cartProduct[indexPath.section].items[indexPath.row - 1].id)
-                            cell.cartItems = cartProduct[indexPath.section].items[indexPath.row - 1]
-
-                            cell.checkBtn.addTarget(self, action: #selector(cellTapBtn), for: .touchUpInside)
-
-                            cell.stepper.addButton.tag = indexPath.row
-                            cell.stepper.subtractButton.tag = indexPath.row
-
-                            cell.stepper.addButton.addTarget(self, action: #selector(handlerAddBtn), for: .touchUpInside)
-                            cell.stepper.subtractButton.addTarget(self, action: #selector(handlerMinusBtn), for: .touchUpInside)
-
-                            if tapBtnCnt.contains(indexPath.row - 1) {
-                                cell.isActive = true
-                            } else {
-                                cell.isActive = false
-                            }
-                            return cell
+                            cell.isActive = false
                         }
+                        return cell
                     }
                 default:
                     if tapBtnCnt.isEmpty != true {
