@@ -11,10 +11,10 @@ import Foundation
 struct UserModel {
     let token: String
     let id: Int
-    let username: String
+    let username: String  // 아이디
     let email: String
     let phone: String
-    let nickname: String
+    let nickname: String // 이름
     let gender: String
 }
 

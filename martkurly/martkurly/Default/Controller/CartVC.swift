@@ -34,10 +34,6 @@ class CartVC: UIViewController {
 
     var button = KurlyButton(title: "주문하기", style: .purple)
 
-    private let navi = CartNaviView().then {
-        $0.dismissBtn.addTarget(self, action: #selector(dismissing(_:)), for: .touchUpInside)
-    }
-
     private let tableV = UITableView().then {
         $0.backgroundColor = ColorManager.General.backGray.rawValue
     }
@@ -64,13 +60,16 @@ class CartVC: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.navigationBar.isHidden = true
+        self.setNavigationBarStatus(type: .whiteType,
+                                    isShowCart: false,
+                                    leftBarbuttonStyle: .dismiss,
+                                    titleText: "장바구니")
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        navigationController?.navigationBar.isHidden = true
-    }
+//    override func viewWillDisappear(_ animated: Bool) {
+//        super.viewWillDisappear(animated)
+//        navigationController?.navigationBar.isHidden = false
+//    }
 
     // MARK: - API
     private let group = DispatchGroup.init()
@@ -102,12 +101,6 @@ class CartVC: UIViewController {
         }
     }
 
-    // MARK: - Action
-    @objc
-    func dismissing(_ sender: UIButton) {
-        dismiss(animated: true)
-    }
-
     // MARK: - UI
     private func setConfigure() {
         setConstraints()
@@ -115,17 +108,12 @@ class CartVC: UIViewController {
 
     private func setConstraints() {
         view.backgroundColor = ColorManager.General.backGray.rawValue
-        [navi, tableV, button].forEach {
+        [tableV, button].forEach {
             view.addSubview($0)
         }
 
-        navi.snp.makeConstraints {
-            $0.top.leading.trailing.equalToSuperview()
-            $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.top).offset(44)
-        }
-
         tableV.snp.makeConstraints {
-            $0.top.equalTo(navi.snp.bottom)
+            $0.top.equalTo(view.safeAreaLayoutGuide)
             $0.leading.trailing.equalTo(view)
             $0.bottom.equalTo(button.snp.top)
         }
@@ -147,7 +135,10 @@ class CartVC: UIViewController {
 
     @objc
     func emptyBtnTap(_ sender: UIButton) {
-        print("주문하기")
+        let order = ProductOrderVC()
+        order.orderData = cartProduct[0].items
+        navigationController?.pushViewController(order, animated: true)
+
     }
 }
 
@@ -174,9 +165,8 @@ extension CartVC: UITableViewDataSource, UITableViewDelegate {
             }
         }
     }
-
+// MARK: - CellForRowAt
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-
             switch cartProduct.count {
             case 1:
                 switch indexPath.section {
@@ -306,13 +296,19 @@ extension CartVC: UITableViewDataSource, UITableViewDelegate {
             guard count > 1 else {
                 return
             }
-
             cartProduct[0].items[tag - 1].quantity = count - 1
 
             let total = cell.productTotal
             let productPrice = cell.product
             cell.totalPrice.text = "\(total + productPrice)"
             cartProduct[0].items[tag - 1].discount_payment = total - productPrice
+
+            let goods = cell.cartItems!.id
+            let quantity = count - 1
+            let cart = 1
+
+            KurlyService.shared.cartUpdata(goods: goods, quantity: quantity, cart: cart)
+
         }
     }
 
@@ -332,7 +328,13 @@ extension CartVC: UITableViewDataSource, UITableViewDelegate {
             cell.totalPrice.text = "\(total + productPrice)"
             cartProduct[0].items[tag - 1].discount_payment = total + productPrice
 
+            let goods = cell.cartItems!.id
+            let quantity = count + 1
+            let cart = 1
+
+            KurlyService.shared.cartUpdata(goods: goods, quantity: quantity, cart: cart)
         }
+
     }
 
     // MARK: - 선택 삭제 버튼
@@ -354,8 +356,7 @@ extension CartVC: UITableViewDataSource, UITableViewDelegate {
                 self.cartProduct[0].items.removeAll()
                 self.tapBtnCnt.removeAll()
             } else {
-
-                for i in self.tapBtnCnt.reversed() {
+                for i in self.tapBtnCnt.sorted().reversed() {
                     self.cartProduct[0].items.remove(at: i)
                 }
 
@@ -364,7 +365,6 @@ extension CartVC: UITableViewDataSource, UITableViewDelegate {
                 for i in 0...self.cartProduct[0].items.count - 1 {
                     self.tapBtnCnt.insert(i)
                 }
-
             }
 
             self.tableV.reloadData()
@@ -421,7 +421,7 @@ extension CartVC: UITableViewDataSource, UITableViewDelegate {
     // MARK: - 상품만 선택 버튼
     @objc
     func cellTapBtn(_ sender: UIButton) {
-        let tag = sender.tag // [0, 1] [0, 2] => [0, 0] [0, 1]
+        let tag = sender.tag
 
         let indexPath = IndexPath(row: tag + 1, section: 0)
 

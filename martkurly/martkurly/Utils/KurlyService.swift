@@ -381,7 +381,7 @@ struct KurlyService {
         }
     }
 
-    // MARK: - 장바구니
+    // MARK: - 장바구니 속 상품
 
     func setListCart(completion: @escaping([Cart]) -> Void) {
         guard let token = UserDefaults.standard.string(forKey: "token") else { return }
@@ -443,7 +443,9 @@ struct KurlyService {
             "cart": cart
         ]
 
-        let cartURL = URL(string: REF_CART_PUSH_LOCAL)!
+        let id = goods
+
+        let cartURL = URL(string: REF_CART_PUSH_LOCAL + "/\(id)")!
         let token = UserDefaults.standard.string(forKey: "token")!
         print(token)
 
@@ -467,9 +469,8 @@ struct KurlyService {
 
     // MARK: - 장바구니 상품 삭제
     func deleteCartData(goods: [Int]) {
-        let value = [
-            "id": [goods]
-        ]
+
+//        let value = [ "items": [goods] ]
 
         var urlResult = ""
         for i in goods {
@@ -477,6 +478,8 @@ struct KurlyService {
         }
         urlResult.removeLast(1)
         print(urlResult)
+
+        let value = ["items": urlResult]
 
 //        let cartURL = URL(string: REF_CART_DELETE_LOCAL + "/\(urlResult)")!
         let cartURL = URL(string: REF_CART_DELETE_LOCAL + "/goods_delete")!
