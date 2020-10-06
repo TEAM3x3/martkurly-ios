@@ -179,9 +179,12 @@ class MainEachHProductCell: UICollectionViewCell {
         }
     }
 
-    func configure(isShowRanking: Bool, isShowBasket: Bool) {
+    func configure(isShowRanking: Bool, isShowBasket: Bool, ranking: Int? = nil) {
         numberingTextLabel.isHidden = !isShowRanking
         cartButton.isHidden = !isShowBasket
+
+        guard let ranking = ranking else { return }
+        numberingTextLabel.text = String(format: "%02d", ranking)
     }
 
     func configure() {

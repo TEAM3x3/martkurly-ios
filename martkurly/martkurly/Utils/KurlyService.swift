@@ -15,6 +15,37 @@ struct KurlyService {
 
     private let decoder = JSONDecoder()
 
+    // MARK: - [추천] 데이터 상품 목록 가져오기
+
+    func fetchRecommendationReviewProducts(completion: @escaping(ReviewProductsModel?) -> Void) {
+        AF.request(REF_RC_REVIEW_GOODS, method: .get).responseJSON { response in
+            guard let jsonData = response.data else { return completion(nil) }
+
+            do {
+                let responseData = try self.decoder.decode(ReviewProductsModel.self, from: jsonData)
+                completion(responseData)
+            } catch {
+                print("ERROR: Recommendation ERROR, \(error.localizedDescription)")
+                completion(nil)
+            }
+        }
+    }
+
+    func fetchRecommendationProducts(requestURL: String,
+                                     completion: @escaping(Recommendation?) -> Void) {
+        AF.request(requestURL, method: .get).responseJSON { response in
+            guard let jsonData = response.data else { return completion(nil) }
+
+            do {
+                let responseData = try self.decoder.decode(Recommendation.self, from: jsonData)
+                completion(responseData)
+            } catch {
+                print("ERROR: Recommendation ERROR, \(error.localizedDescription)")
+                completion(nil)
+            }
+        }
+    }
+
     // MARK: - MD의 추천 상품 목록 가져오기
 
     func fetchMDRecommendProducts(completion: @escaping([MDRecommendModel]) -> Void) {
