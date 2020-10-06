@@ -14,6 +14,12 @@ class RecommendReviewsProductCell: UITableViewCell {
 
     static let identifier = "RecommendReviewsProductCell"
 
+    var tappedProductDetailEvent: ((Int) -> Void)?
+
+    var reviewProducts: ReviewProductsModel? {
+        didSet { productCollectionView.reloadData() }
+    }
+
     private let lineSpacingValue: CGFloat = 32
     private let sideSpacingValue: CGFloat = 16
     private let itemSpacingValue: CGFloat = 8
@@ -85,13 +91,14 @@ class RecommendReviewsProductCell: UITableViewCell {
 
 extension RecommendReviewsProductCell: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 5
+        return reviewProducts?.serializers.count ?? 0
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: ReviewsProductCell.identifier,
             for: indexPath) as! ReviewsProductCell
+        cell.reviewProduct = reviewProducts?.serializers[indexPath.row]
         return cell
     }
 }
@@ -114,6 +121,11 @@ extension RecommendReviewsProductCell: UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return itemSpacingValue
+    }
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let reviewProducts = reviewProducts else { return }
+        tappedProductDetailEvent?(reviewProducts.serializers[indexPath.item].id)
     }
 }
 

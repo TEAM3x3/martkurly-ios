@@ -14,17 +14,10 @@ class RecommendationVC: UIViewController {
 
     private let recommendationTableView = UITableView()
 
-    private let recommendList: [RecommendationList] = [
-        RecommendationList(title: "정육 인기 급상승 랭킹", cellType: .rankingProductList),
-        RecommendationList(title: "후기가 좋은 상품", cellType: .productAndReviews),
-        RecommendationList(title: "# 아삭하고 깔끔한 맛, 오이소박이", cellType: .basicProductList),
-        RecommendationList(title: "# 남길 걱정 없는 소포장 채소", cellType: .basicProductList),
-        RecommendationList(title: "# 내가 한 요리처럼 한 상 차리기", cellType: .basicProductList),
-        RecommendationList(title: "# 어제 공유가 많이 된 상품 랭킹", cellType: .rankingProductList),
-        RecommendationList(title: "# 홀로 작업할 때 먹기 좋은 간식", cellType: .basicProductList),
-        RecommendationList(title: "# 면 요리를 좋아하는 당신을 위한", cellType: .basicProductList),
-        RecommendationList(title: "더 많은 상품이 궁금하다면?", cellType: .anotherRecommendation)
-    ]
+    private var reviewProducts: ReviewProductsModel?
+    private var recommendationList = [RecommendationList]() {
+        didSet { recommendationTableView.reloadData() }
+    }
 
     // MARK: - LifeCycle
 
@@ -32,6 +25,7 @@ class RecommendationVC: UIViewController {
         super.viewDidLoad()
         configureUI()
         configureTableView()
+        fetchRecommendationData()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -60,12 +54,75 @@ class RecommendationVC: UIViewController {
         }
     }
 
+    // MARK: - Actions
+
+    func moveProductDetailView(productID: Int) {
+        self.showIndicate()
+        KurlyService.shared.requestProductDetailData(productID: productID) { reponseData in
+            self.stopIndicate()
+            let controller = ProductDetailVC()
+            controller.hidesBottomBarWhenPushed = true
+            controller.productDetailData = reponseData
+            self.navigationController?.pushViewController(controller, animated: true)
+        }
+    }
+
     // MARK: - Selectros
 
     @objc func nextReviews() {
         NotificationCenter.default
             .post(name: .init(TimerSingleton.nextReviews),
                   object: nil)
+    }
+
+    @objc
+    func moreButtonEvent() {
+        fetchRecommendationData()
+    }
+
+    // MARK: - API
+
+    private let group = DispatchGroup.init()
+    private let queue = DispatchQueue.main
+
+    func fetchRecommendationData() {
+        let requestURL = [REF_RC_ANIMALS_GOODS,
+                          REF_RC_HOME_GOODS,
+                          REF_RC_ICECREAM_GOODS,
+                          REF_RC_CLEANING_GOODS,
+                          REF_RC_RICECAKE_GOODS,
+                          REF_RC_SALTEDFISH_GOODS,
+                          REF_RC_CHICKEN_GOODS]
+
+        self.showIndicate()
+        recommendationList.removeAll()
+        requestURL.forEach {
+            self.group.enter()
+            KurlyService.shared.fetchRecommendationProducts(requestURL: $0) { responseData in
+                self.group.leave()
+                guard let responseData = responseData else { return }
+                let recommendation = RecommendationList(title: responseData.title,
+                                                        cellType: responseData.bool ?
+                                                            .rankingProductList : .basicProductList,
+                                                        goods: responseData.serializers)
+                self.recommendationList.append(recommendation)
+            }
+        }
+
+        group.notify(queue: queue) {
+            KurlyService.shared.fetchRecommendationReviewProducts { reviewProducts in
+                self.stopIndicate()
+                guard let reviewProducts = reviewProducts else { return }
+                self.reviewProducts = reviewProducts
+                self.recommendationList.insert(RecommendationList(title: "후기가 좋은 상품",
+                                                                  cellType: .productAndReviews,
+                                                                  goods: []), at: 1)
+                self.recommendationList.append(RecommendationList(title: "",
+                                                                  cellType: .anotherRecommendation,
+                                                                  goods: []))
+                self.recommendationTableView.didMoveToSuperview()
+            }
+        }
     }
 
     // MARK: - Helpers
@@ -98,26 +155,34 @@ class RecommendationVC: UIViewController {
 
 extension RecommendationVC: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return recommendList.count
+        return recommendationList.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        switch recommendList[indexPath.row].cellType {
+        switch recommendationList[indexPath.row].cellType {
         case .basicProductList: fallthrough
         case .rankingProductList:
             let cell = tableView.dequeueReusableCell(
                 withIdentifier: RecommendProductListCell.identifier,
                 for: indexPath) as! RecommendProductListCell
-            cell.configure(titleText: recommendList[indexPath.row].title,
-                           productsType: recommendList[indexPath.row].cellType)
+            cell.configure(titleText: recommendationList[indexPath.row].title,
+                           productsType: recommendationList[indexPath.row].cellType)
+            cell.recommendProducts = recommendationList[indexPath.row].goods
+            cell.tappedProductDetailEvent = moveProductDetailView(productID:)
             return cell
         case .productAndReviews:
             let cell = tableView.dequeueReusableCell(
                 withIdentifier: RecommendReviewsProductCell.identifier,
                 for: indexPath) as! RecommendReviewsProductCell
+            cell.reviewProducts = reviewProducts
+            cell.tappedProductDetailEvent = moveProductDetailView(productID:)
             return cell
         case .anotherRecommendation:
-            return UITableViewCell()
+            let cell = RecommendMoreButtonCell()
+            cell.moreButton.addTarget(self,
+                                      action: #selector(moreButtonEvent),
+                                      for: .touchUpInside)
+            return cell
         }
     }
 

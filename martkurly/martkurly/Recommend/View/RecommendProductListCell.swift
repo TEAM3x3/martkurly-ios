@@ -19,9 +19,11 @@ class RecommendProductListCell: UITableViewCell {
     private let itemSpacingValue: CGFloat = 8
     private let collectionViewHeight: CGFloat = 240
 
-    private let cellCount: Int = 10
+    private var productsType: RecommendationType = .basicProductList
 
-    private var productsType: RecommendationType = .basicProductList {
+    var tappedProductDetailEvent: ((Int) -> Void)?
+
+    var recommendProducts = [Product]() {
         didSet { productCollectionView.reloadData() }
     }
 
@@ -95,7 +97,7 @@ class RecommendProductListCell: UITableViewCell {
 
 extension RecommendProductListCell: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return cellCount
+        return recommendProducts.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -107,8 +109,9 @@ extension RecommendProductListCell: UICollectionViewDataSource {
         case .basicProductList:
             cell.configure(isShowRanking: false, isShowBasket: true)
         default:
-            cell.configure(isShowRanking: true, isShowBasket: true)
+            cell.configure(isShowRanking: true, isShowBasket: true, ranking: indexPath.row + 1)
         }
+        cell.product = recommendProducts[indexPath.item]
 
         return cell
     }
@@ -130,6 +133,10 @@ extension RecommendProductListCell: UICollectionViewDelegateFlowLayout {
             - (sideSpacingValue * 2)
             - (itemSpacingValue * 2)) / 3
         return CGSize(width: width, height: self.collectionViewHeight)
+    }
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        tappedProductDetailEvent?(recommendProducts[indexPath.item].id)
     }
 }
 
