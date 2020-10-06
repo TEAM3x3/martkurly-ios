@@ -14,6 +14,13 @@ class ProductOrderVC: UIViewController {
 
     // MARK: - Properties
 
+    var orderData = [CartItem]() {
+        didSet {
+            print(orderData)
+            orderTableView.reloadData()
+        }
+    }
+
     private let orderTableView = UITableView(frame: .zero, style: .grouped)
 
     private var undeliveryType: UnDeliveryActionType = .paymentRefund {
