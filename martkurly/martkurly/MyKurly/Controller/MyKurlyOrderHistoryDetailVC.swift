@@ -67,6 +67,7 @@ class MyKurlyOrderHistoryDetailVC: UIViewController {
     private lazy var tableViewHeightAnchor = tableViewAnchor.constraint(equalToConstant: 400)
 
     private var order: Order?
+    private var data: [[String: String]]?
 
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -240,7 +241,7 @@ extension MyKurlyOrderHistoryDetailVC: UITableViewDataSource {
             return orderNumberCell
         default:
             let infoCell = MyKurlyOrderHistoryDetailTableViewInfoCell()
-            infoCell.configureCell(cellData: cellData)
+            infoCell.configureCell(info: "", cellData: cellData)
             if selectedCell.contains(indexPath) {
                 infoCell.isFolded = false
             }
