@@ -53,6 +53,11 @@ class ProductDetailVC: UIViewController {
                                     titleText: productDetailData?.title)
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        catogoryMenuBar.moveCategoryIndex = 0
+    }
+
     // MARK: - API
 
     func requestProductReviews() {
@@ -61,6 +66,8 @@ class ProductDetailVC: UIViewController {
         self.showIndicate()
         ReviewService.shared.requestProductReviews(productID: productDetailData.id) { reviews in
             self.productReviews = reviews
+            self.catogoryMenuBar.menuTitles = ProductCategoryType
+                .getAllCases(reviewsCount: reviews.count)
             self.stopIndicate()
         }
     }

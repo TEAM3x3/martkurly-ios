@@ -15,8 +15,9 @@ let LOCAL_REF = "http://5a996f9f659a.jp.ngrok.io/api"
 
 let KURLY_GOODS_REF = KURLY_REF + "/goods"  // 상품 리스트
 let REF_GOODS = KURLY_GOODS_REF + "/"       // 상품 디테일 페이지
-let REF_CHEAP_PRODUCTS = KURLY_GOODS_REF + "/sale"  // [홈] - [알뜰쇼핑]
+let REF_NEW_PRODUCTS = KURLY_GOODS_REF + "/new_product"
 let REF_BEST_PRODUCTS = KURLY_GOODS_REF + "/best"   // [홈] - [베스트]
+let REF_CHEAP_PRODUCTS = KURLY_GOODS_REF + "/sale"  // [홈] - [알뜰쇼핑]
 let REF_SEARCH_WORD_PRODUCTS = KURLY_GOODS_REF + "/goods_search"        // 최근 검색어에 포함
 let REF_SEARCH_TYPING_PRODUCTS = KURLY_GOODS_REF + "/word_search"       // 타이핑 단어에 포함
 let REF_RECOMMEND_PRODUCTS = KURLY_GOODS_REF + "/main_page_recommend"   // [홈] - [컬리추천] - [이 상품 어때요?]
@@ -25,6 +26,7 @@ let REF_HEALTH_PRODUCTS = KURLY_GOODS_REF + "/main_page_health"         // [홈]
 
 let KURLY_EVENT_REF = KURLY_REF + "/event"      // [홈] - [이벤트]
 let REF_EVENT_GOODS = KURLY_EVENT_REF + "/"     // [홈] - [이벤트] 상세
+let REF_SQAURE_EVENTS = KURLY_EVENT_REF + "/square_event_list"  // [홈] - [Sqaure 이벤트]
 
 let KURLY_MAIN_EVENT_REF = KURLY_REF + "/mainEvent" // [홈] - [컬리추천] - [최 상단 이벤트]
 let REF_MAIN_EVENT = KURLY_MAIN_EVENT_REF + "/"     // [홈] - [컬리추천] - [최 상단 이벤트] 상세
@@ -33,6 +35,7 @@ let REF_USER = KURLY_REF + "/users"
 let REF_SIGNIN = KURLY_REF + "/users/login"
 
 let REF_CATEGORY = KURLY_REF + "/category"
+let REF_MDRECOMMAND_PRODUCTS = REF_CATEGORY + "/md_recommend"
 
 let REF_CART = KURLY_REF + "/cart/1"                               // 장바구니(Token Needs)
 let REF_CART_LOCAL = LOCAL_REF + "/cart/1"                         // 장바구니
@@ -50,3 +53,4 @@ let REF_ADDRESS = KURLY_REF + "/users"
 // Notification
 
 let PRODUCT_DETAILVIEW_EVENT = "PRODUCT_DETAILVIEW_EVENT"
+let SQAURE_EVENT = "SQAURE_EVENT"

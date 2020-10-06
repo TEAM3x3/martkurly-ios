@@ -27,9 +27,11 @@ class CurlyRecommendCell: UICollectionViewCell {
 
     private var mainEventList = [MainEvent]()
     private var recommendProducts = [Product]()
+    private var sqaureEvents = [EventSqaureModel]()
     private var salesProducts = [Product]()
     private var bannerEvent = [EventModel]()
     private var healthProducts = [Product]()
+    private var mdRecommendProducts = [MDRecommendModel]()
 
     // MARK: - LifeCycle
 
@@ -89,12 +91,16 @@ class CurlyRecommendCell: UICollectionViewCell {
                    recommendProducts: [Product],
                    salesProducts: [Product],
                    bannerEvent: [EventModel],
-                   healthProducts: [Product]) {
+                   healthProducts: [Product],
+                   sqaureEvents: [EventSqaureModel],
+                   mdRecommendProducts: [MDRecommendModel]) {
         self.mainEventList = mainEventList
         self.recommendProducts = recommendProducts
+        self.sqaureEvents = sqaureEvents
         self.salesProducts = salesProducts
         self.bannerEvent = bannerEvent
         self.healthProducts = healthProducts
+        self.mdRecommendProducts = mdRecommendProducts
 
         self.recommendTableView.reloadData()
     }
@@ -158,6 +164,7 @@ extension CurlyRecommendCell: UITableViewDataSource {
                            titleType: .rightAllow,
                            backgroundColor: ColorManager.General.backGray.rawValue,
                            titleText: "이벤트 소식")
+            cell.sqaureEvents = sqaureEvents
             return cell
         case .frugalCell:
             let cell = tableView.dequeueReusableCell(
@@ -180,6 +187,7 @@ extension CurlyRecommendCell: UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(
                 withIdentifier: MainMDRecommendCell.identifier,
                 for: indexPath) as! MainMDRecommendCell
+            cell.mdRecommendProducts = mdRecommendProducts
             return cell
         case .secondBannerCell:
             let cell = tableView.dequeueReusableCell(

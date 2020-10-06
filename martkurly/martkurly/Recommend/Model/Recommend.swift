@@ -19,3 +19,9 @@ struct RecommendationList {
     let title: String
     let cellType: RecommendationType
 }
+
+struct MDRecommendModel: Decodable {
+    let id: Int
+    let name: String
+    let goods: [Product]
+}

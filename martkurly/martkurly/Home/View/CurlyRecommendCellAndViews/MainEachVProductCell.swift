@@ -14,6 +14,10 @@ class MainEachVProductCell: UICollectionViewCell {
 
     static let identifier = "MainEachVProductCell"
 
+    var eventData: EventSqaureModel? {
+        didSet { configure() }
+    }
+
     private let productImageView = UIImageView().then {
         $0.image = UIImage(named: "TestImage")
         $0.contentMode = .scaleAspectFill
@@ -74,5 +78,13 @@ class MainEachVProductCell: UICollectionViewCell {
             $0.leading.equalTo(productImageView.snp.trailing).offset(20)
             $0.trailing.centerY.equalToSuperview()
         }
+    }
+
+    func configure() {
+        guard let eventData = eventData else { return }
+        let imageURL = URL(string: eventData.square_image)
+        productImageView.kf.setImage(with: imageURL)
+        productTitleLabel.text = eventData.title
+        productSubTitleLabel.text = "오직 마트컬리에서만 볼 수 있는 :)"
     }
 }
