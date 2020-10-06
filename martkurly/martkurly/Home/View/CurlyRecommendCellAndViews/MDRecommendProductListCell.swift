@@ -17,6 +17,14 @@ class MDRecommendProductListCell: UICollectionViewCell {
     private let itemSpacingValue: CGFloat = 8
     private let itemHeight: CGFloat = 280
 
+    var mdRecommendProduct: MDRecommendModel = .init(id: 999,
+                                                     name: "테스트",
+                                                     goods: []) {
+        didSet {
+            mdProductsCollectionView.reloadData()
+        }
+    }
+
     private let flowLayout = UICollectionViewFlowLayout()
     private lazy var mdProductsCollectionView = UICollectionView(frame: .zero,
                                                               collectionViewLayout: flowLayout)
@@ -63,12 +71,13 @@ class MDRecommendProductListCell: UICollectionViewCell {
 
 extension MDRecommendProductListCell: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 6
+        return mdRecommendProduct.goods.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: MainEachHProductCell.identifier, for: indexPath) as! MainEachHProductCell
+        cell.product = mdRecommendProduct.goods[indexPath.item]
         return cell
     }
 
@@ -89,5 +98,10 @@ extension MDRecommendProductListCell: UICollectionViewDataSource {
 // MARK: - UICollectionViewDelegateFlowLayout
 
 extension MDRecommendProductListCell: UICollectionViewDelegateFlowLayout {
-
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        collectionView.selectItem(at: nil, animated: true, scrollPosition: .centeredHorizontally)
+        NotificationCenter.default
+            .post(name: .init(PRODUCT_DETAILVIEW_EVENT),
+                  object: mdRecommendProduct.goods[indexPath.item].id)
+    }
 }

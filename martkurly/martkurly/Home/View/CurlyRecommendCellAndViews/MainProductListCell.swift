@@ -18,6 +18,10 @@ class MainProductListCell: UITableViewCell {
         didSet { productCollectionView.reloadData() }
     }
 
+    var sqaureEvents = [EventSqaureModel]() {
+        didSet { productCollectionView.reloadData() }
+    }
+
     enum ProductListTitleType {
         case none
         case rightAllow
@@ -174,7 +178,7 @@ extension MainProductListCell: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         switch directionType {
         case .horizontal: return products.count
-        case .vertical: return 3
+        case .vertical: return sqaureEvents.count
         }
     }
 
@@ -190,6 +194,7 @@ extension MainProductListCell: UICollectionViewDataSource {
             let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: MainEachVProductCell.identifier,
                 for: indexPath) as! MainEachVProductCell
+            cell.eventData = sqaureEvents[indexPath.item]
             return cell
         }
     }
@@ -238,7 +243,9 @@ extension MainProductListCell: UICollectionViewDelegateFlowLayout {
                 .post(name: .init(PRODUCT_DETAILVIEW_EVENT),
                       object: products[indexPath.item].id)
         case .vertical:
-            break
+            NotificationCenter.default
+                .post(name: .init(SQAURE_EVENT),
+                      object: indexPath.item)
         }
     }
 }

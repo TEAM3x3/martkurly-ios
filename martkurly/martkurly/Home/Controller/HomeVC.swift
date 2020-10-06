@@ -18,8 +18,11 @@ class HomeVC: UIViewController {
 
     private var mainEventList = [MainEvent]()
     private var recommendProducts = [Product]()
+    private var sqaureEvents = [EventSqaureModel]()
     private var salesProducts = [Product]()
+    private var newProducts = [Product]()
     private var healthProducts = [Product]()
+    private var mdRecommendProducts = [MDRecommendModel]()
 
     private lazy var menuCategory = CategoryMenuView(categoryType: .fixInsetStyle).then {
         $0.menuTitles = ["컬리추천", "신상품", "베스트", "알뜰쇼핑", "이벤트"]
@@ -58,7 +61,7 @@ class HomeVC: UIViewController {
 
         fetchMainDatas()
         fetchMainCategoryProducts()
-        fetchEventList()
+        fetchHomeCategoryList()
 
         group.notify(queue: queue) {
             self.stopIndicate()
@@ -82,6 +85,38 @@ class HomeVC: UIViewController {
 
     func fetchMainCategoryProducts() {
         group.enter()
+        KurlyService.shared.fetchProducts(requestURL: REF_SALES_PRODUCTS) { products in
+            self.group.leave()
+            self.salesProducts = products
+        }
+
+        group.enter()
+        KurlyService.shared.fetchProducts(requestURL: REF_HEALTH_PRODUCTS) { products in
+            self.group.leave()
+            self.healthProducts = products
+        }
+
+        group.enter()
+        KurlyService.shared.fetchSqaureEventList { sqaureEvents in
+            self.group.leave()
+            self.sqaureEvents = sqaureEvents
+        }
+
+        group.enter()
+        KurlyService.shared.fetchMDRecommendProducts { recommendProducts in
+            self.mdRecommendProducts = recommendProducts
+            self.group.leave()
+        }
+    }
+
+    func fetchHomeCategoryList() {
+        group.enter()
+        KurlyService.shared.fetchNewProducts { products in
+            self.group.leave()
+            self.newProducts = products
+        }
+
+        group.enter()
         KurlyService.shared.fetchCheapProducts { products in
             self.group.leave()
             self.cheapProducts = products
@@ -93,20 +128,6 @@ class HomeVC: UIViewController {
             self.bestProducts = products
         }
 
-        group.enter()
-        KurlyService.shared.fetchProducts(requestURL: REF_SALES_PRODUCTS) { products in
-            self.group.leave()
-            self.salesProducts = products
-        }
-
-        group.enter()
-        KurlyService.shared.fetchProducts(requestURL: REF_HEALTH_PRODUCTS) { products in
-            self.group.leave()
-            self.healthProducts = products
-        }
-    }
-
-    func fetchEventList() {
         group.enter()
         KurlyService.shared.fetchEventList { eventList in
             self.group.leave()
@@ -120,6 +141,17 @@ class HomeVC: UIViewController {
     func moveProductDetailView(_ noti: Notification) {
         guard let productID = noti.object as? Int else { return }
         detailViewProduct(productID: productID)
+    }
+
+    @objc
+    func moveSqaureEventView(_ noti: Notification) {
+        guard let eventID = noti.object as? Int else { return }
+        let controller = EventProductDetailListVC()
+        controller.hidesBottomBarWhenPushed = true
+        controller.eventProducts = EventProducts(id: sqaureEvents[eventID].id,
+                                                 title: sqaureEvents[eventID].title,
+                                                 goods: sqaureEvents[eventID].goods)
+        self.navigationController?.pushViewController(controller, animated: true)
     }
 
     // MARK: - Actions
@@ -165,10 +197,15 @@ class HomeVC: UIViewController {
                          selector: #selector(moveProductDetailView),
                          name: .init(PRODUCT_DETAILVIEW_EVENT),
                          object: nil)
+
+        NotificationCenter.default
+            .addObserver(self,
+                         selector: #selector(moveSqaureEventView(_:)),
+                         name: .init(SQAURE_EVENT),
+                         object: nil)
     }
 
     func configureNavigationBar() {
-        // 이미지 이상함...ㅋㅋㅋ 한번 확인 필요
         let titleImageView = UIImageView(image: .martcurlyMainTitleWhiteImage)
         titleImageView.contentMode = .scaleAspectFit
         navigationItem.titleView = titleImageView
@@ -234,19 +271,21 @@ extension HomeVC: UICollectionViewDataSource {
                            recommendProducts: recommendProducts,
                            salesProducts: salesProducts,
                            bannerEvent: eventList,
-                           healthProducts: healthProducts)
+                           healthProducts: healthProducts,
+                           sqaureEvents: sqaureEvents,
+                           mdRecommendProducts: mdRecommendProducts)
             return cell
         case .newProduct:
             let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: ProductListCell.identifier,
                 for: indexPath) as! ProductListCell
-            cell.configure(headerType: .fastAreaAndCondition, products: [])
+            cell.configure(headerType: .fastAreaAndCondition, products: newProducts)
+            cell.detailViewProduct = detailViewProduct(productID:)
             return cell
         case .baseProduct:
             let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: ProductListCell.identifier,
                 for: indexPath) as! ProductListCell
-                cell.configure(headerType: .fastAreaAndCondition, products: [])
             cell.configure(headerType: .fastAreaAndCondition, products: bestProducts)
             cell.detailViewProduct = detailViewProduct(productID:)
             return cell
