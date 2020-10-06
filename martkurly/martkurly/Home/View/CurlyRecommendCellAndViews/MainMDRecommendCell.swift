@@ -17,6 +17,13 @@ class MainMDRecommendCell: UITableViewCell {
     private let sidePaddingValue: CGFloat = 20
     private let lineInsetValue: CGFloat = 24
 
+    var mdRecommendProducts = [MDRecommendModel]() {
+        didSet {
+            categoryMenuBar.menuTitles = mdRecommendProducts.map { return $0.name }
+            categoryContentsCollectionView.reloadData()
+        }
+    }
+
     private let productTitleLabel = UILabel().then {
         $0.text = "MD의 추천"
         $0.textColor = .black
@@ -38,7 +45,7 @@ class MainMDRecommendCell: UITableViewCell {
                                                               collectionViewLayout: flowLayout)
 
     private lazy var allListViewButton = UIButton(type: .system).then {
-        $0.setTitle("가전제품 전체 보기  〉", for: .normal)
+        $0.setTitle("채소 전체 보기  〉", for: .normal)
         $0.setTitleColor(.black, for: .normal)
         $0.titleLabel?.font = .systemFont(ofSize: 14)
         $0.backgroundColor = ColorManager.General.backGray.rawValue
@@ -65,6 +72,9 @@ class MainMDRecommendCell: UITableViewCell {
                                               animated: true,
                                               scrollPosition: .centeredHorizontally)
         categoryContentsCollectionView.selectItem(at: nil, animated: false, scrollPosition: .centeredHorizontally)
+
+        let buttonTitle = mdRecommendProducts[item].name + " 전체 보기  〉"
+        allListViewButton.setTitle(buttonTitle, for: .normal)
     }
 
     // MARK: - Helpers
@@ -130,6 +140,7 @@ extension MainMDRecommendCell: UICollectionViewDataSource {
         let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: MDRecommendProductListCell.identifier,
             for: indexPath) as! MDRecommendProductListCell
+        cell.mdRecommendProduct = mdRecommendProducts[indexPath.item]
         return cell
     }
 
@@ -156,5 +167,8 @@ extension MainMDRecommendCell: UICollectionViewDelegateFlowLayout {
         let width = scrollView.frame.width
         let currentPage = Int(scrollView.contentOffset.x / width)
         categoryMenuBar.moveCategoryIndex = currentPage
+
+        let buttonTitle = mdRecommendProducts[currentPage].name + " 전체 보기  〉"
+        allListViewButton.setTitle(buttonTitle, for: .normal)
     }
 }

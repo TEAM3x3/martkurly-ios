@@ -67,7 +67,7 @@ class MyKurlyOrderHistoryDetailVC: UIViewController {
     private lazy var tableViewHeightAnchor = tableViewAnchor.constraint(equalToConstant: 400)
 
     private var order: Order?
-    private var data: [[String: String]]?
+//    private var data: [[String: String]]?
 
     // MARK: - Lifecycle
     override func viewDidLoad() {

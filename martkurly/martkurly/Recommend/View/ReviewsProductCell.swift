@@ -131,6 +131,7 @@ class ReviewsProductCell: UICollectionViewCell {
         reviewsCollectionView.backgroundColor = .clear
         reviewsCollectionView.showsVerticalScrollIndicator = false
         reviewsCollectionView.isPagingEnabled = true
+        reviewsCollectionView.isScrollEnabled = false
 
         reviewsCollectionView.dataSource = self
         reviewsCollectionView.delegate = self

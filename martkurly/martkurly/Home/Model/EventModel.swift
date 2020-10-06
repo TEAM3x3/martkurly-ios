@@ -19,3 +19,10 @@ struct EventProducts: Decodable {
     let title: String
     let goods: [Product]
 }
+
+struct EventSqaureModel: Decodable {
+    let id: Int
+    let title: String
+    let square_image: String
+    let goods: [Product]
+}

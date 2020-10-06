@@ -36,7 +36,7 @@ class CategoryVC: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        setNavigationBarStatus(
+        self.setNavigationBarStatus(
             type: .purpleType,
             isShowCart: true,
             leftBarbuttonStyle: .none,

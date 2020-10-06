@@ -15,6 +15,40 @@ struct KurlyService {
 
     private let decoder = JSONDecoder()
 
+    // MARK: - MD의 추천 상품 목록 가져오기
+
+    func fetchMDRecommendProducts(completion: @escaping([MDRecommendModel]) -> Void) {
+        var recommendProducts = [MDRecommendModel]()
+
+        AF.request(REF_MDRECOMMAND_PRODUCTS, method: .get).responseJSON { response in
+            guard let jsonData = response.data else { return completion(recommendProducts) }
+
+            do {
+                recommendProducts = try self.decoder.decode([MDRecommendModel].self, from: jsonData)
+            } catch {
+                print("ERROR: SQAURE DATA REQUEST ERROR, \(error.localizedDescription)")
+            }
+            completion(recommendProducts)
+        }
+    }
+
+    // MARK: - 이벤트 소식 데이터 가져오기
+
+    func fetchSqaureEventList(completion: @escaping([EventSqaureModel]) -> Void) {
+        var sqaureEvents = [EventSqaureModel]()
+
+        AF.request(REF_SQAURE_EVENTS, method: .get).responseJSON { response in
+            guard let jsonData = response.data else { return completion(sqaureEvents) }
+
+            do {
+                sqaureEvents = try self.decoder.decode([EventSqaureModel].self, from: jsonData)
+            } catch {
+                print("ERROR: SQAURE DATA REQUEST ERROR, \(error.localizedDescription)")
+            }
+            completion(sqaureEvents)
+        }
+    }
+
     // MARK: - 상품들의 정보 가져오기
 
     func fetchProducts(requestURL: String, completion: @escaping([Product]) -> Void) {
@@ -29,6 +63,23 @@ struct KurlyService {
                 print("DEBUG: Recommend List Fetch Error, ", error.localizedDescription)
             }
             completion(products)
+        }
+    }
+
+    // MARK: - 신상품 상품 가져오기
+
+    func fetchNewProducts(completion: @escaping([Product]) -> Void) {
+        var newProducts = [Product]()
+
+        AF.request(REF_NEW_PRODUCTS, method: .get).responseJSON { response in
+            guard let jsonData = response.data else { return completion(newProducts) }
+            do {
+                let products = try self.decoder.decode([Product].self, from: jsonData)
+                newProducts = products
+            } catch {
+                print("DEBUG: New Products Request Error, ", error.localizedDescription)
+            }
+            completion(newProducts)
         }
     }
 
@@ -381,7 +432,7 @@ struct KurlyService {
         }
     }
 
-    // MARK: - 장바구니
+    // MARK: - 장바구니 속 상품
 
     func setListCart(completion: @escaping([Cart]) -> Void) {
         guard let token = UserDefaults.standard.string(forKey: "token") else { return }
@@ -403,7 +454,7 @@ struct KurlyService {
         }
     }
 
-    // MARK: - 장바구니 추가 및 삭제
+    // MARK: - 장바구니 상품 추가
 
     func pushCartData(goods: Int, quantity: Int, cart: Int) {
         let value = [
@@ -434,10 +485,43 @@ struct KurlyService {
         }
     }
 
-    func deleteCartData(goods: [Int]) {
+    // MARK: - 장바구니 상품 업데이트
+
+    func cartUpdata(goods: Int, quantity: Int, cart: Int) {
         let value = [
-            "id": [goods]
+            "goods": goods,
+            "quantity": quantity,
+            "cart": cart
         ]
+
+        let id = goods
+
+        let cartURL = URL(string: REF_CART_PUSH_LOCAL + "/\(id)")!
+        let token = UserDefaults.standard.string(forKey: "token")!
+        print(token)
+
+        var request = URLRequest(url: cartURL)
+        let headers: HTTPHeaders = ["Authorization": "token " + token]
+
+        request.httpMethod = "PATCH"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpBody = try! JSONSerialization.data(withJSONObject: value)
+        request.headers = headers
+
+        AF.request(request).responseString { (response) in
+            switch response.result {
+            case .success(let data):
+                print("Success", data)
+            case .failure(let error):
+                print("Faulure", error)
+            }
+        }
+    }
+
+    // MARK: - 장바구니 상품 삭제
+    func deleteCartData(goods: [Int]) {
+
+//        let value = [ "items": [goods] ]
 
         var urlResult = ""
         for i in goods {
@@ -446,7 +530,10 @@ struct KurlyService {
         urlResult.removeLast(1)
         print(urlResult)
 
-        let cartURL = URL(string: REF_CART_DELETE_LOCAL + "/\(urlResult)")!
+        let value = ["items": urlResult]
+
+//        let cartURL = URL(string: REF_CART_DELETE_LOCAL + "/\(urlResult)")!
+        let cartURL = URL(string: REF_CART_DELETE_LOCAL + "/goods_delete")!
         let token = UserDefaults.standard.string(forKey: "token")!
 
         var request = URLRequest(url: cartURL)

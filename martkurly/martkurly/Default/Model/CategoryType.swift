@@ -46,7 +46,9 @@ enum ProductCategoryType: Int, CaseIterable {
         var array = [String]()
         ProductCategoryType.allCases.forEach {
             if $0 == .productReviews {
-                array.append("\($0.description)\n(\(reviewsCount)+)")
+                let reviewTitle = reviewsCount == 0 ?
+                    $0.description : "\($0.description)\n(\(reviewsCount))"
+                array.append(reviewTitle)
                 return
             }
             array.append($0.description)
