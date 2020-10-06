@@ -490,29 +490,24 @@ struct KurlyService {
 
     // MARK: - 마이컬리 주문내역 리스트
     func fetchOrderList(token: String, completionHandler: @escaping ([Order]) -> Void) {
+        //        let headers: HTTPHeaders = ["Authorization": "token " + token]
         let headers: HTTPHeaders = ["Authorization": "token 88f0566e6db5ebaa0e46eae16f5a092610f46345"]
-//        let headers: HTTPHeaders = ["Authorization": "token " + token]
-        let urlString = REF_ORDER_LOCAL
+
+        let urlString = REF_ORDER
+//        let urlString = REF_ORDER_LOCAL
+
         var request = URLRequest(url: URL(string: urlString)!)
         request.headers = headers
         AF.request(request).responseJSON { (response) in
             switch response.result {
-            case .success(let data1):
-                print(data1)
+            case .success:
                 guard let jsonData = response.data else { print("No Data"); return }
                 do {
                     let data = try decoder.decode([Order].self, from: jsonData)
-                    completionHandler(data)
                     print(#function, "Parsing Success")
+                    completionHandler(data)
                 } catch {
-                    do {
-                        let sample = try decoder.decode(Order.self, from: jsonData)
-                        print(#function, "Sample Parsing Success")
-                    } catch {
-                        print(#function, "Sample Parsing Failed")
-                    }
-                    print(error)
-                    print(#function, "Parsing Error")
+                    print(#function, "Parsing Error", error)
                 }
             case .failure(let error):
                 print("Failure: ", error)

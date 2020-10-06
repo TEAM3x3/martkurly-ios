@@ -9,16 +9,16 @@
 import Foundation
 
 struct Order: Decodable {
-    let discount_payment: Int
-    let discount_price: Int
-//    let id: Int
-//    let items: [Items]
-//    let orderdetail: OrderDetail
-//    let total_payment: Int
-//    let user: User
+    let discount_payment: Int // 결제 금액
+    let discount_price: Int // 상품 할인 금액
+    let id: Int // 주문 번호
+    let items: [Items]
+    let orderdetail: OrderDetail
+    let total_payment: Int // 상품 금액 (할인 미적용)
+    let user: User
 
     struct Items: Decodable {
-        let cart: String?
+        let cart: Int?
         let discount_payment: Int
         let goods: Goods
         let id: Int
@@ -55,9 +55,9 @@ struct Order: Decodable {
         let address: String
         let consumer: String?
         let created_at: String?
-        let delivery_cost: Int?
+        let delivery_cost: Int? // 배송 금액
         let delivery_type: String
-        let entrance_password: String
+        let entrance_password: String?
         let etc: String?
         let receiver_phone: String
         let receiving_place: String?
