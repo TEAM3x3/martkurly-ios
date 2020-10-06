@@ -19,6 +19,8 @@ class MyKurlyOrderHistoryVC: UIViewController {
         $0.isHidden = true
     }
 
+    var data = [Order]()
+
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,6 +30,7 @@ class MyKurlyOrderHistoryVC: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setNavigationBarStatus(type: .whiteType, isShowCart: true, leftBarbuttonStyle: .pop, titleText: StringManager.MyKurly.title.rawValue)
+        KurlyService.shared.fetchOrderList(token: "", completionHandler: setData(data:))
     }
 
     // MARK: - UI
@@ -91,6 +94,10 @@ class MyKurlyOrderHistoryVC: UIViewController {
         default:
             break
         }
+    }
+
+    private func setData(data: [Order]) {
+        self.data = data
     }
 }
 

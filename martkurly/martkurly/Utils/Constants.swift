@@ -41,6 +41,9 @@ let REF_CART_PUSH_LOCAL = LOCAL_REF + "/cart/1/item"
 let REF_CART_DELETE = KURLY_REF + "/cart/1/item/goods_delete"
 let REF_CART_DELETE_LOCAL = LOCAL_REF + "/cart/1/item"
 
+let REF_ORDER = KURLY_REF + "/users/1/orders/1" // 주문 내역
+let REF_ORDER_LOCAL = LOCAL_REF + "/users/1/orders" // 주문 내역
+
 let REF_USER_REVIEW_LIST = KURLY_REF + "/review"   // 유저가 작성한 리뷰 리스트 반환(Token Needs)
 let REF_PRODUCT_REVIEW_LIST = "/reviews"        // 해당 상품에 대한 리뷰 리스트 반환
 

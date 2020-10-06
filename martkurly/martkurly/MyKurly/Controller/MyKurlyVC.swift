@@ -216,9 +216,11 @@ class MyKurlyVC: UIViewController {
     }
 
     private func setNickname() {
+        print(#function, isSignedIn)
         if isSignedIn {
             nickname = UserService.shared.currentUser?.nickname
             guard let nickname = nickname else { return }
+            print(#function, nickname)
             infoView.userNameLabel.text = nickname
         }
     }
