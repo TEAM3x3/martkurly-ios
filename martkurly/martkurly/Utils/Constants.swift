@@ -29,7 +29,7 @@ let REF_EVENT_GOODS = KURLY_EVENT_REF + "/"     // [홈] - [이벤트] 상세
 let KURLY_MAIN_EVENT_REF = KURLY_REF + "/mainEvent" // [홈] - [컬리추천] - [최 상단 이벤트]
 let REF_MAIN_EVENT = KURLY_MAIN_EVENT_REF + "/"     // [홈] - [컬리추천] - [최 상단 이벤트] 상세
 
-let REF_SIGNUP = KURLY_REF + "/users"
+let REF_USER = KURLY_REF + "/users"
 let REF_SIGNIN = KURLY_REF + "/users/login"
 
 let REF_CATEGORY = KURLY_REF + "/category"
@@ -46,6 +46,7 @@ let REF_ORDER_LOCAL = LOCAL_REF + "/users/1/orders" // 주문 내역
 
 let REF_USER_REVIEW_LIST = KURLY_REF + "/review"   // 유저가 작성한 리뷰 리스트 반환(Token Needs)
 let REF_PRODUCT_REVIEW_LIST = "/reviews"        // 해당 상품에 대한 리뷰 리스트 반환
+let REF_USER_POSSIBLE_REVIEW_LIST = KURLY_REF + "/users/writable" // 유저가 작성 가능한 리뷰 반환(Token Needs)
 
 let REF_ADDRESS = KURLY_REF + "/users"
 

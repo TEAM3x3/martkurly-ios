@@ -14,6 +14,10 @@ class ReviewsWritePossibleCell: UICollectionViewCell {
 
     static let identifier = "ReviewsWritePossibleCell"
 
+    var reviewItems = [CartItem]() {
+        didSet { reviewsTableView.reloadData() }
+    }
+
     private let reviewsTableView = UITableView()
 
     private let reviewsInfomationTextView = UITextView().then {
@@ -33,6 +37,9 @@ class ReviewsWritePossibleCell: UICollectionViewCell {
         $0.attributedText = NSAttributedString(string: infoText, attributes: attributes)
     }
 
+    var reviewRegisterExecute: ((CartItem) -> Void)?
+    var moveProductDetailPage: ((Int) -> Void)?
+
     // MARK: - LifeCycle
 
     override init(frame: CGRect) {
@@ -43,6 +50,13 @@ class ReviewsWritePossibleCell: UICollectionViewCell {
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    // MARK: - Actions
+
+    func tappedReviewWrite(cell: ProductStatusReviewCell) {
+        guard let indexPath = reviewsTableView.indexPath(for: cell) else { return }
+        reviewRegisterExecute?(reviewItems[indexPath.row])
     }
 
     // MARK: - Helpers
@@ -86,7 +100,10 @@ extension ReviewsWritePossibleCell: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        switch ReviewsPossibleCellType(rawValue: section)! {
+        case .reviewsInfomation: return 1
+        case .reviewsPossibleList: return reviewItems.count
+        }
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -100,6 +117,8 @@ extension ReviewsWritePossibleCell: UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(
                 withIdentifier: ProductStatusReviewCell.identifier,
                 for: indexPath) as! ProductStatusReviewCell
+            cell.handleReviewWrite = tappedReviewWrite(cell:)
+            cell.reviewItem = reviewItems[indexPath.row]
             return cell
         }
     }
@@ -110,21 +129,16 @@ extension ReviewsWritePossibleCell: UITableViewDataSource {
 extension ReviewsWritePossibleCell: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.selectRow(at: nil, animated: true, scrollPosition: .none)
-    }
 
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        switch ReviewsPossibleCellType(rawValue: section)! {
-        case .reviewsInfomation: return nil
+        switch ReviewsPossibleCellType(rawValue: indexPath.section)! {
+        case .reviewsInfomation: break
         case .reviewsPossibleList:
-            let reviewsHeaderView = ReviewsHeaderView()
-            return reviewsHeaderView
+            let review = reviewItems[indexPath.row]
+            moveProductDetailPage?(review.goods.id)
         }
     }
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        switch ReviewsPossibleCellType(rawValue: section)! {
-        case .reviewsInfomation: return .zero
-        case .reviewsPossibleList: return UITableView.automaticDimension
-        }
+        return .zero
     }
 }

@@ -27,12 +27,12 @@ class UserService {
     func loadData() {
         guard let token = UserDefaults.standard.string(forKey: "token"),
               let userData = UserDefaults.standard.dictionary(forKey: "user") else { return }
-        currentUser = UserModel(token: token,
+        currentUser = UserModel(token: "token \(token)",
                                 id: userData["id"] as? Int ?? 0,
-                                username: userData["username"] as? String ?? "",
-                                email: userData["email"] as? String ?? "",
-                                phone: userData["phone"] as? String ?? "",
-                                nickname: userData["nickname"] as? String ?? "",
-                                gender: userData["gender"] as? String ?? "")
+                                username: userData["username"] as? String ?? "EMPTY",
+                                email: userData["email"] as? String ?? "EMPTY",
+                                phone: userData["phone"] as? String ?? "EMPTY",
+                                nickname: userData["nickname"] as? String ?? "EMPTY",
+                                gender: userData["gender"] as? String ?? "EMPTY")
     }
 }

@@ -14,6 +14,12 @@ class ReviewsWriteCompleteCell: UICollectionViewCell {
 
     static let identifier = "ReviewsWriteCompleteCell"
 
+    var reviewItems = [ReviewModel]() {
+        didSet { reviewsTableView.reloadData() }
+    }
+
+    var moveReviewDetailPage: ((ReviewModel) -> Void)?
+
     private let reviewsTableView = UITableView(frame: .zero, style: .grouped)
 
     // MARK: - LifeCycle
@@ -58,13 +64,14 @@ class ReviewsWriteCompleteCell: UICollectionViewCell {
 
 extension ReviewsWriteCompleteCell: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5
+        return reviewItems.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(
             withIdentifier: ReviewCompleteCell.identifier,
             for: indexPath) as! ReviewCompleteCell
+        cell.reviewItem = reviewItems[indexPath.row]
         return cell
     }
 }
@@ -74,6 +81,7 @@ extension ReviewsWriteCompleteCell: UITableViewDataSource {
 extension ReviewsWriteCompleteCell: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.selectRow(at: nil, animated: true, scrollPosition: .none)
+        moveReviewDetailPage?(reviewItems[indexPath.row])
     }
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {

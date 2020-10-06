@@ -12,8 +12,8 @@ class ReviewsHeaderView: UIView {
 
     // MARK: - Properties
 
-    private let sideInsetValue: CGFloat = 12
-    private let lineInsetValue: CGFloat = 4
+    private let sideHeaderInsetValue: CGFloat = 12
+    private let lineHeaderInsetValue: CGFloat = 4
 
     private let orderTitleLabel = UILabel().then {
         $0.text = "주문번호"
@@ -59,9 +59,9 @@ class ReviewsHeaderView: UIView {
         }
 
         orderTitleLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(lineInsetValue)
-            $0.leading.equalToSuperview().offset(sideInsetValue)
-            $0.bottom.equalToSuperview().offset(-lineInsetValue)
+            $0.top.equalToSuperview().offset(lineHeaderInsetValue)
+            $0.leading.equalToSuperview().offset(sideHeaderInsetValue)
+            $0.bottom.equalToSuperview().offset(-lineHeaderInsetValue)
         }
 
         orderNumberLabel.snp.makeConstraints {
@@ -70,7 +70,7 @@ class ReviewsHeaderView: UIView {
         }
 
         completeDateLabel.snp.makeConstraints {
-            $0.trailing.equalToSuperview().offset(-sideInsetValue)
+            $0.trailing.equalToSuperview().offset(-sideHeaderInsetValue)
             $0.centerY.equalTo(orderTitleLabel)
         }
     }

@@ -15,6 +15,14 @@ class ReviewRegisterView: UIView {
     private let sideInsetValue: CGFloat = 12
     private let lineInsetValue: CGFloat = 24
 
+    var reviewTitleText: String {
+        return reviewTitleTextView.text
+    }
+
+    var reviewContentsText: String {
+        return reviewContentsTextView.text
+    }
+
     var isShowTitlePlaceHolder: Bool = true {
         didSet { reviewTitlePlaceHolder.isHidden = !isShowTitlePlaceHolder }
     }
@@ -39,7 +47,7 @@ class ReviewRegisterView: UIView {
         return isEnabled
     }
 
-    private let productTitleLabel = UILabel().then {
+    let productTitleLabel = UILabel().then {
         $0.text = "[간식엔] 우리쌀로 만든 호두과자 (냉동)"
         $0.textColor = .black
         $0.font = .systemFont(ofSize: 16)
@@ -130,7 +138,7 @@ class ReviewRegisterView: UIView {
         $0.numberOfLines = 0
     }
 
-    private let reviewRegisterButton = UIButton(type: .system).then {
+    let reviewRegisterButton = UIButton(type: .system).then {
         $0.setTitle("등록하기", for: .normal)
         $0.setTitleColor(.white, for: .normal)
         $0.titleLabel?.font = .systemFont(ofSize: 18)
