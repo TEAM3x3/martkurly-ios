@@ -22,11 +22,11 @@ struct Order: Decodable {
         let discount_payment: Int
         let goods: Goods
         let id: Int
-        let quantity: Int
-        let sub_total: Int
+        let quantity: Int // 제품 수량
+        let sub_total: Int // 구매한 금액
 
         struct Goods: Decodable {
-            let discount_price: Int?
+            let discount_price: Int? // 물품 금액
             let id: Int
             let img: String
             let packing_status: String?
@@ -35,7 +35,7 @@ struct Order: Decodable {
             let sales_count: Int?
             let short_desc: String?
             let stock: Stock
-            let title: String
+            let title: String // 주문내역상세 제품명
             let transfer: String?
 
             struct Sales: Decodable {

@@ -184,6 +184,8 @@ extension MyKurlyOrderHistoryVC: UITableViewDelegate {
         switch tableView {
         case orderHistoryTableView:
             nextVC = MyKurlyOrderHistoryDetailVC()
+            guard let nextVC = nextVC as? MyKurlyOrderHistoryDetailVC else { return }
+            nextVC.configureData(order: data[indexPath.row])
         case frequentlyBuyingProductsTableView:
             print(#function, 2)
         default:

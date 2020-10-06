@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 class MyKurlyOrderHistoryDetailTableViewOrderNumberCell: UITableViewCell {
 
@@ -31,10 +32,12 @@ class MyKurlyOrderHistoryDetailTableViewOrderNumberCell: UITableViewCell {
     private var detailContentView = UIView()
     private var subtitleLabels = [UILabel]()
     private var infoLabels = [UILabel]() // 구매 물품에 따라 다른 정보가 표시
-    //    private var isInitialized = false
+
     // 상세정보뷰의 상태
     var isFolded = false
     var isInitialized = false
+
+    var data: Order?
 
     // MARK: - Lifecycle
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -99,6 +102,8 @@ class MyKurlyOrderHistoryDetailTableViewOrderNumberCell: UITableViewCell {
                 $0.contentMode = .scaleAspectFill
                 $0.clipsToBounds = true
             }
+            let imageURL = URL(string: productData[index]["image"]!)
+            productImageView.kf.setImage(with: imageURL)
             let productTitleLabel = UILabel().then {
                 $0.text = productData[index]["title"]
                 $0.font = UIFont.systemFont(ofSize: 16, weight: .regular)
@@ -217,8 +222,10 @@ class MyKurlyOrderHistoryDetailTableViewOrderNumberCell: UITableViewCell {
     }
 
     // MARK: - Helpers
-    func configureCell(cellData: [String]) {
+    func configureCell(order data: Order, cellData: [String]) {
+        self.data = data
         self.cellData = cellData
+        productData = convertData(order: data)
     }
 
     private func configureFoldingStatus(newValue: Bool) {
@@ -249,5 +256,27 @@ class MyKurlyOrderHistoryDetailTableViewOrderNumberCell: UITableViewCell {
             image = UIImage(systemName: "chevron.up")!.withTintColor(.lightGray, renderingMode: .alwaysOriginal)
         }
         rightAccessoryImageView.image = image
+    }
+
+    private func convertData(order: Order) -> [[String: String]] {
+        var results = [[String: String]]()
+        let items = order.items
+        for item in items {
+            let image = item.goods.img
+            let title = item.goods.title
+            let quantity = item.quantity
+            let price = item.sub_total
+
+            let result: [String: String] = [
+                "image": image,
+                "category": "",
+                "title": title,
+                "price": String(price),
+                "detail": "/ " + "\(quantity)개 구매",
+                "deliveryStatus": "배송완료"
+            ]
+            results.append(result)
+        }
+        return results
     }
 }

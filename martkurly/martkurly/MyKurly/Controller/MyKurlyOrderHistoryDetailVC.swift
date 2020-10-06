@@ -66,6 +66,8 @@ class MyKurlyOrderHistoryDetailVC: UIViewController {
     private lazy var tableViewAnchor = infoTableView.heightAnchor
     private lazy var tableViewHeightAnchor = tableViewAnchor.constraint(equalToConstant: 400)
 
+    private var order: Order?
+
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -189,6 +191,14 @@ class MyKurlyOrderHistoryDetailVC: UIViewController {
         }
     }
 
+    private func generateData(order: Order) {
+        order.items
+    }
+
+    func configureData(order: Order) {
+        self.order = order
+    }
+
     // MARK: - Selectors
     @objc
     private func handleCustomerServiceButton() {
@@ -217,7 +227,8 @@ extension MyKurlyOrderHistoryDetailVC: UITableViewDataSource {
         switch indexPath.section {
         case 0:
             let orderNumberCell = MyKurlyOrderHistoryDetailTableViewOrderNumberCell()
-            orderNumberCell.configureCell(cellData: cellData)
+            guard let order = order else { fatalError("No Order") }
+            orderNumberCell.configureCell(order: order, cellData: cellData)
             if selectedCell.contains(indexPath) {
                 orderNumberCell.isFolded = false
                 print("configure", orderNumberCell.isFolded)
