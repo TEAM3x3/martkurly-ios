@@ -11,6 +11,11 @@ import UIKit
 class OrderProductInfomationHeaderView: UIView {
 
     // MARK: - Properties
+    var orderData: [CartItem]? {
+        didSet {
+            configure()
+        }
+    }
 
     var isShowProductList = false {
         didSet {
@@ -96,6 +101,19 @@ class OrderProductInfomationHeaderView: UIView {
     }
 
     func configureAttributes() {
-        
+
+    }
+
+    func configure() {
+        guard let orderData = orderData else { return }
+        let orderViewModel = OrderViewModel(orderItem: orderData)
+
+        productTitleLabel.attributedText = orderViewModel.productTitle
+
+        if orderData.count == 1 {
+            productCountLabel.isHidden = true
+        } else {
+            productCountLabel.attributedText = orderViewModel.productCount
+        }
     }
 }

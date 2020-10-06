@@ -20,6 +20,8 @@ class CartVC: UIViewController {
         }
     }
 
+    private var selectProduct = [CartItem]() // 선택한 상품
+
     let formatter = NumberFormatter().then {
         $0.numberStyle = .decimal    // 천 단위로 콤마(,)
 
@@ -97,6 +99,9 @@ class CartVC: UIViewController {
                 for i in 0...cartProduct[0].items.count - 1 {
                     self.tapBtnCnt.insert(i)
                 }
+                self.tapBtnCnt.forEach {
+                    self.selectProduct.append(cartProduct[0].items[$0])
+                }
             }
         }
     }
@@ -135,10 +140,14 @@ class CartVC: UIViewController {
 
     @objc
     func emptyBtnTap(_ sender: UIButton) {
-        let order = ProductOrderVC()
-        order.orderData = cartProduct[0].items
-        navigationController?.pushViewController(order, animated: true)
-
+        if selectProduct.isEmpty == false {
+            let order = ProductOrderVC()
+            order.orderData = selectProduct
+            print(selectProduct)
+            navigationController?.pushViewController(order, animated: true)
+        } else {
+            print("주문할 상품을 선택하세요.")
+        }
     }
 }
 
@@ -260,28 +269,29 @@ extension CartVC: UITableViewDataSource, UITableViewDelegate {
                         }
 
                         button.setTitle("\(priceLabel.text!)원" + " 주문하기", for: .normal)
-
                         cell.configure(sumCount: sumTotalPrice, allSale: disCountPrice, ship: shipPrice)
                         return cell
                     } else {
-                        let cell = PriceView()
-                        button.setTitle("주문하기", for: .normal)
+                        let cell = UITableViewCell()
                         return cell
                     }
                 }
             default:
                 switch indexPath.section {
                 case 0:
-                    let cell = AllSelectView()
-                    cell.check.setImage(UIImage(systemName: "checkmark.circle"), for: .normal)
-                    cell.check.tintColor = .lightGray
-                    return cell
+                    switch indexPath.row {
+                    case 0:
+                        let cell = AllSelectView()
+                        return cell
+                    default:
+                        let cell = CartEmptyView()
+                        return cell
+                    }
                 default:
-                    let cell = UITableViewCell()
+                    let cell = PriceView()
                     return cell
                 }
             }
-
     }
 
     // MARK: - Stepper 빼기 버튼
@@ -411,10 +421,15 @@ extension CartVC: UITableViewDataSource, UITableViewDelegate {
             for i in 0...(cartProduct[0].items.count - 1) {
                 tapBtnCnt.insert(i)
             }
+
+            tapBtnCnt.forEach {
+                selectProduct.append(cartProduct[0].items[$0])
+            }
         } else {
             headerCell.check.setImage(UIImage(systemName: "checkmark.circle"), for: .normal)
             headerCell.check.tintColor = .lightGray
             tapBtnCnt.removeAll()
+            selectProduct.removeAll()
         }
     }
 
@@ -430,8 +445,10 @@ extension CartVC: UITableViewDataSource, UITableViewDelegate {
 
             if cell.isActive {
                 tapBtnCnt.insert(tag)
+                selectProduct.append(cartProduct[0].items[tag])
             } else {
                 tapBtnCnt.remove(tag)
+                selectProduct.remove(at: tag)
             }
         }
     }

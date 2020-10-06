@@ -16,7 +16,6 @@ class ProductOrderVC: UIViewController {
 
     var orderData = [CartItem]() {
         didSet {
-            print(orderData)
             orderTableView.reloadData()
         }
     }
@@ -228,6 +227,7 @@ extension ProductOrderVC: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+
         switch OrderCellType(rawValue: indexPath.section)! {
         case .productInfomation:
             let cell = tableView.dequeueReusableCell(
@@ -298,6 +298,7 @@ extension ProductOrderVC: UITableViewDelegate {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         switch OrderCellType(rawValue: section)! {
         case .productInfomation:
+            orderProductInfomationHeaderView.orderData = self.orderData
             return orderProductInfomationHeaderView
         case .ordererInfomation:
             return ordererInfomationHeaderView

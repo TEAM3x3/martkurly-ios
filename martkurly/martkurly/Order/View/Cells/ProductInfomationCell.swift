@@ -14,6 +14,12 @@ class ProductInfomationCell: UITableViewCell {
 
     static let identifier = "ProductInfomationCell"
 
+    var data: CartItem? {
+        didSet {
+
+        }
+    }
+
     private let productImageView = UIImageView().then {
         $0.image = UIImage(named: "TestImage")
         $0.contentMode = .scaleAspectFill
