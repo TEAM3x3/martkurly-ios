@@ -96,6 +96,6 @@ class OrderProductInfomationHeaderView: UIView {
     }
 
     func configureAttributes() {
-
+        
     }
 }
