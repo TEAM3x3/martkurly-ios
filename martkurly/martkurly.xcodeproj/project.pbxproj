@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0E001921252E34DF004B1B59 /* ProductOrderCompleteVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E001920252E34DF004B1B59 /* ProductOrderCompleteVC.swift */; };
+		0E001924252E54B2004B1B59 /* ProductOrderCheckView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E001923252E54B2004B1B59 /* ProductOrderCheckView.swift */; };
 		0E036B102525D1D1000A893B /* CartViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E036B0F2525D1D1000A893B /* CartViewModel.swift */; };
 		0E07FFA724F87CCA008C411E /* SectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E07FFA624F87CCA008C411E /* SectionHeaderView.swift */; };
 		0E1365CD24FCCFA40074EB16 /* CartVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E1365CC24FCCFA40074EB16 /* CartVC.swift */; };
@@ -253,6 +254,7 @@
 
 /* Begin PBXFileReference section */
 		0E001920252E34DF004B1B59 /* ProductOrderCompleteVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductOrderCompleteVC.swift; sourceTree = "<group>"; };
+		0E001923252E54B2004B1B59 /* ProductOrderCheckView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductOrderCheckView.swift; sourceTree = "<group>"; };
 		0E036B0F2525D1D1000A893B /* CartViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartViewModel.swift; sourceTree = "<group>"; };
 		0E07FFA624F87CCA008C411E /* SectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SectionHeaderView.swift; path = martkurly/Default/Model/SectionHeaderView.swift; sourceTree = SOURCE_ROOT; };
 		0E1365CC24FCCFA40074EB16 /* CartVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartVC.swift; sourceTree = "<group>"; };
@@ -1140,6 +1142,7 @@
 				AF7F62C32520D8CE00A14D7A /* MethodsOfPaymentHeaderView.swift */,
 				AF7F62C92521029600A14D7A /* OrderDeliveryActionHeaderView.swift */,
 				AF648B062521EF9F0001CDDE /* DeliveryEditFooterView.swift */,
+				0E001923252E54B2004B1B59 /* ProductOrderCheckView.swift */,
 			);
 			name = View;
 			path = martkurly/Order/View;
@@ -1523,6 +1526,7 @@
 				422C6F4625021E8000E3F2A1 /* MyKurlyCouponVC.swift in Sources */,
 				AFF85983251268240085066F /* CategoryProductsVC.swift in Sources */,
 				AFB791F0251E699800541DA1 /* HalfCircleTextView.swift in Sources */,
+				0E001924252E54B2004B1B59 /* ProductOrderCheckView.swift in Sources */,
 				4246D14024F4DDEA0001F9E8 /* SignUpAddressView.swift in Sources */,
 				42F44E7424F91303001B9294 /* MyKurlyCustomerServiceVC.swift in Sources */,
 				AF7F62C42520D8CE00A14D7A /* MethodsOfPaymentHeaderView.swift in Sources */,
