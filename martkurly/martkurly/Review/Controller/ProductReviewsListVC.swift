@@ -15,6 +15,8 @@ class ProductReviewsListVC: UIViewController {
     private var userPossibleReviews = [CartItem]()
     private var userCompleteReviews = [ReviewModel]()
 
+    var isDimiss: Bool  = true
+
     private lazy var categoryMenuBar = CategoryMenuView(categoryType: .fixNonInsetTBLineStyle).then {
         $0.menuTitles = ReviewsCategoryType.categoryTitles
         $0.categorySelected = categorySelected(item:)
@@ -38,7 +40,7 @@ class ProductReviewsListVC: UIViewController {
         super.viewWillAppear(animated)
         self.setNavigationBarStatus(type: .whiteType,
                                     isShowCart: false,
-                                    leftBarbuttonStyle: .dismiss,
+                                    leftBarbuttonStyle: isDimiss ? .dismiss : .pop,
                                     titleText: "상품 후기")
     }
 

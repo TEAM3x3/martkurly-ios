@@ -18,6 +18,8 @@ class ProductOrderVC: UIViewController {
         didSet { orderTableView.reloadData() }
     }
 
+    var orderID: Int?
+
     var orderMainPaymentPrice = 0               // 주문 금액
     var orderProductPaymentPrice = 0            // 상품 금액
     var orderDiscountPaymentPrice = 0           // 상품 할인 금액
@@ -38,11 +40,15 @@ class ProductOrderVC: UIViewController {
     }
 
     // 상품정보
-    private var isShowProductList: Bool = false { didSet { orderTableView.reloadData() } }
+    private var isShowProductList: Bool = false {
+        didSet { orderTableView.reloadData() }
+    }
     private let orderProductInfomationHeaderView = OrderProductInfomationHeaderView()
 
     // 주문자 정보
-    private var isShowOrdererList: Bool = false { didSet { orderTableView.reloadData() } }
+    private var isShowOrdererList: Bool = false {
+        didSet { orderTableView.reloadData() }
+    }
     private let ordererInfomationHeaderView = OrdererInfomationHeaderView()
 
     // 배송지
@@ -65,11 +71,15 @@ class ProductOrderVC: UIViewController {
     private var selectPaymentType: PaymentType = .creditCard {
         didSet { methodsOfPaymentHeaderView.paymentType = selectPaymentType }
     }
-    private var isShowPaymentList: Bool = false { didSet { orderTableView.reloadData() } }
+    private var isShowPaymentList: Bool = false {
+        didSet { orderTableView.reloadData() }
+    }
     private let methodsOfPaymentHeaderView = MethodsOfPaymentHeaderView()
 
     // 상품 미배송 시 조치
-    private var isShowActionList: Bool = false { didSet { orderTableView.reloadData() } }
+    private var isShowActionList: Bool = false {
+        didSet { orderTableView.reloadData() }
+    }
     private let orderDeliveryActionHeaderView = OrderDeliveryActionHeaderView()
 
     // Formatter
@@ -150,7 +160,36 @@ class ProductOrderVC: UIViewController {
 
     @objc
     func tappedPayForButton(_ sender: UIButton) {
-        print(#function)
+        guard let orderID = orderID,
+              let currentUser = UserService.shared.currentUser,
+              let deliverySpaceData = deliverySpaceData,
+              let deliverySpace = deliverySpace else { return }
+
+        self.showIndicate()
+        KurlyService.shared.createOrderDetail(
+            orderID: orderID,
+            delivery_cost: orderDeliveryPaymentPrice,
+            consumer: currentUser.username,
+            receiver: currentUser.nickname,
+            receiver_phone: currentUser.phone,
+            delivery_type: deliverySpace.address.contains("서울") || deliverySpace.address.contains("경기") ? "샛별배송" : "택배배송",
+            zip_code: "123456",
+            address: "\(deliverySpace.address) \(deliverySpace.detail_address)",
+            receiving_place: deliverySpaceData.receiving_place,
+            entrance_password: deliverySpaceData.entrance_password,
+            free_pass: deliverySpaceData.free_pass,
+            etc: deliverySpaceData.etc,
+            extra_message: deliverySpaceData.extra_message,
+            message: deliverySpaceData.message ?? true,
+            payment_type: selectPaymentType.description) { result in
+            self.stopIndicate()
+            switch result {
+            case true:
+                print("DEBUG: SUCCESS")
+            case false:
+                print("DEBUG: FAIL")
+            }
+        }
     }
 
     // MARK: - Helpers
@@ -274,6 +313,9 @@ extension ProductOrderVC: UITableViewDataSource {
             return cell
         case .orderReceiveSpace:
             let cell = OrderReceiveSpaceCell()
+            let array = userAddressList.filter { return $0.status == "T" }
+            cell.deliverySpace = deliverySpace != nil ? deliverySpace :
+                array.count > 0 ? array[0] : nil
             return cell
         case .orderPaymentPrice:
             switch paymentTypes[indexPath.row] {

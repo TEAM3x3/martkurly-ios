@@ -260,7 +260,8 @@ class MyKurlyVC: UIViewController {
         case [1, 0]:
             nextVC = MyKurlyOrderHistoryVC()
         case [1, 1]:
-            nextVC = MyKurlyProductReviewVC()
+            nextVC = ProductReviewsListVC()
+            (nextVC as! ProductReviewsListVC).isDimiss = false
         case [1, 2]:
             nextVC = MyKurlyProductQuestionVC()
         case [1, 3]:

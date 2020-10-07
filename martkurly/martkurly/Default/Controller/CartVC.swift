@@ -139,16 +139,24 @@ class CartVC: UIViewController {
         if selectProduct.isEmpty {
             print("주문할 상품을 선택하세요.")
         } else {
-            let order = ProductOrderVC()
-            print("selectProduct", selectProduct.count)
+            let items = selectProduct.map {
+                $0.id
+            }
+            self.showIndicate()
+            KurlyService.shared.createOrder(cartItems: items) { result in
+                self.stopIndicate()
+                guard let orderID = result else { return print("DEBUG: ORDER CREATE FAIL") }
 
-            order.orderData = selectProduct
-            order.orderMainPaymentPrice = orderMainPaymentPrice
-            order.orderDiscountPaymentPrice = orderDiscountPaymentPrice
-            order.orderProductPaymentPrice = orderProductPaymentPrice
-            order.orderDeliveryPaymentPrice = orderDeliveryPaymentPrice
-            order.orderAmountPaymentPrice = orderAmountPaymentPrice
-            navigationController?.pushViewController(order, animated: true)
+                let order = ProductOrderVC()
+                order.orderID = orderID
+                order.orderData = self.selectProduct
+                order.orderMainPaymentPrice = self.orderMainPaymentPrice
+                order.orderDiscountPaymentPrice = self.orderDiscountPaymentPrice
+                order.orderProductPaymentPrice = self.orderProductPaymentPrice
+                order.orderDeliveryPaymentPrice = self.orderDeliveryPaymentPrice
+                order.orderAmountPaymentPrice = self.orderAmountPaymentPrice
+                self.navigationController?.pushViewController(order, animated: true)
+            }
         }
     }
 }

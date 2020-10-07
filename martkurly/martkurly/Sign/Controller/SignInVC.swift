@@ -46,13 +46,7 @@ class SignInVC: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        setNavigationBar()
-        navigationController?.navigationBar.isHidden = true
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        navigationController?.navigationBar.isHidden = false
+        setNavigationBarStatus(type: .whiteType, isShowCart: false, leftBarbuttonStyle: .dismiss, titleText: "로그인")
     }
 
     // MARK: - UI
@@ -72,16 +66,11 @@ class SignInVC: UIViewController {
     }
 
     private func setConstraints() {
-        [topBar, idTextField, pwTextField, loginButton, verticalSeparator, forgotIDButton, forgotPWButton, signUpButton].forEach {
+        [idTextField, pwTextField, loginButton, verticalSeparator, forgotIDButton, forgotPWButton, signUpButton].forEach {
             view.addSubview($0)
         }
-        topBar.snp.makeConstraints {
-            $0.top.equalTo(view.safeAreaLayoutGuide)
-            $0.leading.trailing.equalToSuperview()
-            $0.height.equalTo(45)
-        }
         idTextField.snp.makeConstraints {
-            $0.top.equalTo(topBar.snp.bottom).offset(35)
+            $0.top.equalToSuperview().offset(35)
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.height.equalTo(52)
         }
