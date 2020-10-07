@@ -30,7 +30,9 @@ class MyKurlyOrderHistoryVC: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setNavigationBarStatus(type: .whiteType, isShowCart: true, leftBarbuttonStyle: .pop, titleText: StringManager.MyKurly.title.rawValue)
-        KurlyService.shared.fetchOrderList(token: "", completionHandler: fetchData(data:))
+        guard let token = UserService.shared.currentUser?.token else { return}
+        KurlyService.shared.fetchOrderList(token: token, completionHandler: fetchData(data:))
+        KurlyService.shared.fetchFrequantlyBuyingProductsData(token: token, completionHandler: {return})
     }
 
     // MARK: - UI
@@ -133,7 +135,7 @@ extension MyKurlyOrderHistoryVC: UITableViewDataSource {
         case orderHistoryTableView:
             guard let cell = orderHistoryTableView.dequeueReusableCell(withIdentifier: MyKurlyOrderHistoryTableViewCell.identifier, for: indexPath) as? MyKurlyOrderHistoryTableViewCell else { fatalError() }
             let order = data[indexPath.section]
-            guard let prodcutName = order.orderdetail.title, let paymentDate = order.orderdetail.created_at else { return cell }
+            guard let prodcutName = order.orderdetail?.title, let paymentDate = order.orderdetail?.created_at else { return cell }
             let paymentMethod = "카카오페이"
             let paymentAmount = String(order.discount_payment)
             let orderStatus = "배송완료"
