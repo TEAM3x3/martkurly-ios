@@ -11,7 +11,7 @@ import Foundation
 // KurlyService
 
 let KURLY_REF = "http://13.209.33.72/api"
-//let KURLY_REF = "http://5a996f9f659a.jp.ngrok.io/api"
+//let KURLY_REF = "http://8d9b0a14e3fd.jp.ngrok.io/api"
 let LOCAL_REF = "http://5a996f9f659a.jp.ngrok.io/api"
 
 let KURLY_GOODS_REF = KURLY_REF + "/goods"  // 상품 리스트
@@ -45,8 +45,8 @@ let REF_CART_PUSH_LOCAL = LOCAL_REF + "/cart/1/item"               // post: 장�
 let REF_CART_DELETE = KURLY_REF + "/cart/1/item/goods_delete"      // 장바구니 상품 삭제()
 let REF_CART_DELETE_LOCAL = LOCAL_REF + "/cart/1/item"             // 장바구니 상품 삭제
 
-let REF_ORDER = KURLY_REF + "/users/1/orders" // 주문 내역
-let REF_ORDER_LOCAL = LOCAL_REF + "/users/1/orders" // 주문 내역
+let REF_USER_ORDER = KURLY_REF + "/users/1/orders" // 주문 내역
+let REF_USER_ORDER_LOCAL = LOCAL_REF + "/users/1/orders" // 주문 내역
 let REF_OFTEN_PURCHASE = KURLY_REF + "/goods/often_purchase_goods" // 자주사는 상품
 let REF_OFTEN_PURCHASE_LOCAL = LOCAL_REF + "/goods/often_purchase_goods"
 
@@ -55,6 +55,10 @@ let REF_PRODUCT_REVIEW_LIST = "/reviews"        // 해당 상품에 대한 리�
 let REF_USER_POSSIBLE_REVIEW_LIST = KURLY_REF + "/users/writable" // 유저가 작성 가능한 리뷰 반환(Token Needs)
 
 let REF_ADDRESS = KURLY_REF + "/users"
+
+// 주문 API
+
+let REF_ORDER = KURLY_REF + "/order"
 
 // [추천] 탭
 let REF_RC_ANIMALS_GOODS = KURLY_GOODS_REF + "/pet_goods_best"
