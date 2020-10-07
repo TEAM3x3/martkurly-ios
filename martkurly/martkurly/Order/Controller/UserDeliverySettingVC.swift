@@ -84,10 +84,24 @@ class UserDeliverySettingVC: UIViewController {
 
     @objc
     func tappedDeliveryDelete(_ sender: UIButton) {
-        self.showIndicate()
-        AddressService.shared.deleteAddress(addressID: sender.tag) {
-            self.requestUserAddressList()
+        let alert = UIAlertController(title: nil,
+                                      message: "배송지를 삭제하시겠습니까?",
+                                      preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "확인",
+                                     style: .destructive) { _ in
+            self.showIndicate()
+            let addressID = self.userAddressList[sender.tag - 1].id
+            AddressService.shared.deleteAddress(addressID: addressID) {
+                self.requestUserAddressList()
+            }
         }
+        let cancelAction = UIAlertAction(title: "취소",
+                                         style: .cancel,
+                                         handler: nil)
+        alert.addAction(okAction)
+        alert.addAction(cancelAction)
+
+        self.present(alert, animated: true)
     }
 
     @objc
