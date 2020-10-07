@@ -8,9 +8,15 @@
 
 import UIKit
 
+protocol UserDeliverySettingVCDeleagte: class {
+    func tappedDeliveryConfirm(addressData: AddressModel)
+}
+
 class UserDeliverySettingVC: UIViewController {
 
     // MARK: - Properties
+
+    weak var delegate: UserDeliverySettingVCDeleagte?
 
     private let deliveryAddressTableView = UITableView(frame: .zero,
                                                        style: .grouped)
@@ -45,9 +51,13 @@ class UserDeliverySettingVC: UIViewController {
     // MARK: - API
 
     func requestUserAddressList() {
+        guard let currentUser = UserService.shared.currentUser else { return }
         self.showIndicate()
-        AddressService.shared.requestAddressList(userPK: 1) { addressList in
+        AddressService.shared.requestAddressList(userPK: currentUser.id) { addressList in
             self.userAddressList = addressList
+            self.userAddressList.enumerated().forEach {
+                if $0.element.status == "T" { self.selectAddressIndex = $0.offset }
+            }
             self.stopIndicate()
         }
     }
@@ -68,6 +78,12 @@ class UserDeliverySettingVC: UIViewController {
         AddressService.shared.deleteAddress(addressID: sender.tag) {
             self.requestUserAddressList()
         }
+    }
+
+    @objc
+    func tappedDeliveryConfirm(_ sender: UIButton) {
+        delegate?.tappedDeliveryConfirm(addressData: userAddressList[selectAddressIndex])
+        self.navigationController?.popViewController(animated: true)
     }
 
     // MARK: - Helpers
@@ -120,6 +136,11 @@ class UserDeliverySettingVC: UIViewController {
         deliveryAdditionHeaderView.additionButton.addTarget(
             self,
             action: #selector(tappedDeliveryAddition),
+            for: .touchUpInside)
+
+        confirmButton.addTarget(
+            self,
+            action: #selector(tappedDeliveryConfirm(_:)),
             for: .touchUpInside)
     }
 }

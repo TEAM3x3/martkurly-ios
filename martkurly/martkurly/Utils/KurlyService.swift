@@ -610,11 +610,11 @@ struct KurlyService {
 
     // MARK: - 마이컬리 주문내역 리스트
     func fetchOrderList(token: String, completionHandler: @escaping ([Order]) -> Void) {
-        //        let headers: HTTPHeaders = ["Authorization": "token " + token]
-        let headers: HTTPHeaders = ["Authorization": "token 88f0566e6db5ebaa0e46eae16f5a092610f46345"]
+        let headers: HTTPHeaders = ["Authorization": token]
+//        let headers: HTTPHeaders = ["Authorization": "token 88f0566e6db5ebaa0e46eae16f5a092610f46345"]
 
-        let urlString = REF_ORDER
-//        let urlString = REF_ORDER_LOCAL
+//        let urlString = REF_ORDER
+        let urlString = REF_ORDER_LOCAL
 
         var request = URLRequest(url: URL(string: urlString)!)
         request.headers = headers
@@ -631,6 +631,33 @@ struct KurlyService {
                 }
             case .failure(let error):
                 print("Failure: ", error)
+            }
+        }
+    }
+
+    // MARK: - 마이컬리 자주사는 상품 리스트
+    func fetchFrequantlyBuyingProductsData(token: String, completionHandler: @escaping (FrequantlyBuyingProducts) -> Void) {
+        print(#function)
+        let headers: HTTPHeaders = ["Authorization": token]
+        print(headers)
+//        let headers: HTTPHeaders = ["Authorization": "token 88f0566e6db5ebaa0e46eae16f5a092610f46345"]
+        let urlString = REF_OFTEN_PURCHASE_LOCAL
+
+        var request = URLRequest(url: URL(string: urlString)!)
+        request.headers = headers
+        AF.request(request).responseJSON { (response) in
+            switch response.result {
+            case .success:
+                guard let jsonData = response.data else { return }
+                do {
+                    let data = try self.decoder.decode(FrequantlyBuyingProducts.self, from: jsonData)
+                    print(#function, "Parsing Success", data.goods_purchase_count ?? 0)
+                    completionHandler(data)
+                } catch {
+                    print("Parsing Error", error)
+                }
+            case .failure(let error):
+                print(error)
             }
         }
     }

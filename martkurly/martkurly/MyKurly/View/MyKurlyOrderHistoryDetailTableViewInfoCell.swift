@@ -14,6 +14,7 @@ class MyKurlyOrderHistoryDetailTableViewInfoCell: UITableViewCell {
     static let identifier = "MyKurlyOrderHistoryDetailTableViewCell"
     private var cellType: MyKurlyDetailCellType = .orderNumber
     private var cellData = [String]()
+    private var orderData = [String]()
 
     private let rightAccessoryImageView = UIImageView().then {
         let image = UIImage(systemName: "chevron.down")?.withTintColor(.lightGray, renderingMode: .alwaysOriginal)
@@ -28,7 +29,6 @@ class MyKurlyOrderHistoryDetailTableViewInfoCell: UITableViewCell {
     }
     // 상세정보가 들어있는 뷰
     private var detailContentView = UIView().then {
-        $0.backgroundColor = .yellow
         $0.isHidden = false
     }
     private var subtitleLabels = [UILabel]()
@@ -50,6 +50,7 @@ class MyKurlyOrderHistoryDetailTableViewInfoCell: UITableViewCell {
         super.layoutSubviews()
         configureUI()
         configureFoldingStatus(newValue: isFolded)
+        loadData()
     }
 
     // MARK: - UI
@@ -125,13 +126,13 @@ class MyKurlyOrderHistoryDetailTableViewInfoCell: UITableViewCell {
     private func generateSubtitles() {
         for index in cellData.indices {
             if index == 0 { continue }
-            let text = cellData[index]
+            let cellText = cellData[index]
             let subtitleLabel = UILabel().then {
-                $0.text = text
+                $0.text = cellText
                 $0.font = UIFont.systemFont(ofSize: 15, weight: .light)
             }
             let infoLabel = UILabel().then {
-                $0.text = "이곳에 정보가 표시됩니다."
+                $0.text = ""
                 $0.font = UIFont.systemFont(ofSize: 15, weight: .regular)
             }
             subtitleLabels.append(subtitleLabel)
@@ -140,8 +141,9 @@ class MyKurlyOrderHistoryDetailTableViewInfoCell: UITableViewCell {
     }
 
     // MARK: - Helpers
-    func configureCell(info: String, cellData: [String]) {
+    func configureCell(orderData: [String], cellData: [String]) {
         self.cellData = cellData
+        self.orderData = orderData
     }
 
     private func configureFoldingStatus(newValue: Bool) {
@@ -171,5 +173,11 @@ class MyKurlyOrderHistoryDetailTableViewInfoCell: UITableViewCell {
             image = UIImage(systemName: "chevron.up")!.withTintColor(.lightGray, renderingMode: .alwaysOriginal)
         }
         rightAccessoryImageView.image = image
+    }
+
+    private func loadData() {
+        for index in infoLabels.indices {
+            infoLabels[index].text = orderData[index]
+        }
     }
 }

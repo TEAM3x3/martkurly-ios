@@ -15,9 +15,7 @@ class ProductOrderVC: UIViewController {
     // MARK: - Properties
 
     var orderData = [CartItem]() {
-        didSet {
-            orderTableView.reloadData()
-        }
+        didSet { orderTableView.reloadData() }
     }
 
     var orderMainPaymentPrice = 0               // 주문 금액
@@ -35,6 +33,10 @@ class ProductOrderVC: UIViewController {
         }
     }
 
+    private var userAddressList = [AddressModel]() {
+        didSet { orderTableView.reloadData() }
+    }
+
     // 상품정보
     private var isShowProductList: Bool = false { didSet { orderTableView.reloadData() } }
     private let orderProductInfomationHeaderView = OrderProductInfomationHeaderView()
@@ -45,9 +47,11 @@ class ProductOrderVC: UIViewController {
 
     // 배송지
     private let orderDeliveryHeaderView = OrderDeliveryHeaderView()
+    private var deliverySpace: AddressModel?
 
     // 받으실 장소
     private let orderReceiveSpaceHeaderView = OrderReceiveSpaceHeaderView()
+    private var deliverySpaceData: DeliverySpaceModel?
 
     // 결제 금액
     private let orderPaymentPriceHeaderView = OrderPaymentPriceHeaderView()
@@ -81,6 +85,7 @@ class ProductOrderVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
+        requestUserAddressList()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -89,6 +94,16 @@ class ProductOrderVC: UIViewController {
                                     isShowCart: false,
                                     leftBarbuttonStyle: .pop,
                                     titleText: "주문서")
+    }
+
+    // MARK: - API
+
+    func requestUserAddressList() {
+        self.showIndicate()
+        AddressService.shared.requestAddressList(userPK: 1) { addressList in
+            self.userAddressList = addressList
+            self.stopIndicate()
+        }
     }
 
     // MARK: - Action
@@ -115,9 +130,11 @@ class ProductOrderVC: UIViewController {
             ordererInfomationHeaderView.isShowOrdererList = isShowOrdererList
         case .orderDelivery:
             let controller = UserDeliverySettingVC()
+            controller.delegate = self
             self.navigationController?.pushViewController(controller, animated: true)
         case .orderReceiveSpace:
             let controller = ReceiveSpaceSettingVC()
+            controller.delegate = self
             let naviVC = UINavigationController(rootViewController: controller)
             naviVC.modalPresentationStyle = .fullScreen
             self.present(naviVC, animated: true)
@@ -246,6 +263,9 @@ extension ProductOrderVC: UITableViewDataSource {
             return cell
         case .orderDelivery:
             let cell = OrderDeliveryCell()
+            let array = userAddressList.filter { return $0.status == "T" }
+            cell.deliverySpace = deliverySpace != nil ? deliverySpace :
+                array.count > 0 ? array[0] : nil
             return cell
         case .orderReceiveSpace:
             let cell = OrderReceiveSpaceCell()
@@ -367,5 +387,48 @@ extension ProductOrderVC: UITableViewDelegate {
         default: break
         }
         tableView.selectRow(at: nil, animated: false, scrollPosition: .none)
+    }
+}
+
+// MARK: - UserDeliverySettingVCDeleagte
+
+extension ProductOrderVC: UserDeliverySettingVCDeleagte {
+    func tappedDeliveryConfirm(addressData: AddressModel) {
+        deliverySpace = addressData
+        orderTableView.reloadData()
+    }
+}
+
+// MARK: - ReceiveSpaceSettingVCDelegate
+
+extension ProductOrderVC: ReceiveSpaceSettingVCDelegate {
+    func receiveSpaceData(receiving_place: ReceiveSpaceType,
+                          entrance_password: String?,
+                          free_pass: Bool,
+                          etc: String?,
+                          message: Bool?,
+                          extra_message: String?) {
+        deliverySpaceData = DeliverySpaceModel(address: "",
+                                               detail_address: "",
+                                               status: "",
+                                               receiving_place: receiving_place.description,
+                                               entrance_password: entrance_password,
+                                               free_pass: free_pass,
+                                               etc: etc,
+                                               message: message,
+                                               extra_message: extra_message)
+        let indexPath = IndexPath(row: 0, section: OrderCellType.orderReceiveSpace.rawValue)
+        if let cell = orderTableView.cellForRow(at: indexPath) as? OrderReceiveSpaceCell {
+            switch receiving_place {
+            case .doorFront:
+                let root = entrance_password != nil ? "공동현관 비밀번호" :
+                    free_pass != false ? "자유 출입 가능" : "기타"
+                let text = "출입방법: \(root)"
+                cell.configure(titleText: receiving_place.description,
+                               accessUsageText: text)
+            default:
+                cell.configure(titleText: receiving_place.description)
+            }
+        }
     }
 }

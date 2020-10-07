@@ -14,9 +14,7 @@ class CartVC: UIViewController {
     // MARK: - Properties
     private var cartProduct = [Cart]() {
         didSet {
-            if cartProduct.isEmpty == false {
-                tableV.reloadData()
-            }
+            if cartProduct.isEmpty == false { tableV.reloadData() }
         }
     }
 
