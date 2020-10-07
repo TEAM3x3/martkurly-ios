@@ -31,6 +31,7 @@ class MyKurlyOrderHistoryVC: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        self.showIndicate()
         setNavigationBarStatus(type: .whiteType, isShowCart: true, leftBarbuttonStyle: .pop, titleText: StringManager.MyKurly.title.rawValue)
         guard let token = UserService.shared.currentUser?.token else { return}
         KurlyService.shared.fetchOrderList(token: token, completionHandler: fetchOrderListData(data:))
@@ -103,6 +104,7 @@ class MyKurlyOrderHistoryVC: UIViewController {
     private func fetchOrderListData(data: [Order]) {
         self.data = data
         orderHistoryTableView.reloadData()
+        self.stopIndicate()
     }
 
     private func fetchFrequentlyBuyingProductData(data: FrequantlyBuyingProducts) {
@@ -217,7 +219,6 @@ extension MyKurlyOrderHistoryVC: UITableViewDelegate {
             navigationController?.pushViewController(nextVC, animated: true)
         case frequentlyBuyingProductsTableView:
             let productID = frequentlyBuyingProductsInfo[indexPath.section].id
-            print(productID)
             KurlyService.shared.requestProductDetailData(productID: productID) { product in
                 let controller = ProductDetailVC()
                 controller.productDetailData = product

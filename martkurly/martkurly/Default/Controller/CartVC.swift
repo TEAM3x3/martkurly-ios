@@ -252,9 +252,10 @@ extension CartVC: UITableViewDataSource, UITableViewDelegate {
                                let salePrice = cartProduct[0].items[$0].goods.discount_price {
                                 disCountPrice += (cartProduct[0].items[$0].quantity * (cartProduct[0].items[$0].goods.price - salePrice))
                             }
+                            let sum = sumTotalPrice + disCountPrice
+                            shipPrice = sum - disCountPrice
 
-                            shipPrice = sumTotalPrice - disCountPrice
-                            if shipPrice > 40000 {
+                            if shipPrice >= 40000 {
                                 freeShipping = 0
                             } else {
                                 freeShipping = 3000
@@ -281,7 +282,6 @@ extension CartVC: UITableViewDataSource, UITableViewDelegate {
                         orderAmountPaymentPrice = orderMainPaymentPrice + orderDeliveryPaymentPrice
 
                         button.setTitle("\(priceLabel.text!)원" + " 주문하기", for: .normal)
-//                        amountPrice = orderBtnPrice + freeShipping
                         cell.configure(sumCount: sumTotalPrice, allSale: disCountPrice, ship: shipPrice, amount: orderBtnPrice)
 
                         return cell
@@ -333,7 +333,6 @@ extension CartVC: UITableViewDataSource, UITableViewDelegate {
             let cart = 1
 
             KurlyService.shared.cartUpdata(goods: goods, quantity: quantity, cart: cart)
-
         }
     }
 
