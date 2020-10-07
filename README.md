@@ -72,7 +72,7 @@
 
 ![MVP FlowChart](https://user-images.githubusercontent.com/41736472/95364435-c5a2c080-090b-11eb-9a26-c459c6dc5d32.png)
 
-**MartKurly App** 제작에 사용한 **정보구조 및 화면흐름도,** **MVP FlowChart** 에 대한 정보가 있습니다.
+아래 **Notion** 에서 **MartKurly App** 제작에 사용한 **정보구조 및 화면흐름도,** **MVP FlowChart** 에 대한 정보를 확인할 수 있습니다.
 
 [Notion 확인하기](https://www.notion.so/Mart-Kurly-4fbaeae14a874fdd96698f06472137e1)
 
