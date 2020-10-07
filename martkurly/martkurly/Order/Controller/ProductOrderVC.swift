@@ -160,24 +160,22 @@ class ProductOrderVC: UIViewController {
 
     @objc
     func tappedPayForButton(_ sender: UIButton) {
-        
-        
-        KurlyService.shared.createOrderDetail(
-            orderID: <#T##Int#>,
-            delivery_cost: <#T##Int?#>,
-            consumer: <#T##String?#>,
-            receiver: <#T##String#>,
-            receiver_phone: <#T##String#>,
-            delivery_type: <#T##String#>,
-            zip_code: <#T##String#>,
-            address: <#T##String#>,
-            receiving_place: <#T##String#>,
-            entrance_password: <#T##String?#>,
-            free_pass: <#T##Bool?#>,
-            etc: <#T##String?#>,
-            extra_message: <#T##String?#>,
-            message: <#T##Bool#>,
-            payment_type: <#T##String?#>)
+//        KurlyService.shared.createOrderDetail(
+//            orderID: <#T##Int#>,
+//            delivery_cost: <#T##Int?#>,
+//            consumer: <#T##String?#>,
+//            receiver: <#T##String#>,
+//            receiver_phone: <#T##String#>,
+//            delivery_type: <#T##String#>,
+//            zip_code: <#T##String#>,
+//            address: <#T##String#>,
+//            receiving_place: <#T##String#>,
+//            entrance_password: <#T##String?#>,
+//            free_pass: <#T##Bool?#>,
+//            etc: <#T##String?#>,
+//            extra_message: <#T##String?#>,
+//            message: <#T##Bool#>,
+//            payment_type: <#T##String?#>)
     }
 
     // MARK: - Helpers
