@@ -126,8 +126,6 @@ class CartProductView: UITableViewCell {
         }
     }
 
-    var customTag = 0
-
     // MARK: - Lifecycle
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
