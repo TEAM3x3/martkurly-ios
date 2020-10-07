@@ -115,6 +115,7 @@
 		AF564AB224E56DEA00989F82 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF564AB124E56DEA00989F82 /* AppDelegate.swift */; };
 		AF564ABB24E56DED00989F82 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AF564ABA24E56DED00989F82 /* Assets.xcassets */; };
 		AF564ABE24E56DED00989F82 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AF564ABC24E56DED00989F82 /* LaunchScreen.storyboard */; };
+		AF5D4ABA252CD3D1009A4E11 /* RecommendMoreButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF5D4AB9252CD3D1009A4E11 /* RecommendMoreButtonCell.swift */; };
 		AF648B042521EF7E0001CDDE /* DeliveryAddressCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF648B032521EF7E0001CDDE /* DeliveryAddressCell.swift */; };
 		AF648B072521EF9F0001CDDE /* DeliveryEditFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF648B062521EF9F0001CDDE /* DeliveryEditFooterView.swift */; };
 		AF648B0A2521F0880001CDDE /* RegisterDeliveryVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF648B092521F0880001CDDE /* RegisterDeliveryVC.swift */; };
@@ -360,6 +361,7 @@
 		AF564ABA24E56DED00989F82 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AF564ABD24E56DED00989F82 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		AF564ABF24E56DED00989F82 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		AF5D4AB9252CD3D1009A4E11 /* RecommendMoreButtonCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendMoreButtonCell.swift; sourceTree = "<group>"; };
 		AF648B032521EF7E0001CDDE /* DeliveryAddressCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeliveryAddressCell.swift; sourceTree = "<group>"; };
 		AF648B062521EF9F0001CDDE /* DeliveryEditFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeliveryEditFooterView.swift; sourceTree = "<group>"; };
 		AF648B092521F0880001CDDE /* RegisterDeliveryVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterDeliveryVC.swift; sourceTree = "<group>"; };
@@ -925,6 +927,7 @@
 				AFAA99D8250FCD63000F46EF /* RecommendProductListCell.swift */,
 				AF92F956251080C800C12965 /* RecommendReviewsProductCell.swift */,
 				AF92F958251108A000C12965 /* ReviewsProductCell.swift */,
+				AF5D4AB9252CD3D1009A4E11 /* RecommendMoreButtonCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1521,6 +1524,7 @@
 				42CD086624F623F7006A8087 /* SignUpBirthdayTextFieldView.swift in Sources */,
 				AF91A0A724F5862200717239 /* SearchResultCell.swift in Sources */,
 				AFFCBF312501622C007A6957 /* MainProductListCell.swift in Sources */,
+				AF5D4ABA252CD3D1009A4E11 /* RecommendMoreButtonCell.swift in Sources */,
 				AF91A0A524F570FD00717239 /* SearchBarView.swift in Sources */,
 				AFADDEBA2525122B000D1876 /* ReceiveSpaceTextViewCell.swift in Sources */,
 				42F44E7A24F915A8001B9294 /* MyKurlyNotificationVC.swift in Sources */,

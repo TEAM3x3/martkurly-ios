@@ -53,6 +53,16 @@ let REF_USER_POSSIBLE_REVIEW_LIST = KURLY_REF + "/users/writable" // 유저가 �
 
 let REF_ADDRESS = KURLY_REF + "/users"
 
+// [추천] 탭
+let REF_RC_ANIMALS_GOODS = KURLY_GOODS_REF + "/pet_goods_best"
+let REF_RC_HOME_GOODS = KURLY_GOODS_REF + "/home_appliances"
+let REF_RC_ICECREAM_GOODS = KURLY_GOODS_REF + "/ice_cream"
+let REF_RC_CLEANING_GOODS = KURLY_GOODS_REF + "/cleaning"
+let REF_RC_RICECAKE_GOODS = KURLY_GOODS_REF + "/rice_cake"
+let REF_RC_SALTEDFISH_GOODS = KURLY_GOODS_REF + "/salted_fish"
+let REF_RC_CHICKEN_GOODS = KURLY_GOODS_REF + "/chicken_goods"
+let REF_RC_REVIEW_GOODS = KURLY_GOODS_REF + "/recommend_review"
+
 // Notification
 
 let PRODUCT_DETAILVIEW_EVENT = "PRODUCT_DETAILVIEW_EVENT"
