@@ -11,6 +11,7 @@ import Foundation
 // KurlyService
 
 let KURLY_REF = "http://13.209.33.72/api"
+//let KURLY_REF = "http://5a996f9f659a.jp.ngrok.io/api"
 let LOCAL_REF = "http://5a996f9f659a.jp.ngrok.io/api"
 
 let KURLY_GOODS_REF = KURLY_REF + "/goods"  // 상품 리스트

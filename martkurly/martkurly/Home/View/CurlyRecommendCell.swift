@@ -180,7 +180,7 @@ extension CurlyRecommendCell: UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(
                 withIdentifier: MainBannerViewCell.identifier,
                 for: indexPath) as! MainBannerViewCell
-            cell.eventModel = bannerEvent[0]
+            cell.eventModel = bannerEvent.count > 2 ? bannerEvent[0] : nil
             cell.tappedBannerEvent = tappedBannerEvent(eventID:)
             return cell
         case .mdRecommendCell:
@@ -193,7 +193,7 @@ extension CurlyRecommendCell: UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(
                 withIdentifier: MainBannerViewCell.identifier,
                 for: indexPath) as! MainBannerViewCell
-            cell.eventModel = bannerEvent[1]
+            cell.eventModel = bannerEvent.count > 2 ? bannerEvent[1] : nil
             cell.tappedBannerEvent = tappedBannerEvent(eventID:)
             return cell
         case .healthCell:
@@ -244,7 +244,7 @@ extension CurlyRecommendCell: UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(
                 withIdentifier: MainBannerViewCell.identifier,
                 for: indexPath) as! MainBannerViewCell
-            cell.eventModel = bannerEvent[2]
+            cell.eventModel = bannerEvent.count > 2 ? bannerEvent[2] : nil
             cell.tappedBannerEvent = tappedBannerEvent(eventID:)
             return cell
         case .curlyInfomationCell:
