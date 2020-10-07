@@ -17,11 +17,11 @@ struct AddressService {
 
     // MARK: - 배송지 등록
 
-    func registerAddress(delivery: DeliverySpaceModel, completion: @escaping() -> Void) {
-//        guard let currentUser = UserService.shared.currentUser else { return completion() }
-        let registerRef = REF_ADDRESS + "/1" + "/address/order"
+    func registerAddress(delivery: DeliverySpaceModel, completion: @escaping(Bool) -> Void) {
+        guard let currentUser = UserService.shared.currentUser else { return completion(false) }
+        let registerRef = REF_ADDRESS + "/\(currentUser.id)" + "/address/order"
 
-        let headers: HTTPHeaders = ["Authorizations": "token 88f0566e6db5ebaa0e46eae16f5a092610f46345"]
+        let headers: HTTPHeaders = ["Authorization": currentUser.token]
         let parameters = [
             "address": delivery.address,
             "detail_address": delivery.detail_address,
@@ -33,14 +33,21 @@ struct AddressService {
             "message": delivery.message ?? true,
             "extra_message": delivery.extra_message ?? "False"
         ] as [String: Any]
-        print(parameters)
 
         AF.request(registerRef, method: .post,
                    parameters: parameters,
                    encoding: JSONEncoding.default,
                    headers: headers).responseJSON { response in
-            print(response)
-            completion()
+                    switch response.result {
+                    case .success:
+                        if let status = response.response?.statusCode,
+                           status >= 400 {
+                            completion(false)
+                        } else {
+                            completion(true)
+                        }
+                    case .failure: completion(false)
+                    }
         }
     }
 

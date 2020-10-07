@@ -15,7 +15,12 @@ class CheckDeliveryStatusCell: UITableViewCell {
     static let identifier = "SameOrdererCell"
 
     var isActive: Bool {
-        return sameChecker.isActive
+        get {
+            return sameChecker.isActive
+        }
+        set {
+            sameChecker.isActive = newValue
+        }
     }
 
     private let sameChecker = AgreementCheckMarkView()

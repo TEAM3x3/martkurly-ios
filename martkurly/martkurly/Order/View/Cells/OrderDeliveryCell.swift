@@ -14,6 +14,10 @@ class OrderDeliveryCell: UITableViewCell {
 
     static let identifier = "OrderDeliveryCell"
 
+    var deliverySpace: AddressModel? {
+        didSet { configure() }
+    }
+
     private let starsDeliveryTextView = HalfCircleTextView().then {
         $0.configure(text: "샛별배송",
                      textColor: ColorManager.General.mainPurple.rawValue,
@@ -92,6 +96,28 @@ class OrderDeliveryCell: UITableViewCell {
             $0.top.equalTo(userInfoLabel.snp.bottom).offset(20)
             $0.leading.equalToSuperview().offset(orderVCSideInsetValue)
             $0.bottom.equalToSuperview().offset(-20)
+        }
+    }
+
+    func configure() {
+        guard let deliverySpace = deliverySpace else { return }
+        let viewModel = AddressViewModel(address: deliverySpace)
+        deliveryAddressLabel.text = viewModel.totalAddressText
+        userInfoLabel.text = viewModel.userDataText
+
+        defaultDeliveryTextView.isHidden = !viewModel.isDefaultDelivery
+        if viewModel.isStarsDelivery {
+            starsDeliveryTextView.configure(
+                text: "샛별배송",
+                textColor: ColorManager.General.mainPurple.rawValue,
+                backgroundColor: .white,
+                borderColor: ColorManager.General.mainPurple.rawValue)
+        } else {
+            starsDeliveryTextView.configure(
+                text: "택배배송",
+                textColor: UIColor.lightGray,
+                backgroundColor: .white,
+                borderColor: UIColor.lightGray)
         }
     }
 }

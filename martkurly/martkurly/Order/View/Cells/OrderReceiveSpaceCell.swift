@@ -58,4 +58,9 @@ class OrderReceiveSpaceCell: UITableViewCell {
             $0.bottom.equalToSuperview().offset(-24)
         }
     }
+
+    func configure(titleText: String, accessUsageText: String? = nil) {
+        spaceTitleLabel.text = titleText
+        accessUsageLabel.text = accessUsageText
+    }
 }
