@@ -96,15 +96,9 @@ class CartVC: UIViewController {
             self.group.leave()
             self.cartProduct = cartProduct
             if cartProduct.isEmpty == false {
-                print(cartProduct[0].items.count)
                 for i in 0...cartProduct[0].items.count - 1 {
-                    print("i", i)
                     self.tapBtnCnt.insert(i)
                 }
-                self.tapBtnCnt.sorted()
-//                self.tapBtnCnt.sorted().forEach {
-//                    self.selectProduct.append(cartProduct[0].items[$0])
-//                }
             }
         }
     }
@@ -252,7 +246,6 @@ extension CartVC: UITableViewDataSource, UITableViewDelegate {
                         var shipPrice: Int = 0 //배송비
                         var freeShipping: Int = 0 // 3000원 일지? 0원 일지?
                         var orderBtnPrice: Int = 0 // 주문하기 버튼 가격
-                        var amountPrice: Int = 0 // 결제 예정액
 
                         tapBtnCnt.forEach {
                             sumTotalPrice += cartProduct[0].items[$0].discount_payment
