@@ -1,4 +1,4 @@
-![MartKurly Logo](https://user-images.githubusercontent.com/41736472/95358644-3d6ced00-0904-11eb-9c25-34fe06d7e0cc.png)
+![MartKurly Logo](https://user-images.githubusercontent.com/41736472/95359814-870a0780-0905-11eb-9c9a-c07e095f71e6.png)
 
 # MartKurly-ios
 여러가지 신선재료 샛별배송 서비스를 제공하는 Market Kurly 의 iOS App 을 Clone 하는 프로젝트 입니다.
