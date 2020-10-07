@@ -417,7 +417,7 @@ final class SignUpVC: UIViewController {
             phone: phone,
             gender: genderToString(gender: gender),
             address: address,
-            completionHandler: { return }
+            completionHandler: { self.navigationController?.popViewController(animated: true) }
         )
 
         print(username, password, nickname, email, phone, genderToString(gender: gender), address)
