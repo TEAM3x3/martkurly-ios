@@ -25,7 +25,13 @@ class UserDeliverySettingVC: UIViewController {
     private let confirmButton = KurlyButton(title: "확인", style: .purple)
 
     private var selectAddressIndex: Int = 0 {
-        didSet { deliveryAddressTableView.reloadData() }
+        didSet {
+            deliveryAddressTableView.reloadData()
+            DispatchQueue.main.async {
+                self.deliveryAddressTableView.selectRow(at: IndexPath(row: 0, section: self.selectAddressIndex), animated: true, scrollPosition: .bottom)
+                self.deliveryAddressTableView.selectRow(at: nil, animated: false, scrollPosition: .none)
+            }
+        }
     }
 
     private var userAddressList = [AddressModel]() {
@@ -37,7 +43,6 @@ class UserDeliverySettingVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
-        requestUserAddressList()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -46,6 +51,11 @@ class UserDeliverySettingVC: UIViewController {
                                     isShowCart: false,
                                     leftBarbuttonStyle: .pop,
                                     titleText: "배송지 선택")
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        self.requestUserAddressList()
     }
 
     // MARK: - API

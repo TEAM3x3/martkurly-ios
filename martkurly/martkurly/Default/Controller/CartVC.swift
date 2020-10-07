@@ -27,7 +27,6 @@ class CartVC: UIViewController {
 
     let formatter = NumberFormatter().then {
         $0.numberStyle = .decimal    // 천 단위로 콤마(,)
-
         $0.minimumFractionDigits = 0    // 최소 소수점 단위
         $0.maximumFractionDigits = 0    // 최대 소수점 단위
     }

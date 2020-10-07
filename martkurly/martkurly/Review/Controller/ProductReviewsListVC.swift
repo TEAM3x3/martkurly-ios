@@ -32,7 +32,6 @@ class ProductReviewsListVC: UIViewController {
         super.viewDidLoad()
         configureUI()
         configureCollectionView()
-        requestReviewsAPI()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -41,6 +40,11 @@ class ProductReviewsListVC: UIViewController {
                                     isShowCart: false,
                                     leftBarbuttonStyle: .dismiss,
                                     titleText: "상품 후기")
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        requestReviewsAPI()
     }
 
     // MARK: - API
