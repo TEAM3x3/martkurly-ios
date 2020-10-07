@@ -417,7 +417,12 @@ final class SignUpVC: UIViewController {
             phone: phone,
             gender: genderToString(gender: gender),
             address: address,
-            completionHandler: { self.navigationController?.popViewController(animated: true) }
+            completionHandler: {
+                let alert = UIAlertController(title: "회원가입을 축하합니다!!", message: nil, preferredStyle: .alert)
+                let action = UIAlertAction(title: "확인", style: .default, handler: { _ in self.navigationController?.popViewController(animated: true) })
+                alert.addAction(action)
+                self.present(alert, animated: true)
+            }
         )
 
         print(username, password, nickname, email, phone, genderToString(gender: gender), address)

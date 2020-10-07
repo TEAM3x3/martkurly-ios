@@ -156,7 +156,7 @@ extension MyKurlyOrderHistoryVC: UITableViewDataSource {
         switch tableView {
         case orderHistoryTableView:
             guard let cell = orderHistoryTableView.dequeueReusableCell(withIdentifier: MyKurlyOrderHistoryTableViewCell.identifier, for: indexPath) as? MyKurlyOrderHistoryTableViewCell else { fatalError() }
-            let order = data[indexPath.row]
+            let order = data[indexPath.section]
             guard let prodcutName = order.orderdetail?.title, let paymentDate = order.orderdetail?.created_at else { return cell }
             let paymentMethod = "카카오페이"
             let paymentAmount = convertToWon(int: order.discount_payment)
