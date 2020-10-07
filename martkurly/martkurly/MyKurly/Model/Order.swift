@@ -69,3 +69,8 @@ struct Order: Decodable {
         let username: String
     }
 }
+
+struct OrderModel: Decodable {
+    let id: Int
+    let items: [Int]
+}

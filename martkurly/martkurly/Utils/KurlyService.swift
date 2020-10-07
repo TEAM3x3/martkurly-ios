@@ -466,19 +466,16 @@ struct KurlyService {
     // MARK: - 장바구니 속 상품
 
     func setListCart(completion: @escaping([Cart]) -> Void) {
-        guard let token = UserDefaults.standard.string(forKey: "token") else { return }
+        guard let currentUser = UserService.shared.currentUser else { return completion([])}
 
         var cartList = [Cart]()
-        let headers: HTTPHeaders = ["Authorization": "token " + token]
-//        let headers: HTTPHeaders = ["Authorization": "token 88f0566e6db5ebaa0e46eae16f5a092610f46345"]
+        let headers: HTTPHeaders = ["Authorization": currentUser.token]
 
-        AF.request(REF_CART_LOCAL, method: .get, headers: headers).responseJSON { response in
-//        AF.request(REF_CART, method: .get, headers: headers).responseJSON { response in
+//        AF.request(REF_CART_LOCAL, method: .get, headers: headers).responseJSON { response in
+        AF.request(REF_CART, method: .get, headers: headers).responseJSON { response in
             guard let jsonData = response.data else { print("Guard"); return completion(cartList) }
-            print(jsonData)
             do {
                 let cartUpList = try self.decoder.decode(Cart.self, from: jsonData)
-                print(cartUpList)
                 cartList = [cartUpList]
             } catch {
                 print("DEBUG: Cart List Request Error, ", error)
@@ -496,7 +493,8 @@ struct KurlyService {
             "cart": cart
         ]
 
-        let cartURL = URL(string: REF_CART_PUSH_LOCAL)!
+//        let cartURL = URL(string: REF_CART_PUSH_LOCAL)!
+        let cartURL = URL(string: REF_CART_PUSH)!
         let token = UserDefaults.standard.string(forKey: "token")!
         print(token)
 
@@ -530,7 +528,8 @@ struct KurlyService {
 
         let id = goods
 
-        let cartURL = URL(string: REF_CART_PUSH_LOCAL + "/\(id)")!
+//        let cartURL = URL(string: REF_CART_PUSH_LOCAL + "/\(id)")!
+        let cartURL = URL(string: REF_CART_PUSH + "/\(id)")!
         let token = UserDefaults.standard.string(forKey: "token")!
         print(token)
 
@@ -567,7 +566,8 @@ struct KurlyService {
         let value = ["items": urlResult]
 
 //        let cartURL = URL(string: REF_CART_DELETE_LOCAL + "/\(urlResult)")!
-        let cartURL = URL(string: REF_CART_DELETE_LOCAL + "/goods_delete")!
+//        let cartURL = URL(string: REF_CART_DELETE_LOCAL + "/goods_delete")!
+        let cartURL = URL(string: REF_CART_DELETE + "/goods_delete")!
         let token = UserDefaults.standard.string(forKey: "token")!
 
         var request = URLRequest(url: cartURL)
@@ -609,13 +609,96 @@ struct KurlyService {
         }
     }
 
+    // MARK: - 주문 생성
+
+    func createOrder(cartItems: [Int], completion: @escaping(Int?) -> Void) {
+        guard let currentUser = UserService.shared.currentUser else { return completion(nil) }
+
+        let headers: HTTPHeaders = ["Authorization": currentUser.token]
+        let parameters = ["items": cartItems]
+
+        AF.request(REF_ORDER,
+                   method: .post,
+                   parameters: parameters,
+                   encoding: JSONEncoding.default,
+                   headers: headers).responseJSON { response in
+                    guard let jsonData = response.data else { return completion(nil) }
+
+                    do {
+                        let orderID = try self.decoder.decode(OrderModel.self, from: jsonData)
+                        completion(orderID.id)
+                    } catch {
+                        print("ERROR: ORDER CREATE FAIL, \(error.localizedDescription)")
+                        completion(nil)
+                    }
+        }
+    }
+
+    /*
+     "delivery_cost": 0,
+     "point": 0,
+     "consumer": "string",
+     "receiver": "string",
+     "receiver_phone": "string",
+     "delivery_type": "샛별배송",
+     "zip_code": "string",
+     "address": "string",
+     "receiving_place": "0",
+     "entrance_password": "string",
+     "free_pass": true,
+     "etc": "string",
+     "extra_message": "string",
+     "message": true,
+     "payment_type": "카카오페이"
+     */
+
+    func createOrderDetail(orderID: Int,
+                           delivery_cost: Int?,
+                           consumer: String?, // username
+                           receiver: String, // nickname
+                           receiver_phone: String,
+                           delivery_type: String, // "샛별배송", "택배배송"
+                           zip_code: String, // "123456"
+                           address: String,
+                           receiving_place: String,
+                           entrance_password: String?,
+                           free_pass: Bool?,
+                           etc: String?,
+                           extra_message: String?,
+                           message: Bool,
+                           payment_type: String?) {
+        let parameters = [
+            "delivery_cost": delivery_cost as Any,
+            "consumer": consumer as Any,
+            "receiver": receiver,
+            "receiver_phone": receiver_phone,
+            "delivery_type": delivery_type,
+            "zip_code": "23412",
+            "address": address,
+            "receiving_place": receiving_place,
+            "entrance_password": entrance_password as Any,
+            "free_pass": free_pass as Any,
+            "etc": etc as Any,
+            "extra_message": extra_message as Any,
+            "message": message,
+            "payment_type": payment_type as Any
+        ] as [String: Any]
+
+        let requestURL = REF_ORDER + "/\(orderID)/detail"
+        AF.request(requestURL, method: .post,
+                   parameters: parameters,
+                   encoding: JSONEncoding.default).responseJSON { response in
+            print(response)
+        }
+    }
+
     // MARK: - 마이컬리 주문내역 리스트
     func fetchOrderList(token: String, completionHandler: @escaping ([Order]) -> Void) {
         let headers: HTTPHeaders = ["Authorization": token]
 //        let headers: HTTPHeaders = ["Authorization": "token 88f0566e6db5ebaa0e46eae16f5a092610f46345"]
 
-//        let urlString = REF_ORDER
-        let urlString = REF_ORDER_LOCAL
+        let urlString = REF_USER_ORDER
+//        let urlString = REF_ORDER_LOCAL
 
         var request = URLRequest(url: URL(string: urlString)!)
         request.headers = headers
@@ -642,7 +725,8 @@ struct KurlyService {
         let headers: HTTPHeaders = ["Authorization": token]
         print(headers)
 //        let headers: HTTPHeaders = ["Authorization": "token 88f0566e6db5ebaa0e46eae16f5a092610f46345"]
-        let urlString = REF_OFTEN_PURCHASE_LOCAL
+//        let urlString = REF_OFTEN_PURCHASE_LOCAL
+        let urlString = REF_OFTEN_PURCHASE
 
         var request = URLRequest(url: URL(string: urlString)!)
         request.headers = headers

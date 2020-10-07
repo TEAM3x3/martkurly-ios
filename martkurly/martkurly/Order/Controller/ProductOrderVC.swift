@@ -18,6 +18,8 @@ class ProductOrderVC: UIViewController {
         didSet { orderTableView.reloadData() }
     }
 
+    var orderID: Int?
+
     var orderMainPaymentPrice = 0               // 주문 금액
     var orderProductPaymentPrice = 0            // 상품 금액
     var orderDiscountPaymentPrice = 0           // 상품 할인 금액
@@ -38,11 +40,15 @@ class ProductOrderVC: UIViewController {
     }
 
     // 상품정보
-    private var isShowProductList: Bool = false { didSet { orderTableView.reloadData() } }
+    private var isShowProductList: Bool = false {
+        didSet { orderTableView.reloadData() }
+    }
     private let orderProductInfomationHeaderView = OrderProductInfomationHeaderView()
 
     // 주문자 정보
-    private var isShowOrdererList: Bool = false { didSet { orderTableView.reloadData() } }
+    private var isShowOrdererList: Bool = false {
+        didSet { orderTableView.reloadData() }
+    }
     private let ordererInfomationHeaderView = OrdererInfomationHeaderView()
 
     // 배송지
@@ -65,11 +71,15 @@ class ProductOrderVC: UIViewController {
     private var selectPaymentType: PaymentType = .creditCard {
         didSet { methodsOfPaymentHeaderView.paymentType = selectPaymentType }
     }
-    private var isShowPaymentList: Bool = false { didSet { orderTableView.reloadData() } }
+    private var isShowPaymentList: Bool = false {
+        didSet { orderTableView.reloadData() }
+    }
     private let methodsOfPaymentHeaderView = MethodsOfPaymentHeaderView()
 
     // 상품 미배송 시 조치
-    private var isShowActionList: Bool = false { didSet { orderTableView.reloadData() } }
+    private var isShowActionList: Bool = false {
+        didSet { orderTableView.reloadData() }
+    }
     private let orderDeliveryActionHeaderView = OrderDeliveryActionHeaderView()
 
     // Formatter
@@ -150,7 +160,24 @@ class ProductOrderVC: UIViewController {
 
     @objc
     func tappedPayForButton(_ sender: UIButton) {
-        print(#function)
+        
+        
+        KurlyService.shared.createOrderDetail(
+            orderID: <#T##Int#>,
+            delivery_cost: <#T##Int?#>,
+            consumer: <#T##String?#>,
+            receiver: <#T##String#>,
+            receiver_phone: <#T##String#>,
+            delivery_type: <#T##String#>,
+            zip_code: <#T##String#>,
+            address: <#T##String#>,
+            receiving_place: <#T##String#>,
+            entrance_password: <#T##String?#>,
+            free_pass: <#T##Bool?#>,
+            etc: <#T##String?#>,
+            extra_message: <#T##String?#>,
+            message: <#T##Bool#>,
+            payment_type: <#T##String?#>)
     }
 
     // MARK: - Helpers
@@ -274,6 +301,9 @@ extension ProductOrderVC: UITableViewDataSource {
             return cell
         case .orderReceiveSpace:
             let cell = OrderReceiveSpaceCell()
+            let array = userAddressList.filter { return $0.status == "T" }
+            cell.deliverySpace = deliverySpace != nil ? deliverySpace :
+                array.count > 0 ? array[0] : nil
             return cell
         case .orderPaymentPrice:
             switch paymentTypes[indexPath.row] {
