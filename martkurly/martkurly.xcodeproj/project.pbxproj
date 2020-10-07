@@ -54,6 +54,7 @@
 		422C6F56250220E100E3F2A1 /* MyKurlyEditInfoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 422C6F55250220E100E3F2A1 /* MyKurlyEditInfoVC.swift */; };
 		422C6F582502217200E3F2A1 /* MyKurlyTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 422C6F572502217200E3F2A1 /* MyKurlyTableViewCell.swift */; };
 		422C6F5A250222CC00E3F2A1 /* MyKurlyCellType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 422C6F59250222CC00E3F2A1 /* MyKurlyCellType.swift */; };
+		423FF76E252E3869002D6FD6 /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 423FF76D252E3869002D6FD6 /* TestViewController.swift */; };
 		42455D1A2504F31C0016CE14 /* MyKurlyCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42455D192504F31C0016CE14 /* MyKurlyCategory.swift */; };
 		4246D13E24F4BD780001F9E8 /* SignUpTextFieldTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4246D13D24F4BD780001F9E8 /* SignUpTextFieldTitleView.swift */; };
 		4246D14024F4DDEA0001F9E8 /* SignUpAddressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4246D13F24F4DDEA0001F9E8 /* SignUpAddressView.swift */; };
@@ -299,6 +300,7 @@
 		422C6F55250220E100E3F2A1 /* MyKurlyEditInfoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MyKurlyEditInfoVC.swift; path = martkurly/MyKurly/Controller/MyKurlyEditInfoVC.swift; sourceTree = SOURCE_ROOT; };
 		422C6F572502217200E3F2A1 /* MyKurlyTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MyKurlyTableViewCell.swift; path = martkurly/MyKurly/View/MyKurlyTableViewCell.swift; sourceTree = SOURCE_ROOT; };
 		422C6F59250222CC00E3F2A1 /* MyKurlyCellType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MyKurlyCellType.swift; path = martkurly/MyKurly/Model/MyKurlyCellType.swift; sourceTree = SOURCE_ROOT; };
+		423FF76D252E3869002D6FD6 /* TestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
 		42455D192504F31C0016CE14 /* MyKurlyCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyKurlyCategory.swift; sourceTree = "<group>"; };
 		4246D13D24F4BD780001F9E8 /* SignUpTextFieldTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpTextFieldTitleView.swift; sourceTree = "<group>"; };
 		4246D13F24F4DDEA0001F9E8 /* SignUpAddressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpAddressView.swift; sourceTree = "<group>"; };
@@ -711,6 +713,7 @@
 				AF72A5B824F6650700D96920 /* ProductDetailVC.swift */,
 				0E1365CC24FCCFA40074EB16 /* CartVC.swift */,
 				42F378DF25138931003C4F79 /* ChooseProductsVC.swift */,
+				423FF76D252E3869002D6FD6 /* TestViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1392,6 +1395,7 @@
 				42896213251390B200277DF4 /* KurlyStepper.swift in Sources */,
 				42C69B5C24EE606700A18B4C /* IncorrectInputWarningView.swift in Sources */,
 				AF91A0A324F568B800717239 /* SearchVC.swift in Sources */,
+				423FF76E252E3869002D6FD6 /* TestViewController.swift in Sources */,
 				AF9EB56A2516709E00E30F27 /* ReviewsInfomationCell.swift in Sources */,
 				AF8962D12504965A00F42FFD /* MainMDRecommendCell.swift in Sources */,
 				AFB791EA251E330100541DA1 /* UserDeliverySettingVC.swift in Sources */,
