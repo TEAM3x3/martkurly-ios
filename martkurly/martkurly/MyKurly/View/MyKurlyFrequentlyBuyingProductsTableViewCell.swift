@@ -104,4 +104,13 @@ class MyKurlyFrequentlyBuyingProductsTableViewCell: UITableViewCell {
             $0.leading.equalTo(priceLabel)
         }
     }
+
+    // MARK: - Helpers
+    func configureCell(productName: String, price: String, numberOfPurchases: String, imageURL: String) {
+        productNameLabel.text = productName
+        priceLabel.text = price
+        numberOfPurchasesLabel.text = numberOfPurchases
+        let imageURL = URL(string: imageURL)!
+        productImageView.kf.setImage(with: imageURL)
+    }
 }
