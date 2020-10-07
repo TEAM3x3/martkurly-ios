@@ -666,7 +666,8 @@ struct KurlyService {
                            etc: String?,
                            extra_message: String?,
                            message: Bool,
-                           payment_type: String?) {
+                           payment_type: String?,
+                           completion: @escaping(Bool) -> Void) {
         let parameters = [
             "delivery_cost": delivery_cost as Any,
             "consumer": consumer as Any,
@@ -681,14 +682,18 @@ struct KurlyService {
             "etc": etc as Any,
             "extra_message": extra_message as Any,
             "message": message,
-            "payment_type": payment_type as Any
+            "payment_type": "카카오페이"
         ] as [String: Any]
 
         let requestURL = REF_ORDER + "/\(orderID)/detail"
         AF.request(requestURL, method: .post,
                    parameters: parameters,
                    encoding: JSONEncoding.default).responseJSON { response in
-            print(response)
+                    if let statusCode = response.response?.statusCode {
+                        completion(statusCode < 400 ? true : false)
+                    } else {
+                        completion(false)
+                    }
         }
     }
 
