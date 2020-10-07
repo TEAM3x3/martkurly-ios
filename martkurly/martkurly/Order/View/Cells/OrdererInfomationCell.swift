@@ -69,6 +69,15 @@ class OrdererInfomationCell: UITableViewCell {
             $0.leading.equalToSuperview().offset(orderVCSideInsetValue)
             $0.bottom.equalToSuperview().offset(-orderVCSideInsetValue)
         }
+
+        guard let name = UserService.shared.currentUser?.nickname else { return }
+        guard let phone = UserService.shared.currentUser?.phone else { return }
+        guard let email = UserService.shared.currentUser?.email else { return }
+
+        ordererNameLabel.text = name
+        ordererPhoneLabel.text = phone
+        ordererEmailLabel.text = email
+
     }
 
     func makeInfoStackView(titleText: String, displayLabel: UILabel) -> UIStackView {
@@ -86,4 +95,5 @@ class OrdererInfomationCell: UITableViewCell {
 
         return stack
     }
+
 }

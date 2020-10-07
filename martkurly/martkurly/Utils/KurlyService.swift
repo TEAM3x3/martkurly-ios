@@ -470,8 +470,10 @@ struct KurlyService {
 
         var cartList = [Cart]()
         let headers: HTTPHeaders = ["Authorization": "token " + token]
+//        let headers: HTTPHeaders = ["Authorization": "token 88f0566e6db5ebaa0e46eae16f5a092610f46345"]
 
         AF.request(REF_CART_LOCAL, method: .get, headers: headers).responseJSON { response in
+//        AF.request(REF_CART, method: .get, headers: headers).responseJSON { response in
             guard let jsonData = response.data else { print("Guard"); return completion(cartList) }
             print(jsonData)
             do {
