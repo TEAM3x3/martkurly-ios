@@ -49,7 +49,7 @@ class CartVC: UIViewController {
             tableV.reloadData()
             cartAllProduct.append(contentsOf: tapBtnCnt)
             selectProduct.removeAll()
-            print("tapBtnCnt", tapBtnCnt)
+            
             self.tapBtnCnt.sorted().forEach {
                 self.selectProduct.append(cartProduct[0].items[$0])
             }
