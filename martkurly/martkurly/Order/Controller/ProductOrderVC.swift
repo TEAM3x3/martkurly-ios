@@ -148,6 +148,11 @@ class ProductOrderVC: UIViewController {
         }
     }
 
+    @objc
+    func tappedPayForButton(_ sender: UIButton) {
+        print(#function)
+    }
+
     // MARK: - Helpers
 
     func configureUI() {
@@ -324,6 +329,9 @@ extension ProductOrderVC: UITableViewDataSource {
             return cell
         case .payForProduct:
             let cell = PayForProductCell()
+            cell.paymentButton.addTarget(self,
+                                         action: #selector(tappedPayForButton(_:)),
+                                         for: .touchUpInside)
             return cell
         }
 

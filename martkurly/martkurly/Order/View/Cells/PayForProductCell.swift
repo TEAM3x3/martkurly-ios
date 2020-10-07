@@ -66,7 +66,7 @@ class PayForProductCell: UITableViewCell {
         $0.font = .systemFont(ofSize: 14)
     }
 
-    private let paymentButton = KurlyButton(title: "결제하기",
+    let paymentButton = KurlyButton(title: "결제하기",
                                             style: .purple)
 
     private let paymentInfomationLabel = UILabel().then {

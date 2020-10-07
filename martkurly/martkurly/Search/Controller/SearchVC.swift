@@ -108,6 +108,16 @@ class SearchVC: UIViewController {
             self.searchType = .fileShort
             self.searchProducts = products
             self.productListView.products = products
+
+            KurlyService.shared.fetchRecentSearchWords { searchWords in
+                self.recentArray = searchWords.sorted(by: { (lhs, rhs) -> Bool in
+                    return lhs.keyword.updated_at > rhs.keyword.updated_at
+                })
+            }
+
+            KurlyService.shared.fetchPopularSearchWords { searchWords in
+                self.popularArray = searchWords
+            }
         }
     }
 

@@ -91,7 +91,7 @@ struct KurlyService {
             do {
                 products = try self.decoder.decode([Product].self, from: jsonData)
             } catch {
-                print("DEBUG: Recommend List Fetch Error, ", error.localizedDescription)
+                print("DEBUG: Products List Fetch Error, ", error.localizedDescription)
             }
             completion(products)
         }
