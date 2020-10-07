@@ -159,12 +159,13 @@ class ProductOrderVC: UIViewController {
     }
 
     @objc
-    func tappedPayForButton(_ sender: UIButton) {\
+    func tappedPayForButton(_ sender: UIButton) {
         guard let orderID = orderID,
               let currentUser = UserService.shared.currentUser,
               let deliverySpaceData = deliverySpaceData,
               let deliverySpace = deliverySpace else { return }
 
+        self.showIndicate()
         KurlyService.shared.createOrderDetail(
             orderID: orderID,
             delivery_cost: orderDeliveryPaymentPrice,
@@ -181,6 +182,7 @@ class ProductOrderVC: UIViewController {
             extra_message: deliverySpaceData.extra_message,
             message: deliverySpaceData.message ?? true,
             payment_type: selectPaymentType.description) { result in
+            self.stopIndicate()
             switch result {
             case true:
                 print("DEBUG: SUCCESS")

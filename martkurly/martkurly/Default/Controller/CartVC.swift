@@ -142,7 +142,9 @@ class CartVC: UIViewController {
             let items = selectProduct.map {
                 $0.id
             }
+            self.showIndicate()
             KurlyService.shared.createOrder(cartItems: items) { result in
+                self.stopIndicate()
                 guard let orderID = result else { return print("DEBUG: ORDER CREATE FAIL") }
 
                 let order = ProductOrderVC()
