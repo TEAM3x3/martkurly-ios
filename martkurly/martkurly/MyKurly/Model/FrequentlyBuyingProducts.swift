@@ -14,6 +14,9 @@ struct FrequantlyBuyingProducts: Decodable {
 
     struct Serializers: Decodable {
         let id: Int
+        let img: String
+        let price: Int
+        let title: String
     }
 }
 

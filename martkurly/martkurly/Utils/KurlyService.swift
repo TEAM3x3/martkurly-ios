@@ -634,7 +634,7 @@ struct KurlyService {
     }
 
     // MARK: - 마이컬리 자주사는 상품 리스트
-    func fetchFrequantlyBuyingProductsData(token: String, completionHandler: @escaping () -> Void) {
+    func fetchFrequantlyBuyingProductsData(token: String, completionHandler: @escaping (FrequantlyBuyingProducts) -> Void) {
         print(#function)
         let headers: HTTPHeaders = ["Authorization": token]
         print(headers)
@@ -649,8 +649,8 @@ struct KurlyService {
                 guard let jsonData = response.data else { return }
                 do {
                     let data = try self.decoder.decode(FrequantlyBuyingProducts.self, from: jsonData)
-                    print(#function, "Parsing Success", data.goods_purchase_count)
-                    completionHandler()
+                    print(#function, "Parsing Success", data.goods_purchase_count ?? 0)
+                    completionHandler(data)
                 } catch {
                     print("Parsing Error", error)
                 }
