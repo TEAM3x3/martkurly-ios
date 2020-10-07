@@ -34,13 +34,17 @@
 - Then
 
 ## Development Tools
-- Adobe XD
-- Google Meet
-- Slack
-- Trello
+- Adobe XD : 체계적으로 뷰를 관리하고 코드를 재사용하기 위하여 **Adobe XD** 를 사용해 프로젝트 초반에 모든 뷰 구성을 확인했습니다.
+- Discord : **커뮤니케이션 및 코드리뷰**를 위한 화면 공유용도로 사용하였습니다.
+- Github Projects : **Github Issue** 와 연동하여 프로젝트를 좀 더 수월하게 관리할 목적으로 사용했습니다.
+- Google Meet : **트러블슈팅** 회의에 사용했습니다.
+- Slack : 여러 **Notification 을 통합적**으로 관리하였습니다.
+- Trello : **BackEnd 팀**과 **프로젝트 진행상황** 공유 목적으로 사용되었습니다.
+
+최대한 여러가지 툴을 사용하고 경험해봄으로서, 이후 프로젝트에서는 더 적합한 툴을 시행착오 없이 선택할 수 있는 경험을 쌓는 것을 목표로 하였습니다.
 
 ## martkurly-Notion
-##[Notion](https://www.notion.so/Mart-Kurly-4fbaeae14a874fdd96698f06472137e1)
+[Notion](https://www.notion.so/Mart-Kurly-4fbaeae14a874fdd96698f06472137e1)
 
 ---
 
