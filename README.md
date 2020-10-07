@@ -43,7 +43,8 @@
 
 최대한 여러가지 툴을 사용하고 경험해봄으로서, 이후 프로젝트에서는 더 적합한 툴을 시행착오 없이 선택할 수 있는 경험을 쌓는 것을 목표로 하였습니다.
 
-## martkurly-Notion
+## Additional Documents
+**MartKurly App** 제작에 사용한 **정보구조 및 화면흐름도,** **MVP FlowChart** 에 대한 정보가 있습니다.
 [Notion](https://www.notion.so/Mart-Kurly-4fbaeae14a874fdd96698f06472137e1)
 
 ---
