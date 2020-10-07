@@ -140,7 +140,7 @@ class MyKurlyOrderHistoryDetailTableViewInfoCell: UITableViewCell {
     }
 
     // MARK: - Helpers
-    func configureCell(cellData: [String]) {
+    func configureCell(info: String, cellData: [String]) {
         self.cellData = cellData
     }
 

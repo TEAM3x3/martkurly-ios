@@ -16,10 +16,15 @@ class ProductOrderVC: UIViewController {
 
     var orderData = [CartItem]() {
         didSet {
-            print(orderData)
             orderTableView.reloadData()
         }
     }
+
+    var orderMainPaymentPrice = 0               // 주문 금액
+    var orderProductPaymentPrice = 0            // 상품 금액
+    var orderDiscountPaymentPrice = 0           // 상품 할인 금액
+    var orderDeliveryPaymentPrice = 0           // 배송비
+    var orderAmountPaymentPrice = 0             // 최종 결제 금액
 
     private let orderTableView = UITableView(frame: .zero, style: .grouped)
 
@@ -235,7 +240,7 @@ extension ProductOrderVC: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch OrderCellType(rawValue: section)! {
-        case .productInfomation: return isShowProductList ? 5 : 0
+        case .productInfomation: return isShowProductList ? orderData.count : 0
         case .ordererInfomation: return isShowOrdererList ? 1 : 0
         case .orderDelivery: return 1
         case .orderReceiveSpace: return 1
@@ -247,11 +252,13 @@ extension ProductOrderVC: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+
         switch OrderCellType(rawValue: indexPath.section)! {
         case .productInfomation:
             let cell = tableView.dequeueReusableCell(
                 withIdentifier: ProductInfomationCell.identifier,
                 for: indexPath) as! ProductInfomationCell
+            cell.data = orderData[indexPath.row]
             return cell
         case .ordererInfomation:
             let cell = OrdererInfomationCell()
@@ -267,27 +274,40 @@ extension ProductOrderVC: UITableViewDataSource {
             return cell
         case .orderPaymentPrice:
             switch paymentTypes[indexPath.row] {
-            case .orderPricePayment: fallthrough
+            case .orderPricePayment:
+                    let cell = tableView.dequeueReusableCell(
+                        withIdentifier: OrderMainPaymentPriceCell.identifier,
+                        for: indexPath) as! OrderMainPaymentPriceCell
+                    cell.configure(titleText: paymentTypes[indexPath.row].description,
+                                   priceText: priceFormatter.string(from: orderMainPaymentPrice as NSNumber) ?? "")
+                    return cell
             case .deliveryPricePayment:
                 let cell = tableView.dequeueReusableCell(
                     withIdentifier: OrderMainPaymentPriceCell.identifier,
                     for: indexPath) as! OrderMainPaymentPriceCell
                 cell.configure(titleText: paymentTypes[indexPath.row].description,
-                               priceText: priceFormatter.string(from: 159000) ?? "")
+                               priceText: priceFormatter.string(from: (orderDeliveryPaymentPrice as NSNumber)) ?? "0")
                 return cell
-            case .productPricePayMent: fallthrough
+            case .productPricePayMent:
+                    let cell = tableView.dequeueReusableCell(
+                        withIdentifier: OrderSubPaymentPriceCell.identifier,
+                        for: indexPath) as! OrderSubPaymentPriceCell
+                    cell.configure(titleText: paymentTypes[indexPath.row].description,
+                                   priceText: priceFormatter.string(from: orderProductPaymentPrice as NSNumber) ?? "",
+                                   type: paymentTypes[indexPath.row])
+                    return cell
             case .discountPricePayment:
                 let cell = tableView.dequeueReusableCell(
                     withIdentifier: OrderSubPaymentPriceCell.identifier,
                     for: indexPath) as! OrderSubPaymentPriceCell
                 cell.configure(titleText: paymentTypes[indexPath.row].description,
-                               priceText: priceFormatter.string(from: 177800) ?? "",
+                               priceText: priceFormatter.string(from: orderDiscountPaymentPrice as NSNumber) ?? "",
                                type: paymentTypes[indexPath.row])
                 return cell
             case .amountPricePayment:
                 let cell = OrderAmountPaymentPriceCell()
                 cell.configure(titleText: paymentTypes[indexPath.row].description,
-                               priceText: priceFormatter.string(from: 235900) ?? "")
+                               priceText: priceFormatter.string(from: orderAmountPaymentPrice as NSNumber) ?? "")
                 return cell
             }
         case .methodsOfPayMent:
@@ -320,6 +340,7 @@ extension ProductOrderVC: UITableViewDelegate {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         switch OrderCellType(rawValue: section)! {
         case .productInfomation:
+            orderProductInfomationHeaderView.orderData = self.orderData
             return orderProductInfomationHeaderView
         case .ordererInfomation:
             return ordererInfomationHeaderView
