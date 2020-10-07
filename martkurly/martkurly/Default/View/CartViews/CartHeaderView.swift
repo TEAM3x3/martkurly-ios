@@ -74,12 +74,19 @@ class CartHeaderView: UIView {
     }
 
     func configure(text: String) {
+        self.statusArr.insert(text)
 
-        let attributedString = NSMutableAttributedString(string: text + " 박스로 배송됩니다", attributes: attributes)
+        var statusText = ""
+        for i in statusArr {
+            statusText += "\(i)" + "∙"
+        }
+        statusText.removeLast(1)
 
+        let attributedString = NSMutableAttributedString(string: statusText + " 박스로 배송됩니다", attributes: attributes)
         attributedString.addAttribute(.foregroundColor, value: UIColor.init(red: 104, green: 183, blue: 148), range: (text as NSString).range(of: "냉장"))
         attributedString.addAttribute(.foregroundColor, value: UIColor.init(red: 107, green: 170, blue: 245), range: (text as NSString).range(of: "냉동"))
         attributedString.addAttribute(.foregroundColor, value: UIColor.init(red: 220, green: 123, blue: 85), range: (text as NSString).range(of: "상온"))
+
         self.shipping.attributedText = attributedString
 
     }

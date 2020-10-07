@@ -469,11 +469,11 @@ struct KurlyService {
         guard let token = UserDefaults.standard.string(forKey: "token") else { return }
 
         var cartList = [Cart]()
-//        let headers: HTTPHeaders = ["Authorization": "token " + token]
-        let headers: HTTPHeaders = ["Authorization": "token 88f0566e6db5ebaa0e46eae16f5a092610f46345"]
+        let headers: HTTPHeaders = ["Authorization": "token " + token]
+//        let headers: HTTPHeaders = ["Authorization": "token 88f0566e6db5ebaa0e46eae16f5a092610f46345"]
 
-//        AF.request(REF_CART_LOCAL, method: .get, headers: headers).responseJSON { response in
-        AF.request(REF_CART, method: .get, headers: headers).responseJSON { response in
+        AF.request(REF_CART_LOCAL, method: .get, headers: headers).responseJSON { response in
+//        AF.request(REF_CART, method: .get, headers: headers).responseJSON { response in
             guard let jsonData = response.data else { print("Guard"); return completion(cartList) }
             print(jsonData)
             do {
@@ -584,6 +584,53 @@ struct KurlyService {
                 print("Success", data)
             case .failure(let error):
                 print("Faulure", error)
+            }
+        }
+    }
+
+    // MARK: - 장바구니
+
+    func cartUpdate(completion: @escaping([Cart]) -> Void) {
+        let headers: HTTPHeaders = ["Authorization": "token 88f0566e6db5ebaa0e46eae16f5a092610f46345"]
+        var cartList = [Cart]()
+
+        AF.request(REF_CART, method: .get, headers: headers).responseJSON { response in
+            guard let jsonData = response.data else { print("Guard"); return completion(cartList) }
+            print(jsonData)
+            do {
+                let cartUpList = try self.decoder.decode(Cart.self, from: jsonData)
+                print(cartUpList)
+                cartList = [cartUpList]
+            } catch {
+                print("DEBUG: Cart List Request Error, ", error)
+            }
+            completion(cartList)
+        }
+    }
+
+    // MARK: - 마이컬리 주문내역 리스트
+    func fetchOrderList(token: String, completionHandler: @escaping ([Order]) -> Void) {
+        //        let headers: HTTPHeaders = ["Authorization": "token " + token]
+        let headers: HTTPHeaders = ["Authorization": "token 88f0566e6db5ebaa0e46eae16f5a092610f46345"]
+
+        let urlString = REF_ORDER
+//        let urlString = REF_ORDER_LOCAL
+
+        var request = URLRequest(url: URL(string: urlString)!)
+        request.headers = headers
+        AF.request(request).responseJSON { (response) in
+            switch response.result {
+            case .success:
+                guard let jsonData = response.data else { print("No Data"); return }
+                do {
+                    let data = try decoder.decode([Order].self, from: jsonData)
+                    print(#function, "Parsing Success")
+                    completionHandler(data)
+                } catch {
+                    print(#function, "Parsing Error", error)
+                }
+            case .failure(let error):
+                print("Failure: ", error)
             }
         }
     }

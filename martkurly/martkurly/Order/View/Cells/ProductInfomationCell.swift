@@ -16,7 +16,7 @@ class ProductInfomationCell: UITableViewCell {
 
     var data: CartItem? {
         didSet {
-
+            configure()
         }
     }
 
@@ -98,5 +98,15 @@ class ProductInfomationCell: UITableViewCell {
             $0.trailing.bottom.equalToSuperview().offset(-orderVCSideInsetValue)
             $0.height.equalTo(0.5)
         }
+    }
+
+    func configure() {
+        guard let data = data else { return }
+        let orderViewModel = OrderDataViewModel(orderItem: data)
+
+        productImageView.kf.setImage(with: orderViewModel.imageURL)
+        productTitleLabel.attributedText = orderViewModel.productTitle
+        productEachLabel.attributedText = orderViewModel.productEach
+        productAmountPriceLabel.attributedText = orderViewModel.productAmountPrice
     }
 }

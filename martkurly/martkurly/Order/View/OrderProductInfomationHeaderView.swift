@@ -67,7 +67,6 @@ class OrderProductInfomationHeaderView: UIView {
 
     func configureUI() {
         configureLayout()
-        configureAttributes()
     }
 
     func configureLayout() {
@@ -98,10 +97,6 @@ class OrderProductInfomationHeaderView: UIView {
             $0.centerY.equalToSuperview()
             $0.trailing.equalToSuperview().offset(-orderVCSideInsetValue)
         }
-    }
-
-    func configureAttributes() {
-
     }
 
     func configure() {

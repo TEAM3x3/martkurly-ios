@@ -25,13 +25,19 @@ class MyKurlyOrderHistoryTableViewCell: UITableViewCell {
         $0.backgroundColor = .separatorGray
     }
 
-    private let categories = [
+    private var categories = [
         StringManager.MyKurlyOrderHistory.productName.rawValue,
         StringManager.MyKurlyOrderHistory.paymentDate.rawValue,
         StringManager.MyKurlyOrderHistory.paymentMethod.rawValue,
         StringManager.MyKurlyOrderHistory.paymentAmount.rawValue,
         StringManager.MyKurlyOrderHistory.orderStatus.rawValue
-    ]
+    ] {
+        willSet {
+            for index in newValue.indices {
+                orderInfoLabels[index].text = newValue[index]
+            }
+        }
+    }
 
     private var orderInfoLabels = [UILabel]()
 
@@ -103,5 +109,10 @@ class MyKurlyOrderHistoryTableViewCell: UITableViewCell {
             }
             orderInfoLabels.append(infoLabel)
         }
+    }
+
+    // MARK: - Helpers
+    func configureCell(productName: String, paymentDate: String, paymentMethod: String, paymentAmount: String, orderStatus: String) {
+        self.categories = [productName, paymentDate, paymentMethod, paymentAmount, orderStatus]
     }
 }

@@ -19,6 +19,8 @@ class MyKurlyOrderHistoryVC: UIViewController {
         $0.isHidden = true
     }
 
+    var data = [Order]()
+
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,6 +30,7 @@ class MyKurlyOrderHistoryVC: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setNavigationBarStatus(type: .whiteType, isShowCart: true, leftBarbuttonStyle: .pop, titleText: StringManager.MyKurly.title.rawValue)
+        KurlyService.shared.fetchOrderList(token: "", completionHandler: fetchData(data:))
     }
 
     // MARK: - UI
@@ -92,6 +95,11 @@ class MyKurlyOrderHistoryVC: UIViewController {
             break
         }
     }
+
+    private func fetchData(data: [Order]) {
+        self.data = data
+        orderHistoryTableView.reloadData()
+    }
 }
 
 // MARK: - UITableViewDataSource
@@ -100,7 +108,8 @@ extension MyKurlyOrderHistoryVC: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         switch tableView {
         case orderHistoryTableView:
-            return 5
+            let result = data.count
+            return result
         case frequentlyBuyingProductsTableView:
             return 5
         default:
@@ -123,6 +132,12 @@ extension MyKurlyOrderHistoryVC: UITableViewDataSource {
         switch tableView {
         case orderHistoryTableView:
             guard let cell = orderHistoryTableView.dequeueReusableCell(withIdentifier: MyKurlyOrderHistoryTableViewCell.identifier, for: indexPath) as? MyKurlyOrderHistoryTableViewCell else { fatalError() }
+            let order = data[indexPath.section]
+            guard let prodcutName = order.orderdetail.title, let paymentDate = order.orderdetail.created_at else { return cell }
+            let paymentMethod = "카카오페이"
+            let paymentAmount = String(order.discount_payment)
+            let orderStatus = "배송완료"
+            cell.configureCell(productName: prodcutName, paymentDate: paymentDate, paymentMethod: paymentMethod, paymentAmount: paymentAmount, orderStatus: orderStatus)
             return cell
         case frequentlyBuyingProductsTableView:
             guard let cell = frequentlyBuyingProductsTableView.dequeueReusableCell(withIdentifier: MyKurlyFrequentlyBuyingProductsTableViewCell.identifier, for: indexPath) as? MyKurlyFrequentlyBuyingProductsTableViewCell else { fatalError() }
@@ -169,8 +184,10 @@ extension MyKurlyOrderHistoryVC: UITableViewDelegate {
         switch tableView {
         case orderHistoryTableView:
             nextVC = MyKurlyOrderHistoryDetailVC()
+            guard let nextVC = nextVC as? MyKurlyOrderHistoryDetailVC else { return }
+            nextVC.configureData(order: data[indexPath.row])
         case frequentlyBuyingProductsTableView:
-            print(2)
+            print(#function, 2)
         default:
             fatalError()
         }

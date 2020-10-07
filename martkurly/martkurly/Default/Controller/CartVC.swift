@@ -17,10 +17,16 @@ class CartVC: UIViewController {
             if cartProduct.isEmpty == false {
                 tableV.reloadData()
             }
+            print(cartProduct[0].items[4])
         }
     }
 
-    private var selectProduct = [CartItem]() // 선택한 상품
+    private var selectProduct = [CartItem]()         // 선택한 상품
+    private var orderMainPaymentPrice = 0            // 주문 금액
+    private var orderDiscountPaymentPrice = 0        // 상품 할인 금액
+    private var orderProductPaymentPrice = 0         // 상품 금액
+    private var orderDeliveryPaymentPrice = 0        // 배송비
+    private var orderAmountPaymentPrice = 0          // 최종 결제 금액
 
     let formatter = NumberFormatter().then {
         $0.numberStyle = .decimal    // 천 단위로 콤마(,)
@@ -46,6 +52,10 @@ class CartVC: UIViewController {
             tableV.reloadData()
             cartAllProduct.append(contentsOf: tapBtnCnt)
             print(newValue.sorted())
+            selectProduct.removeAll()
+            tapBtnCnt.forEach {
+                selectProduct.append(cartProduct[0].items[$0])
+            }
         }
     }
 
@@ -67,11 +77,6 @@ class CartVC: UIViewController {
                                     leftBarbuttonStyle: .dismiss,
                                     titleText: "장바구니")
     }
-
-//    override func viewWillDisappear(_ animated: Bool) {
-//        super.viewWillDisappear(animated)
-//        navigationController?.navigationBar.isHidden = false
-//    }
 
     // MARK: - API
     private let group = DispatchGroup.init()
@@ -143,7 +148,11 @@ class CartVC: UIViewController {
         if selectProduct.isEmpty == false {
             let order = ProductOrderVC()
             order.orderData = selectProduct
-            print(selectProduct)
+            order.orderMainPaymentPrice = orderMainPaymentPrice
+            order.orderDiscountPaymentPrice = orderDiscountPaymentPrice
+            order.orderProductPaymentPrice = orderProductPaymentPrice
+            order.orderDeliveryPaymentPrice = orderDeliveryPaymentPrice
+            order.orderAmountPaymentPrice = orderAmountPaymentPrice
             navigationController?.pushViewController(order, animated: true)
         } else {
             print("주문할 상품을 선택하세요.")
@@ -267,12 +276,21 @@ extension CartVC: UITableViewDataSource, UITableViewDelegate {
                         let priceLabel = UILabel().then {
                             $0.attributedText = priceStr
                         }
+                        cell.configure(sumCount: sumTotalPrice, allSale: disCountPrice, ship: shipPrice)
+                        orderMainPaymentPrice = sumTotalPrice - disCountPrice
+                        orderDiscountPaymentPrice = disCountPrice
+                        orderProductPaymentPrice = sumTotalPrice
+                        if orderMainPaymentPrice < 40000 {
+                            orderDeliveryPaymentPrice = 3000
+                        }
+                        orderAmountPaymentPrice = orderMainPaymentPrice + orderDeliveryPaymentPrice
 
                         button.setTitle("\(priceLabel.text!)원" + " 주문하기", for: .normal)
-                        cell.configure(sumCount: sumTotalPrice, allSale: disCountPrice, ship: shipPrice)
+
                         return cell
                     } else {
-                        let cell = UITableViewCell()
+                        let cell = PriceView()
+                        button.setTitle("주문하기", for: .normal)
                         return cell
                     }
                 }
@@ -445,10 +463,8 @@ extension CartVC: UITableViewDataSource, UITableViewDelegate {
 
             if cell.isActive {
                 tapBtnCnt.insert(tag)
-                selectProduct.append(cartProduct[0].items[tag])
             } else {
                 tapBtnCnt.remove(tag)
-                selectProduct.remove(at: tag)
             }
         }
     }
