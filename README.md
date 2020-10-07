@@ -61,6 +61,8 @@
 
 ### MVP FlowChart
 
+뷰들의 관계를 이해하고 그 흐름을 명확히 파악하여 중복되는 작업을 최소화하고 효율적으로 프로젝트를 관리하고자 제작하였습니다.
+
 ![MVP FlowChart](https://user-images.githubusercontent.com/41736472/95364435-c5a2c080-090b-11eb-9a26-c459c6dc5d32.png)
 
 **MartKurly App** 제작에 사용한 **정보구조 및 화면흐름도,** **MVP FlowChart** 에 대한 정보가 있습니다.
