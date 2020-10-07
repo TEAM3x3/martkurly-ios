@@ -159,9 +159,14 @@ extension MyKurlyOrderHistoryVC: UITableViewDataSource {
             let order = data[indexPath.row]
             guard let prodcutName = order.orderdetail?.title, let paymentDate = order.orderdetail?.created_at else { return cell }
             let paymentMethod = "카카오페이"
-            let paymentAmount = String(order.discount_payment)
+            let paymentAmount = convertToWon(int: order.discount_payment)
             let orderStatus = "배송완료"
-            cell.configureCell(productName: prodcutName, paymentDate: paymentDate, paymentMethod: paymentMethod, paymentAmount: paymentAmount, orderStatus: orderStatus)
+            cell.configureCell(
+                productName: prodcutName,
+                paymentDate: paymentDate,
+                paymentMethod: paymentMethod,
+                paymentAmount: paymentAmount,
+                orderStatus: orderStatus)
             return cell
         case frequentlyBuyingProductsTableView:
             guard let cell = frequentlyBuyingProductsTableView.dequeueReusableCell(withIdentifier: MyKurlyFrequentlyBuyingProductsTableViewCell.identifier, for: indexPath) as? MyKurlyFrequentlyBuyingProductsTableViewCell else { fatalError() }
