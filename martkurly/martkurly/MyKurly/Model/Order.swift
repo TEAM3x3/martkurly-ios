@@ -13,7 +13,7 @@ struct Order: Decodable {
     let discount_price: Int // 상품 할인 금액
     let id: Int // 주문 번호
     let items: [Items]
-    let orderdetail: OrderDetail
+    let orderdetail: OrderDetail?
     let total_payment: Int // 상품 금액 (할인 미적용)
     let user: User
 

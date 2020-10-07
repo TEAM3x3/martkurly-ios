@@ -20,6 +20,8 @@ class MyKurlyOrderHistoryVC: UIViewController {
     }
 
     var data = [Order]()
+    var frequentlyBuyingProductsInfo = [FrequantlyBuyingProducts.Serializers]()
+    var frequantlyBuyingProductsCount = [Int]()
 
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -30,7 +32,9 @@ class MyKurlyOrderHistoryVC: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setNavigationBarStatus(type: .whiteType, isShowCart: true, leftBarbuttonStyle: .pop, titleText: StringManager.MyKurly.title.rawValue)
-        KurlyService.shared.fetchOrderList(token: "", completionHandler: fetchData(data:))
+        guard let token = UserService.shared.currentUser?.token else { return}
+        KurlyService.shared.fetchOrderList(token: token, completionHandler: fetchOrderListData(data:))
+        KurlyService.shared.fetchFrequantlyBuyingProductsData(token: token, completionHandler: fetchFrequentlyBuyingProductData(data:))
     }
 
     // MARK: - UI
@@ -96,9 +100,26 @@ class MyKurlyOrderHistoryVC: UIViewController {
         }
     }
 
-    private func fetchData(data: [Order]) {
+    private func fetchOrderListData(data: [Order]) {
         self.data = data
         orderHistoryTableView.reloadData()
+    }
+
+    private func fetchFrequentlyBuyingProductData(data: FrequantlyBuyingProducts) {
+        guard
+            let counts = data.goods_purchase_count, // 주문한 제품수량
+            let ids = data.serializers // 위 제품 수량에 맞는 제품 id
+        else { return }
+        frequantlyBuyingProductsCount = counts
+        frequentlyBuyingProductsInfo = ids
+        frequentlyBuyingProductsTableView.reloadData()
+    }
+
+    private func convertToWon(int: Int) -> String {
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = .decimal
+        let result = numberFormatter.string(from: NSNumber(value: int))! + "원"
+        return result
     }
 }
 
@@ -111,7 +132,8 @@ extension MyKurlyOrderHistoryVC: UITableViewDataSource {
             let result = data.count
             return result
         case frequentlyBuyingProductsTableView:
-            return 5
+            let result = frequentlyBuyingProductsInfo.count
+            return result
         default:
             fatalError()
         }
@@ -132,8 +154,8 @@ extension MyKurlyOrderHistoryVC: UITableViewDataSource {
         switch tableView {
         case orderHistoryTableView:
             guard let cell = orderHistoryTableView.dequeueReusableCell(withIdentifier: MyKurlyOrderHistoryTableViewCell.identifier, for: indexPath) as? MyKurlyOrderHistoryTableViewCell else { fatalError() }
-            let order = data[indexPath.section]
-            guard let prodcutName = order.orderdetail.title, let paymentDate = order.orderdetail.created_at else { return cell }
+            let order = data[indexPath.row]
+            guard let prodcutName = order.orderdetail?.title, let paymentDate = order.orderdetail?.created_at else { return cell }
             let paymentMethod = "카카오페이"
             let paymentAmount = String(order.discount_payment)
             let orderStatus = "배송완료"
@@ -141,6 +163,12 @@ extension MyKurlyOrderHistoryVC: UITableViewDataSource {
             return cell
         case frequentlyBuyingProductsTableView:
             guard let cell = frequentlyBuyingProductsTableView.dequeueReusableCell(withIdentifier: MyKurlyFrequentlyBuyingProductsTableViewCell.identifier, for: indexPath) as? MyKurlyFrequentlyBuyingProductsTableViewCell else { fatalError() }
+
+            let productName = frequentlyBuyingProductsInfo[indexPath.section].title
+            let price = convertToWon(int: frequentlyBuyingProductsInfo[indexPath.section].price)
+            let numberOfPurchases = String(frequantlyBuyingProductsCount[indexPath.section]) + "회"
+            let imageURL = frequentlyBuyingProductsInfo[indexPath.section].img
+            cell.configureCell(productName: productName, price: price, numberOfPurchases: numberOfPurchases, imageURL: imageURL)
             return cell
         default:
             fatalError()
@@ -186,11 +214,17 @@ extension MyKurlyOrderHistoryVC: UITableViewDelegate {
             nextVC = MyKurlyOrderHistoryDetailVC()
             guard let nextVC = nextVC as? MyKurlyOrderHistoryDetailVC else { return }
             nextVC.configureData(order: data[indexPath.row])
+            navigationController?.pushViewController(nextVC, animated: true)
         case frequentlyBuyingProductsTableView:
-            print(#function, 2)
+            let productID = frequentlyBuyingProductsInfo[indexPath.section].id
+            print(productID)
+            KurlyService.shared.requestProductDetailData(productID: productID) { product in
+                let controller = ProductDetailVC()
+                controller.productDetailData = product
+                self.navigationController?.pushViewController(controller, animated: true)
+            }
         default:
             fatalError()
         }
-        navigationController?.pushViewController(nextVC, animated: true)
     }
 }
