@@ -47,7 +47,15 @@
 
 ### 정보구조 및 화면흐름도
 
+**정보구조** (Information Architecture : IA)
+
+프로젝트 일정, 파트별 진행 여부를 한눈에 확인하고 동시에 관리하고자 제작했습니다.
+
 ![정보구조 이미지](https://user-images.githubusercontent.com/41736472/95364202-81172500-090b-11eb-931b-4765e4a0def8.png)
+
+**화면흐름도**
+
+직관적으로 화면 이동을 표현하여 어려움 없이 흐름을 파악할 수 있으며 도식화되어 이해하기 쉽다.
 
 ![화면흐름도 이미지](https://user-images.githubusercontent.com/41736472/95364209-82485200-090b-11eb-82d8-692b192ebc14.png)
 
