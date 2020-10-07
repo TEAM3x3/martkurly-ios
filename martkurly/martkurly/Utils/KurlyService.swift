@@ -489,7 +489,7 @@ struct KurlyService {
 
     // MARK: - 장바구니 상품 추가
 
-    func pushCartData(goods: Int, quantity: Int, cart: Int) {
+    func pushCartData(goods: Int, quantity: Int, cart: Int, completionHandler: @escaping () -> Void) {
         let value = [
             "goods": goods,
             "quantity": quantity,
@@ -511,6 +511,7 @@ struct KurlyService {
         AF.request(request).responseString { (response) in
             switch response.result {
             case .success(let data):
+                completionHandler()
                 print("Success", data)
             case .failure(let error):
                 print("Faulure", error)
