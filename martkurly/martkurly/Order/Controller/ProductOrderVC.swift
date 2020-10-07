@@ -15,9 +15,7 @@ class ProductOrderVC: UIViewController {
     // MARK: - Properties
 
     var orderData = [CartItem]() {
-        didSet {
-            orderTableView.reloadData()
-        }
+        didSet { orderTableView.reloadData() }
     }
 
     var orderMainPaymentPrice = 0               // 주문 금액

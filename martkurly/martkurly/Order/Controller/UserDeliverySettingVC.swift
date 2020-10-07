@@ -55,6 +55,9 @@ class UserDeliverySettingVC: UIViewController {
         self.showIndicate()
         AddressService.shared.requestAddressList(userPK: currentUser.id) { addressList in
             self.userAddressList = addressList
+            self.userAddressList.enumerated().forEach {
+                if $0.element.status == "T" { self.selectAddressIndex = $0.offset }
+            }
             self.stopIndicate()
         }
     }
@@ -135,9 +138,10 @@ class UserDeliverySettingVC: UIViewController {
             action: #selector(tappedDeliveryAddition),
             for: .touchUpInside)
 
-        confirmButton.addTarget(self,
-                                action: #selector(tappedDeliveryConfirm(_:)),
-                                for: .touchUpInside)
+        confirmButton.addTarget(
+            self,
+            action: #selector(tappedDeliveryConfirm(_:)),
+            for: .touchUpInside)
     }
 }
 
@@ -156,7 +160,7 @@ extension UserDeliverySettingVC: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(
             withIdentifier: DeliveryAddressCell.identifier,
             for: indexPath) as! DeliveryAddressCell
-        cell.selectButton.isActive = userAddressList[indexPath.section].status == "T"
+        cell.selectButton.isActive = selectAddressIndex == indexPath.section
         cell.userAddress = userAddressList[indexPath.section]
         return cell
     }
