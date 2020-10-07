@@ -271,12 +271,19 @@ class MyKurlyOrderHistoryDetailTableViewOrderNumberCell: UITableViewCell {
                 "image": image,
                 "category": "",
                 "title": title,
-                "price": String(price),
+                "price": convertToWon(int: price),
                 "detail": "/ " + "\(quantity)개 구매",
                 "deliveryStatus": "배송완료"
             ]
             results.append(result)
         }
         return results
+    }
+
+    private func convertToWon(int: Int) -> String {
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = .decimal
+        let result = numberFormatter.string(from: NSNumber(value: int))!
+        return result
     }
 }
