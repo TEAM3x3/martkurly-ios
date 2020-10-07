@@ -180,9 +180,9 @@ class ProductStatusReviewCell: UITableViewCell {
     func configure() {
         guard let reviewItem = reviewItem else { return }
 
-//        let imageURL = URL(string: reviewItem.goods.img)
-//        productImageView.kf.setImage(with: imageURL)
-//        productTitleLabel.text = reviewItem.goods.title
-//        productBuyCountLabel.text = "\(reviewItem.quantity)개 구매"
+        let imageURL = URL(string: reviewItem.goods.img)
+        productImageView.kf.setImage(with: imageURL)
+        productTitleLabel.text = reviewItem.goods.title
+        productBuyCountLabel.text = "\(reviewItem.quantity)개 구매"
     }
 }

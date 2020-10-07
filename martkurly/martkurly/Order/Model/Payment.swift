@@ -28,6 +28,18 @@ enum PaymentType: Int, CaseIterable {
         case .phone: return "Payment_phone"
         }
     }
+
+    var description: String {
+        switch self {
+        case .creditCard: return "신용카드"
+        case .chai: return "차이"
+        case .toss: return "토스"
+        case .naverPay: return "네이버페이"
+        case .payco: return "페이코"
+        case .smilePay: return "스마일페이"
+        case .phone: return "핸드폰결제"
+        }
+    }
 }
 
 enum PaymentCellType: Int, CaseIterable {

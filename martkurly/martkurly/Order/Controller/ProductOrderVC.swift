@@ -160,24 +160,34 @@ class ProductOrderVC: UIViewController {
 
     @objc
     func tappedPayForButton(_ sender: UIButton) {
-        
-        
+        guard let orderID = orderID,
+              let currentUser = UserService.shared.currentUser,
+              let deliverySpaceData = deliverySpaceData,
+              let deliverySpace = deliverySpace else { return }
+
         KurlyService.shared.createOrderDetail(
-            orderID: <#T##Int#>,
-            delivery_cost: <#T##Int?#>,
-            consumer: <#T##String?#>,
-            receiver: <#T##String#>,
-            receiver_phone: <#T##String#>,
-            delivery_type: <#T##String#>,
-            zip_code: <#T##String#>,
-            address: <#T##String#>,
-            receiving_place: <#T##String#>,
-            entrance_password: <#T##String?#>,
-            free_pass: <#T##Bool?#>,
-            etc: <#T##String?#>,
-            extra_message: <#T##String?#>,
-            message: <#T##Bool#>,
-            payment_type: <#T##String?#>)
+            orderID: orderID,
+            delivery_cost: orderDeliveryPaymentPrice,
+            consumer: currentUser.username,
+            receiver: currentUser.nickname,
+            receiver_phone: currentUser.phone,
+            delivery_type: deliverySpace.address.contains("서울") || deliverySpace.address.contains("경기") ? "샛별배송" : "택배배송",
+            zip_code: "123456",
+            address: "\(deliverySpace.address) \(deliverySpace.detail_address)",
+            receiving_place: deliverySpaceData.receiving_place,
+            entrance_password: deliverySpaceData.entrance_password,
+            free_pass: deliverySpaceData.free_pass,
+            etc: deliverySpaceData.etc,
+            extra_message: deliverySpaceData.extra_message,
+            message: deliverySpaceData.message ?? true,
+            payment_type: selectPaymentType.description) { result in
+            switch result {
+            case true:
+                print("DEBUG: SUCCESS")
+            case false:
+                print("DEBUG: FAIL")
+            }
+        }
     }
 
     // MARK: - Helpers
