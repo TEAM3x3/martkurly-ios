@@ -44,13 +44,13 @@ class CartVC: UIViewController {
 
     private var cartAllProduct = [Int]()
     private var tapBtnCnt = Set<Int>() {        // cell 셀 버튼 액션
-        willSet {
+        didSet {
             tableV.reloadData()
             cartAllProduct.append(contentsOf: tapBtnCnt)
-            print(newValue.sorted())
             selectProduct.removeAll()
-            tapBtnCnt.forEach {
-                selectProduct.append(cartProduct[0].items[$0])
+            
+            self.tapBtnCnt.sorted().forEach {
+                self.selectProduct.append(cartProduct[0].items[$0])
             }
         }
     }
@@ -94,14 +94,9 @@ class CartVC: UIViewController {
         KurlyService.shared.setListCart { cartProduct in
             self.group.leave()
             self.cartProduct = cartProduct
-            if cartProduct.isEmpty == true {
-
-            } else {
+            if cartProduct.isEmpty == false {
                 for i in 0...cartProduct[0].items.count - 1 {
                     self.tapBtnCnt.insert(i)
-                }
-                self.tapBtnCnt.forEach {
-                    self.selectProduct.append(cartProduct[0].items[$0])
                 }
             }
         }
@@ -141,8 +136,12 @@ class CartVC: UIViewController {
 
     @objc
     func emptyBtnTap(_ sender: UIButton) {
-        if selectProduct.isEmpty == false {
+        if selectProduct.isEmpty {
+            print("주문할 상품을 선택하세요.")
+        } else {
             let order = ProductOrderVC()
+            print("selectProduct", selectProduct.count)
+
             order.orderData = selectProduct
             order.orderMainPaymentPrice = orderMainPaymentPrice
             order.orderDiscountPaymentPrice = orderDiscountPaymentPrice
@@ -150,8 +149,6 @@ class CartVC: UIViewController {
             order.orderDeliveryPaymentPrice = orderDeliveryPaymentPrice
             order.orderAmountPaymentPrice = orderAmountPaymentPrice
             navigationController?.pushViewController(order, animated: true)
-        } else {
-            print("주문할 상품을 선택하세요.")
         }
     }
 }
@@ -187,9 +184,11 @@ extension CartVC: UITableViewDataSource, UITableViewDelegate {
                 case 0:
                     if indexPath.row == 0 {
                         let cell = AllSelectView()
-                        if cartProduct[indexPath.section].items.count == tapBtnCnt.count, cartProduct[indexPath.section].items.isEmpty == false { // 전체선택 활성화
+                        if cartProduct[indexPath.section].items.count == tapBtnCnt.count,
+                           cartProduct[indexPath.section].items.isEmpty == false { // 전체선택 활성화
                             cell.check.setImage(UIImage(systemName: "checkmark.circle.fill"), for: .normal)
                             cell.check.tintColor = ColorManager.General.mainPurple.rawValue
+
                             cell.isActive = false
                         } else {
                             cell.check.setImage(UIImage(systemName: "checkmark.circle"), for: .normal)
@@ -216,7 +215,6 @@ extension CartVC: UITableViewDataSource, UITableViewDelegate {
                         let cell = tableView.dequeueReusableCell(withIdentifier: CartProductView.identifier, for: indexPath) as! CartProductView
                         cell.tag = indexPath.row - 1
                         cell.checkBtn.tag = indexPath.row - 1
-                        cell.customTag = indexPath.row - 1
 
                         cell.dismissBtn.tag = indexPath.row - 1
                         cell.dismissBtn.addTarget(self, action: #selector(deleteBtn), for: .touchUpInside)
@@ -248,11 +246,11 @@ extension CartVC: UITableViewDataSource, UITableViewDelegate {
                         var freeShipping: Int = 0 // 3000원 일지? 0원 일지?
                         var orderBtnPrice: Int = 0 // 주문하기 버튼 가격
 
-                        for i in 0...tapBtnCnt.count - 1 {
-                            sumTotalPrice += cartProduct[0].items[i].discount_payment
-                            if cartProduct[0].items[i].goods.discount_price != nil,
-                               let salePrice = cartProduct[0].items[i].goods.discount_price {
-                                disCountPrice += (cartProduct[0].items[i].quantity * (cartProduct[0].items[i].goods.price - salePrice))
+                        tapBtnCnt.forEach {
+                            sumTotalPrice += cartProduct[0].items[$0].discount_payment
+                            if cartProduct[0].items[$0].goods.discount_price != nil,
+                               let salePrice = cartProduct[0].items[$0].goods.discount_price {
+                                disCountPrice += (cartProduct[0].items[$0].quantity * (cartProduct[0].items[$0].goods.price - salePrice))
                             }
 
                             shipPrice = sumTotalPrice - disCountPrice
@@ -263,7 +261,7 @@ extension CartVC: UITableViewDataSource, UITableViewDelegate {
                             }
                         }
 
-                        orderBtnPrice = sumTotalPrice - disCountPrice + freeShipping
+                        orderBtnPrice = sumTotalPrice + freeShipping
 
                         let priceStr = NSMutableAttributedString(
                             string: (formatter.string(for: orderBtnPrice as NSNumber) ?? "0" ),
@@ -272,7 +270,8 @@ extension CartVC: UITableViewDataSource, UITableViewDelegate {
                         let priceLabel = UILabel().then {
                             $0.attributedText = priceStr
                         }
-                        cell.configure(sumCount: sumTotalPrice, allSale: disCountPrice, ship: shipPrice)
+                        sumTotalPrice += disCountPrice
+
                         orderMainPaymentPrice = sumTotalPrice - disCountPrice
                         orderDiscountPaymentPrice = disCountPrice
                         orderProductPaymentPrice = sumTotalPrice
@@ -282,6 +281,8 @@ extension CartVC: UITableViewDataSource, UITableViewDelegate {
                         orderAmountPaymentPrice = orderMainPaymentPrice + orderDeliveryPaymentPrice
 
                         button.setTitle("\(priceLabel.text!)원" + " 주문하기", for: .normal)
+//                        amountPrice = orderBtnPrice + freeShipping
+                        cell.configure(sumCount: sumTotalPrice, allSale: disCountPrice, ship: shipPrice, amount: orderBtnPrice)
 
                         return cell
                     } else {
@@ -374,7 +375,6 @@ extension CartVC: UITableViewDataSource, UITableViewDelegate {
             print("inArr", inArr)
             KurlyService.shared.deleteCartData(goods: inArr)
             print("self.cartProduct[0].items.count", self.cartProduct[0].items.count)
-//            self.tapBtnCnt.sorted()
             print("self.tapBtnCnt", self.tapBtnCnt)
             if self.tapBtnCnt.count == self.cartProduct[0].items.count {
                 self.cartProduct[0].items.removeAll()
@@ -435,15 +435,10 @@ extension CartVC: UITableViewDataSource, UITableViewDelegate {
             for i in 0...(cartProduct[0].items.count - 1) {
                 tapBtnCnt.insert(i)
             }
-
-            tapBtnCnt.forEach {
-                selectProduct.append(cartProduct[0].items[$0])
-            }
         } else {
             headerCell.check.setImage(UIImage(systemName: "checkmark.circle"), for: .normal)
             headerCell.check.tintColor = .lightGray
             tapBtnCnt.removeAll()
-            selectProduct.removeAll()
         }
     }
 
