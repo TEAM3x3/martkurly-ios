@@ -125,7 +125,7 @@ class PayForProductCell: UITableViewCell {
 
         paymentButton.snp.makeConstraints {
             $0.top.equalTo(clauseViewLabel.snp.bottom).offset(32)
-            $0.leading.trailing.equalToSuperview().inset(orderVCSideInsetValue)
+            $0.leading.trailing.equalToSuperview().inset(20)
             $0.height.equalTo(52)
         }
 

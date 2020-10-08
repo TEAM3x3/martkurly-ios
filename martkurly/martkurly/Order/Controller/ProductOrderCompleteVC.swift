@@ -16,6 +16,9 @@ class ProductOrderCompleteVC: UIViewController {
 
     private let goHomeButton = KurlyButton(title: "홈으로 이동", style: .purple)
 
+    var orderName = ""
+    var orderPay = 0
+
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,21 +43,20 @@ class ProductOrderCompleteVC: UIViewController {
         view.backgroundColor = ColorManager.General.backGray.rawValue
         line.backgroundColor = ColorManager.General.mainGray.rawValue
 
-        checkView.name = "" // 유저 이름
-        checkView.payment = 10000 // 결제 금액
-
+        checkView.name = orderName // 유저 이름
+        checkView.payment = orderPay // 결제 금액
         checkView.orderListButton.addTarget(self, action: #selector(orderListButtonTap(_:)), for: .touchUpInside)
         goHomeButton.addTarget(self, action: #selector(goHomeButtonTap(_:)), for: .touchUpInside)
     }
 
     @objc
     func orderListButtonTap(_ sender: UIButton) {
-        print("주문내역 상세보기")
+        print("주문 내역이 없습니다.")
     }
 
     @objc
     func goHomeButtonTap(_ sender: UIButton) {
-        print("홈으로 가기")
+        dismiss(animated: true)
     }
 
     private func setUI() {
