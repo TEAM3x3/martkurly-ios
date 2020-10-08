@@ -39,6 +39,7 @@ let REF_CATEGORY = KURLY_REF + "/category"
 let REF_MDRECOMMAND_PRODUCTS = REF_CATEGORY + "/md_recommend"
 
 let REF_CART = KURLY_REF + "/cart/1"                               // 장바구니(Token Needs)
+//let REF_CART = "http://8d9b0a14e3fd.jp.ngrok.io/api/cart/1"
 let REF_CART_LOCAL = LOCAL_REF + "/cart/1"                         // 장바구니
 let REF_CART_PUSH = KURLY_REF + "/cart/1/item"                     // 장바구니 상품 추가(Token Needs)
 let REF_CART_PUSH_LOCAL = LOCAL_REF + "/cart/1/item"               // post: 장바구니 상품 추가 , patch: 제품 갯수 수정
@@ -59,6 +60,7 @@ let REF_ADDRESS = KURLY_REF + "/users"
 // 주문 API
 
 let REF_ORDER = KURLY_REF + "/order"
+//let REF_ORDER = "http://8d9b0a14e3fd.jp.ngrok.io/api/order"
 
 // [추천] 탭
 let REF_RC_ANIMALS_GOODS = KURLY_GOODS_REF + "/pet_goods_best"

@@ -567,7 +567,8 @@ struct KurlyService {
 
 //        let cartURL = URL(string: REF_CART_DELETE_LOCAL + "/\(urlResult)")!
 //        let cartURL = URL(string: REF_CART_DELETE_LOCAL + "/goods_delete")!
-        let cartURL = URL(string: REF_CART_DELETE + "/goods_delete")!
+//        let cartURL = URL(string: REF_CART_DELETE + "/goods_delete")!
+        let cartURL = URL(string: REF_CART_DELETE)!
         let token = UserDefaults.standard.string(forKey: "token")!
 
         var request = URLRequest(url: cartURL)
@@ -626,9 +627,11 @@ struct KurlyService {
 
                     do {
                         let orderID = try self.decoder.decode(OrderModel.self, from: jsonData)
+                        print(response.response?.statusCode)
                         completion(orderID.id)
                     } catch {
                         print("ERROR: ORDER CREATE FAIL, \(error.localizedDescription)")
+                        print(response.response?.statusCode)
                         completion(nil)
                     }
         }
@@ -689,6 +692,7 @@ struct KurlyService {
         AF.request(requestURL, method: .post,
                    parameters: parameters,
                    encoding: JSONEncoding.default).responseJSON { response in
+                    print(response)
                     if let statusCode = response.response?.statusCode {
                         completion(statusCode < 400 ? true : false)
                     } else {

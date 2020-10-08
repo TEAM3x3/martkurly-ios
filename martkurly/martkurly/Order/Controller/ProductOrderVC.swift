@@ -164,6 +164,7 @@ class ProductOrderVC: UIViewController {
               let currentUser = UserService.shared.currentUser,
               let deliverySpaceData = deliverySpaceData,
               let deliverySpace = deliverySpace else { return }
+        print(currentUser.phone)
 
         self.showIndicate()
         KurlyService.shared.createOrderDetail(
@@ -185,6 +186,10 @@ class ProductOrderVC: UIViewController {
             self.stopIndicate()
             switch result {
             case true:
+                let orderComplete = ProductOrderCompleteVC()
+                orderComplete.orderName = currentUser.nickname
+                orderComplete.orderPay = self.orderAmountPaymentPrice
+                self.navigationController?.pushViewController(orderComplete, animated: true)
                 print("DEBUG: SUCCESS")
             case false:
                 print("DEBUG: FAIL")

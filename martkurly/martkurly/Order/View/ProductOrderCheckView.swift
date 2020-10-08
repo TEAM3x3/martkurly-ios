@@ -55,7 +55,11 @@ class ProductOrderCheckView: UIView {
         .foregroundColor: UIColor.black
     ]
 
-    var name: String = "안준영"
+    var name: String = "안준영" {
+        didSet {
+            configure()
+        }
+    }
     private let orderCompleteStr: String = "님의 주문이 완료되었습니다."
     private var nameLabel = UILabel()
 
@@ -67,7 +71,11 @@ class ProductOrderCheckView: UIView {
 
     private let paymentLabel = UILabel()
 
-    var payment = 0
+    var payment = 0 {
+        didSet {
+            configure()
+        }
+    }
     private let paymentWon = UILabel()
 
     private let StringStr = UILabel()
@@ -99,12 +107,6 @@ class ProductOrderCheckView: UIView {
         check.image = UIImage(systemName: "checkmark.circle", withConfiguration: largeConfiguration)
         check.tintColor = ColorManager.General.mainPurple.rawValue
 
-        let nameStr = NSMutableAttributedString(
-            string: name,
-            attributes: boldAttributes)
-        nameStr.append(NSAttributedString(string: orderCompleteStr, attributes: attributes))
-        nameLabel.attributedText = nameStr
-
         let morningStr = NSMutableAttributedString(
             string: morning,
             attributes: boldAttributes)
@@ -117,12 +119,6 @@ class ProductOrderCheckView: UIView {
             string: "결제금액",
             attributes: boldPaymentAttributes)
         paymentLabel.attributedText = paymentStr
-
-        let won = NSMutableAttributedString(
-            string: (formatter.string(for: payment as NSNumber) ?? "0"),
-            attributes: boldWonAttributes)
-        won.append(NSAttributedString(string: " 원", attributes: boldPaymentAttributes))
-        paymentWon.attributedText = won
 
         let str = NSAttributedString(
             string: "* 적립금은 배송당일에 적립됩니다.",
@@ -198,6 +194,16 @@ class ProductOrderCheckView: UIView {
     }
 
     func configure() {
+        let nameStr = NSMutableAttributedString(
+            string: name,
+            attributes: boldAttributes)
+        nameStr.append(NSAttributedString(string: orderCompleteStr, attributes: attributes))
+        nameLabel.attributedText = nameStr
 
+        let won = NSMutableAttributedString(
+            string: (formatter.string(for: payment as NSNumber) ?? "0"),
+            attributes: boldWonAttributes)
+        won.append(NSAttributedString(string: " 원", attributes: boldPaymentAttributes))
+        paymentWon.attributedText = won
     }
 }
