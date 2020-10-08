@@ -92,11 +92,16 @@ class CartVC: UIViewController {
         print(#function)
         group.enter()
         KurlyService.shared.setListCart { cartProduct in
+            print(cartProduct)
             self.group.leave()
             self.cartProduct = cartProduct
             if cartProduct.isEmpty == false {
-                for i in 0...cartProduct[0].items.count - 1 {
-                    self.tapBtnCnt.insert(i)
+                if cartProduct[0].items.count - 1 < 0 {
+                    return
+                } else {
+                    for i in 0...cartProduct[0].items.count - 1 {
+                        self.tapBtnCnt.insert(i)
+                    }
                 }
             }
         }
@@ -418,8 +423,12 @@ extension CartVC: UITableViewDataSource, UITableViewDelegate {
             KurlyService.shared.deleteCartData(goods: [id])
             self.tapBtnCnt.removeAll()
             self.cartProduct[0].items.remove(at: tag)
-            for i in 0...self.cartProduct[0].items.count - 1 {
-                self.tapBtnCnt.insert(i)
+            if self.cartProduct[0].items.count - 1 < 0 {
+                return
+            } else {
+                for i in 0...self.cartProduct[0].items.count - 1 {
+                    self.tapBtnCnt.insert(i)
+                }
             }
             self.tableV.reloadData()
 //            self.cartListProduct()
