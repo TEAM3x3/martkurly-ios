@@ -220,7 +220,7 @@ extension MyKurlyOrderHistoryVC: UITableViewDelegate {
         case orderHistoryTableView:
             nextVC = MyKurlyOrderHistoryDetailVC()
             guard let nextVC = nextVC as? MyKurlyOrderHistoryDetailVC else { return }
-            nextVC.configureData(order: data[indexPath.row])
+            nextVC.configureData(order: data[indexPath.section])
             navigationController?.pushViewController(nextVC, animated: true)
         case frequentlyBuyingProductsTableView:
             let productID = frequentlyBuyingProductsInfo[indexPath.section].id
