@@ -83,7 +83,7 @@ class OrderProductInfomationHeaderView: UIView {
 
         productTitleLabel.snp.makeConstraints {
             $0.centerY.equalToSuperview()
-//            $0.leading.equalTo(productInfomationLabel.snp.trailing).offset(60)
+            $0.leading.equalTo(productInfomationLabel.snp.trailing).offset(60)
             $0.trailing.equalTo(productCountLabel.snp.leading).offset(-8)
         }
 
