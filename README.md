@@ -95,6 +95,8 @@
 
 ![로그인](https://user-images.githubusercontent.com/41736472/95409618-037c0500-095d-11eb-9559-55de6ffddacc.gif){: width="100" height="100"}
 
+<img src="https://user-images.githubusercontent.com/41736472/95409618-037c0500-095d-11eb-9559-55de6ffddacc.gif" width="100" height="100">
+
 **로그인 에러메세지**
 
 ![로그인 에러메시지](https://user-images.githubusercontent.com/41736472/95409766-59e94380-095d-11eb-82f0-b5b246584c60.gif){: width="100" height="100"}
