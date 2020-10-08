@@ -93,29 +93,29 @@
 
 **로그인**
 
-![로그인](https://user-images.githubusercontent.com/41736472/95409618-037c0500-095d-11eb-9559-55de6ffddacc.gif)
+![로그인](https://user-images.githubusercontent.com/41736472/95409618-037c0500-095d-11eb-9559-55de6ffddacc.gif){: width="100" height="100"}
 
 **로그인 에러메세지**
 
-![로그인 에러메시지](https://user-images.githubusercontent.com/41736472/95409766-59e94380-095d-11eb-82f0-b5b246584c60.gif)
+![로그인 에러메시지](https://user-images.githubusercontent.com/41736472/95409766-59e94380-095d-11eb-82f0-b5b246584c60.gif){: width="100" height="100"}
 
 **기본정보 입력**
 
-![기본정보 입력](https://user-images.githubusercontent.com/41736472/95409619-0545c880-095d-11eb-9ec8-cb9ca018f215.gif)
+![기본정보 입력](https://user-images.githubusercontent.com/41736472/95409619-0545c880-095d-11eb-9ec8-cb9ca018f215.gif){: width="100" height="100"}
 
 **약관동의**
 
-![약관동의](https://user-images.githubusercontent.com/41736472/95409622-070f8c00-095d-11eb-84d2-a3b43c5da0df.gif)
+![약관동의](https://user-images.githubusercontent.com/41736472/95409622-070f8c00-095d-11eb-84d2-a3b43c5da0df.gif){: width="100" height="100"}
 
 **카카오 우편번호**
 
-![카카오 우편번호](https://user-images.githubusercontent.com/41736472/95409769-5bb30700-095d-11eb-94ec-23b89f71e9f2.gif)
+![카카오 우편번호](https://user-images.githubusercontent.com/41736472/95409769-5bb30700-095d-11eb-94ec-23b89f71e9f2.gif){: width="100" height="100"}
 
 ### 홈탭 및 카테고리
 
 **MD의 추천**
 
-![MD의 추천](https://user-images.githubusercontent.com/41736472/95409938-b77d9000-095d-11eb-8427-fe5b6fb3865c.gif)
+![MD의 추천](https://user-images.githubusercontent.com/41736472/95409938-b77d9000-095d-11eb-8427-fe5b6fb3865c.gif){: width="100" height="100"}
 
 **메인**
 
