@@ -154,13 +154,16 @@ struct KurlyService {
         var typeProducts = [Product]()
 
         let parameters = ["type": type]
-        AF.request(KURLY_GOODS_REF, method: .get, parameters: parameters).responseJSON { response in
+        AF.request(KURLY_GOODS_REF,
+                   method: .get,
+                   parameters: parameters).responseJSON { response in
             guard let jsonData = response.data else { return completion(typeProducts) }
 
             do {
                 typeProducts = try self.decoder.decode([Product].self, from: jsonData)
             } catch {
-                print("DEBUG: Category List Request Error, ", error.localizedDescription)
+                print("DEBUG: Category List 3 Request Error, ", error.localizedDescription)
+                print(response.response?.statusCode)
             }
             completion(typeProducts)
         }
@@ -178,7 +181,7 @@ struct KurlyService {
             do {
                 categoryProducts = try self.decoder.decode([Product].self, from: jsonData)
             } catch {
-                print("DEBUG: Category List Request Error, ", error.localizedDescription)
+                print("DEBUG: Category List 2 Request Error, ", error.localizedDescription)
             }
             completion(categoryProducts)
         }
@@ -195,7 +198,7 @@ struct KurlyService {
             do {
                 categoryList = try self.decoder.decode([Category].self, from: jsonData)
             } catch {
-                print("DEBUG: Category List Request Error, ", error.localizedDescription)
+                print("DEBUG: Category List 1 Request Error, ", error.localizedDescription)
             }
             completion(categoryList)
         }
@@ -477,6 +480,7 @@ struct KurlyService {
             do {
                 let cartUpList = try self.decoder.decode(Cart.self, from: jsonData)
                 cartList = [cartUpList]
+                ShoppingCartSingleton.shared.shoppingCartView.basketCount = cartList[0].items.count
             } catch {
                 print("DEBUG: Cart List Request Error, ", error)
             }
@@ -511,6 +515,7 @@ struct KurlyService {
             case .success(let data):
                 completionHandler()
                 print("Success", data)
+                setListCart { _ in }
             case .failure(let error):
                 print("Faulure", error)
             }
@@ -545,6 +550,7 @@ struct KurlyService {
             switch response.result {
             case .success(let data):
                 print("Success", data)
+                setListCart { _ in }
             case .failure(let error):
                 print("Faulure", error)
             }
@@ -584,6 +590,7 @@ struct KurlyService {
             switch response.result {
             case .success(let data):
                 print("Success", data)
+                setListCart { _ in }
             case .failure(let error):
                 print("Faulure", error)
             }
@@ -603,6 +610,7 @@ struct KurlyService {
                 let cartUpList = try self.decoder.decode(Cart.self, from: jsonData)
                 print(cartUpList)
                 cartList = [cartUpList]
+                setListCart { _ in }
             } catch {
                 print("DEBUG: Cart List Request Error, ", error)
             }
@@ -637,23 +645,7 @@ struct KurlyService {
         }
     }
 
-    /*
-     "delivery_cost": 0,
-     "point": 0,
-     "consumer": "string",
-     "receiver": "string",
-     "receiver_phone": "string",
-     "delivery_type": "샛별배송",
-     "zip_code": "string",
-     "address": "string",
-     "receiving_place": "0",
-     "entrance_password": "string",
-     "free_pass": true,
-     "etc": "string",
-     "extra_message": "string",
-     "message": true,
-     "payment_type": "카카오페이"
-     */
+    // MARK: - 주문 상세 생성
 
     func createOrderDetail(orderID: Int,
                            delivery_cost: Int?,
@@ -692,8 +684,8 @@ struct KurlyService {
         AF.request(requestURL, method: .post,
                    parameters: parameters,
                    encoding: JSONEncoding.default).responseJSON { response in
-                    print(response)
                     if let statusCode = response.response?.statusCode {
+                        setListCart { _ in }
                         completion(statusCode < 400 ? true : false)
                     } else {
                         completion(false)

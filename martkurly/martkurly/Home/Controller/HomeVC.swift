@@ -59,6 +59,7 @@ class HomeVC: UIViewController {
     func requestMainData() {
         self.showIndicate()
 
+        cartListProduct()
         fetchMainDatas()
         fetchMainCategoryProducts()
         fetchHomeCategoryList()
@@ -66,6 +67,14 @@ class HomeVC: UIViewController {
         group.notify(queue: queue) {
             self.stopIndicate()
             self.categoryMenuCollectionView.reloadData()
+        }
+    }
+
+    func cartListProduct() {
+        group.enter()
+        KurlyService.shared.setListCart { _ in
+            self.group.leave()
+
         }
     }
 
