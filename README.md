@@ -95,8 +95,6 @@
 
 <img src="https://user-images.githubusercontent.com/41736472/95409618-037c0500-095d-11eb-9559-55de6ffddacc.gif" width="100" height="200">
 
-<img src="" width="100" height="200">
-
 <img src="https://user-images.githubusercontent.com/41736472/95409766-59e94380-095d-11eb-82f0-b5b246584c60.gif" width="100" height="200">
 
 <img src="https://user-images.githubusercontent.com/41736472/95409619-0545c880-095d-11eb-9ec8-cb9ca018f215.gif" width="100" height="200">
@@ -107,29 +105,17 @@
 
 ### 홈탭 및 카테고리
 
-**MD의 추천**
+<img src="https://user-images.githubusercontent.com/41736472/95409938-b77d9000-095d-11eb-8427-fe5b6fb3865c.gif" width="100" height="200">
 
-![MD의 추천](https://user-images.githubusercontent.com/41736472/95409938-b77d9000-095d-11eb-8427-fe5b6fb3865c.gif){: width="100" height="100"}
+<img src="https://user-images.githubusercontent.com/41736472/95409942-b9475380-095d-11eb-95d6-a26be9f91706.gif" width="100" height="200">
 
-**메인**
+<img src="https://user-images.githubusercontent.com/41736472/95409944-ba788080-095d-11eb-99e0-bf967dc15b3e.gif" width="100" height="200">
 
-![메인](https://user-images.githubusercontent.com/41736472/95409942-b9475380-095d-11eb-95d6-a26be9f91706.gif)
+<img src="https://user-images.githubusercontent.com/41736472/95409946-bb111700-095d-11eb-94c0-184a7c0d6b78.gif" width="100" height="200">
 
-**상품상세**
+<img src="https://user-images.githubusercontent.com/41736472/95409948-bba9ad80-095d-11eb-8e89-cf9331b63948.gif" width="100" height="200">
 
-![상품상세](https://user-images.githubusercontent.com/41736472/95409944-ba788080-095d-11eb-99e0-bf967dc15b3e.gif)
-
-**상품선택**
-
-![상품선택](https://user-images.githubusercontent.com/41736472/95409946-bb111700-095d-11eb-94c0-184a7c0d6b78.gif)
-
-**상품설명**
-
-![상품설명](https://user-images.githubusercontent.com/41736472/95409948-bba9ad80-095d-11eb-8e89-cf9331b63948.gif)
-
-**필터**
-
-![필터](https://user-images.githubusercontent.com/41736472/95410158-235ff880-095e-11eb-940f-7cbf1eabc3f3.gif)
+<img src="https://user-images.githubusercontent.com/41736472/95410158-235ff880-095e-11eb-940f-7cbf1eabc3f3.gif" width="100" height="200">
 
 ---
 
