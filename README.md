@@ -99,9 +99,7 @@
 
 ### 추천탭
 
-<img src="https://user-images.githubusercontent.com/41736472/95412126-31644800-0963-11eb-87e3-26d7f6fe1e4b.gif" width="100" height="200">
-
-<img src="https://user-images.githubusercontent.com/41736472/95412135-375a2900-0963-11eb-8d53-1442bea34c1a.gif" width="100" height="200">
+<img src="https://user-images.githubusercontent.com/41736472/95412126-31644800-0963-11eb-87e3-26d7f6fe1e4b.gif" width="100" height="200">   <img src="https://user-images.githubusercontent.com/41736472/95412135-375a2900-0963-11eb-8d53-1442bea34c1a.gif" width="100" height="200">
 
 ---
 
