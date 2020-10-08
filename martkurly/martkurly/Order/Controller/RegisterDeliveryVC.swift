@@ -97,7 +97,6 @@ class RegisterDeliveryVC: UIViewController {
     }
 
     func tappedSaveButton() {
-        print(#function)
         guard var deliverySpaceData = deliverySpaceData else { return }
 
         let basicAddress = "\(findAddress) [\(zipCode)]"
@@ -131,8 +130,15 @@ class RegisterDeliveryVC: UIViewController {
         deliverySpaceData.status = isDefaultAddress ? "T" : "F"
 
         self.showIndicate()
-        AddressService.shared.registerAddress(delivery: deliverySpaceData) {
+        AddressService.shared.registerAddress(delivery: deliverySpaceData) { status in
             self.stopIndicate()
+
+            if status {
+                print("DEBUG: ADDRESS 등록 성공")
+            } else {
+                print("DEBUG: ADDRESS 등록 실패")
+            }
+            self.dismiss(animated: true, completion: nil)
         }
     }
 
@@ -248,6 +254,7 @@ extension RegisterDeliveryVC: UITableViewDataSource {
                 withIdentifier: CheckDeliveryStatusCell.identifier,
                 for: indexPath) as! CheckDeliveryStatusCell
             cell.configure(titleText: type.titleText)
+            cell.isActive = type == .sameOrderer ? true : false
             return cell
         case .receiverName, .receiverPhone, .detailAddress:
             let cell = tableView.dequeueReusableCell(
@@ -257,6 +264,9 @@ extension RegisterDeliveryVC: UITableViewDataSource {
                            placeHolderText: type.placeHolderText,
                            isShowCount: type.isShowCounting,
                            keyboardType: type.keyboardType)
+            cell.inputTextData = type == .receiverName ?
+                UserService.shared.currentUser?.username : type == .receiverPhone ?
+                UserService.shared.currentUser?.phone : nil
             return cell
         case .receivePlace:
             let cell = tableView.dequeueReusableCell(
@@ -310,8 +320,6 @@ extension RegisterDeliveryVC: WKScriptMessageHandler {
             zipCode = postCodeData["zonecode"] as? String ?? ""
             findAddress = postCodeData["roadAddress"] as? String ?? ""
         }
-        print("Post Code:", zipCode)
-        print("Address:", findAddress)
 
         var alert: UIAlertController!
         if findAddress.contains("경기") || findAddress.contains("서울") {

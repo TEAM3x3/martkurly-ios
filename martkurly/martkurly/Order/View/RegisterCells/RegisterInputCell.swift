@@ -15,7 +15,12 @@ class RegisterInputCell: UITableViewCell {
     static let identifier = "RegisterInputCell"
 
     var inputTextData: String? {
-        return inputTextField.text
+        set {
+            inputTextField.text = newValue
+        }
+        get {
+            return inputTextField.text
+        }
     }
 
     private let titleLabel = UILabel().then {

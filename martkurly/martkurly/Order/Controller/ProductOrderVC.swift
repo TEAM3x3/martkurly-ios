@@ -14,6 +14,18 @@ class ProductOrderVC: UIViewController {
 
     // MARK: - Properties
 
+    var orderData = [CartItem]() {
+        didSet { orderTableView.reloadData() }
+    }
+
+    var orderID: Int?
+
+    var orderMainPaymentPrice = 0               // 주문 금액
+    var orderProductPaymentPrice = 0            // 상품 금액
+    var orderDiscountPaymentPrice = 0           // 상품 할인 금액
+    var orderDeliveryPaymentPrice = 0           // 배송비
+    var orderAmountPaymentPrice = 0             // 최종 결제 금액
+
     private let orderTableView = UITableView(frame: .zero, style: .grouped)
 
     private var undeliveryType: UnDeliveryActionType = .paymentRefund {
@@ -23,19 +35,29 @@ class ProductOrderVC: UIViewController {
         }
     }
 
+    private var userAddressList = [AddressModel]() {
+        didSet { orderTableView.reloadData() }
+    }
+
     // 상품정보
-    private var isShowProductList: Bool = false { didSet { orderTableView.reloadData() } }
+    private var isShowProductList: Bool = false {
+        didSet { orderTableView.reloadData() }
+    }
     private let orderProductInfomationHeaderView = OrderProductInfomationHeaderView()
 
     // 주문자 정보
-    private var isShowOrdererList: Bool = false { didSet { orderTableView.reloadData() } }
+    private var isShowOrdererList: Bool = false {
+        didSet { orderTableView.reloadData() }
+    }
     private let ordererInfomationHeaderView = OrdererInfomationHeaderView()
 
     // 배송지
     private let orderDeliveryHeaderView = OrderDeliveryHeaderView()
+    private var deliverySpace: AddressModel?
 
     // 받으실 장소
     private let orderReceiveSpaceHeaderView = OrderReceiveSpaceHeaderView()
+    private var deliverySpaceData: DeliverySpaceModel?
 
     // 결제 금액
     private let orderPaymentPriceHeaderView = OrderPaymentPriceHeaderView()
@@ -49,11 +71,15 @@ class ProductOrderVC: UIViewController {
     private var selectPaymentType: PaymentType = .creditCard {
         didSet { methodsOfPaymentHeaderView.paymentType = selectPaymentType }
     }
-    private var isShowPaymentList: Bool = false { didSet { orderTableView.reloadData() } }
+    private var isShowPaymentList: Bool = false {
+        didSet { orderTableView.reloadData() }
+    }
     private let methodsOfPaymentHeaderView = MethodsOfPaymentHeaderView()
 
     // 상품 미배송 시 조치
-    private var isShowActionList: Bool = false { didSet { orderTableView.reloadData() } }
+    private var isShowActionList: Bool = false {
+        didSet { orderTableView.reloadData() }
+    }
     private let orderDeliveryActionHeaderView = OrderDeliveryActionHeaderView()
 
     // Formatter
@@ -69,6 +95,7 @@ class ProductOrderVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
+        requestUserAddressList()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -77,6 +104,16 @@ class ProductOrderVC: UIViewController {
                                     isShowCart: false,
                                     leftBarbuttonStyle: .pop,
                                     titleText: "주문서")
+    }
+
+    // MARK: - API
+
+    func requestUserAddressList() {
+        self.showIndicate()
+        AddressService.shared.requestAddressList(userPK: 1) { addressList in
+            self.userAddressList = addressList
+            self.stopIndicate()
+        }
     }
 
     // MARK: - Action
@@ -103,9 +140,11 @@ class ProductOrderVC: UIViewController {
             ordererInfomationHeaderView.isShowOrdererList = isShowOrdererList
         case .orderDelivery:
             let controller = UserDeliverySettingVC()
+            controller.delegate = self
             self.navigationController?.pushViewController(controller, animated: true)
         case .orderReceiveSpace:
             let controller = ReceiveSpaceSettingVC()
+            controller.delegate = self
             let naviVC = UINavigationController(rootViewController: controller)
             naviVC.modalPresentationStyle = .fullScreen
             self.present(naviVC, animated: true)
@@ -116,6 +155,45 @@ class ProductOrderVC: UIViewController {
             isShowActionList.toggle()
             orderDeliveryActionHeaderView.isShowActionList = isShowActionList
         default: break
+        }
+    }
+
+    @objc
+    func tappedPayForButton(_ sender: UIButton) {
+        guard let orderID = orderID,
+              let currentUser = UserService.shared.currentUser,
+              let deliverySpaceData = deliverySpaceData,
+              let deliverySpace = deliverySpace else { return }
+        print(currentUser.phone)
+
+        self.showIndicate()
+        KurlyService.shared.createOrderDetail(
+            orderID: orderID,
+            delivery_cost: orderDeliveryPaymentPrice,
+            consumer: currentUser.username,
+            receiver: currentUser.nickname,
+            receiver_phone: currentUser.phone,
+            delivery_type: deliverySpace.address.contains("서울") || deliverySpace.address.contains("경기") ? "샛별배송" : "택배배송",
+            zip_code: "123456",
+            address: "\(deliverySpace.address) \(deliverySpace.detail_address)",
+            receiving_place: deliverySpaceData.receiving_place,
+            entrance_password: deliverySpaceData.entrance_password,
+            free_pass: deliverySpaceData.free_pass,
+            etc: deliverySpaceData.etc,
+            extra_message: deliverySpaceData.extra_message,
+            message: deliverySpaceData.message ?? true,
+            payment_type: selectPaymentType.description) { result in
+            self.stopIndicate()
+            switch result {
+            case true:
+                let orderComplete = ProductOrderCompleteVC()
+                orderComplete.orderName = currentUser.nickname
+                orderComplete.orderPay = self.orderAmountPaymentPrice
+                self.navigationController?.pushViewController(orderComplete, animated: true)
+                print("DEBUG: SUCCESS")
+            case false:
+                print("DEBUG: FAIL")
+            }
         }
     }
 
@@ -209,7 +287,7 @@ extension ProductOrderVC: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch OrderCellType(rawValue: section)! {
-        case .productInfomation: return isShowProductList ? 5 : 0
+        case .productInfomation: return isShowProductList ? orderData.count : 0
         case .ordererInfomation: return isShowOrdererList ? 1 : 0
         case .orderDelivery: return 1
         case .orderReceiveSpace: return 1
@@ -221,44 +299,65 @@ extension ProductOrderVC: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+
         switch OrderCellType(rawValue: indexPath.section)! {
         case .productInfomation:
             let cell = tableView.dequeueReusableCell(
                 withIdentifier: ProductInfomationCell.identifier,
                 for: indexPath) as! ProductInfomationCell
+            cell.data = orderData[indexPath.row]
             return cell
         case .ordererInfomation:
             let cell = OrdererInfomationCell()
             return cell
         case .orderDelivery:
             let cell = OrderDeliveryCell()
+            let array = userAddressList.filter { return $0.status == "T" }
+            cell.deliverySpace = deliverySpace != nil ? deliverySpace :
+                array.count > 0 ? array[0] : nil
             return cell
         case .orderReceiveSpace:
             let cell = OrderReceiveSpaceCell()
+            let array = userAddressList.filter { return $0.status == "T" }
+            cell.deliverySpace = deliverySpace != nil ? deliverySpace :
+                array.count > 0 ? array[0] : nil
             return cell
         case .orderPaymentPrice:
             switch paymentTypes[indexPath.row] {
-            case .orderPricePayment: fallthrough
+            case .orderPricePayment:
+                    let cell = tableView.dequeueReusableCell(
+                        withIdentifier: OrderMainPaymentPriceCell.identifier,
+                        for: indexPath) as! OrderMainPaymentPriceCell
+                    cell.configure(titleText: paymentTypes[indexPath.row].description,
+                                   priceText: priceFormatter.string(from: orderMainPaymentPrice as NSNumber) ?? "")
+                    return cell
             case .deliveryPricePayment:
                 let cell = tableView.dequeueReusableCell(
                     withIdentifier: OrderMainPaymentPriceCell.identifier,
                     for: indexPath) as! OrderMainPaymentPriceCell
                 cell.configure(titleText: paymentTypes[indexPath.row].description,
-                               priceText: priceFormatter.string(from: 159000) ?? "")
+                               priceText: priceFormatter.string(from: (orderDeliveryPaymentPrice as NSNumber)) ?? "0")
                 return cell
-            case .productPricePayMent: fallthrough
+            case .productPricePayMent:
+                    let cell = tableView.dequeueReusableCell(
+                        withIdentifier: OrderSubPaymentPriceCell.identifier,
+                        for: indexPath) as! OrderSubPaymentPriceCell
+                    cell.configure(titleText: paymentTypes[indexPath.row].description,
+                                   priceText: priceFormatter.string(from: orderProductPaymentPrice as NSNumber) ?? "",
+                                   type: paymentTypes[indexPath.row])
+                    return cell
             case .discountPricePayment:
                 let cell = tableView.dequeueReusableCell(
                     withIdentifier: OrderSubPaymentPriceCell.identifier,
                     for: indexPath) as! OrderSubPaymentPriceCell
                 cell.configure(titleText: paymentTypes[indexPath.row].description,
-                               priceText: priceFormatter.string(from: 177800) ?? "",
+                               priceText: priceFormatter.string(from: orderDiscountPaymentPrice as NSNumber) ?? "",
                                type: paymentTypes[indexPath.row])
                 return cell
             case .amountPricePayment:
                 let cell = OrderAmountPaymentPriceCell()
                 cell.configure(titleText: paymentTypes[indexPath.row].description,
-                               priceText: priceFormatter.string(from: 235900) ?? "")
+                               priceText: priceFormatter.string(from: orderAmountPaymentPrice as NSNumber) ?? "")
                 return cell
             }
         case .methodsOfPayMent:
@@ -277,6 +376,9 @@ extension ProductOrderVC: UITableViewDataSource {
             return cell
         case .payForProduct:
             let cell = PayForProductCell()
+            cell.paymentButton.addTarget(self,
+                                         action: #selector(tappedPayForButton(_:)),
+                                         for: .touchUpInside)
             return cell
         }
 
@@ -291,6 +393,7 @@ extension ProductOrderVC: UITableViewDelegate {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         switch OrderCellType(rawValue: section)! {
         case .productInfomation:
+            orderProductInfomationHeaderView.orderData = self.orderData
             return orderProductInfomationHeaderView
         case .ordererInfomation:
             return ordererInfomationHeaderView
@@ -339,5 +442,48 @@ extension ProductOrderVC: UITableViewDelegate {
         default: break
         }
         tableView.selectRow(at: nil, animated: false, scrollPosition: .none)
+    }
+}
+
+// MARK: - UserDeliverySettingVCDeleagte
+
+extension ProductOrderVC: UserDeliverySettingVCDeleagte {
+    func tappedDeliveryConfirm(addressData: AddressModel) {
+        deliverySpace = addressData
+        orderTableView.reloadData()
+    }
+}
+
+// MARK: - ReceiveSpaceSettingVCDelegate
+
+extension ProductOrderVC: ReceiveSpaceSettingVCDelegate {
+    func receiveSpaceData(receiving_place: ReceiveSpaceType,
+                          entrance_password: String?,
+                          free_pass: Bool,
+                          etc: String?,
+                          message: Bool?,
+                          extra_message: String?) {
+        deliverySpaceData = DeliverySpaceModel(address: "",
+                                               detail_address: "",
+                                               status: "",
+                                               receiving_place: receiving_place.description,
+                                               entrance_password: entrance_password,
+                                               free_pass: free_pass,
+                                               etc: etc,
+                                               message: message,
+                                               extra_message: extra_message)
+        let indexPath = IndexPath(row: 0, section: OrderCellType.orderReceiveSpace.rawValue)
+        if let cell = orderTableView.cellForRow(at: indexPath) as? OrderReceiveSpaceCell {
+            switch receiving_place {
+            case .doorFront:
+                let root = entrance_password != nil ? "공동현관 비밀번호" :
+                    free_pass != false ? "자유 출입 가능" : "기타"
+                let text = "출입방법: \(root)"
+                cell.configure(titleText: receiving_place.description,
+                               accessUsageText: text)
+            default:
+                cell.configure(titleText: receiving_place.description)
+            }
+        }
     }
 }

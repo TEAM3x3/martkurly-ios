@@ -14,6 +14,10 @@ class ReviewsProductCell: UICollectionViewCell {
 
     static let identifier = "ReviewsProductCell"
 
+    var reviewProduct: ReviewProductModel? {
+        didSet { configure() }
+    }
+
     private let sideInsetValue: CGFloat = 12
     private var reviewsCount: Int = 0
 
@@ -57,11 +61,15 @@ class ReviewsProductCell: UICollectionViewCell {
     // MARK: - Selectors
 
     @objc func nextReviews() {
-        reviewsCount += 1
-        let indexPath = IndexPath(item: reviewsCount % 5, section: 0)
-        reviewsCollectionView.selectItem(at: indexPath,
-                                         animated: true,
-                                         scrollPosition: .centeredVertically)
+        guard let reviewProduct = reviewProduct else { return }
+
+        if reviewProduct.reviews.count > 0 {
+            reviewsCount += 1
+            let indexPath = IndexPath(item: reviewsCount % reviewProduct.reviews.count, section: 0)
+            reviewsCollectionView.selectItem(at: indexPath,
+                                             animated: true,
+                                             scrollPosition: .centeredVertically)
+        }
     }
 
     // MARK: - Helpers
@@ -131,6 +139,7 @@ class ReviewsProductCell: UICollectionViewCell {
         reviewsCollectionView.backgroundColor = .clear
         reviewsCollectionView.showsVerticalScrollIndicator = false
         reviewsCollectionView.isPagingEnabled = true
+        reviewsCollectionView.isScrollEnabled = false
 
         reviewsCollectionView.dataSource = self
         reviewsCollectionView.delegate = self
@@ -138,19 +147,39 @@ class ReviewsProductCell: UICollectionViewCell {
         reviewsCollectionView.register(ReviewsCell.self,
                                        forCellWithReuseIdentifier: ReviewsCell.identifier)
     }
+
+    // Cell Configure
+
+    private let formatter = NumberFormatter().then {
+        $0.numberStyle = .decimal    // 천 단위로 콤마(,)
+
+        $0.minimumFractionDigits = 0    // 최소 소수점 단위
+        $0.maximumFractionDigits = 0    // 최대 소수점 단위
+    }
+
+    func configure() {
+        guard let reviewProduct = reviewProduct else { return }
+
+        let imageURL = URL(string: reviewProduct.img)
+        productImageView.kf.setImage(with: imageURL)
+        productTitleLabel.text = reviewProduct.title
+        productPriceLabel.text = (formatter.string(for: reviewProduct.price as NSNumber) ?? "0") + "원"
+        reviewsCollectionView.reloadData()
+    }
 }
 
 // MARK: - UICollectionViewDataSource
 
 extension ReviewsProductCell: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 5
+        return reviewProduct?.reviews.count ?? 0
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: ReviewsCell.identifier,
             for: indexPath) as! ReviewsCell
+        cell.review = reviewProduct?.reviews[indexPath.row]
         return cell
     }
 }
@@ -176,6 +205,10 @@ class ReviewsCell: UICollectionViewCell {
     // MARK: - Properties
 
     static let identifier = "ReviewsCell"
+
+    var review: Review? {
+        didSet { configure() }
+    }
 
     private let quotesImageView = UIImageView().then {
         $0.image = UIImage(systemName: "quote.bubble")
@@ -228,5 +261,11 @@ class ReviewsCell: UICollectionViewCell {
         stack.snp.makeConstraints {
             $0.centerY.leading.trailing.equalToSuperview()
         }
+    }
+
+    func configure() {
+        guard let review = review else { return }
+        reviewContents.text = review.content
+        reviewWriter.text = review.user.username
     }
 }

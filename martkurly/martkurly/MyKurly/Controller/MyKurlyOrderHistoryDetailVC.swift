@@ -66,6 +66,9 @@ class MyKurlyOrderHistoryDetailVC: UIViewController {
     private lazy var tableViewAnchor = infoTableView.heightAnchor
     private lazy var tableViewHeightAnchor = tableViewAnchor.constraint(equalToConstant: 400)
 
+    private var order: Order? // 핸가의 주문정보
+    private var info: [[String]]?
+
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -189,6 +192,82 @@ class MyKurlyOrderHistoryDetailVC: UIViewController {
         }
     }
 
+    private func generateInfo(order: Order) {
+
+        let price = convertToWon(int: order.total_payment)
+        let deliveryFee = convertToWon(int: order.orderdetail?.delivery_cost ?? 0)
+        let discount = convertToWon(int: order.discount_price)
+        let couponDiscount = "사용안함" // 쿠폰 사용
+        let mileageDiscount = "사용안함" // 마일리지 사용
+        let discountPrice = convertToWon(int: order.discount_price) // 결제금액
+        let mileage = "적립없음" // 적립금액
+
+        let orderNumber = String(order.id) // 주문번호
+        let username = order.user.username // 주문자명
+        let sender = order.user.username // 보내는 분
+        let paymentData = order.orderdetail?.created_at ?? "없음" // 결제일시
+
+        let receiver = order.user.username // 받는 분
+        let receiversPhoneNumber = order.orderdetail?.receiver_phone ?? "비공개" // 받는 분 핸드폰
+        let deliveryType = order.orderdetail?.delivery_type ?? "샛별배송" // 배송방법
+        let zipCode = order.orderdetail?.zip_code ?? "없음" // 우편번호
+        let address = order.orderdetail?.address ?? "비공개"// 주소
+
+        let place = order.orderdetail?.receiving_place ?? "문 앞" // 받으실 장소
+        let enterance = order.orderdetail?.entrance_password ?? "자유 출입 가능" // 공동현관 출입 방법
+
+        let messageData = "배송직후" // 메세지 전송시점
+        let etc = "결제수단 환불" // 미출시 조치방법
+
+        let info: [[String]] = [
+            [
+                price,
+                deliveryFee,
+                discount,
+                couponDiscount,
+                mileageDiscount,
+                discountPrice,
+                mileage
+            ],
+            [
+                orderNumber,
+                username,
+                sender,
+                paymentData
+            ],
+            [
+                receiver,
+                receiversPhoneNumber,
+                deliveryType,
+                zipCode,
+                address
+            ],
+            [
+                place,
+                enterance
+            ],
+            [
+                messageData,
+                etc
+            ]
+        ]
+        self.info = info
+    }
+
+    func configureData(order: Order) {
+        self.order = order
+    }
+
+    private func convertToWon(int: Int) -> String {
+        if int == 0 {
+            return "무료"
+        }
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = .decimal
+        let result = numberFormatter.string(from: NSNumber(value: int))! + "원"
+        return result
+    }
+
     // MARK: - Selectors
     @objc
     private func handleCustomerServiceButton() {
@@ -217,7 +296,8 @@ extension MyKurlyOrderHistoryDetailVC: UITableViewDataSource {
         switch indexPath.section {
         case 0:
             let orderNumberCell = MyKurlyOrderHistoryDetailTableViewOrderNumberCell()
-            orderNumberCell.configureCell(cellData: cellData)
+            guard let order = order else { fatalError("No Order") }
+            orderNumberCell.configureCell(order: order, cellData: cellData)
             if selectedCell.contains(indexPath) {
                 orderNumberCell.isFolded = false
                 print("configure", orderNumberCell.isFolded)
@@ -229,7 +309,11 @@ extension MyKurlyOrderHistoryDetailVC: UITableViewDataSource {
             return orderNumberCell
         default:
             let infoCell = MyKurlyOrderHistoryDetailTableViewInfoCell()
-            infoCell.configureCell(cellData: cellData)
+            guard let order = self.order else { fatalError("No Order Info") }
+            generateInfo(order: order)
+            guard let info = info else { fatalError("No Text Info") }
+            let result = info[indexPath.section - 1]
+            infoCell.configureCell(orderData: result, cellData: cellData)
             if selectedCell.contains(indexPath) {
                 infoCell.isFolded = false
             }

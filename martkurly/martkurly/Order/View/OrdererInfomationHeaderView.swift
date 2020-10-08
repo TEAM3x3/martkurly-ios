@@ -84,6 +84,8 @@ class OrdererInfomationHeaderView: UIView {
     }
 
     func configureAttributes() {
-
+        guard let name = UserService.shared.currentUser?.nickname else { return }
+        guard let phone = UserService.shared.currentUser?.phone else { return }
+        ordererBasicInfoLabel.text = name + ", " + phone
     }
 }

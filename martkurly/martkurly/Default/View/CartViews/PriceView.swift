@@ -180,14 +180,7 @@ class PriceView: UITableViewCell {
         $0.font = .systemFont(ofSize: 10)
     }
 
-    var hide = true {
-        didSet {
-
-        }
-    }
-
     // MARK: - Lifecycle
-
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setConfigure()
@@ -304,7 +297,7 @@ class PriceView: UITableViewCell {
 
     }
 
-    func configure(sumCount: Int, allSale: Int, ship: Int) {
+    func configure(sumCount: Int, allSale: Int, ship: Int, amount: Int) {
 
         var sum: NSAttributedString {
             let sumTotalPriceAttributes: [NSAttributedString.Key: Any] = [
@@ -379,7 +372,7 @@ class PriceView: UITableViewCell {
             self.freeShipMoney1.attributedText = freeShip
         }
 
-        estimate = sumCount - allSale
+        estimate = sumCount
         if freeShipMoney1.isHidden {
             estimate += 0
         } else {
@@ -393,7 +386,7 @@ class PriceView: UITableViewCell {
             ]
 
             return NSMutableAttributedString(
-                string: (formatter.string(for: estimate as NSNumber) ?? "0"),
+                string: (formatter.string(for: amount as NSNumber) ?? "0"),
                 attributes: estimateAttributes)
         }
 

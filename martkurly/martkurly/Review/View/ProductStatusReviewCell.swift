@@ -14,11 +14,36 @@ class ProductStatusReviewCell: UITableViewCell {
 
     static let identifier = "ProductStatusReviewCell"
 
+    var reviewItem: CartItem? {
+        didSet { configure() }
+    }
+
     private let defaultInsetValue: CGFloat = 8
     private let sideInsetValue: CGFloat = 12
     private let lineInsetValue: CGFloat = 12
 
-    var handleReviewWrite: (() -> Void)?
+    private let sideHeaderInsetValue: CGFloat = 12
+    private let lineHeaderInsetValue: CGFloat = 4
+
+    var handleReviewWrite: ((ProductStatusReviewCell) -> Void)?
+
+    private let orderTitleLabel = UILabel().then {
+        $0.text = "주문번호"
+        $0.textColor = .darkGray
+        $0.font = .boldSystemFont(ofSize: 12)
+    }
+
+    private let orderNumberLabel = UILabel().then {
+        $0.text = "1597994321049"
+        $0.textColor = .darkGray
+        $0.font = .systemFont(ofSize: 12)
+    }
+
+    private let completeDateLabel = UILabel().then {
+        $0.text = "08월 22일 배송완료"
+        $0.textColor = .darkGray
+        $0.font = .systemFont(ofSize: 12)
+    }
 
     private let cellView = UIView().then {
         $0.backgroundColor = .white
@@ -54,6 +79,7 @@ class ProductStatusReviewCell: UITableViewCell {
         $0.text = "2일 남음"
         $0.textColor = #colorLiteral(red: 0.5807225108, green: 0.066734083, blue: 0, alpha: 1)
         $0.font = .systemFont(ofSize: 12)
+        $0.isHidden = true
     }
 
     // MARK: - LifeCycle
@@ -71,7 +97,7 @@ class ProductStatusReviewCell: UITableViewCell {
 
     @objc
     func handleReviewWriteEvent(_ sender: UIButton) {
-        handleReviewWrite?()
+        handleReviewWrite?(self)
     }
 
     // MARK: - Helpers
@@ -89,9 +115,27 @@ class ProductStatusReviewCell: UITableViewCell {
     }
 
     func configureLayout() {
-        self.addSubview(cellView)
+        [cellView, orderTitleLabel, orderNumberLabel, completeDateLabel].forEach {
+            self.addSubview($0)
+        }
+
+        orderTitleLabel.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(lineHeaderInsetValue)
+            $0.leading.equalToSuperview().offset(sideHeaderInsetValue)
+        }
+
+        orderNumberLabel.snp.makeConstraints {
+            $0.leading.equalTo(orderTitleLabel.snp.trailing).offset(4)
+            $0.centerY.equalTo(orderTitleLabel)
+        }
+
+        completeDateLabel.snp.makeConstraints {
+            $0.trailing.equalToSuperview().offset(-sideHeaderInsetValue)
+            $0.centerY.equalTo(orderTitleLabel)
+        }
+
         cellView.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(defaultInsetValue)
+            $0.top.equalTo(orderTitleLabel.snp.bottom).offset(defaultInsetValue + lineHeaderInsetValue)
             $0.leading.equalToSuperview().offset(sideInsetValue)
             $0.bottom.equalToSuperview().offset(-defaultInsetValue)
             $0.trailing.equalToSuperview().offset(-sideInsetValue)
@@ -131,5 +175,14 @@ class ProductStatusReviewCell: UITableViewCell {
             $0.bottom.equalTo(reviewWriteButton)
             $0.trailing.equalTo(reviewWriteButton.snp.leading).offset(-sideInsetValue)
         }
+    }
+
+    func configure() {
+        guard let reviewItem = reviewItem else { return }
+
+        let imageURL = URL(string: reviewItem.goods.img)
+        productImageView.kf.setImage(with: imageURL)
+        productTitleLabel.text = reviewItem.goods.title
+        productBuyCountLabel.text = "\(reviewItem.quantity)개 구매"
     }
 }

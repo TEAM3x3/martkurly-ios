@@ -8,9 +8,15 @@
 
 import UIKit
 
+protocol UserDeliverySettingVCDeleagte: class {
+    func tappedDeliveryConfirm(addressData: AddressModel)
+}
+
 class UserDeliverySettingVC: UIViewController {
 
     // MARK: - Properties
+
+    weak var delegate: UserDeliverySettingVCDeleagte?
 
     private let deliveryAddressTableView = UITableView(frame: .zero,
                                                        style: .grouped)
@@ -19,7 +25,13 @@ class UserDeliverySettingVC: UIViewController {
     private let confirmButton = KurlyButton(title: "확인", style: .purple)
 
     private var selectAddressIndex: Int = 0 {
-        didSet { deliveryAddressTableView.reloadData() }
+        didSet {
+            deliveryAddressTableView.reloadData()
+            DispatchQueue.main.async {
+                self.deliveryAddressTableView.selectRow(at: IndexPath(row: 0, section: self.selectAddressIndex), animated: true, scrollPosition: .bottom)
+                self.deliveryAddressTableView.selectRow(at: nil, animated: false, scrollPosition: .none)
+            }
+        }
     }
 
     private var userAddressList = [AddressModel]() {
@@ -31,7 +43,6 @@ class UserDeliverySettingVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
-        requestUserAddressList()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -42,12 +53,21 @@ class UserDeliverySettingVC: UIViewController {
                                     titleText: "배송지 선택")
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        self.requestUserAddressList()
+    }
+
     // MARK: - API
 
     func requestUserAddressList() {
+        guard let currentUser = UserService.shared.currentUser else { return }
         self.showIndicate()
-        AddressService.shared.requestAddressList(userPK: 1) { addressList in
+        AddressService.shared.requestAddressList(userPK: currentUser.id) { addressList in
             self.userAddressList = addressList
+            self.userAddressList.enumerated().forEach {
+                if $0.element.status == "T" { self.selectAddressIndex = $0.offset }
+            }
             self.stopIndicate()
         }
     }
@@ -64,10 +84,30 @@ class UserDeliverySettingVC: UIViewController {
 
     @objc
     func tappedDeliveryDelete(_ sender: UIButton) {
-        self.showIndicate()
-        AddressService.shared.deleteAddress(addressID: sender.tag) {
-            self.requestUserAddressList()
+        let alert = UIAlertController(title: nil,
+                                      message: "배송지를 삭제하시겠습니까?",
+                                      preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "확인",
+                                     style: .destructive) { _ in
+            self.showIndicate()
+            let addressID = self.userAddressList[sender.tag - 1].id
+            AddressService.shared.deleteAddress(addressID: addressID) {
+                self.requestUserAddressList()
+            }
         }
+        let cancelAction = UIAlertAction(title: "취소",
+                                         style: .cancel,
+                                         handler: nil)
+        alert.addAction(okAction)
+        alert.addAction(cancelAction)
+
+        self.present(alert, animated: true)
+    }
+
+    @objc
+    func tappedDeliveryConfirm(_ sender: UIButton) {
+        delegate?.tappedDeliveryConfirm(addressData: userAddressList[selectAddressIndex])
+        self.navigationController?.popViewController(animated: true)
     }
 
     // MARK: - Helpers
@@ -120,6 +160,11 @@ class UserDeliverySettingVC: UIViewController {
         deliveryAdditionHeaderView.additionButton.addTarget(
             self,
             action: #selector(tappedDeliveryAddition),
+            for: .touchUpInside)
+
+        confirmButton.addTarget(
+            self,
+            action: #selector(tappedDeliveryConfirm(_:)),
             for: .touchUpInside)
     }
 }

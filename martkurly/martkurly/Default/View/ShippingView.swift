@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ShippingView: UIView {
+class ShoippingView: UIView {
 
     // MARK: - Properties
     var shippingMoney = 0 {

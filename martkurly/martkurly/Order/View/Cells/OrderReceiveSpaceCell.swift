@@ -14,6 +14,10 @@ class OrderReceiveSpaceCell: UITableViewCell {
 
     static let identifier = "OrderReceiveSpaceCell"
 
+    var deliverySpace: AddressModel? {
+        didSet { configureData() }
+    }
+
     private let spaceTitleLabel = UILabel().then {
         $0.text = "문 앞"
         $0.textColor = .black
@@ -56,6 +60,26 @@ class OrderReceiveSpaceCell: UITableViewCell {
             $0.leading.equalToSuperview().offset(orderVCSideInsetValue)
             $0.trailing.equalToSuperview().offset(-orderVCSideInsetValue)
             $0.bottom.equalToSuperview().offset(-24)
+        }
+    }
+
+    func configure(titleText: String, accessUsageText: String? = nil) {
+        spaceTitleLabel.text = titleText
+        accessUsageLabel.text = accessUsageText
+    }
+
+    func configureData() {
+        guard let deliverySpace = deliverySpace else { return }
+
+        switch deliverySpace.receiving_place {
+        case "문 앞":
+            let root = deliverySpace.entrance_password != nil ? "공동현관 비밀번호" :
+                deliverySpace.free_pass != false ? "자유 출입 가능" : "기타"
+            let text = "출입방법: \(root)"
+            configure(titleText: deliverySpace.receiving_place ?? "",
+                           accessUsageText: text)
+        default:
+            configure(titleText: deliverySpace.receiving_place ?? "")
         }
     }
 }

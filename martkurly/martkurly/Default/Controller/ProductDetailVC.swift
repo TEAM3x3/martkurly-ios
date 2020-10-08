@@ -31,6 +31,12 @@ class ProductDetailVC: UIViewController {
         didSet { categoryMenuCollectionView.reloadData() }
     }
 
+    var productReviews = [ReviewModel]() {
+        didSet { categoryMenuCollectionView.reloadData() }
+    }
+
+    var isNaviDismiss: Bool = false
+
     // MARK: - LifeCycle
 
     override func viewDidLoad() {
@@ -43,7 +49,7 @@ class ProductDetailVC: UIViewController {
         super.viewWillAppear(animated)
         self.setNavigationBarStatus(type: .whiteType,
                                     isShowCart: true,
-                                    leftBarbuttonStyle: .pop,
+                                    leftBarbuttonStyle: isNaviDismiss ? .dismiss : .pop,
                                     titleText: productDetailData?.title)
     }
 
@@ -53,7 +59,11 @@ class ProductDetailVC: UIViewController {
         guard let productDetailData = productDetailData else { return }
 
         self.showIndicate()
-        ReviewService.shared.requestProductReviews(productID: productDetailData.id) {
+        ReviewService.shared.requestProductReviews(productID: productDetailData.id) { reviews in
+            self.productReviews = reviews
+            self.catogoryMenuBar.menuTitles = ProductCategoryType
+                .getAllCases(reviewsCount: reviews.count)
+            self.catogoryMenuBar.moveCategoryIndex = 0
             self.stopIndicate()
         }
     }
@@ -75,6 +85,12 @@ class ProductDetailVC: UIViewController {
         let naviVC = UINavigationController(rootViewController: controller)
         naviVC.modalPresentationStyle = .fullScreen
         self.present(naviVC, animated: true)
+    }
+
+    func moveReviewDetailPage(review: ReviewModel) {
+        let controller = ReviewDetailVC()
+        controller.reviewData = review
+        self.navigationController?.pushViewController(controller, animated: true)
     }
 
     // MARK: - Helpers
@@ -168,6 +184,8 @@ extension ProductDetailVC: UICollectionViewDataSource {
                 withReuseIdentifier: ProductReviewsCell.identifier,
                 for: indexPath) as! ProductReviewsCell
             cell.tappedWriteReviewEvent = productReviewWrite
+            cell.tappedReviewDetail = moveReviewDetailPage(review:)
+            cell.productReviews = productReviews
             return cell
         case .productInquiry:
             let cell = collectionView.dequeueReusableCell(

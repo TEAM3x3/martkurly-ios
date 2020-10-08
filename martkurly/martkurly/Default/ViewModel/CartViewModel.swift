@@ -9,7 +9,7 @@
 import UIKit
 
 struct CartViewModel {
-    let cartItems: Cart.Items
+    let cartItems: CartItem
 
     // MARK: - 천단위
     let formatter = NumberFormatter().then {
@@ -99,7 +99,7 @@ struct CartViewModel {
         ]
 
         return NSAttributedString(
-            string: cartItems.goods.packing_status ?? "없음",
+            string: cartItems.goods.packing_status ?? "상온",
             attributes: statusText
         )
     }

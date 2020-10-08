@@ -11,29 +11,19 @@ import Foundation
 struct Cart: Decodable {
     let id: Int
     let quantity_of_goods: Int
-    var items: [Items]
+    var items: [CartItem]
     let total_pay: Int
     let discount_total_pay: Int
     var discount_price: Int
+}
 
-    struct Items: Decodable {
-        let id: Int
-        let cart: Int
-        let goods: Goods
-        var quantity: Int
-        var sub_total: Int
-        var discount_payment: Int
-    }
-
-    struct Goods: Decodable {
-        let id: Int
-        let title: String
-        let packing_status: String?
-        let price: Int
-        let img: String
-        let sales: Sales?
-        var discount_price: Int?
-    }
+struct CartItem: Decodable {
+    let id: Int
+    let cart: Int?
+    let goods: Product
+    var quantity: Int
+    var sub_total: Int
+    var discount_payment: Int
 }
 
 /*

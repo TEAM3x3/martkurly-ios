@@ -37,7 +37,7 @@ struct ProductListViewModel {
         ]
 
         let giftAttributes: [NSAttributedString.Key: Any] = [
-            .font: UIFont.boldSystemFont(ofSize: 16),
+            .font: UIFont.boldSystemFont(ofSize: 14),
             .foregroundColor: UIColor.white
         ]
 

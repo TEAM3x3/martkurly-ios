@@ -14,6 +14,12 @@ class ProductInfomationCell: UITableViewCell {
 
     static let identifier = "ProductInfomationCell"
 
+    var data: CartItem? {
+        didSet {
+            configure()
+        }
+    }
+
     private let productImageView = UIImageView().then {
         $0.image = UIImage(named: "TestImage")
         $0.contentMode = .scaleAspectFill
@@ -92,5 +98,15 @@ class ProductInfomationCell: UITableViewCell {
             $0.trailing.bottom.equalToSuperview().offset(-orderVCSideInsetValue)
             $0.height.equalTo(0.5)
         }
+    }
+
+    func configure() {
+        guard let data = data else { return }
+        let orderViewModel = OrderDataViewModel(orderItem: data)
+
+        productImageView.kf.setImage(with: orderViewModel.imageURL)
+        productTitleLabel.attributedText = orderViewModel.productTitle
+        productEachLabel.attributedText = orderViewModel.productEach
+        productAmountPriceLabel.attributedText = orderViewModel.productAmountPrice
     }
 }

@@ -121,6 +121,6 @@ class InquiryCell: UITableViewCell {
     // MARK: - Helpers
 
     func configureUI() {
-        self.backgroundColor = .systemBlue
+        self.backgroundColor = .white
     }
 }
